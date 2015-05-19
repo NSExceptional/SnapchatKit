@@ -172,7 +172,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 } else {
                     
                     [self getDeviceToken:^(NSDictionary *dict, NSError *error) {
-                        if (error || dict) {
+                        if (error || !dict) {
                             NSLog(@"Error retrieving Snapchat device token.");
                             completion(nil, nil);
                         } else {
