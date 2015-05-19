@@ -23,6 +23,9 @@
         _decayThumbnail        = [json[@"dont_decay_thumbnail"] boolValue];
     }
     
+    [self.knownJSONKeys addObjectsFromArray:@[@"friendmoji_string", @"venue", @"shared_story_id", @"can_see_custom_stories",
+                                              @"needs_love", @"is_shared_story", @"has_custom_description", @"dont_decay_thumbnail"]];
+    
     return self;
 }
 

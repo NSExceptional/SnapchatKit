@@ -11,8 +11,17 @@
 @implementation SKStory
 
 - (id)initWithDictionary:(NSDictionary *)json {
-    self = [super initWithDictionary:json];
     NSDictionary *story = json[@"story"];
+    // I merge the "story" key dictionary with the rest of
+    // the JSON so that unknownJSONKeys is more thorough.
+    if (kDebugJSON) {
+        NSMutableDictionary *fullJSON = json.mutableCopy;
+        [fullJSON addEntriesFromDictionary:story];
+        fullJSON[@"story"] = @{};
+        json = fullJSON;
+    }
+    
+    self = [super initWithDictionary:json];
     if (self) {
         _viewed           = [json[@"viewed"] boolValue];
         _shared           = [story[@"is_shared"] boolValue];
@@ -36,8 +45,12 @@
         _thumbURL         = [NSURL URLWithString:story[@"thumbnail_url"]];
 
         _timeLeft         = [story[@"time_left"] integerValue];
-        _created          = [NSDate dateWithTimeIntervalSince1970:[story[@"timestamp"] doubleValue]];
+        _created          = [NSDate dateWithTimeIntervalSince1970:[story[@"timestamp"] doubleValue]/1000];
     }
+    
+    [self.knownJSONKeys addObjectsFromArray:@[@"story", @"viewed", @"is_shared", @"zipped", @"mature_content", @"needs_auth", @"time",
+                                              @"id", @"caption_text_display", @"client_id", @"media_id", @"media_iv", @"media_type",
+                                              @"media_url", @"thumbnail_iv", @"thumbnail_url", @"time_left", @"timestamp"]];
     
     return self;
 }

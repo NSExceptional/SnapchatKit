@@ -16,20 +16,22 @@
 #define kScreenHeight (1136)
 #endif
 
+#define kDebugJSON YES
+
 typedef void (^RequestBlock)(NSData *data, NSURLResponse *response, NSError *error);
 typedef void (^DataBlock)(NSData *data, NSError *error);
 typedef void (^StringBlock)(NSString *string, NSError *error);
 typedef void (^DictionaryBlock)(NSDictionary *dict, NSError *error);
 typedef void (^VoidBlock)();
 
-typedef NS_ENUM(NSUInteger, SKAddSource)
+typedef NS_ENUM(NSInteger, SKAddSource)
 {
     SKAddSourcePhonebook = 1,
     SKAddSourceUsername,
     SKAddSourceAddedBack
 };
 
-typedef NS_ENUM(NSUInteger, SKMediaKind)
+typedef NS_ENUM(NSInteger, SKMediaKind)
 {
     SKMediaKindImage,
     SKMediaKindVideo,
@@ -40,7 +42,7 @@ typedef NS_ENUM(NSUInteger, SKMediaKind)
     SKMediaKindStrangerSilentVideo
 };
 
-typedef NS_ENUM(NSUInteger, SKSnapStatus)
+typedef NS_ENUM(NSInteger, SKSnapStatus)
 {
     SKSnapStatusNone       = -1,
     SKSnapStatusSent       = 0,
@@ -49,7 +51,7 @@ typedef NS_ENUM(NSUInteger, SKSnapStatus)
     SKSnapStatusScreenshot = 3
 };
 
-typedef NS_ENUM(NSUInteger, SKFriendStatus)
+typedef NS_ENUM(NSInteger, SKFriendStatus)
 {
     SKFriendStatusConfirmed,
     SKFriendStatusUnconfirmed,
@@ -57,7 +59,7 @@ typedef NS_ENUM(NSUInteger, SKFriendStatus)
     SKFriendStatusDeleted
 };
 
-typedef NS_ENUM(NSUInteger, SKPrivacyStatus)
+typedef NS_ENUM(NSInteger, SKPrivacyStatus)
 {
     SKPrivacyStatusEveryone,
     SKPrivacyStatusFriends

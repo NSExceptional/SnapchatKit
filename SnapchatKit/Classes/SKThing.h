@@ -13,4 +13,14 @@
 
 - (id)initWithDictionary:(NSDictionary *)json;
 
+/** 
+ For API debugging purposes, each class adds it's known
+ JSON keys to this array so we can find ones we aren't
+ using or don't know about.
+ */
+@property (nonatomic) NSMutableArray *knownJSONKeys;
+
+/** Calculated once when first accessed, using _knownJSONKeys. */
+@property (nonatomic, readonly) NSArray *unknownJSONKeys;
+
 @end

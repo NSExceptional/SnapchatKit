@@ -14,10 +14,12 @@
     self = [super initWithDictionary:json];
     if (self) {
         _viewer       = json[@"viewer"];
-        _viewDate     = [NSDate dateWithTimeIntervalSince1970:[json[@"timestamp"] doubleValue]];
+        _viewDate     = [NSDate dateWithTimeIntervalSince1970:[json[@"timestamp"] doubleValue]/1000];
         _screenshot   = [json[@"screenshotted"] boolValue];
         _storyPointer = json[@"storypointer"];
     }
+    
+    [self.knownJSONKeys addObjectsFromArray:@[@"viewer", @"timestamp", @"screenshotted", @"storypointer"]];
     
     return self;
 }

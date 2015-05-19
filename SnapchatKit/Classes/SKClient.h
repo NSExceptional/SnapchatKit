@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SnapchatKit-Constants.h"
 
-@class SKSession;
+#import "SKSession.h"
 
 @interface SKClient : NSObject
 

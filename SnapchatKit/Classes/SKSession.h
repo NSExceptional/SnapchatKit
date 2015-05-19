@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SKThing.h"
 
-@interface SKSession : NSObject //<NSCoding>
+@interface SKSession : SKThing //<NSCoding>
 
 + (instancetype)sessionWithJSONResponse:(NSDictionary *)json;
 
@@ -20,12 +21,14 @@
 @property (nonatomic, readonly) NSString *backgroundFetchSecret;
 
 /** Array of SKUser objects. */
-@property (nonatomic          ) NSMutableArray *friends;
+@property (nonatomic, readonly) NSArray *friends;
 /** Array of SKAddedFriend objects. */
 @property (nonatomic, readonly) NSArray *addedFriends;
 /** Array of NSString's of usernames. */
 @property (nonatomic, readonly) NSArray *bestFriendUsernames;
 
+/** Array of SKConversation objects. */
+@property (nonatomic, readonly) NSArray *conversations;
 /** Array of SKStoryCollectionx objects of friends' stories. */
 @property (nonatomic, readonly) NSArray *stories;
 /** Array of SKUserStory objects of the user's stories. */

@@ -23,8 +23,10 @@
         _displayName   = json[@"display"];
         _addedIncoming = [json[@"direction"] isEqualToString:@"INCOMING"];
         _type          = [json[@"type"] integerValue];
-        _expiration    = [NSDate dateWithTimeIntervalSince1970:[json[@"expiration"] unsignedIntegerValue]];
+        _expiration    = [NSDate dateWithTimeIntervalSince1970:[json[@"expiration"] doubleValue]/1000];
     }
+    
+    [self.knownJSONKeys addObjectsFromArray:@[@"name", @"display", @"direction", @"type", @"expiration"]];
     
     return self;
 }

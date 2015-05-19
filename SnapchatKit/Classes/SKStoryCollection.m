@@ -25,6 +25,8 @@
         _stories = stories;
     }
     
+    [self.knownJSONKeys addObjectsFromArray:@[@"username", @"mature_content", @"stories"]];
+    
     return self;
 }
 

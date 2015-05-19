@@ -22,6 +22,10 @@
 		B4B55E7C1B09DFDC0076EA50 /* SKRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B55E7B1B09DFDC0076EA50 /* SKRequest.m */; };
 		B4B55E801B09E1510076EA50 /* SnapchatKit-Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B55E7F1B09E1510076EA50 /* SnapchatKit-Constants.m */; };
 		B4B55E831B09E7630076EA50 /* SKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B55E821B09E7630076EA50 /* SKSession.m */; };
+		B4C219EC1B0B4B7A000365DE /* SKConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219EB1B0B4B7A000365DE /* SKConversation.m */; };
+		B4C219EF1B0B52F4000365DE /* SKSnap.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219EE1B0B52F4000365DE /* SKSnap.m */; };
+		B4C219F21B0B598A000365DE /* SKMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219F11B0B598A000365DE /* SKMessage.m */; };
+		B4C219F51B0B5CD8000365DE /* SKCashTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219F41B0B5CD8000365DE /* SKCashTransaction.m */; };
 		DF676B668268364B4426D46E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1274B31F6DF0D6C723D99DF3 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +74,15 @@
 		B4B55E7F1B09E1510076EA50 /* SnapchatKit-Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SnapchatKit-Constants.m"; sourceTree = "<group>"; };
 		B4B55E811B09E7630076EA50 /* SKSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSession.h; path = Classes/SKSession.h; sourceTree = "<group>"; };
 		B4B55E821B09E7630076EA50 /* SKSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSession.m; path = Classes/SKSession.m; sourceTree = "<group>"; };
+		B4C219EA1B0B4B7A000365DE /* SKConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKConversation.h; path = Classes/SKConversation.h; sourceTree = "<group>"; };
+		B4C219EB1B0B4B7A000365DE /* SKConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKConversation.m; path = Classes/SKConversation.m; sourceTree = "<group>"; };
+		B4C219ED1B0B52F4000365DE /* SKSnap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSnap.h; path = Classes/SKSnap.h; sourceTree = "<group>"; };
+		B4C219EE1B0B52F4000365DE /* SKSnap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSnap.m; path = Classes/SKSnap.m; sourceTree = "<group>"; };
+		B4C219F01B0B598A000365DE /* SKMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKMessage.h; path = Classes/SKMessage.h; sourceTree = "<group>"; };
+		B4C219F11B0B598A000365DE /* SKMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKMessage.m; path = Classes/SKMessage.m; sourceTree = "<group>"; };
+		B4C219F31B0B5CD8000365DE /* SKCashTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKCashTransaction.h; path = Classes/SKCashTransaction.h; sourceTree = "<group>"; };
+		B4C219F41B0B5CD8000365DE /* SKCashTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKCashTransaction.m; path = Classes/SKCashTransaction.m; sourceTree = "<group>"; };
+		B4C219F61B0B7730000365DE /* Login.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
 		CC7FDCCF39DD67879C29F1F5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +128,7 @@
 		B41EE78C1AF9C0E000FD5E5B /* SnapchatKit */ = {
 			isa = PBXGroup;
 			children = (
+				B4C219F61B0B7730000365DE /* Login.h */,
 				B41EE78D1AF9C0E000FD5E5B /* main.m */,
 				B4B55E7E1B09E13C0076EA50 /* SnapchatKit-Constants.h */,
 				B4B55E7F1B09E1510076EA50 /* SnapchatKit-Constants.m */,
@@ -149,6 +163,14 @@
 				B40F7F191B0A29A100C4D9FC /* SKUserStory.m */,
 				B40F7F1B1B0A2A1700C4D9FC /* SKStoryNote.h */,
 				B40F7F1C1B0A2A1700C4D9FC /* SKStoryNote.m */,
+				B4C219EA1B0B4B7A000365DE /* SKConversation.h */,
+				B4C219EB1B0B4B7A000365DE /* SKConversation.m */,
+				B4C219ED1B0B52F4000365DE /* SKSnap.h */,
+				B4C219EE1B0B52F4000365DE /* SKSnap.m */,
+				B4C219F01B0B598A000365DE /* SKMessage.h */,
+				B4C219F11B0B598A000365DE /* SKMessage.m */,
+				B4C219F31B0B5CD8000365DE /* SKCashTransaction.h */,
+				B4C219F41B0B5CD8000365DE /* SKCashTransaction.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -267,16 +289,20 @@
 				B40F7F171B0A22D400C4D9FC /* SKThing.m in Sources */,
 				B40F7F081B0A11C800C4D9FC /* SKSimpleUser.m in Sources */,
 				B40F7F1D1B0A2A1700C4D9FC /* SKStoryNote.m in Sources */,
+				B4C219EC1B0B4B7A000365DE /* SKConversation.m in Sources */,
 				B4B55E801B09E1510076EA50 /* SnapchatKit-Constants.m in Sources */,
 				B40F7F1A1B0A29A100C4D9FC /* SKUserStory.m in Sources */,
 				B4B55E831B09E7630076EA50 /* SKSession.m in Sources */,
 				B4B55E7C1B09DFDC0076EA50 /* SKRequest.m in Sources */,
+				B4C219F21B0B598A000365DE /* SKMessage.m in Sources */,
 				B41EE79A1AF9C3B700FD5E5B /* SKClient.m in Sources */,
+				B4C219EF1B0B52F4000365DE /* SKSnap.m in Sources */,
 				B465F73A1AF9CDEF002B972A /* NSData+SnapchatKit.m in Sources */,
 				B40F7F111B0A221F00C4D9FC /* SKStory.m in Sources */,
 				B41EE78E1AF9C0E000FD5E5B /* main.m in Sources */,
 				B40F7F141B0A227200C4D9FC /* SKStoryCollection.m in Sources */,
 				B40F7F0B1B0A183B00C4D9FC /* SKUser.m in Sources */,
+				B4C219F51B0B5CD8000365DE /* SKCashTransaction.m in Sources */,
 				B465F73D1AF9D557002B972A /* NSString+SnapchatKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

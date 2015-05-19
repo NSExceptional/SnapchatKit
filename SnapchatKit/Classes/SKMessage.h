@@ -1,0 +1,54 @@
+//
+//  SKMessage.h
+//  SnapchatKit
+//
+//  Created by Tanner on 5/19/15.
+//  Copyright (c) 2015 Tanner Bennett. All rights reserved.
+//
+
+#import "SKThing.h"
+
+typedef NS_ENUM(NSUInteger, SKMessageKind)
+{
+    SKMessageKindText = 1,
+    SKMessageKindMedia
+};
+
+extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
+
+@interface SKMessage : SKThing
+
+@property (nonatomic, readonly) NSString      *identifier;
+@property (nonatomic, readonly) NSString      *messageIdentifier;
+@property (nonatomic, readonly) NSString      *iterToken;
+@property (nonatomic, readonly) SKMessageKind messageKind;
+@property (nonatomic, readonly) NSDate        *created;
+
+/** nil if _messageKind is SKMessageKindMedia. */
+@property (nonatomic, readonly) NSString      *text;
+
+/** nil if _messageKind is SKMessageKindText. */
+@property (nonatomic, readonly) NSString      *mediaIdentifier;
+/** {0,0} if _messageKind is SKMessageKindText. */
+@property (nonatomic, readonly) CGSize        mediaSize;
+/** nil if _messageKind is SKMessageKindText. */
+@property (nonatomic, readonly) NSString      *mediaIV;
+/** nil if _messageKind is SKMessageKindText. */
+@property (nonatomic, readonly) NSString      *mediaKey;
+
+/** Array of usernames. */
+@property (nonatomic, readonly) NSArray       *recipients;
+@property (nonatomic, readonly) NSString      *sender;
+@property (nonatomic, readonly) NSString      *conversationIdentifier;
+
+/** The position of this message in the conversation. i.e. 1 if it is the first message. */
+@property (nonatomic, readonly) NSUInteger    index;
+
+/** Keys for each participant mapped to dictionaries with keys "saved" and "version". */
+@property (nonatomic, readonly) NSDictionary  *savedState;
+
+/** So far, it's just "chat_message". Odd. */
+@property (nonatomic, readonly) NSString      *type;
+
+
+@end

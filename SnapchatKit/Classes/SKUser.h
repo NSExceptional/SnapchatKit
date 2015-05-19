@@ -10,10 +10,12 @@
 
 @interface SKUser : SKSimpleUser
 
+/** See http://i.imgur.com/PfFbw59.jpg */
 @property (nonatomic, readonly) NSString *friendmoji;
 @property (nonatomic, readonly) NSString *venue;
 @property (nonatomic, readonly) NSString *sharedStoryIdentifier;
 
+/** NO if your stories are hidden from this user in "who can see my stories?". */
 @property (nonatomic, readonly) BOOL canSeeCustomStories;
 @property (nonatomic, readonly) BOOL needsLove;
 @property (nonatomic, readonly) BOOL isSharedStory;

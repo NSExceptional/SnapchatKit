@@ -11,6 +11,7 @@
 #import "SKUserStory.h"
 #import "SKUser.h"
 #import "SKAddedFriend.h"
+#import "SKConversation.h"
 
 @implementation SKSession
 
@@ -24,7 +25,6 @@
 }
 
 - (id)initWithDictionary:(NSDictionary *)json {
-    NSParameterAssert(json);
     
     NSDictionary *storiesResponse = json[@"stories_response"];
     NSDictionary *friendsResponse = json[@"friends_response"];
@@ -34,11 +34,12 @@
     NSArray *myStories     = storiesResponse[@"my_stories"];
     //NSArray *groupStories  = storiesResponse[@"my_group_stories"];
     
-    NSArray *friends = friendsResponse[@"friends"];
-    NSArray *added   = friendsResponse[@"added_friends"];
+    NSArray *friends       = friendsResponse[@"friends"];
+    NSArray *added         = friendsResponse[@"added_friends"];
+    NSArray *conversations = json[@"conversations_response"];
     
     
-    self = [super init];
+    self = [super initWithDictionary:json];
     if (self) {
         _backgroundFetchSecret = json[@"background_fetch_secret_key"];
         _bestFriendUsernames   = friendsResponse[@"bests"];
@@ -59,6 +60,12 @@
             [temp addObject:[[SKAddedFriend alloc] initWithDictionary:addedFriend]];
         _addedFriends = temp;
         
+        // Conversations
+        temp = [NSMutableArray new];
+        for (NSDictionary *convo in conversations)
+            [temp addObject:[[SKConversation alloc] initWithDictionary:convo]];
+        _conversations = temp;
+        
         // Story collections
         temp = [NSMutableArray new];
         for (NSDictionary *collection in friendStories)
@@ -74,6 +81,8 @@
         // Group stories?
         _groupStories = @[];
     }
+    
+    [self.knownJSONKeys addObjectsFromArray:@[@"stories_response", @"friends_response", @"identity_check_response", @"background_fetch_secret_key", @"discover"]];
     
     return self;
 }

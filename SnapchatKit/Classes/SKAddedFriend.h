@@ -11,5 +11,6 @@
 @interface SKAddedFriend : SKSimpleUser
 
 @property (nonatomic, readonly) SKAddSource addSourceType;
+@property (nonatomic, readonly) NSDate      *timestamp;
 
 @end
