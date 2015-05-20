@@ -21,5 +21,6 @@
     mKey   = "story:{username}:YYYYMMDD";
  */
 @property (nonatomic, readonly) NSDictionary *storyPointer;
+ 
 
 @end
