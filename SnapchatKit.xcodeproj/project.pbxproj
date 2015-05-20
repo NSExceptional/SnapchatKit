@@ -133,8 +133,8 @@
 				B4C21A1F1B0CEE23000365DE /* SnapchatKit-Constants.h */,
 				B4C21A201B0CEE23000365DE /* SnapchatKit-Constants.m */,
 				B4C219FA1B0CEE23000365DE /* Categories */,
-				B4C219FF1B0CEE23000365DE /* Model */,
 				B4C21A1C1B0CEE23000365DE /* Networking */,
+				B4C219FF1B0CEE23000365DE /* Model */,
 			);
 			path = SnapchatKit;
 			sourceTree = "<group>";
