@@ -56,7 +56,7 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
         for (NSDictionary *message in messages) {
             if (message[@"snap"])
                 [temp addObject:[[SKSnap alloc] initWithDictionary:message[@"snap"]]];
-            else if (message[@"chat_message"] && message[@"iter_token"])
+            else if (message[@"chat_message"])
                 [temp addObject:[[SKMessage alloc] initWithDictionary:message]];
             else
                 NSLog(@"Unhandled conversation message type:\n%@", message);

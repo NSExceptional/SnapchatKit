@@ -83,6 +83,7 @@
 		B4C21A1E1B0CEE23000365DE /* SKClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKClient.m; sourceTree = "<group>"; };
 		B4C21A1F1B0CEE23000365DE /* SnapchatKit-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SnapchatKit-Constants.h"; path = "Classes/SnapchatKit-Constants.h"; sourceTree = "<group>"; };
 		B4C21A201B0CEE23000365DE /* SnapchatKit-Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SnapchatKit-Constants.m"; path = "Classes/SnapchatKit-Constants.m"; sourceTree = "<group>"; };
+		B4C21A391B0E592D000365DE /* SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnapchatKit.h; path = Classes/SnapchatKit.h; sourceTree = "<group>"; };
 		CC7FDCCF39DD67879C29F1F5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -130,6 +131,7 @@
 			children = (
 				B4C219F61B0B7730000365DE /* Login.h */,
 				B41EE78D1AF9C0E000FD5E5B /* main.m */,
+				B4C21A391B0E592D000365DE /* SnapchatKit.h */,
 				B4C21A1F1B0CEE23000365DE /* SnapchatKit-Constants.h */,
 				B4C21A201B0CEE23000365DE /* SnapchatKit-Constants.m */,
 				B4C219FA1B0CEE23000365DE /* Categories */,

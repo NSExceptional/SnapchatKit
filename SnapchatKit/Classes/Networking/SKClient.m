@@ -21,8 +21,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 #pragma mark Initializers
 
-+ (instancetype)sharedClient
-{
++ (instancetype)sharedClient {
     static SKClient *sharedSKClient;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
@@ -49,6 +48,29 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     [aCoder encodeObject:self.googleAttestation forKey:@"googleAttestation"];
     [aCoder encodeObject:self.deviceToken1i     forKey:@"deviceToken1i"];
     [aCoder encodeObject:self.deviceToken1v     forKey:@"deviceToken1v"];
+}
+
+#pragma mark Convenience
+
+- (void)handleError:(NSError *)error data:(NSData *)data response:(NSURLResponse *)response completion:(ResponseBlock)completion {
+    if (error) {
+        completion(nil, error);
+    } else if (data) {
+        NSError *jsonError;
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+        
+        if (jsonError) {
+            completion(nil, jsonError);
+            if (kVerboseLog)
+                NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
+        }
+        else if (json)
+            completion(json, nil);
+        else
+            completion(nil, [SKRequest unknownError]);
+    } else {
+        completion(nil, [SKRequest unknownError]);
+    }
 }
 
 #pragma mark Signing in
@@ -102,7 +124,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 /** Snapchat device token. */
 - (void)getDeviceToken:(DictionaryBlock)completion {
-    [SKRequest postTo:kepDeviceToken query:@{} headers:@{khfClientAuthTokenHeaderField: @"Bearer "} callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:kepDeviceToken query:@{} headers:@{khfClientAuthTokenHeaderField: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (error) {
             completion(nil, error);
         } else if (data) {
@@ -188,10 +210,9 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             NSString *string    = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, req_token];
                             NSString *deviceSig = [[NSString hashHMac:string key:self.deviceToken1v] substringWithRange:NSMakeRange(0, 20)];
                             
-                            NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", gauth]};
-                            NSDictionary *post    = @{@"username": username,
-                                                      @"password": password,
-                                                      @"height":   @(kScreenHeight),
+                            NSDictionary *post = @{@"username": username,
+                                                @"password": password,
+                                                @"height":   @(kScreenHeight),
                                                       @"height":   @(kScreenWidth),
                                                       @"max_video_width":  @480,
                                                       @"max_video_height": @640,
@@ -201,9 +222,10 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                                       @"dtoken1i":         self.deviceToken1i,
                                                       @"attestation":      attestation};
                             
-                            [SKRequest postTo:kepLogin query:post headers:headers callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+                            [SKRequest postTo:kepLogin query:post gauth:gauth token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
                                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                 self.currentSession = [SKSession sessionWithJSONResponse:json];
+                                _authToken = self.currentSession.authToken;
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     completion(json, error);
                                 });
@@ -213,6 +235,54 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 }
             }];
         }
+    }];
+}
+
+- (void)signOut {
+    [SKRequest postTo:kepLogout query:@{@"username": self.currentSession.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (kVerboseLog) {
+            NSString *result = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+            if (result.length == 0)
+                NSLog(@"Signed out");
+            else
+                NSLog(@"%@", result);
+        }
+    }];
+}
+
+- (void)addFriend:(NSString *)friend completion:(DictionaryBlock)completion {
+    NSParameterAssert(friend);
+    NSDictionary *query = @{@"action": @"add",
+                            @"friend": friend,
+                            @"username": self.currentSession.username,
+                            @"added_by": @"ADDED_BY_USERNAME"};
+    [SKRequest postTo:kepFriends query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self handleError:error data:data response:response completion:completion];
+        });
+    }];
+}
+
+- (void)unfriend:(NSString *)friend completion:(DictionaryBlock)completion {
+    NSParameterAssert(friend);
+    NSDictionary *query = @{@"action": @"delete",
+                            @"friend": friend,
+                            @"username": self.currentSession.username};
+    [SKRequest postTo:kepFriends query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self handleError:error data:data response:response completion:completion];
+        });
+    }];
+}
+
+- (void)bestFriendsOfUsers:(NSArray *)usernames completion:(DictionaryBlock)completion {
+    NSParameterAssert(usernames);
+    NSDictionary *query = @{@"friend_usernames": usernames,
+                            @"username": self.currentSession.username};
+    [SKRequest postTo:kepBestFriends query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self handleError:error data:data response:response completion:completion];
+        });
     }];
 }
 

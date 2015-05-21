@@ -14,9 +14,22 @@
 + (NSDictionary *)parseJSON:(NSData *)jsonData;
 + (NSError *)unknownError;
 
-/** httpHeaders may be nil. */
-+ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders callback:(RequestBlock)callback;
-+ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json callback:(RequestBlock)callback;
+/**
+ @param endpoint The endpoint of the request relative to the base URL.
+ @param json The parameters for the request.
+ @param gauth Optional parameter set to the X-Snapchat-Client-Auth-Token header field.
+ @param token The Snapchat auth token returned from logging in. Used to set the req_token parameter for requests.
+ */
++ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json gauth:(NSString *)gauth token:(NSString *)token callback:(RequestBlock)callback;
+
+/**
+ @param endpoint The endpoint of the request relative to the base URL.
+ @param json The parameters for the request.
+ @param httpHeaders Optional. Sets the corresponding header fields.
+ @param token The Snapchat auth token returned from logging in. Used to set the req_token parameter for requests.
+ */
++ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders token:(NSString *)token callback:(RequestBlock)callback;
+
 /** httpHeaders may be nil. */
 + (void)get:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders callback:(RequestBlock)callback;
 + (void)get:(NSString *)endpoint query:(NSDictionary *)json callback:(RequestBlock)callback;

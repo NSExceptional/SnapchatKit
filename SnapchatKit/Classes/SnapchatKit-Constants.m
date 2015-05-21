@@ -21,6 +21,17 @@ SKAddSource SKAddSourceFromString(NSString *addSourceString) {
     return 0;
 }
 
+NSString * SKStringFromAddSource(SKAddSource addSource) {
+    switch (addSource) {
+        case SKAddSourcePhonebook:
+            return @"ADDED_BY_PHONE";
+        case SKAddSourceUsername:
+            return @"ADDED_BY_USERNAME";
+        case SKAddSourceAddedBack:
+            return @"ADDED_BY_ADDED_ME_BACK";
+    }
+}
+
 #pragma mark General API constants
 NSString * const kUserAgent         = @"Snapchat/9.6.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
 NSString * const kURL               = @"https://feelinsonice-hrd.appspot.com";

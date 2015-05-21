@@ -13,6 +13,18 @@
 #import "SKAddedFriend.h"
 #import "SKConversation.h"
 
+SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
+    if ([storyPrivacyString isEqualToString:@"EVERYONE"])
+        return SKStoryPrivacyEveryone;
+    if ([storyPrivacyString isEqualToString:@"FRIENDS"])
+        return SKStoryPrivacyFriends;
+    if ([storyPrivacyString isEqualToString:@"CUSTOM"])
+        return SKStoryPrivacyCustom;
+    
+    if (kDebugJSON) NSLog(@"Unknown story privacy type: %@", storyPrivacyString);
+    return 0;
+}
+
 @implementation SKSession
 
 - (id)init {
@@ -131,7 +143,7 @@
         // Preferences
         _enableNotificationSounds  = [updatesResponse[@"notification_sound_setting"] boolValue];
         _numberOfBestFriends       = [updatesResponse[@"number_of_best_friends"] integerValue];
-        _privacyEveryone           = [updatesResponse[@"snap_p"] boolValue];
+        _privacyEveryone           = ![updatesResponse[@"snap_p"] boolValue];
         _isSearchableByPhoneNumber = [updatesResponse[@"searchable_by_phone_number"] boolValue];
         _storyPrivacy              = SKStoryPrivacyFromString(updatesResponse[@"story_privacy"]);
         

@@ -23,14 +23,16 @@
 
 #pragma mark POST / GET
 
-+ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json callback:(RequestBlock)callback {
-    [self postTo:endpoint query:json headers:nil callback:callback];
++ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json gauth:(NSString *)gauth token:(NSString *)token callback:(RequestBlock)callback {
+    NSParameterAssert(gauth);
+    NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", gauth]};
+    [self postTo:endpoint query:json headers:headers token:token callback:callback];
 }
 
-+ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders callback:(RequestBlock)callback {
++ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders token:(NSString *)token callback:(RequestBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(callback);
     
-    SKRequest *request = [[SKRequest alloc] initWithPOSTEndpoint:endpoint token:nil query:json headers:httpHeaders];
+    SKRequest *request = [[SKRequest alloc] initWithPOSTEndpoint:endpoint token:token query:json headers:httpHeaders];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:callback];

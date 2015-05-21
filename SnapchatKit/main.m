@@ -25,9 +25,14 @@ int main(int argc, const char * argv[]) {
                 // ie each SKStoryCollection has the JSON for each story, and each SKStory also has its JSON.
                 // TODO: make the _JSON property of SKThing dependent on kDebugJSON.
                 NSData *data = [NSPropertyListSerialization dataWithPropertyList:[session valueForKey:@"_JSON"] format:NSPropertyListBinaryFormat_v1_0 options:0 error:nil];
-                NSLog(@"Bytes: %lu Kilobytes: %f", (unsigned long)data.length, ((float)data.length/1024.f));
+                NSLog(@"Bytes: %lu Kilobytes: %f", data.length, ((float)data.length/1024.f));
+                
+                // I'm testing stuff here
+                [[SKClient sharedClient] bestFriendsOfUsers:@[@"abcxyz"] completion:^(NSDictionary *dict, NSError *error) {
+                    if (!error)
+                        NSLog(@"%@", dict);
+                }];
             }
-            waiting = NO;
         }];
         
         while (waiting) {

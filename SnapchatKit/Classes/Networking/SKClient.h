@@ -16,11 +16,16 @@
 + (instancetype)sharedClient;
 
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion;
-//- (void)sendSnap:(id)snapPNGData text:(NSString *)text duration:(NSUInteger)seconds;
+- (void)signOut;
+
+- (void)addFriend:(NSString *)username completion:(DictionaryBlock)completion;
+- (void)unfriend:(NSString *)friend completion:(DictionaryBlock)completion;
+- (void)bestFriendsOfUsers:(NSArray *)usernames completion:(DictionaryBlock)completion;
 
 @property (nonatomic) SKSession *currentSession;
 
 // Data used to sign in
+@property (nonatomic, readonly) NSString *authToken;
 @property (nonatomic, readonly) NSString *googleAuthToken;
 @property (nonatomic, readonly) NSString *deviceToken1i;
 @property (nonatomic, readonly) NSString *deviceToken1v;
