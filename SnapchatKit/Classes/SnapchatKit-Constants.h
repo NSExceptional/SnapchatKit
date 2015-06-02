@@ -20,6 +20,7 @@
 #define kVerboseLog YES
 
 typedef void (^RequestBlock)(NSData *data, NSURLResponse *response, NSError *error);
+typedef void (^BooleanBlock)(BOOL success, NSError *error);
 typedef void (^DataBlock)(NSData *data, NSError *error);
 typedef void (^StringBlock)(NSString *string, NSError *error);
 typedef void (^DictionaryBlock)(NSDictionary *dict, NSError *error);
@@ -110,6 +111,7 @@ extern NSString * const kepDeviceToken;
 extern NSString * const kepAllUpdates;
 extern NSString * const kepConvoAuth;
 extern NSString * const kepConversations;
+extern NSString * const kepConversation;
 extern NSString * const kepConvoClear;
 extern NSString * const kepConvoPostMessages;
 extern NSString * const kepFindFriends;
@@ -134,6 +136,7 @@ extern NSString * const kepClearFeed;
 extern NSString * const kepSettings;
 extern NSString * const kepFeatures;
 extern NSString * const kepSnaptag;
+extern NSString * const kepCashEligible;
 
 extern NSString * const kepGetStoryBlob;
 extern NSString * const kepGetStoryThumb;

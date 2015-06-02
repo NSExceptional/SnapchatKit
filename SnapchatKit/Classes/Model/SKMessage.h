@@ -11,13 +11,15 @@
 typedef NS_ENUM(NSUInteger, SKMessageKind)
 {
     SKMessageKindText = 1,
-    SKMessageKindMedia
+    SKMessageKindMedia,
+    SKMessageKindDiscoverShared
 };
 
 extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 
 @interface SKMessage : SKThing
 
+/** Use this property to mark a message as read. */
 @property (nonatomic, readonly) NSString      *identifier;
 @property (nonatomic, readonly) NSString      *messageIdentifier;
 @property (nonatomic, readonly) NSString      *iterToken;
@@ -35,6 +37,8 @@ extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 @property (nonatomic, readonly) NSString      *mediaIV;
 /** nil if _messageKind is SKMessageKindText. */
 @property (nonatomic, readonly) NSString      *mediaKey;
+/** i.e. "VIDEO" */
+@property (nonatomic, readonly) NSString      *mediaType;
 
 /** Array of usernames. */
 @property (nonatomic, readonly) NSArray       *recipients;

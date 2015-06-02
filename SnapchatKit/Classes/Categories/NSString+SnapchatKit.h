@@ -31,4 +31,5 @@
 
 @interface NSString (Regex)
 - (NSString *)matchGroupAtIndex:(NSUInteger)idx forRegex:(NSString *)regex;
+- (NSArray *)allMatchesForRegex:(NSString *)regex;
 @end

@@ -5,19 +5,27 @@
 //  Created by Tanner on 5/5/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
+@import AppKit;
 
 #import "SKClient.h"
 #import "SKSession.h"
 #import "SKRequest.h"
+#import "SKConversation.h"
 
 #import "SnapchatKit-Constants.h"
 #import "NSData+SnapchatKit.h"
 #import "NSString+SnapchatKit.h"
+#import "NSDictionary+SnapchatKit.h"
+#import "NSArray+SnapchatKit.h"
+
+#import "SSZipArchive.h"
 
 NSString * const kAttestationURLString     = @"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA";
 NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJvaWQaIC8cqvyh7TDQtOOIY+76vqDoFXEfpM95uCJRmoJZ2VpYIgAojKq/AzIECgASADoECAEQAUD4kP+pBRIA";
 
 @implementation SKClient
+
+@synthesize authToken = _authToken;
 
 #pragma mark Initializers
 
@@ -50,9 +58,19 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     [aCoder encodeObject:self.deviceToken1v     forKey:@"deviceToken1v"];
 }
 
+- (void)setCurrentSession:(SKSession *)currentSession {
+    _currentSession = currentSession;
+    _username = currentSession.username;
+}
+
+- (NSString *)authToken {
+    return _authToken ?: kStaticToken;
+}
+
 #pragma mark Convenience
 
 - (void)handleError:(NSError *)error data:(NSData *)data response:(NSURLResponse *)response completion:(ResponseBlock)completion {
+    NSParameterAssert(completion);
     if (error) {
         completion(nil, error);
     } else if (data) {
@@ -71,6 +89,13 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     } else {
         completion(nil, [SKRequest unknownError]);
     }
+}
+
+- (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback {
+    NSParameterAssert(endpoint); NSParameterAssert(query);
+    [SKRequest postTo:endpoint query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self handleError:error data:data response:response completion:callback];
+    }];
 }
 
 #pragma mark Signing in
@@ -183,20 +208,17 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     
     [self getAuthTokenForGmail:gmailEmail password:gmailPassword callback:^(NSString *gauth, NSError *error) {
         if (error || !gauth) {
-            NSLog(@"Error retrieving Google auth token.");
-            completion(nil, nil);
+            completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Google auth token." code:1]);
         } else {
             
             [self getAttestation:^(NSString *attestation, NSError *error) {
                 if (error || !attestation) {
-                    NSLog(@"Error retrieving Google attestation.");
-                    completion(nil, nil);
+                    completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Google attestation." code:1]);
                 } else {
                     
                     [self getDeviceToken:^(NSDictionary *dict, NSError *error) {
                         if (error || !dict) {
-                            NSLog(@"Error retrieving Snapchat device token.");
-                            completion(nil, nil);
+                            completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Snapchat device token." code:1]);
                         } else {
                             
                             _googleAuthToken = gauth;
@@ -211,16 +233,16 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             NSString *deviceSig = [[NSString hashHMac:string key:self.deviceToken1v] substringWithRange:NSMakeRange(0, 20)];
                             
                             NSDictionary *post = @{@"username": username,
-                                                @"password": password,
-                                                @"height":   @(kScreenHeight),
-                                                      @"height":   @(kScreenWidth),
-                                                      @"max_video_width":  @480,
-                                                      @"max_video_height": @640,
-                                                      @"application_id":   @"com.snapchat.android",
-                                                      @"ptoken":           @"ie",
-                                                      @"dsig":             deviceSig,
-                                                      @"dtoken1i":         self.deviceToken1i,
-                                                      @"attestation":      attestation};
+                                                   @"password": password,
+                                                   @"height":   @(kScreenHeight),
+                                                   @"height":   @(kScreenWidth),
+                                                   @"max_video_width":  @480,
+                                                   @"max_video_height": @640,
+                                                   @"application_id":   @"com.snapchat.android",
+                                                   @"ptoken":           @"ie",
+                                                   @"dsig":             deviceSig,
+                                                   @"dtoken1i":         self.deviceToken1i,
+                                                   @"attestation":      self.googleAttestation};
                             
                             [SKRequest postTo:kepLogin query:post gauth:gauth token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
                                 NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -246,42 +268,180 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 NSLog(@"Signed out");
             else
                 NSLog(@"%@", result);
+            
         }
     }];
 }
 
-- (void)addFriend:(NSString *)friend completion:(DictionaryBlock)completion {
-    NSParameterAssert(friend);
-    NSDictionary *query = @{@"action": @"add",
-                            @"friend": friend,
-                            @"username": self.currentSession.username,
-                            @"added_by": @"ADDED_BY_USERNAME"};
-    [SKRequest postTo:kepFriends query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self handleError:error data:data response:response completion:completion];
-        });
+#pragma mark Registration
+
+- (void)registerEmail:(NSString *)email password:(NSString *)password birthday:(NSString *)birthday completion:(DictionaryBlock)completion {
+    NSParameterAssert(email); NSParameterAssert(password); NSParameterAssert(birthday); NSParameterAssert(completion);
+    NSDictionary *query = @{@"email": email, @"password": password, @"birthday": birthday};
+    
+    /* If successful, json1 will be something like:
+    {
+        "auth_token" = ff8788437e471d21f60d83517581cae5;
+        "default_username" = username;
+        "default_username_status" = 1;
+        email = "email@domain.com";
+        logged = 1;
+        "should_send_text_to_verify_number" = 0;
+        "snapchat_phone_number" = "+19372034486";
+        "username_suggestions" = (username5, username03, etc);
+    } */
+    [self postTo:kepRegister query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            // Continue registration
+            if ([json[@"logged"] boolValue]) {
+                _authToken = json[@"auth_token"];
+                NSDictionary *result = @{@"email": json[@"email"],
+                                         @"snapchat_phone_number": json[@"snapchat_phone_number"],
+                                         @"username_suggestions": json[@"username_suggestions"]};
+                completion(result, nil);
+            }
+            // Failed for some reason
+            else {
+                completion(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+            }
+            
+        }
     }];
 }
 
-- (void)unfriend:(NSString *)friend completion:(DictionaryBlock)completion {
-    NSParameterAssert(friend);
-    NSDictionary *query = @{@"action": @"delete",
-                            @"friend": friend,
-                            @"username": self.currentSession.username};
-    [SKRequest postTo:kepFriends query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self handleError:error data:data response:response completion:completion];
-        });
+- (void)registerUsername:(NSString *)username withEmail:(NSString *)registeredEmail gmail:(NSString *)gmail gmailPassword:(NSString *)gpass completion:(BooleanBlock)completion {
+    NSParameterAssert(username); NSParameterAssert(registeredEmail); NSParameterAssert(gmail); NSParameterAssert(gpass); NSParameterAssert(completion);
+    NSDictionary *query = @{@"username": registeredEmail,
+                            @"selected_username": username};
+    
+    [self getAuthTokenForGmail:gmail password:gpass callback:^(NSString *gauth, NSError *error) {
+        _googleAuthToken = gauth;
+        [self postTo:kepRegisterUsername query:query callback:^(NSDictionary *json, NSError *error) {
+            if (!error) {
+                
+                // Continue registration
+                self.currentSession = [[SKSession alloc] initWithDictionary:json];
+                if (kDebugJSON && !self.currentSession) {
+                    NSLog(@"Unknown error: %@", json);
+                } else {
+                    _username = self.currentSession.username;
+                    completion(YES, nil);
+                }
+            }
+            // Failed for some reason
+            else {
+                completion(NO, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+            }
+        }];
     }];
 }
 
-- (void)bestFriendsOfUsers:(NSArray *)usernames completion:(DictionaryBlock)completion {
-    NSParameterAssert(usernames);
-    NSDictionary *query = @{@"friend_usernames": usernames,
+- (void)getCaptcha:(ArrayBlock)completion {
+    [SKRequest postTo:kepCaptchaGet query:@{@"username": self.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        // Did get captcha ZIP
+        if ([(NSHTTPURLResponse *)response statusCode] == 200) {
+            NSString *dataPath   = [NSString stringWithFormat:@"%@sck-captcha.tmp", NSTemporaryDirectory()];
+            NSString *imagesPath = [NSString stringWithFormat:@"%@sck-captcha-images/", NSTemporaryDirectory()];
+            [data writeToFile:dataPath atomically:YES];
+            // Unzip it
+            [SSZipArchive unzipFileAtPath:dataPath toDestination:imagesPath completion:^(NSString *path, BOOL succeeded, NSError *error) {
+                if (succeeded) {
+                    NSArray *imagesNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:imagesPath error:nil];
+                    NSMutableArray *imageData = [NSMutableArray new];
+                    for (NSString *path in imagesNames) {
+                        NSData *data = [NSData dataWithContentsOfFile:[imagesPath stringByAppendingString:path]];
+                        if (data)
+                            [imageData addObject:data];
+                    }
+                    
+                    completion(imageData, nil);
+                    
+                // Error unzipping
+                } else if (error) {
+                    completion(nil, error);
+                } else {
+                    completion(nil, [SKRequest errorWithMessage:@"Error unzipping captcha" code:1]);
+                }
+            }];
+        // Failed to get captcha ZIP
+        } else {
+            completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+        }
+    }];
+}
+
+- (void)solveCaptchaWithSolution:(NSString *)solution completion:(DictionaryBlock)completion {
+    NSParameterAssert(solution);
+    NSDictionary *query = @{@"username": self.username,
+                            @"captcha_id": [NSString stringWithFormat:@"%@~%@", self.username, [[NSString timestamp] substringToIndex:13]],
+                            @"captcha_solution": solution};
+    [self postTo:kepCaptchaSolve query:query callback:^(NSDictionary *json, NSError *error) {
+        NSLog(@"%@", json);
+    }];
+}
+
+- (void)sendPhoneVerification:(NSString *)mobile sendText:(BOOL)sms completion:(DictionaryBlock)completion {
+    NSParameterAssert(mobile); NSParameterAssert(completion);
+    
+    NSArray *digits = [mobile allMatchesForRegex:@"\\d"];
+    if (digits.count != 10 && digits.count != 11) {
+        completion(nil, [SKRequest errorWithMessage:@"Invalid phone number" code:400]);
+    }
+    
+    NSString *countryCode;
+    NSMutableString *number = [NSMutableString string];
+    for (NSString *digit in digits)
+        [number appendString:digit];
+    
+    if (digits.count == 11) {
+        countryCode = digits[0];
+        [number deleteCharactersInRange:NSMakeRange(0, 1)];
+    }
+    else {
+        countryCode = @"1";
+    }
+    
+    NSDictionary *query = @{@"username": self.username,
+                            @"phoneNumber": number,
+                            @"countryCode": countryCode,
+                            @"action": @"updatePhoneNumber",
+                            @"skipConfirmation": @YES};
+    [self postTo:kepPhoneVerify query:query callback:^(NSDictionary *json, NSError *error) {
+        NSLog(@"%@", json);
+    }];
+}
+
+- (void)verifyPhoneNumberWithCode:(NSString *)code completion:(BooleanBlock)completion {
+    NSParameterAssert(code); NSParameterAssert(completion);
+    NSDictionary *query = @{@"action": @"verifyPhoneNumber",
+                            @"username": self.username,
+                            @"code": code};
+    // Hash timestamp with static token before passing as token?
+    [SKRequest postTo:kepPhoneVerify query:query gauth:self.googleAuthToken token:kStaticToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self handleError:error data:data response:response completion:^(NSDictionary *json, NSError *error) {
+            NSLog(@"%@", json);
+        }];
+    }];
+}
+
+#pragma mark For categories
+
+- (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(BooleanBlock)completion {
+    if (!events)   events = @[];
+    if (!snapInfo) snapInfo = @{};
+    NSDictionary *query = @{@"events": [events JSONString],
+                            @"json": [snapInfo JSONString],
                             @"username": self.currentSession.username};
-    [SKRequest postTo:kepBestFriends query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    
+    [SKRequest postTo:kepUpdateSnaps query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self handleError:error data:data response:response completion:completion];
+            if (data.length == 0 && [(NSHTTPURLResponse *)response statusCode] == 200)
+                completion(YES, nil);
+            else if (error) {
+                completion(NO, error);
+            } else {
+                completion(NO, [SKRequest unknownError]);
+            }
         });
     }];
 }

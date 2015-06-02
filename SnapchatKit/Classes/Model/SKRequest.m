@@ -16,6 +16,11 @@
     return [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
 }
 
++ (NSError *)errorWithMessage:(NSString *)message code:(NSInteger)code {
+    return [NSError errorWithDomain:@"SnapchatKit" code:code userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(message, @""),
+                                                                        NSLocalizedFailureReasonErrorKey: NSLocalizedString(message, @"")}];
+}
+
 + (NSError *)unknownError {
     return [NSError errorWithDomain:@"Unknown" code:1 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Unknown error", @""),
                                                                  NSLocalizedFailureReasonErrorKey: NSLocalizedString(@"Unknown error", @"")}];
@@ -24,7 +29,6 @@
 #pragma mark POST / GET
 
 + (void)postTo:(NSString *)endpoint query:(NSDictionary *)json gauth:(NSString *)gauth token:(NSString *)token callback:(RequestBlock)callback {
-    NSParameterAssert(gauth);
     NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", gauth]};
     [self postTo:endpoint query:json headers:headers token:token callback:callback];
 }

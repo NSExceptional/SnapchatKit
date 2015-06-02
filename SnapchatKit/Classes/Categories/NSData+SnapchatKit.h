@@ -38,4 +38,13 @@
 
 /** Decrypts blob data for stories. key and iv are base 64 encoded. */
 + (NSData *)decryptCBC:(NSData *)data key:(NSString *)key iv:(NSString *)iv;
+
+@end
+
+@interface NSData (GZIP)
+
+- (NSData *)gzippedDataWithCompressionLevel:(float)level;
+- (NSData *)gzippedData;
+- (NSData *)gunzippedData;
+
 @end

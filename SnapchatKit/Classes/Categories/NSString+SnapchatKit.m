@@ -123,4 +123,15 @@
     return matches;
 }
 
+- (NSArray *)allMatchesForRegex:(NSString *)regex {
+    NSArray *matches = [self matchesForRegex:regex];
+    if (matches.count == 0) return @[];
+    
+    NSMutableArray *strings = [NSMutableArray new];
+    for (NSTextCheckingResult *result in matches)
+        [strings addObject:[self substringWithRange:result.range]];
+    
+    return strings;
+}
+
 @end

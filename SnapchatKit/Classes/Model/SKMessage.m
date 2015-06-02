@@ -13,6 +13,8 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
         return SKMessageKindText;
     if ([messageKindString isEqualToString:@"media"])
         return SKMessageKindMedia;
+    if ([messageKindString isEqualToString:@"discover_share_v2"])
+        return SKMessageKindDiscoverShared;
     
     return 0;
 }
@@ -56,11 +58,13 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
                 _text = message[@"body"][@"text"];
                 break;
             }
+            case SKMessageKindDiscoverShared:
             case SKMessageKindMedia: {
                 _mediaIdentifier = media[@"media_id"];
                 _mediaSize       = CGSizeMake([media[@"width"] integerValue], [media[@"height"] integerValue]);
                 _mediaIV         = media[@"iv"];
                 _mediaKey        = media[@"key"];
+                _mediaType       = media[@"media_type"];
                 break;
             }
             default: {

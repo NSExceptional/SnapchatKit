@@ -83,4 +83,51 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
             NSStringFromClass(self.class), participants, self.messages.count, self.pendingRecievedSnaps.count];
 }
 
+- (NSArray *)unreadChatsForParticipant:(NSString *)participant {
+    NSParameterAssert([self.participants containsObject:participant]);
+    
+    if (![self.usersWithPendingChats containsObject:participant])
+        return @[];
+    
+    NSMutableArray *unread = [NSMutableArray new];
+    NSMutableArray *others = self.participants.mutableCopy;
+    [others removeObject:participant];
+    
+    // Iterate over other participants, excluding "participant"
+    for (NSString *user in others) {
+        NSUInteger seenByParticipant = [self.state[@"user_chat_releases"][participant][user] integerValue];
+        NSUInteger sentByUser        = [self.state[@"user_sequences"][user] integerValue];
+        NSInteger totalUnread        = sentByUser - seenByParticipant;
+        
+        // Possible unhandled cases
+        if (totalUnread == 0) {
+            NSLog(@"0 unread count, but [%@] has pending chats from %@.", participant, user);
+            break;
+        }
+        if (totalUnread < 0) {
+            NSLog(@"Negative unread count between users: [%@] and %@.", participant, user);
+            break;
+        }
+        
+        __block NSUInteger found = 0;
+        [self.messages enumerateObjectsUsingBlock:^(SKThing *thing, NSUInteger i, BOOL *stop) {
+            // Ignore snaps
+            if ([thing isKindOfClass:[SKSnap class]])
+                return;
+            
+            // Check if message was sent to participant,
+            // increment found count
+            SKMessage *message = (SKMessage *)thing;
+            if ([message.recipients containsObject:participant]) {
+                [unread addObject:message];
+                found++;
+                if (found == totalUnread)
+                    *stop = YES;
+            }
+        }];
+    }
+    
+    return unread;
+}
+
 @end

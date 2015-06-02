@@ -30,7 +30,7 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
  - "user_chat_releases"
     Contains a dictionary with keys for each participant,
     mapping the number of messages from each participant, as
-    they see it. So if Bob sends Sally a message and Susie hasn't
+    they see it. So if Bob sends Sally a message and Sally hasn't
     read it, state["user_chat_releases"]["Sally"]["Bob"] will
     be one less than state["user_chat_releases"]["Bob"]["Sally"],
     because Sally has not read it yet but Bob can see it.
@@ -69,6 +69,9 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 @property (nonatomic, readonly) NSArray      *usersWithPendingChats;
 /** Array of SKSnap objects. */
 @property (nonatomic, readonly) NSArray      *pendingRecievedSnaps;
+
+/** @param participant Must be in _participants. @return An array of SKMessage objects, or an empty array if N/A. */
+- (NSArray *)unreadChatsForParticipant:(NSString *)participant;
 
 
 @end

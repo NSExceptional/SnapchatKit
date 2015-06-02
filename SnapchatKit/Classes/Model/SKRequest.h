@@ -14,6 +14,8 @@
 + (NSDictionary *)parseJSON:(NSData *)jsonData;
 + (NSError *)unknownError;
 
++ (NSError *)errorWithMessage:(NSString *)message code:(NSInteger)code;
+
 /**
  @param endpoint The endpoint of the request relative to the base URL.
  @param json The parameters for the request.

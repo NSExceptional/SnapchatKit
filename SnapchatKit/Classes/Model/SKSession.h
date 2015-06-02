@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "SKThing.h"
 
+@class SKMessage, SKConversation;
+
 typedef NS_ENUM(NSUInteger, SKStoryPrivacy)
 {
     SKStoryPrivacyEveryone = 1,
@@ -22,6 +24,9 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @interface SKSession : SKThing //<NSCoding>
 
 + (instancetype)sessionWithJSONResponse:(NSDictionary *)json;
+
+/** Array unread SKSnap and SKMessage objects in _conversations. */
+- (NSArray *)unread;
 
 /** Not sure what this is for. Might be "new stories since you last checked". */
 @property (nonatomic, readonly) BOOL storiesDelta;

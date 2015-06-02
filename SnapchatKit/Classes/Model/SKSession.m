@@ -12,6 +12,8 @@
 #import "SKUser.h"
 #import "SKAddedFriend.h"
 #import "SKConversation.h"
+#import "SKSnap.h"
+#import "SKMessage.h"
 
 SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     if ([storyPrivacyString isEqualToString:@"EVERYONE"])
@@ -168,12 +170,12 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
             self.addedFriends.count, self.stories.count, self.userStories.count];
 }
 
-//- (id)initWithCoder:(NSCoder *)aDecoder {
-//    
-//}
-//
-//- (void)encodeWithCoder:(NSCoder *)aCoder {
-//    
-//}
+- (NSArray *)unread {
+    NSMutableArray *unread = [NSMutableArray new];
+    for (SKConversation *convo in self.conversations)
+        [unread addObjectsFromArray:convo.pendingRecievedSnaps];
+    
+    return unread;
+}
 
 @end

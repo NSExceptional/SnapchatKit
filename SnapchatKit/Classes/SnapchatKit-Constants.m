@@ -64,6 +64,7 @@ NSString * const kepDeviceToken       = @"/loq/device_id";
 NSString * const kepAllUpdates        = @"/loq/all_updates";
 NSString * const kepConvoAuth         = @"/loq/conversation_auth_token";
 NSString * const kepConversations     = @"/loq/conversations";
+NSString * const kepConversation      = @"/loq/conversation";
 NSString * const kepConvoClear        = @"/loq/clear_conversation";
 NSString * const kepConvoPostMessages = @"/loq/conversation_post_messages";
 NSString * const kepFindFriends       = @"/ph/find_friends";
@@ -88,6 +89,7 @@ NSString * const kepClearFeed         = @"/ph/clear";
 NSString * const kepSettings          = @"/bq/settings";
 NSString * const kepFeatures          = @"/bq/update_feature_settings";
 NSString * const kepSnaptag           = @"/bq/snaptag_download";
+NSString * const kepCashEligible      = @"/cash/check_recipient_eligible";
 
 NSString * const kepGetStoryBlob      = @"/bq/story_blob?story_id=";
 NSString * const kepGetStoryThumb     = @"/bq/story_thumbnail?story_id=";

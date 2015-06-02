@@ -7,7 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B40C9EE51B185EC100B033B5 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B40C9EE41B185EC100B033B5 /* libz.1.dylib */; };
 		B41EE78E1AF9C0E000FD5E5B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B41EE78D1AF9C0E000FD5E5B /* main.m */; };
+		B48E33FE1B199C1D0004CEAD /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = B48E33FD1B199C1D0004CEAD /* SSZipArchive.m */; };
+		B48E34171B199DFA0004CEAD /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E340F1B199DFA0004CEAD /* ioapi.c */; };
+		B48E34181B199DFA0004CEAD /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34111B199DFA0004CEAD /* mztools.c */; };
+		B48E34191B199DFA0004CEAD /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34131B199DFA0004CEAD /* unzip.c */; };
+		B48E341A1B199DFA0004CEAD /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34151B199DFA0004CEAD /* zip.c */; };
 		B4C21A211B0CEE23000365DE /* NSData+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */; };
 		B4C21A221B0CEE23000365DE /* NSString+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219FE1B0CEE23000365DE /* NSString+SnapchatKit.m */; };
 		B4C21A231B0CEE23000365DE /* SKAddedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A011B0CEE23000365DE /* SKAddedFriend.m */; };
@@ -26,6 +32,12 @@
 		B4C21A301B0CEE23000365DE /* SKUserStory.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A1B1B0CEE23000365DE /* SKUserStory.m */; };
 		B4C21A311B0CEE23000365DE /* SKClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A1E1B0CEE23000365DE /* SKClient.m */; };
 		B4C21A321B0CEE23000365DE /* SnapchatKit-Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A201B0CEE23000365DE /* SnapchatKit-Constants.m */; };
+		B4C21A3C1B0F91FF000365DE /* NSDictionary+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A3B1B0F91FF000365DE /* NSDictionary+SnapchatKit.m */; };
+		B4C21A3F1B0F93D5000365DE /* NSArray+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A3E1B0F93D5000365DE /* NSArray+SnapchatKit.m */; };
+		B4C21A421B151147000365DE /* SKClient+Friends.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A411B151147000365DE /* SKClient+Friends.m */; };
+		B4C21A451B151188000365DE /* SKClient+Snaps.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A441B151188000365DE /* SKClient+Snaps.m */; };
+		B4C21A481B151195000365DE /* SKClient+Chat.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A471B151195000365DE /* SKClient+Chat.m */; };
+		B4C21A4B1B1511A0000365DE /* SKClient+Registration.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A4A1B1511A0000365DE /* SKClient+Registration.m */; };
 		DF676B668268364B4426D46E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1274B31F6DF0D6C723D99DF3 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -44,8 +56,22 @@
 /* Begin PBXFileReference section */
 		1274B31F6DF0D6C723D99DF3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		23718E132653F3AC1E8199C6 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B40C9EE41B185EC100B033B5 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = usr/lib/libz.1.dylib; sourceTree = SDKROOT; };
 		B41EE78A1AF9C0E000FD5E5B /* SnapchatKit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SnapchatKit; sourceTree = BUILT_PRODUCTS_DIR; };
 		B41EE78D1AF9C0E000FD5E5B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B44E2CB71B184F22006E9AB8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		B44E2CB91B18590B006E9AB8 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
+		B48E33FC1B199C1D0004CEAD /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSZipArchive.h; path = Classes/Dependencies/SSZipArchive.h; sourceTree = "<group>"; };
+		B48E33FD1B199C1D0004CEAD /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSZipArchive.m; path = Classes/Dependencies/SSZipArchive.m; sourceTree = "<group>"; };
+		B48E340E1B199DFA0004CEAD /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		B48E340F1B199DFA0004CEAD /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		B48E34101B199DFA0004CEAD /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		B48E34111B199DFA0004CEAD /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		B48E34121B199DFA0004CEAD /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		B48E34131B199DFA0004CEAD /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		B48E34141B199DFA0004CEAD /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		B48E34151B199DFA0004CEAD /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		B48E34161B199DFA0004CEAD /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		B4C219F61B0B7730000365DE /* Login.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
 		B4C219FB1B0CEE23000365DE /* NSData+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SnapchatKit.h"; sourceTree = "<group>"; };
 		B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SnapchatKit.m"; sourceTree = "<group>"; };
@@ -84,6 +110,18 @@
 		B4C21A1F1B0CEE23000365DE /* SnapchatKit-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SnapchatKit-Constants.h"; path = "Classes/SnapchatKit-Constants.h"; sourceTree = "<group>"; };
 		B4C21A201B0CEE23000365DE /* SnapchatKit-Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "SnapchatKit-Constants.m"; path = "Classes/SnapchatKit-Constants.m"; sourceTree = "<group>"; };
 		B4C21A391B0E592D000365DE /* SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SnapchatKit.h; path = Classes/SnapchatKit.h; sourceTree = "<group>"; };
+		B4C21A3A1B0F91FF000365DE /* NSDictionary+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SnapchatKit.h"; sourceTree = "<group>"; };
+		B4C21A3B1B0F91FF000365DE /* NSDictionary+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SnapchatKit.m"; sourceTree = "<group>"; };
+		B4C21A3D1B0F93D5000365DE /* NSArray+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SnapchatKit.h"; sourceTree = "<group>"; };
+		B4C21A3E1B0F93D5000365DE /* NSArray+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SnapchatKit.m"; sourceTree = "<group>"; };
+		B4C21A401B151147000365DE /* SKClient+Friends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Friends.h"; sourceTree = "<group>"; };
+		B4C21A411B151147000365DE /* SKClient+Friends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Friends.m"; sourceTree = "<group>"; };
+		B4C21A431B151188000365DE /* SKClient+Snaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Snaps.h"; sourceTree = "<group>"; };
+		B4C21A441B151188000365DE /* SKClient+Snaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Snaps.m"; sourceTree = "<group>"; };
+		B4C21A461B151195000365DE /* SKClient+Chat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Chat.h"; sourceTree = "<group>"; };
+		B4C21A471B151195000365DE /* SKClient+Chat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Chat.m"; sourceTree = "<group>"; };
+		B4C21A491B1511A0000365DE /* SKClient+Registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Registration.h"; sourceTree = "<group>"; };
+		B4C21A4A1B1511A0000365DE /* SKClient+Registration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Registration.m"; sourceTree = "<group>"; };
 		CC7FDCCF39DD67879C29F1F5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B40C9EE51B185EC100B033B5 /* libz.1.dylib in Frameworks */,
 				DF676B668268364B4426D46E /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -134,11 +173,39 @@
 				B4C21A391B0E592D000365DE /* SnapchatKit.h */,
 				B4C21A1F1B0CEE23000365DE /* SnapchatKit-Constants.h */,
 				B4C21A201B0CEE23000365DE /* SnapchatKit-Constants.m */,
+				B48E33F81B199BD80004CEAD /* Dependencies */,
 				B4C219FA1B0CEE23000365DE /* Categories */,
 				B4C21A1C1B0CEE23000365DE /* Networking */,
 				B4C219FF1B0CEE23000365DE /* Model */,
 			);
 			path = SnapchatKit;
+			sourceTree = "<group>";
+		};
+		B48E33F81B199BD80004CEAD /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				B48E33FC1B199C1D0004CEAD /* SSZipArchive.h */,
+				B48E33FD1B199C1D0004CEAD /* SSZipArchive.m */,
+				B48E340D1B199DFA0004CEAD /* minizip */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		B48E340D1B199DFA0004CEAD /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				B48E340E1B199DFA0004CEAD /* crypt.h */,
+				B48E340F1B199DFA0004CEAD /* ioapi.c */,
+				B48E34101B199DFA0004CEAD /* ioapi.h */,
+				B48E34111B199DFA0004CEAD /* mztools.c */,
+				B48E34121B199DFA0004CEAD /* mztools.h */,
+				B48E34131B199DFA0004CEAD /* unzip.c */,
+				B48E34141B199DFA0004CEAD /* unzip.h */,
+				B48E34151B199DFA0004CEAD /* zip.c */,
+				B48E34161B199DFA0004CEAD /* zip.h */,
+			);
+			name = minizip;
+			path = Classes/Dependencies/minizip;
 			sourceTree = "<group>";
 		};
 		B4C219FA1B0CEE23000365DE /* Categories */ = {
@@ -148,6 +215,10 @@
 				B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */,
 				B4C219FD1B0CEE23000365DE /* NSString+SnapchatKit.h */,
 				B4C219FE1B0CEE23000365DE /* NSString+SnapchatKit.m */,
+				B4C21A3A1B0F91FF000365DE /* NSDictionary+SnapchatKit.h */,
+				B4C21A3B1B0F91FF000365DE /* NSDictionary+SnapchatKit.m */,
+				B4C21A3D1B0F93D5000365DE /* NSArray+SnapchatKit.h */,
+				B4C21A3E1B0F93D5000365DE /* NSArray+SnapchatKit.m */,
 			);
 			name = Categories;
 			path = Classes/Categories;
@@ -194,6 +265,14 @@
 			children = (
 				B4C21A1D1B0CEE23000365DE /* SKClient.h */,
 				B4C21A1E1B0CEE23000365DE /* SKClient.m */,
+				B4C21A461B151195000365DE /* SKClient+Chat.h */,
+				B4C21A471B151195000365DE /* SKClient+Chat.m */,
+				B4C21A401B151147000365DE /* SKClient+Friends.h */,
+				B4C21A411B151147000365DE /* SKClient+Friends.m */,
+				B4C21A491B1511A0000365DE /* SKClient+Registration.h */,
+				B4C21A4A1B1511A0000365DE /* SKClient+Registration.m */,
+				B4C21A431B151188000365DE /* SKClient+Snaps.h */,
+				B4C21A441B151188000365DE /* SKClient+Snaps.m */,
 			);
 			name = Networking;
 			path = Classes/Networking;
@@ -202,6 +281,9 @@
 		E99ECE11632965105AE9EE3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B40C9EE41B185EC100B033B5 /* libz.1.dylib */,
+				B44E2CB91B18590B006E9AB8 /* libz.1.2.5.dylib */,
+				B44E2CB71B184F22006E9AB8 /* libz.dylib */,
 				1274B31F6DF0D6C723D99DF3 /* libPods.a */,
 			);
 			name = Frameworks;
@@ -300,21 +382,32 @@
 			files = (
 				B4C21A2F1B0CEE23000365DE /* SKUser.m in Sources */,
 				B4C21A291B0CEE23000365DE /* SKSimpleUser.m in Sources */,
+				B48E34191B199DFA0004CEAD /* unzip.c in Sources */,
+				B48E341A1B199DFA0004CEAD /* zip.c in Sources */,
+				B48E33FE1B199C1D0004CEAD /* SSZipArchive.m in Sources */,
 				B4C21A2C1B0CEE23000365DE /* SKStoryCollection.m in Sources */,
 				B4C21A251B0CEE23000365DE /* SKConversation.m in Sources */,
 				B4C21A221B0CEE23000365DE /* NSString+SnapchatKit.m in Sources */,
 				B4C21A2B1B0CEE23000365DE /* SKStory.m in Sources */,
+				B4C21A4B1B1511A0000365DE /* SKClient+Registration.m in Sources */,
+				B4C21A421B151147000365DE /* SKClient+Friends.m in Sources */,
 				B4C21A241B0CEE23000365DE /* SKCashTransaction.m in Sources */,
 				B4C21A2A1B0CEE23000365DE /* SKSnap.m in Sources */,
 				B41EE78E1AF9C0E000FD5E5B /* main.m in Sources */,
 				B4C21A231B0CEE23000365DE /* SKAddedFriend.m in Sources */,
 				B4C21A311B0CEE23000365DE /* SKClient.m in Sources */,
 				B4C21A2E1B0CEE23000365DE /* SKThing.m in Sources */,
+				B48E34171B199DFA0004CEAD /* ioapi.c in Sources */,
+				B4C21A451B151188000365DE /* SKClient+Snaps.m in Sources */,
+				B4C21A3F1B0F93D5000365DE /* NSArray+SnapchatKit.m in Sources */,
+				B48E34181B199DFA0004CEAD /* mztools.c in Sources */,
 				B4C21A281B0CEE23000365DE /* SKSession.m in Sources */,
 				B4C21A271B0CEE23000365DE /* SKRequest.m in Sources */,
 				B4C21A211B0CEE23000365DE /* NSData+SnapchatKit.m in Sources */,
+				B4C21A481B151195000365DE /* SKClient+Chat.m in Sources */,
 				B4C21A301B0CEE23000365DE /* SKUserStory.m in Sources */,
 				B4C21A261B0CEE23000365DE /* SKMessage.m in Sources */,
+				B4C21A3C1B0F91FF000365DE /* NSDictionary+SnapchatKit.m in Sources */,
 				B4C21A321B0CEE23000365DE /* SnapchatKit-Constants.m in Sources */,
 				B4C21A2D1B0CEE23000365DE /* SKStoryNote.m in Sources */,
 			);
