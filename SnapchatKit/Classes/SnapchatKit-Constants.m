@@ -32,6 +32,14 @@ NSString * SKStringFromAddSource(SKAddSource addSource) {
     }
 }
 
+BOOL SKMediaKindIsImage(SKMediaKind mediaKind) {
+    return mediaKind == SKMediaKindImage || mediaKind == SKMediaKindStrangerImage;
+}
+
+BOOL SKMediaKindIsVideo(SKMediaKind mediaKind) {
+    return mediaKind == SKMediaKindVideo || mediaKind == SKMediaKindSilentVideo || mediaKind == SKMediaKindStrangerVideo || mediaKind == SKMediaKindStrangerSilentVideo;
+}
+
 #pragma mark General API constants
 NSString * const kUserAgent         = @"Snapchat/9.6.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
 NSString * const kURL               = @"https://feelinsonice-hrd.appspot.com";

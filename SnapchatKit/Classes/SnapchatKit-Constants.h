@@ -72,6 +72,9 @@ typedef NS_ENUM(NSInteger, SKPrivacyStatus)
 extern SKAddSource SKAddSourceFromString(NSString *addSourceString);
 extern NSString * SKStringFromAddSource(SKAddSource addSource);
 
+extern BOOL SKMediaKindIsImage(SKMediaKind mediaKind);
+extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
+
 /** Before updating this value, confirm that the library requests everything in the same way as the app. */
 extern NSString * const kUserAgent;
 /** The API URL. iOS uses the /bq endpoint, Android clients use the /ph endpoint. */

@@ -37,7 +37,6 @@
 		B4C21A421B151147000365DE /* SKClient+Friends.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A411B151147000365DE /* SKClient+Friends.m */; };
 		B4C21A451B151188000365DE /* SKClient+Snaps.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A441B151188000365DE /* SKClient+Snaps.m */; };
 		B4C21A481B151195000365DE /* SKClient+Chat.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A471B151195000365DE /* SKClient+Chat.m */; };
-		B4C21A4B1B1511A0000365DE /* SKClient+Registration.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A4A1B1511A0000365DE /* SKClient+Registration.m */; };
 		DF676B668268364B4426D46E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1274B31F6DF0D6C723D99DF3 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -120,8 +119,6 @@
 		B4C21A441B151188000365DE /* SKClient+Snaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Snaps.m"; sourceTree = "<group>"; };
 		B4C21A461B151195000365DE /* SKClient+Chat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Chat.h"; sourceTree = "<group>"; };
 		B4C21A471B151195000365DE /* SKClient+Chat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Chat.m"; sourceTree = "<group>"; };
-		B4C21A491B1511A0000365DE /* SKClient+Registration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Registration.h"; sourceTree = "<group>"; };
-		B4C21A4A1B1511A0000365DE /* SKClient+Registration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Registration.m"; sourceTree = "<group>"; };
 		CC7FDCCF39DD67879C29F1F5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -269,8 +266,6 @@
 				B4C21A471B151195000365DE /* SKClient+Chat.m */,
 				B4C21A401B151147000365DE /* SKClient+Friends.h */,
 				B4C21A411B151147000365DE /* SKClient+Friends.m */,
-				B4C21A491B1511A0000365DE /* SKClient+Registration.h */,
-				B4C21A4A1B1511A0000365DE /* SKClient+Registration.m */,
 				B4C21A431B151188000365DE /* SKClient+Snaps.h */,
 				B4C21A441B151188000365DE /* SKClient+Snaps.m */,
 			);
@@ -389,7 +384,6 @@
 				B4C21A251B0CEE23000365DE /* SKConversation.m in Sources */,
 				B4C21A221B0CEE23000365DE /* NSString+SnapchatKit.m in Sources */,
 				B4C21A2B1B0CEE23000365DE /* SKStory.m in Sources */,
-				B4C21A4B1B1511A0000365DE /* SKClient+Registration.m in Sources */,
 				B4C21A421B151147000365DE /* SKClient+Friends.m in Sources */,
 				B4C21A241B0CEE23000365DE /* SKCashTransaction.m in Sources */,
 				B4C21A2A1B0CEE23000365DE /* SKSnap.m in Sources */,
