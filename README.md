@@ -1,7 +1,7 @@
 # SnapchatKit
 An Objective-C implementation of the unofficial Snapchat API. Inspired by [RedditKit](https://github.com/samsymons/RedditKit). Work in progress!
 
-WIP [Snapchat API documentation](), with the help of everything below.
+WIP [Snapchat API documentation](https://github.com/ThePantsThief/SnapchatKit/blob/master/SK-API-Docs.md), with the help of everything below.
 
 ## Third party resources:
 
