@@ -1,1 +1,1 @@
-pod 'AFNetworking'
+pod 'Mantle'
