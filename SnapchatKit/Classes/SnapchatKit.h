@@ -12,8 +12,10 @@
 #import "SKClient+Chat.h"
 #import "SKClient+Friends.h"
 #import "SKClient+Snaps.h"
+#import "SKClient+Stories.h"
 
 #import "SKAddedFriend.h"
+#import "SKBlob.h"
 #import "SKCashTransaction.h"
 #import "SKConversation.h"
 #import "SKMessage.h"

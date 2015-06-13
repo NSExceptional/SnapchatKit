@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SnapchatKit-Constants.h"
+
+@class SKStory;
 
 @interface SKBlob : NSObject
 
@@ -15,6 +18,8 @@
  @return An initialized @c SKBlob object, or @c nil if there was a problem initializing it. */
 + (instancetype)blobWithContentsOfPath:(NSString *)path;
 + (instancetype)blobWithData:(NSData *)data;
+/** Callback takes an SKBlob object. Specifically for story blobs, because they're CBC encrypted and possibly zipped if it's a video. */
++ (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion;
 
 /** If the blob has an overlay, it will write data and overlay to a folder as @c media.[jpg|mp4] and @c overlay.jpg. If not, only @c data is written to the specified file. */
 - (void)writeToPath:(NSString *)path atomically:(BOOL)atomically;

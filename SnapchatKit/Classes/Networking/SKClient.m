@@ -103,6 +103,22 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     }];
 }
 
+- (void)get:(NSString *)endpoint callback:(ResponseBlock)callback {
+    NSParameterAssert(endpoint); NSParameterAssert(callback);
+    [SKRequest get:endpoint callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                if ([(NSHTTPURLResponse *)response statusCode] == 200)
+                    callback(data, nil);
+                else
+                    callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+            } else {
+                callback(nil, error);
+            }
+        });
+    }];
+}
+
 #pragma mark Signing in
 
 - (BOOL)isSignedIn {

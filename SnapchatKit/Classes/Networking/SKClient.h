@@ -68,6 +68,7 @@
 
 #pragma mark Internal
 - (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback;
+- (void)get:(NSString *)endpoint callback:(ResponseBlock)callback;
 - (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(BooleanBlock)completion;
 - (void)handleError:(NSError *)error data:(NSData *)data response:(NSURLResponse *)response completion:(ResponseBlock)completion;
 

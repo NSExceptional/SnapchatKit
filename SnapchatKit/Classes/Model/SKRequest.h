@@ -32,9 +32,7 @@
  */
 + (void)postTo:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders token:(NSString *)token callback:(RequestBlock)callback;
 
-/** httpHeaders may be nil. */
-+ (void)get:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders callback:(RequestBlock)callback;
-+ (void)get:(NSString *)endpoint query:(NSDictionary *)json callback:(RequestBlock)callback;
++ (void)get:(NSString *)endpoint callback:(RequestBlock)callback;
 
 /**
  Automatically adds query parameters:

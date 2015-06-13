@@ -43,12 +43,13 @@
     [dataTask resume];
 }
 
-+ (void)get:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders callback:(RequestBlock)callback {
++ (void)get:(NSString *)endpoint callback:(RequestBlock)callback {
+    NSParameterAssert(endpoint); NSParameterAssert(callback);
+    SKRequest *request = [[SKRequest alloc] initWithGETEndpoint:endpoint headers:nil];
     
-}
-
-+ (void)get:(NSString *)endpoint query:(NSDictionary *)json callback:(RequestBlock)callback {
-    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:callback];
+    [dataTask resume];
 }
 
 #pragma mark Initializers

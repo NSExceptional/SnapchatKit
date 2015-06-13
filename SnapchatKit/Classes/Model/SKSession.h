@@ -51,7 +51,7 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
 /** Array of SKConversation objects. */
 @property (nonatomic, readonly) NSMutableOrderedSet *conversations;
-/** Array of SKStoryCollectionx objects of friends' stories. */
+/** Array of SKStoryCollection objects of friends' stories. */
 @property (nonatomic, readonly) NSMutableOrderedSet *stories;
 /** Array of SKUserStory objects of the user's stories. */
 @property (nonatomic, readonly) NSMutableOrderedSet *userStories;

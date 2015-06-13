@@ -15,8 +15,6 @@
 
 // debug
 #import "NSData+SnapchatKit.h"
-#import "SSZipArchive.h"
-#import "SKBlob.h"
 @import AppKit;
 
 // Comment this out on your machine
@@ -139,6 +137,12 @@ void testGetConversations() {
     }];
 }
 
+void testGetStory(SKStory *story) {
+    [[SKClient sharedClient] loadStory:story completion:^(SKBlob *blob, NSError *error) {
+        NSLog(@"%@", blob);
+    }];
+}
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
@@ -171,6 +175,9 @@ int main(int argc, const char * argv[]) {
                 // Get unread snaps
                 NSArray *unread = session.unread;
                 NSLog(@"%lu unread snaps: %@", unread.count, unread);
+                
+                SKStory *story = [session.stories[0] stories][0];
+                testGetStory(story);
                 
 //                testGetConversations();
                 

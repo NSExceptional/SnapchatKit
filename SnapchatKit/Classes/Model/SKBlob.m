@@ -9,6 +9,12 @@
 #import "SKBlob.h"
 #import "SnapchatKit-Constants.h"
 #import "NSData+SnapchatKit.h"
+#import "SKStory.h"
+
+#import "SKRequest.h"
+
+#import "SSZipArchive.h"
+@import AppKit;
 
 @implementation SKBlob
 
@@ -18,6 +24,46 @@
 
 + (instancetype)blobWithData:(NSData *)data {
     return [[self alloc] initWithData:data];
+}
+
++ (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion {
+    NSParameterAssert(encryptedBlob);
+    NSData *decryptedBlob = [encryptedBlob decryptCBCWithKey:story.mediaKey iv:story.mediaIV];
+    
+    // Unzipped
+    if ([encryptedBlob isJPEG] || [encryptedBlob isMPEG4]) {
+        SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
+        if (blob)
+            completion(blob, nil);
+        else
+            completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+        
+        // Needs to be unzipped
+    } else if ([decryptedBlob isCompressed]) {
+        NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", story.identifier]];
+        NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", story.identifier]];
+        [decryptedBlob writeToFile:path atomically:YES];
+        
+        [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                SKBlob *blob = [SKBlob blobWithContentsOfPath:path];
+                if (blob)
+                    completion(blob, nil);
+                else
+                    completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+    } else if (decryptedBlob) {
+        SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
+        if (blob)
+            completion(blob, [SKRequest errorWithMessage:@"Unknown blob format" code:1]);
+        else
+            completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+    } else {
+        completion(nil, [SKRequest errorWithMessage:[NSString stringWithFormat:@"Error retrieving story: %@", story.identifier] code:2]);
+    }
 }
 
 - (id)initWithData:(NSData *)data {

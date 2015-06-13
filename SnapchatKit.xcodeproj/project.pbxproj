@@ -15,6 +15,7 @@
 		B48E34181B199DFA0004CEAD /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34111B199DFA0004CEAD /* mztools.c */; };
 		B48E34191B199DFA0004CEAD /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34131B199DFA0004CEAD /* unzip.c */; };
 		B48E341A1B199DFA0004CEAD /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34151B199DFA0004CEAD /* zip.c */; };
+		B4BFA12A1B2CBE7D0057EB53 /* SKClient+Stories.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA1291B2CBE7D0057EB53 /* SKClient+Stories.m */; };
 		B4C21A211B0CEE23000365DE /* NSData+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */; };
 		B4C21A221B0CEE23000365DE /* NSString+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219FE1B0CEE23000365DE /* NSString+SnapchatKit.m */; };
 		B4C21A231B0CEE23000365DE /* SKAddedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A011B0CEE23000365DE /* SKAddedFriend.m */; };
@@ -76,6 +77,8 @@
 		B48E34141B199DFA0004CEAD /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
 		B48E34151B199DFA0004CEAD /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		B48E34161B199DFA0004CEAD /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		B4BFA1281B2CBE7D0057EB53 /* SKClient+Stories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Stories.h"; sourceTree = "<group>"; };
+		B4BFA1291B2CBE7D0057EB53 /* SKClient+Stories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Stories.m"; sourceTree = "<group>"; };
 		B4C219F61B0B7730000365DE /* Login.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
 		B4C219FB1B0CEE23000365DE /* NSData+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SnapchatKit.h"; sourceTree = "<group>"; };
 		B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SnapchatKit.m"; sourceTree = "<group>"; };
@@ -231,6 +234,8 @@
 			children = (
 				B4C21A001B0CEE23000365DE /* SKAddedFriend.h */,
 				B4C21A011B0CEE23000365DE /* SKAddedFriend.m */,
+				B4185E411B2C1D7A005975EB /* SKBlob.h */,
+				B4185E421B2C1D7A005975EB /* SKBlob.m */,
 				B4C21A021B0CEE23000365DE /* SKCashTransaction.h */,
 				B4C21A031B0CEE23000365DE /* SKCashTransaction.m */,
 				B4C21A041B0CEE23000365DE /* SKConversation.h */,
@@ -245,8 +250,6 @@
 				B4C21A0D1B0CEE23000365DE /* SKSimpleUser.m */,
 				B4C21A0E1B0CEE23000365DE /* SKSnap.h */,
 				B4C21A0F1B0CEE23000365DE /* SKSnap.m */,
-				B4185E411B2C1D7A005975EB /* SKBlob.h */,
-				B4185E421B2C1D7A005975EB /* SKBlob.m */,
 				B4C21A101B0CEE23000365DE /* SKStory.h */,
 				B4C21A111B0CEE23000365DE /* SKStory.m */,
 				B4C21A121B0CEE23000365DE /* SKStoryCollection.h */,
@@ -275,6 +278,8 @@
 				B4C21A411B151147000365DE /* SKClient+Friends.m */,
 				B4C21A431B151188000365DE /* SKClient+Snaps.h */,
 				B4C21A441B151188000365DE /* SKClient+Snaps.m */,
+				B4BFA1281B2CBE7D0057EB53 /* SKClient+Stories.h */,
+				B4BFA1291B2CBE7D0057EB53 /* SKClient+Stories.m */,
 			);
 			name = Networking;
 			path = Classes/Networking;
@@ -411,6 +416,7 @@
 				B4C21A481B151195000365DE /* SKClient+Chat.m in Sources */,
 				B4C21A301B0CEE23000365DE /* SKUserStory.m in Sources */,
 				B4C21A261B0CEE23000365DE /* SKMessage.m in Sources */,
+				B4BFA12A1B2CBE7D0057EB53 /* SKClient+Stories.m in Sources */,
 				B4C21A3C1B0F91FF000365DE /* NSDictionary+SnapchatKit.m in Sources */,
 				B4C21A321B0CEE23000365DE /* SnapchatKit-Constants.m in Sources */,
 				B4C21A2D1B0CEE23000365DE /* SKStoryNote.m in Sources */,
