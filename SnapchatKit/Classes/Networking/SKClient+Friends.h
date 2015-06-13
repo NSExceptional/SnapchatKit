@@ -11,8 +11,13 @@
 
 @interface SKClient (Friends)
 
-- (void)addFriend:(NSString *)username completion:(DictionaryBlock)completion;
-- (void)unfriend:(NSString *)friend completion:(DictionaryBlock)completion;
+/** The callback takes an SKUser object, which is automatically added to _currentSession.friends. */
+- (void)addFriend:(NSString *)username completion:(ResponseBlock)completion;
+/** The callback takes an SKUser object, which is automatically added to _currentSession.friends. */
+- (void)addFriendBack:(NSString *)username completion:(ResponseBlock)completion;
+
+/** The callback takes an SKUser object, which is automatically removed from _currentSession.friends. */
+- (void)unfriend:(NSString *)username completion:(ResponseBlock)completion;
 - (void)bestFriendsOfUsers:(NSArray *)usernames completion:(DictionaryBlock)completion;
 
 @end

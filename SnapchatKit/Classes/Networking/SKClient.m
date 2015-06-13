@@ -23,6 +23,8 @@
 NSString * const kAttestationURLString     = @"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA";
 NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJvaWQaIC8cqvyh7TDQtOOIY+76vqDoFXEfpM95uCJRmoJZ2VpYIgAojKq/AzIECgASADoECAEQAUD4kP+pBRIA";
 
+#define SKAssertIsSignedIn() if (!self.isSignedIn) [NSException raise:NSInternalInconsistencyException format:@"You must be signed in to call this method."];
+
 @implementation SKClient
 
 @synthesize authToken = _authToken;
@@ -34,6 +36,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         sharedSKClient = [SKClient new];
+        [[NSFileManager defaultManager] createDirectoryAtPath:SKTempDirectory() withIntermediateDirectories:YES attributes:nil error:nil];
     });
     
     return sharedSKClient;
@@ -94,11 +97,17 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 - (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(query);
     [SKRequest postTo:endpoint query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        [self handleError:error data:data response:response completion:callback];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self handleError:error data:data response:response completion:callback];
+        });
     }];
 }
 
 #pragma mark Signing in
+
+- (BOOL)isSignedIn {
+    return self.googleAuthToken && self.authToken && self.currentSession && self.username;
+}
 
 /** Gauth. */
 - (void)getAuthTokenForGmail:(NSString *)gmailAddress password:(NSString *)password callback:(StringBlock)callback {
@@ -245,9 +254,21 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                                    @"attestation":      self.googleAttestation};
                             
                             [SKRequest postTo:kepLogin query:post gauth:gauth token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                self.currentSession = [SKSession sessionWithJSONResponse:json];
-                                _authToken = self.currentSession.authToken;
+                                NSInteger code = [(NSHTTPURLResponse *)response statusCode];
+                                NSDictionary *json;
+                                if (code == 200) {
+                                    json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                    if (!json[@"logged"]) {
+                                        self.currentSession = [SKSession sessionWithJSONResponse:json];
+                                        _authToken = self.currentSession.authToken;
+                                        error = nil;
+                                    } else {
+                                        error = [SKRequest errorWithMessage:json[@"message"] code:code];
+                                    }
+                                } else if (!error) {
+                                    error = [SKRequest errorWithMessage:@"Unknown error" code:code];
+                                }
+                                
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     completion(json, error);
                                 });
@@ -269,6 +290,27 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
             else
                 NSLog(@"%@", result);
             
+        }
+    }];
+}
+
+#pragma mark Misc
+
+- (void)updateSession:(ErrorBlock)completion {
+    SKAssertIsSignedIn();
+    
+    NSDictionary *query = @{@"username": self.username,
+                            @"height": @(self.screenSize.height),
+                            @"width": @(self.screenSize.width),
+                            @"max_video_height": @(self.maxVideoSize.height),
+                            @"max_video_width": @(self.maxVideoSize.width)};
+    [self postTo:kepAllUpdates query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            _currentSession = [[SKSession alloc] initWithDictionary:json];
+            _authToken = self.currentSession.authToken;
+            completion(nil);
+        } else {
+            completion(error);
         }
     }];
 }
@@ -373,7 +415,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 - (void)solveCaptchaWithSolution:(NSString *)solution completion:(DictionaryBlock)completion {
     NSParameterAssert(solution);
     NSDictionary *query = @{@"username": self.username,
-                            @"captcha_id": [NSString stringWithFormat:@"%@~%@", self.username, [[NSString timestamp] substringToIndex:13]],
+                            @"captcha_id": [NSString SCIdentifierWith:self.username and:[[NSString timestamp] substringToIndex:13]],
                             @"captcha_solution": solution};
     [self postTo:kepCaptchaSolve query:query callback:^(NSDictionary *json, NSError *error) {
         NSLog(@"%@", json);

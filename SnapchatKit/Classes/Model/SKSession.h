@@ -27,6 +27,8 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
 /** Array unread SKSnap and SKMessage objects in _conversations. */
 - (NSArray *)unread;
+/** Returns the SKConversation associated with the given username, or nil if it hasn't been loaded or does not exist (or if username == self.username). */
+- (SKConversation *)conversationWithOtherUser:(NSString *)username;
 
 /** Not sure what this is for. Might be "new stories since you last checked". */
 @property (nonatomic, readonly) BOOL storiesDelta;
@@ -38,20 +40,23 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 #pragma mark User data
 
 /** Array of SKUser objects. */
-@property (nonatomic, readonly) NSArray *friends;
-/** Array of SKAddedFriend objects. */
-@property (nonatomic, readonly) NSArray *addedFriends;
-/** Array of NSString's of usernames. */
-@property (nonatomic, readonly) NSArray *bestFriendUsernames;
+@property (nonatomic, readonly) NSMutableOrderedSet *friends;
+/** Array of SKAddedFriend objects who may or may not be your friend. */
+@property (nonatomic, readonly) NSMutableOrderedSet *addedFriends;
+/** Array of username strings. */
+@property (nonatomic, readonly) NSMutableOrderedSet *bestFriendUsernames;
+
+/** Array of username strings of users who have added you but not been added back by you. */
+@property (nonatomic, readonly) NSMutableOrderedSet *pendingRequests;
 
 /** Array of SKConversation objects. */
-@property (nonatomic, readonly) NSArray *conversations;
+@property (nonatomic, readonly) NSMutableOrderedSet *conversations;
 /** Array of SKStoryCollectionx objects of friends' stories. */
-@property (nonatomic, readonly) NSArray *stories;
+@property (nonatomic, readonly) NSMutableOrderedSet *stories;
 /** Array of SKUserStory objects of the user's stories. */
-@property (nonatomic, readonly) NSArray *userStories;
+@property (nonatomic, readonly) NSMutableOrderedSet *userStories;
 /** Array of SKStory objects of the user's group stories. Empty so far. */
-@property (nonatomic, readonly) NSArray *groupStories;
+@property (nonatomic, readonly) NSMutableOrderedSet *groupStories;
 
 #pragma mark Cash information
 @property (nonatomic, readonly) BOOL         canUseCash;

@@ -23,8 +23,8 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ add source=%lu, user=%@>",
-            NSStringFromClass(self.class), self.addSourceType, [super description]];
+    return [NSString stringWithFormat:@"<%@ add source=%lu, username=%@, displayn=%@>",
+            NSStringFromClass(self.class), self.addSourceType, self.username, self.displayName];
 }
 
 @end

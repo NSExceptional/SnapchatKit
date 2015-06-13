@@ -11,6 +11,8 @@
 #import "SKMessage.h"
 #import "SKCashTransaction.h"
 
+#import "SKClient.h"
+
 SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     if ([chatTypeString isEqualToString:@"text"])
         return SKChatTypeText;
@@ -23,11 +25,17 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
 @implementation SKConversation
 
 - (id)initWithDictionary:(NSDictionary *)json {
+    NSParameterAssert(json.allKeys.count > 2);
+    // Required keys: conversation_messages, conversation_state, id
+    
     NSDictionary *convoMessages   = json[@"conversation_messages"];
+    
     NSDictionary *lastChatActions = json[@"last_chat_actions"];
     NSDictionary *lastTransaction = json[@"last_cash_transaction"];
     NSArray *pendingRecievedSnaps = json[@"pending_received_snaps"];
     NSArray *messages             = convoMessages[@"messages"];
+    NSDictionary *lastSnap        = json[@"last_snap"];
+    CGFloat lastInteraction       = [json[@"last_interaction_ts"] doubleValue];
     
     self = [super initWithDictionary:json];
     if (self) {
@@ -35,11 +43,11 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
         
         _state      = json[@"conversation_state"];
         _identifier = json[@"id"];
-        _iterToken  = json[@"iter_token"];
+        _pagination = json[@"iter_token"];
         
-        _lastSnap        = [[SKSnap alloc] initWithDictionary:json[@"last_snap"]];
+        _lastSnap        = lastSnap ? [[SKSnap alloc] initWithDictionary:lastSnap] : nil;
         _lastTransaction = lastTransaction ? [[SKCashTransaction alloc] initWithDictionary:lastTransaction] : nil;
-        _lastInteraction = [NSDate dateWithTimeIntervalSince1970:[json[@"last_interaction_ts"] doubleValue]/1000];
+        _lastInteraction = lastInteraction > 0 ? [NSDate dateWithTimeIntervalSince1970:lastInteraction/1000] : nil;
         if (lastChatActions) {
             _lastChatType    = SKChatTypeFromString(lastChatActions[@"last_write_type"]);
             _lastChatRead    = [NSDate dateWithTimeIntervalSince1970:[lastChatActions[@"last_read_timestamp"] doubleValue]/1000];
@@ -48,26 +56,28 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
             _lastChatWriter  = lastChatActions[@"last_writer"];
         }
         
-        _participants = json[@"participants"];
-        _usersWithPendingChats = json[@"pending_chats_for"];
+        _participants = json[@"participants"] ?: [_identifier componentsSeparatedByString:@"~"];
+        _usersWithPendingChats = json[@"pending_chats_for"] ?: @[];
         
         // Messages
-        NSMutableArray *temp = [NSMutableArray new];
+        NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];
         for (NSDictionary *message in messages) {
             if (message[@"snap"])
                 [temp addObject:[[SKSnap alloc] initWithDictionary:message[@"snap"]]];
             else if (message[@"chat_message"])
                 [temp addObject:[[SKMessage alloc] initWithDictionary:message]];
+            else if (message[@"cash_transaction"])
+                [temp addObject:[[SKCashTransaction alloc] initWithDictionary:message]];
             else
                 NSLog(@"Unhandled conversation message type:\n%@", message);
         }
         _messages = temp;
         
         // Pending recieved snaps
-        temp = [NSMutableArray new];
+        NSMutableArray *tmp = [NSMutableArray new];
         for (NSDictionary *snap in pendingRecievedSnaps)
-            [temp addObject:[[SKSnap alloc] initWithDictionary:snap]];
-        _pendingRecievedSnaps = temp;
+            [tmp addObject:[[SKSnap alloc] initWithDictionary:snap]];
+        _pendingRecievedSnaps = tmp;
     }
     
     [self.knownJSONKeys addObjectsFromArray:@[@"conversation_messages", @"last_chat_actions", @"pending_received_snaps", @"conversation_state", @"id",
@@ -128,6 +138,66 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     }
     
     return unread;
+}
+
+- (void)addMessagesFromConversation:(SKConversation *)conversation {
+    if (!conversation.messages.count) return;
+    
+    // Internally, this set is mutable.
+    NSMutableOrderedSet *mutableMessages = (NSMutableOrderedSet *)self.messages;
+    [mutableMessages addObjectsFromArray:conversation.messages.array];
+}
+
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKConversation class]])
+        return [self isEqualToConversation:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToConversation:(SKConversation *)conversation {
+    return [self.identifier isEqualToString:conversation.identifier];
+}
+
+@end
+
+@implementation SKConversation (SKClient)
+
+- (NSString *)recipient {
+    if (![SKClient sharedClient].username.length) return nil;
+    return [self.participants[0] isEqualToString:[SKClient sharedClient].username] ? self.participants[1] : self.participants[0];
+}
+
+- (NSString *)conversationString {
+    NSString *username = [SKClient sharedClient].username;
+    NSString *other    = self.recipient;
+    NSUInteger minlen  = MAX(username.length, other.length) + 1;
+    NSMutableString *string = [NSMutableString string];
+    
+    for (SKThing *thing in self.messages.reverseObjectEnumerator) {
+        if ([thing isKindOfClass:[SKSnap class]]) {
+            SKSnap *snap = (SKSnap *)thing;
+            NSString *sender = [NSString stringWithFormat:@"%@:", snap.sender ?: username];
+            sender = [sender stringByPaddingToLength:minlen withString:@" " startingAtIndex:0];
+            [string appendFormat:@"%@  %@", sender, SKStringFromMediaKind(snap.mediaKind)];
+            
+        } else if ([thing isKindOfClass:[SKMessage class]]) {
+            SKMessage *message = (SKMessage *)thing;
+            NSString *sender = [NSString stringWithFormat:@"%@:", message.sender];
+            sender = [sender stringByPaddingToLength:minlen withString:@" " startingAtIndex:0];
+            [string appendFormat:@"%@  %@", sender, message.text ?: @"SKMessageKindMedia"];
+            
+        } else if ([thing isKindOfClass:[SKCashTransaction class]]) {
+            SKCashTransaction *transaction = (SKCashTransaction *)thing;
+            NSString *sender = [NSString stringWithFormat:@"%@:", transaction.sender];
+            sender = [sender stringByPaddingToLength:minlen withString:@" " startingAtIndex:0];
+            [string appendFormat:@"%@  %@", sender, transaction.message];
+            
+        }
+        [string appendString:@"\n"];
+    }
+    
+    return string;
 }
 
 @end

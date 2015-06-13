@@ -14,11 +14,14 @@
 
 - (void)markSnapViewed:(NSString *)identifier for:(NSUInteger)secondsViewed completion:(BooleanBlock)completion;
 
-- (void)loadSnap:(SKSnap *)snap completion:(DataBlock)completion;
-- (void)loadSnapWithIdentifier:(NSString *)identifier completion:(DataBlock)completion;
+/** callback takes an SKBlob object. */
+- (void)loadSnap:(SKSnap *)snap completion:(ResponseBlock)completion;
+/** callback takes an SKBlob object. */
+- (void)loadSnapWithIdentifier:(NSString *)identifier completion:(ResponseBlock)completion;
 
 @end
 
 @interface SKSnap (Networking)
-- (void)loadMediaWithCompletion:(DataBlock)completion;
+/** callback takes an SKBlob object. */
+- (void)loadMediaWithCompletion:(ResponseBlock)completion;
 @end

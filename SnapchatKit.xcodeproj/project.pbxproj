@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B40C9EE51B185EC100B033B5 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B40C9EE41B185EC100B033B5 /* libz.1.dylib */; };
+		B4185E431B2C1D7A005975EB /* SKBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = B4185E421B2C1D7A005975EB /* SKBlob.m */; };
 		B41EE78E1AF9C0E000FD5E5B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B41EE78D1AF9C0E000FD5E5B /* main.m */; };
 		B48E33FE1B199C1D0004CEAD /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = B48E33FD1B199C1D0004CEAD /* SSZipArchive.m */; };
 		B48E34171B199DFA0004CEAD /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E340F1B199DFA0004CEAD /* ioapi.c */; };
@@ -56,6 +57,10 @@
 		1274B31F6DF0D6C723D99DF3 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		23718E132653F3AC1E8199C6 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B40C9EE41B185EC100B033B5 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = usr/lib/libz.1.dylib; sourceTree = SDKROOT; };
+		B4185E341B20AFF5005975EB /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		B4185E361B20AFF9005975EB /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		B4185E411B2C1D7A005975EB /* SKBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBlob.h; sourceTree = "<group>"; };
+		B4185E421B2C1D7A005975EB /* SKBlob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBlob.m; sourceTree = "<group>"; };
 		B41EE78A1AF9C0E000FD5E5B /* SnapchatKit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SnapchatKit; sourceTree = BUILT_PRODUCTS_DIR; };
 		B41EE78D1AF9C0E000FD5E5B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B44E2CB71B184F22006E9AB8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -240,6 +245,8 @@
 				B4C21A0D1B0CEE23000365DE /* SKSimpleUser.m */,
 				B4C21A0E1B0CEE23000365DE /* SKSnap.h */,
 				B4C21A0F1B0CEE23000365DE /* SKSnap.m */,
+				B4185E411B2C1D7A005975EB /* SKBlob.h */,
+				B4185E421B2C1D7A005975EB /* SKBlob.m */,
 				B4C21A101B0CEE23000365DE /* SKStory.h */,
 				B4C21A111B0CEE23000365DE /* SKStory.m */,
 				B4C21A121B0CEE23000365DE /* SKStoryCollection.h */,
@@ -276,6 +283,8 @@
 		E99ECE11632965105AE9EE3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B4185E361B20AFF9005975EB /* Accounts.framework */,
+				B4185E341B20AFF5005975EB /* Social.framework */,
 				B40C9EE41B185EC100B033B5 /* libz.1.dylib */,
 				B44E2CB91B18590B006E9AB8 /* libz.1.2.5.dylib */,
 				B44E2CB71B184F22006E9AB8 /* libz.dylib */,
@@ -381,6 +390,7 @@
 				B48E341A1B199DFA0004CEAD /* zip.c in Sources */,
 				B48E33FE1B199C1D0004CEAD /* SSZipArchive.m in Sources */,
 				B4C21A2C1B0CEE23000365DE /* SKStoryCollection.m in Sources */,
+				B4185E431B2C1D7A005975EB /* SKBlob.m in Sources */,
 				B4C21A251B0CEE23000365DE /* SKConversation.m in Sources */,
 				B4C21A221B0CEE23000365DE /* NSString+SnapchatKit.m in Sources */,
 				B4C21A2B1B0CEE23000365DE /* SKStory.m in Sources */,

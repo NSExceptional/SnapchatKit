@@ -31,4 +31,20 @@
     return self;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ username=%@, displayn=%@, incoming=%hhd>",
+            NSStringFromClass(self.class), self.username, self.displayName, self.addedIncoming];
+}
+
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKSimpleUser class]])
+        return [self isEqualToSimpleUser:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToSimpleUser:(SKSimpleUser *)user {
+    return [self.username isEqualToString:user.username];
+}
+
 @end

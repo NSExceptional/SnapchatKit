@@ -36,4 +36,15 @@
             NSStringFromClass(self.class), self.sender?:self.recipient, self.mediaKind, self.mediaTimer, self.screenshots];
 }
 
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKSnap class]])
+        return [self isEqualToSnap:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToSnap:(SKSnap *)snap {
+    return [self.identifier isEqualToString:snap.identifier];
+}
+
 @end

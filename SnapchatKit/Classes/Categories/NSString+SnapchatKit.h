@@ -20,7 +20,10 @@
 
 + (NSString *)hashHMac:(NSString *)data key:(NSString *)key;
 
+- (NSString *)MD5Hash;
+
 @end
+
 
 @interface NSString (REST)
 
@@ -29,7 +32,14 @@
 
 @end
 
+
 @interface NSString (Regex)
 - (NSString *)matchGroupAtIndex:(NSUInteger)idx forRegex:(NSString *)regex;
 - (NSArray *)allMatchesForRegex:(NSString *)regex;
 @end
+
+@interface NSString (Snapchat)
++ (NSString *)SCIdentifierWith:(NSString *)first and:(NSString *)second;
+@end
+
+extern NSString * SKUniqueIdentifier();

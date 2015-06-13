@@ -8,7 +8,13 @@
 
 #import "SKThing.h"
 
-@interface SKCashTransaction : SKThing
+@interface SKCashTransaction : SKThing <SKPagination>
+
+// SKPagination
+@property (nonatomic, readonly) NSString     *conversationIdentifier;
+@property (nonatomic, readonly) NSString     *pagination;
+@property (nonatomic, readonly) NSDate       *created;
+
 
 @property (nonatomic, readonly) SKSnapStatus status;
 /** The transaction amount in cents (in US). */
@@ -22,8 +28,6 @@
 @property (nonatomic, readonly) BOOL         rain;
 
 @property (nonatomic, readonly) NSString     *identifier;
-@property (nonatomic, readonly) NSString     *conversationIdentifier;
-@property (nonatomic, readonly) NSDate       *created;
 
 @property (nonatomic, readonly) NSString     *recipient;
 @property (nonatomic, readonly) NSString     *recipientIdentifier;

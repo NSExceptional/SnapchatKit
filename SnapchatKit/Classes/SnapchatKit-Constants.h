@@ -19,6 +19,8 @@
 #define kDebugJSON YES
 #define kVerboseLog YES
 
+#define SKTempDirectory() [NSTemporaryDirectory() stringByAppendingPathComponent:@"SnapchatKit-tmp"]
+
 typedef void (^RequestBlock)(NSData *data, NSURLResponse *response, NSError *error);
 typedef void (^BooleanBlock)(BOOL success, NSError *error);
 typedef void (^DataBlock)(NSData *data, NSError *error);
@@ -26,6 +28,7 @@ typedef void (^StringBlock)(NSString *string, NSError *error);
 typedef void (^DictionaryBlock)(NSDictionary *dict, NSError *error);
 typedef void (^ArrayBlock)(NSArray *collection, NSError *error);
 typedef void (^ResponseBlock)(id object, NSError *error);
+typedef void (^ErrorBlock)(NSError *error);
 typedef void (^VoidBlock)();
 
 typedef NS_ENUM(NSInteger, SKAddSource)
@@ -71,6 +74,7 @@ typedef NS_ENUM(NSInteger, SKPrivacyStatus)
 
 extern SKAddSource SKAddSourceFromString(NSString *addSourceString);
 extern NSString * SKStringFromAddSource(SKAddSource addSource);
+extern NSString * SKStringFromMediaKind(SKMediaKind mediaKind);
 
 extern BOOL SKMediaKindIsImage(SKMediaKind mediaKind);
 extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);

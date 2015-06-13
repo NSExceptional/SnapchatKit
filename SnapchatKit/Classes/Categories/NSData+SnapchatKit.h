@@ -18,11 +18,20 @@
 /** Pads data using PKCS5. blockSize defaults to 16 if given 0. */
 - (NSData *)pad:(NSUInteger)blockSize;
 
+@end
+
+
+@interface NSData (FileFormat)
+
 - (BOOL)isJPEG;
 - (BOOL)isMPEG4;
-/** Checks to see if a blob looks like a compressed file. */
 - (BOOL)isCompressed;
 
+@end
+
+
+@interface NSData (Encoding)
+- (NSString *)MD5Hash;
 @end
 
 
@@ -30,10 +39,8 @@
 
 /** Decrypts blob data for standard images and videos. */
 - (NSData *)decryptECB;
-
 /** Encrypts blob data for standard images and videos. */
 - (NSData *)encryptECB;
-
 /** Decrypts blob data for stories. key and iv are base 64 encoded. */
 - (NSData *)decryptCBCWithKey:(NSString *)key iv:(NSString *)iv;
 

@@ -65,38 +65,46 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _emailVerified     = [identity[@"is_email_verified"] boolValue];
         
         // Friends
-        NSMutableArray *temp = [NSMutableArray new];
+        NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];
         for (NSDictionary *friend in friends)
             [temp addObject:[[SKUser alloc] initWithDictionary:friend]];
         _friends = temp;
         
         // Added friends
-        temp = [NSMutableArray new];
+        temp = [NSMutableOrderedSet orderedSet];
         for (NSDictionary *addedFriend in added)
             [temp addObject:[[SKAddedFriend alloc] initWithDictionary:addedFriend]];
         _addedFriends = temp;
         
         // Conversations
-        temp = [NSMutableArray new];
+        temp = [NSMutableOrderedSet orderedSet];
         for (NSDictionary *convo in conversations)
             [temp addObject:[[SKConversation alloc] initWithDictionary:convo]];
         _conversations = temp;
         
         // Story collections
-        temp = [NSMutableArray new];
+        temp = [NSMutableOrderedSet orderedSet];
         for (NSDictionary *collection in friendStories)
             [temp addObject:[[SKStoryCollection alloc] initWithDictionary:collection]];
         _stories = temp;
         
         // User stories
-        temp = [NSMutableArray new];
+        temp = [NSMutableOrderedSet orderedSet];
         for (NSDictionary *story in myStories)
             [temp addObject:[[SKUserStory alloc] initWithDictionary:story]];
         _userStories = temp;
         
         // Group stories?
-        _groupStories = @[];
+        _groupStories = [NSMutableOrderedSet new];
         
+        // Added me but not added back
+        
+        temp = [NSMutableOrderedSet orderedSet];
+        for (SKSimpleUser *user in self.addedFriends)
+            if (![self.friends containsObject:user])
+                [temp addObject:user];
+        // Reverse so that most recent requests are at the front
+        _pendingRequests = temp;
         
         
         // Cash info
@@ -176,6 +184,17 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         [unread addObjectsFromArray:convo.pendingRecievedSnaps];
     
     return unread;
+}
+
+- (SKConversation *)conversationWithOtherUser:(NSString *)username {
+    if ([username isEqualToString:self.username])
+        return nil;
+    
+    for (SKConversation *conversation in self.conversations)
+        if ([conversation.participants containsObject:username])
+            return conversation;
+    
+    return nil;
 }
 
 @end

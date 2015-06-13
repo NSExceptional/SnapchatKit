@@ -15,6 +15,8 @@
 
 // debug
 #import "NSData+SnapchatKit.h"
+#import "SSZipArchive.h"
+#import "SKBlob.h"
 @import AppKit;
 
 // Comment this out on your machine
@@ -108,24 +110,41 @@ void markChatsRead(SKSession *session) {
 
 void saveUnreadSnapsToDirectory(NSArray *unread, NSString *path) {
     for (SKSnap *snap in unread)
-        [snap loadMediaWithCompletion:^(NSData *snapData, NSError *error) {
+        [snap loadMediaWithCompletion:^(SKBlob *blob, NSError *error) {
             if (SKMediaKindIsImage(snap.mediaKind)) {
                 // Turn it into an image if you want
                 // NSImage *image = [[NSImage alloc] initWithData:snapData];
-                [snapData writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.jpg", snap.sender, snap.identifier]] atomically:YES];
+                [blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.jpg", snap.sender, snap.identifier]] atomically:YES];
                 NSLog(@"Image snap from: %@", snap.sender);
             }
             else if (SKMediaKindIsVideo(snap.mediaKind)) {
-                [snapData writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.m4a", snap.sender, snap.identifier]] atomically:YES];
+                if (blob.overlay) {
+                    [blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/media.mp4", snap.sender, snap.identifier]] atomically:YES];
+                    [blob.overlay writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/overlay.jpg", snap.sender, snap.identifier]] atomically:YES];
+                } else {
+                    [blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.mp4", snap.sender, snap.identifier]] atomically:YES];
+                }
                 NSLog(@"Video snap from: %@", snap.sender);
             }
         }];
+}
+
+void testGetConversations() {
+    [[SKClient sharedClient] conversationsWithUsers:@[@"luke_velten", @"baileybreen", @"avaallansnaps", @"abcdefgqwertyp"] completion:^(NSArray *conversations, NSArray *failed, NSError *error) {
+        if (error)
+            NSLog(@"%@", error.localizedFailureReason);
+        NSLog(@"Conversations: %@", conversations);
+        if (failed.count)
+            NSLog(@"Failed to get convos with users: %@", failed);
+    }];
 }
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
         __block BOOL waiting = YES;
+        NSString *directory = [[NSHomeDirectory() stringByAppendingPathComponent:@"Desktop"] stringByAppendingPathComponent:@"SnapchatKit-Data"];
+        [[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
         
         // Testing account registration.
         // Cannot seem to "solve" a captcha.
@@ -134,6 +153,9 @@ int main(int argc, const char * argv[]) {
         [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
+                NSDictionary *json = (NSDictionary *)[session valueForKey:@"_JSON"];
+                [json writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
+                NSLog(@"Session written to file.");
                 
                 // For debugging purposes, to see the size of the response JSON in memory. Mine was about 300 KB.
                 // Probably quadratically larger though, since each object also holds onto its JSON dictionary,
@@ -150,21 +172,24 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 NSLog(@"%lu unread snaps: %@", unread.count, unread);
                 
+//                testGetConversations();
+                
                 // Download and save unread snaps
-                NSString *directory = [[NSHomeDirectory() stringByAppendingPathComponent:@"Desktop"] stringByAppendingPathComponent:@"Snaps"];
 //                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
 //                markSnapsRead(unread);
                 
-                // Mark chats read
+                // Mark chats read (not working)
 //                markChatsRead(session);
                 
 //                 // Get best friends (not working, api disabled?)
-//                [[SKClient sharedClient] bestFriendsOfUsers:@[@"todd7"] completion:^(NSDictionary *dict, NSError *error) {
+//                [[SKClient sharedClient] bestFriendsOfUsers:@[@"luke_velten"] completion:^(NSDictionary *dict, NSError *error) {
 //                    if (!error)
 //                        NSLog(@"%@", dict);
 //                }];
+            } else {
+                NSLog(@"%@", error.localizedDescription ?: error.localizedFailureReason);
             }
         }];
         

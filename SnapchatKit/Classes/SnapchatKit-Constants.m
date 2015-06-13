@@ -32,6 +32,25 @@ NSString * SKStringFromAddSource(SKAddSource addSource) {
     }
 }
 
+NSString * SKStringFromMediaKind(SKMediaKind mediaKind) {
+    switch (mediaKind) {
+        case SKMediaKindImage:
+            return @"SKMediaKindImage";
+        case SKMediaKindVideo:
+            return @"SKMediaKindVideo";
+        case SKMediaKindSilentVideo:
+            return @"SKMediaKindSilentVideo";
+        case SKMediaKindFriendRequest:
+            return @"SKMediaKindFriendRequest";
+        case SKMediaKindStrangerImage:
+            return @"SKMediaKindStrangerImage";
+        case SKMediaKindStrangerVideo:
+            return @"SKMediaKindStrangerVideo";
+        case SKMediaKindStrangerSilentVideo:
+            return @"SKMediaKindStrangerSilentVideo";
+    }
+}
+
 BOOL SKMediaKindIsImage(SKMediaKind mediaKind) {
     return mediaKind == SKMediaKindImage || mediaKind == SKMediaKindStrangerImage;
 }
@@ -41,7 +60,7 @@ BOOL SKMediaKindIsVideo(SKMediaKind mediaKind) {
 }
 
 #pragma mark General API constants
-NSString * const kUserAgent         = @"Snapchat/9.6.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
+NSString * const kUserAgent         = @"Snapchat/9.9.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
 NSString * const kURL               = @"https://feelinsonice-hrd.appspot.com";
 NSString * const kSecret            = @"iEk21fuwZApXlz93750dmW22pw389dPwOk";
 NSString * const kStaticToken       = @"m198sOkJEn37DjqZ32lpRu76xmw288xSQ9";

@@ -24,3 +24,11 @@
 @property (nonatomic, readonly) NSArray *unknownJSONKeys;
 
 @end
+
+
+@protocol SKPagination <NSObject>
+@property (nonatomic, readonly) NSString *pagination;
+@optional
+@property (nonatomic, readonly) NSDate   *created;
+@property (nonatomic, readonly) NSString *conversationIdentifier;
+@end

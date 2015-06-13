@@ -17,14 +17,17 @@ typedef NS_ENUM(NSUInteger, SKMessageKind)
 
 extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 
-@interface SKMessage : SKThing
+@interface SKMessage : SKThing <SKPagination>
+
+// SKPagination
+@property (nonatomic, readonly) NSString      *pagination;
+@property (nonatomic, readonly) NSString      *conversationIdentifier;
+@property (nonatomic, readonly) NSDate        *created;
 
 /** Use this property to mark a message as read. */
 @property (nonatomic, readonly) NSString      *identifier;
 @property (nonatomic, readonly) NSString      *messageIdentifier;
-@property (nonatomic, readonly) NSString      *iterToken;
 @property (nonatomic, readonly) SKMessageKind messageKind;
-@property (nonatomic, readonly) NSDate        *created;
 
 /** nil if _messageKind is SKMessageKindMedia. */
 @property (nonatomic, readonly) NSString      *text;
@@ -43,7 +46,6 @@ extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 /** Array of usernames. */
 @property (nonatomic, readonly) NSArray       *recipients;
 @property (nonatomic, readonly) NSString      *sender;
-@property (nonatomic, readonly) NSString      *conversationIdentifier;
 
 /** The position of this message in the conversation. i.e. 1 if it is the first message. */
 @property (nonatomic, readonly) NSUInteger    index;

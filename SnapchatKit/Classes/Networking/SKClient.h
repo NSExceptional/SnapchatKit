@@ -14,10 +14,16 @@
 @interface SKClient : NSObject
 
 + (instancetype)sharedClient;
+@property (nonatomic) CGSize screenSize;
+@property (nonatomic) CGSize maxVideoSize;
 
 #pragma mark Signing in
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion;
 - (void)signOut;
+- (BOOL)isSignedIn;
+
+#pragma mark Misc
+- (void)updateSession:(ErrorBlock)completion;
 
 #pragma mark Registration
 /**

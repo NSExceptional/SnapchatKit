@@ -18,7 +18,7 @@
 @synthesize unknownJSONKeys = _unknownJSONKeys;
 
 - (id)initWithDictionary:(NSDictionary *)json {
-    NSParameterAssert(json);
+    NSParameterAssert(json.allKeys.count > 0);
     
     self = [super init];
     if (self) {

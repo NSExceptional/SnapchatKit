@@ -49,7 +49,7 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
     if (self) {
         _identifier        = message[@"id"];
         _messageIdentifier = message[@"chat_message_id"];
-        _iterToken         = json[@"iter_token"];
+        _pagination        = json[@"iter_token"];
         _messageKind       = SKMessageKindFromString(type);
         _created           = [NSDate dateWithTimeIntervalSince1970:[message[@"timestamp"] doubleValue]/1000];
         
@@ -96,6 +96,23 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ to/from=%@, text=%@, size=%@, index=%lu>",
             NSStringFromClass(self.class), self.sender?:self.recipients[0], self.text, NSStringFromSize(self.mediaSize), self.index];
+}
+
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKMessage class]])
+        return [self isEqualToMessage:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToMessage:(SKMessage *)message {
+    return [self.identifier isEqualToString:message.identifier] && [self.text isEqualToString:message.text];
+}
+
+- (NSComparisonResult)compare:(SKThing<SKPagination> *)thing {
+    if ([thing respondsToSelector:@selector(created)])
+        return [self.created compare:thing.created];
+    return NSOrderedSame;
 }
 
 @end

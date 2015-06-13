@@ -18,10 +18,11 @@ typedef NS_ENUM(NSUInteger, SKChatType)
 
 extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 
-@interface SKConversation : SKThing
+@interface SKConversation : SKThing <SKPagination>
 
-/** Array of SKSnap and SKMessage objects. Possibly some transactions in the JSON that I'm not aware of. */
-@property (nonatomic, readonly) NSArray      *messages;
+/** Ordered set of SKSnap SKMessage, and SKCashTransaction objects. Possibly some transactions in the JSON that I'm not aware of. */
+@property (nonatomic, readonly) NSOrderedSet *messages;
+/** Keys are "mac" and "payload" */
 @property (nonatomic, readonly) NSDictionary *messagingAuth;
 
 /**
@@ -44,7 +45,8 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
  */
 @property (nonatomic, readonly) NSDictionary *state;
 @property (nonatomic, readonly) NSString     *identifier;
-@property (nonatomic, readonly) NSString     *iterToken;
+/** Pagination token used to load older conversations. */
+@property (nonatomic, readonly) NSString     *pagination;
 
 @property (nonatomic, readonly) SKChatType   lastChatType;
 /** nil if not applicable. */
@@ -73,5 +75,14 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 /** @param participant Must be in _participants. @return An array of SKMessage objects, or an empty array if N/A. */
 - (NSArray *)unreadChatsForParticipant:(NSString *)participant;
 
+/** Merges _messages with conversation.messages. */
+- (void)addMessagesFromConversation:(SKConversation *)conversation;
 
+@end
+
+@interface SKConversation (SKClient)
+/** Returns the (first) participant that is not the current user. */
+@property (nonatomic, readonly) NSString *recipient;
+/** All messages in a human-readable, newline separated format. */
+@property (nonatomic, readonly) NSString *conversationString;
 @end
