@@ -50,7 +50,7 @@
     [self sendTyping:user];
 }
 
-- (void)markRead:(SKConversation *)conversation completion:(BooleanBlock)completion {
+- (void)markRead:(SKConversation *)conversation completion:(ErrorBlock)completion {
     NSParameterAssert(conversation);
     NSDictionary *viewed = @{@"eventName": @"CHAT_TEXT_VIEWED",
                              @"params": @{@"id":conversation.identifier},
@@ -145,7 +145,23 @@
     }
 }
 
+- (void)clearConversationWithIdentifier:(NSString *)identifier completion:(BooleanBlock)completion {
+    NSParameterAssert(identifier);
+    [self postTo:kepConvoClear query:@{@"conversation_id": identifier, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
+        if (completion)
+            completion(!json && !error, error);
+    }];
+}
+
+- (void)clearFeed:(BooleanBlock)completion {
+    [self postTo:kepClearFeed query:@{@"username": self.username} callback:^(NSDictionary *json, NSError *error) {
+        if (completion)
+            completion(!json && !error, error);
+    }];
+}
+
 - (void)sendMessage:(NSString *)message to:(NSString *)username completion:(ResponseBlock)completion {
+    NSParameterAssert(completion);
     [self sendMessage:message toEach:@[username] completion:^(NSArray *conversations, NSArray *failed, NSError *error) {
         if (!error && failed.count == 0) {
             completion(conversations[0], nil);

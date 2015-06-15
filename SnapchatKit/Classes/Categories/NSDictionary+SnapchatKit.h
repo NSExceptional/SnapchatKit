@@ -13,3 +13,10 @@
 - (NSString *)JSONString;
 
 @end
+
+
+@interface NSDictionary (Util)
+/** @c entryLimit must be greater than @c 0. */
+- (NSArray *)split:(NSUInteger)entryLimit;
+
+@end

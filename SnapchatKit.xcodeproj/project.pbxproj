@@ -16,6 +16,11 @@
 		B48E34191B199DFA0004CEAD /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34131B199DFA0004CEAD /* unzip.c */; };
 		B48E341A1B199DFA0004CEAD /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34151B199DFA0004CEAD /* zip.c */; };
 		B4BFA12A1B2CBE7D0057EB53 /* SKClient+Stories.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA1291B2CBE7D0057EB53 /* SKClient+Stories.m */; };
+		B4BFA12D1B2D53EB0057EB53 /* SKFoundFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA12C1B2D53EB0057EB53 /* SKFoundFriend.m */; };
+		B4BFA1301B2D64370057EB53 /* SKClient+Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA12F1B2D64370057EB53 /* SKClient+Account.m */; };
+		B4BFA1331B2E4A9A0057EB53 /* SKClient+Device.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA1321B2E4A9A0057EB53 /* SKClient+Device.m */; };
+		B4BFA1361B2E81270057EB53 /* SKFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA1351B2E81270057EB53 /* SKFilter.m */; };
+		B4BFA1391B2E81370057EB53 /* SKLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA1381B2E81370057EB53 /* SKLocation.m */; };
 		B4C21A211B0CEE23000365DE /* NSData+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */; };
 		B4C21A221B0CEE23000365DE /* NSString+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219FE1B0CEE23000365DE /* NSString+SnapchatKit.m */; };
 		B4C21A231B0CEE23000365DE /* SKAddedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A011B0CEE23000365DE /* SKAddedFriend.m */; };
@@ -79,6 +84,16 @@
 		B48E34161B199DFA0004CEAD /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		B4BFA1281B2CBE7D0057EB53 /* SKClient+Stories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Stories.h"; sourceTree = "<group>"; };
 		B4BFA1291B2CBE7D0057EB53 /* SKClient+Stories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Stories.m"; sourceTree = "<group>"; };
+		B4BFA12B1B2D53EB0057EB53 /* SKFoundFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKFoundFriend.h; sourceTree = "<group>"; };
+		B4BFA12C1B2D53EB0057EB53 /* SKFoundFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKFoundFriend.m; sourceTree = "<group>"; };
+		B4BFA12E1B2D64370057EB53 /* SKClient+Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Account.h"; sourceTree = "<group>"; };
+		B4BFA12F1B2D64370057EB53 /* SKClient+Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Account.m"; sourceTree = "<group>"; };
+		B4BFA1311B2E4A9A0057EB53 /* SKClient+Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Device.h"; sourceTree = "<group>"; };
+		B4BFA1321B2E4A9A0057EB53 /* SKClient+Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Device.m"; sourceTree = "<group>"; };
+		B4BFA1341B2E81270057EB53 /* SKFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKFilter.h; sourceTree = "<group>"; };
+		B4BFA1351B2E81270057EB53 /* SKFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKFilter.m; sourceTree = "<group>"; };
+		B4BFA1371B2E81370057EB53 /* SKLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLocation.h; sourceTree = "<group>"; };
+		B4BFA1381B2E81370057EB53 /* SKLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLocation.m; sourceTree = "<group>"; };
 		B4C219F61B0B7730000365DE /* Login.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
 		B4C219FB1B0CEE23000365DE /* NSData+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SnapchatKit.h"; sourceTree = "<group>"; };
 		B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SnapchatKit.m"; sourceTree = "<group>"; };
@@ -240,6 +255,12 @@
 				B4C21A031B0CEE23000365DE /* SKCashTransaction.m */,
 				B4C21A041B0CEE23000365DE /* SKConversation.h */,
 				B4C21A051B0CEE23000365DE /* SKConversation.m */,
+				B4BFA1341B2E81270057EB53 /* SKFilter.h */,
+				B4BFA1351B2E81270057EB53 /* SKFilter.m */,
+				B4BFA12B1B2D53EB0057EB53 /* SKFoundFriend.h */,
+				B4BFA12C1B2D53EB0057EB53 /* SKFoundFriend.m */,
+				B4BFA1371B2E81370057EB53 /* SKLocation.h */,
+				B4BFA1381B2E81370057EB53 /* SKLocation.m */,
 				B4C21A061B0CEE23000365DE /* SKMessage.h */,
 				B4C21A071B0CEE23000365DE /* SKMessage.m */,
 				B4C21A081B0CEE23000365DE /* SKRequest.h */,
@@ -272,6 +293,10 @@
 			children = (
 				B4C21A1D1B0CEE23000365DE /* SKClient.h */,
 				B4C21A1E1B0CEE23000365DE /* SKClient.m */,
+				B4BFA1311B2E4A9A0057EB53 /* SKClient+Device.h */,
+				B4BFA1321B2E4A9A0057EB53 /* SKClient+Device.m */,
+				B4BFA12E1B2D64370057EB53 /* SKClient+Account.h */,
+				B4BFA12F1B2D64370057EB53 /* SKClient+Account.m */,
 				B4C21A461B151195000365DE /* SKClient+Chat.h */,
 				B4C21A471B151195000365DE /* SKClient+Chat.m */,
 				B4C21A401B151147000365DE /* SKClient+Friends.h */,
@@ -390,6 +415,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4C21A2F1B0CEE23000365DE /* SKUser.m in Sources */,
+				B4BFA1301B2D64370057EB53 /* SKClient+Account.m in Sources */,
+				B4BFA1331B2E4A9A0057EB53 /* SKClient+Device.m in Sources */,
 				B4C21A291B0CEE23000365DE /* SKSimpleUser.m in Sources */,
 				B48E34191B199DFA0004CEAD /* unzip.c in Sources */,
 				B48E341A1B199DFA0004CEAD /* zip.c in Sources */,
@@ -402,6 +429,7 @@
 				B4C21A421B151147000365DE /* SKClient+Friends.m in Sources */,
 				B4C21A241B0CEE23000365DE /* SKCashTransaction.m in Sources */,
 				B4C21A2A1B0CEE23000365DE /* SKSnap.m in Sources */,
+				B4BFA1361B2E81270057EB53 /* SKFilter.m in Sources */,
 				B41EE78E1AF9C0E000FD5E5B /* main.m in Sources */,
 				B4C21A231B0CEE23000365DE /* SKAddedFriend.m in Sources */,
 				B4C21A311B0CEE23000365DE /* SKClient.m in Sources */,
@@ -417,8 +445,10 @@
 				B4C21A301B0CEE23000365DE /* SKUserStory.m in Sources */,
 				B4C21A261B0CEE23000365DE /* SKMessage.m in Sources */,
 				B4BFA12A1B2CBE7D0057EB53 /* SKClient+Stories.m in Sources */,
+				B4BFA12D1B2D53EB0057EB53 /* SKFoundFriend.m in Sources */,
 				B4C21A3C1B0F91FF000365DE /* NSDictionary+SnapchatKit.m in Sources */,
 				B4C21A321B0CEE23000365DE /* SnapchatKit-Constants.m in Sources */,
+				B4BFA1391B2E81370057EB53 /* SKLocation.m in Sources */,
 				B4C21A2D1B0CEE23000365DE /* SKStoryNote.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

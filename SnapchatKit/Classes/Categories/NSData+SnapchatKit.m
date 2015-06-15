@@ -13,8 +13,6 @@
 
 #import "SnapchatKit-Constants.h"
 
-#define ChunkSize 16384
-
 @implementation NSData (Encryption)
 
 - (NSData *)AES128EncryptedDataWithKey:(NSString *)key {
@@ -22,7 +20,7 @@
 }
 
 - (NSData *)AES128DecryptedDataWithKey:(NSString *)key {
-    return [self AES128DecryptedDataWithKey:key iv:nil];
+    return [[self pad:0] AES128DecryptedDataWithKey:key iv:nil];
 }
 
 - (NSData *)AES128EncryptedDataWithKey:(NSString *)key iv:(NSString *)iv {
@@ -43,27 +41,17 @@
 
 // kCCModeCBC
 - (NSData *)AES128Operation:(CCOperation)operation keyData:(NSData *)key ivData:(NSData *)iv {
-//    char keyPtr[kCCKeySizeAES128 + 1];
-//    bzero(keyPtr, sizeof(keyPtr));
-//    [key getBytes:keyPtr length:kCCKeySizeAES128 + 1];
-////    [key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
-//
-//    char ivPtr[kCCBlockSizeAES128 + 1];
-//    bzero(ivPtr, sizeof(ivPtr));
-//    if (iv) {
-//        [iv getBytes:ivPtr length:kCCKeySizeAES128 + 1];
-////        [iv getCString:ivPtr maxLength:sizeof(ivPtr) encoding:NSUTF8StringEncoding];
-//    }
-
-    size_t bufferSize = self.length + kCCBlockSizeAES128;
+    NSParameterAssert(key); NSParameterAssert(iv);
+    
+    size_t bufferSize = self.length + kCCKeySizeAES128;
     void *buffer = malloc(bufferSize);
 
     size_t decryptedLength = 0;
     CCCryptorStatus cryptStatus = CCCrypt(operation,
                                           kCCAlgorithmAES128,
-                                          kCCOptionPKCS7Padding | kCCModeCBC,
+                                          kCCOptionPKCS7Padding,
                                           key.bytes,
-                                          kCCBlockSizeAES128,
+                                          kCCKeySizeAES256,
                                           iv.bytes,
                                           self.bytes,
                                           self.length,
@@ -73,6 +61,7 @@
     if (cryptStatus == kCCSuccess) {
         return [NSData dataWithBytesNoCopy:buffer length:decryptedLength];
     }
+    
     free(buffer);
     return nil;
 }
@@ -82,7 +71,7 @@
     if (blockSize == 0)
         blockSize = 16;
     
-    NSUInteger count = blockSize - (data.length % blockSize);
+    NSUInteger count = (blockSize - (data.length % blockSize)) % blockSize;
     data.length = data.length + count;
     
     return data;
@@ -103,7 +92,7 @@
     uint8_t a, b, c, d;
     [self getHeader:&a b:&b c:&c d:&d];
     
-    return a == 0x00 && b == 0x00 && c == 0x00 && (d == 0x14 || d == 0x18);
+    return a == 0x00 && b == 0x00 && c == 0x00 && (d == 0x14 || d == 0x18 || d == 0x1C);
 }
 
 - (BOOL)isCompressed {
@@ -141,36 +130,22 @@
 @implementation NSData (Blob)
 
 /** Decrypts blob data for standard images and videos. */
-- (NSData *)decryptECB {
-    return [[self pad:0] AES128DecryptedDataWithKey:kBlobEncryptionKey];
-}
+//- (NSData *)decryptECB {
+//    return [[self pad:0] AES128DecryptedDataWithKey:kBlobEncryptionKey];
+//}
 
 /** Encrypts blob data for standard images and videos. */
-- (NSData *)encryptECB {
-    return [[self pad:0] AES128EncryptedDataWithKey:kBlobEncryptionKey];
-}
-
-// This probably doesn't work at all. Idr where I got this code from.
-- (NSData *)decryptStoryWithIdentifier:(NSInteger)storyID {
-    NSString *key = [NSString stringWithFormat:@"/bq/story_blob?story_id=%ld", (long)storyID];
-    return [self decryptCBCWithKey:key iv:nil];
-}
+//- (NSData *)encryptECB {
+//    return [[self pad:0] AES128EncryptedDataWithKey:kBlobEncryptionKey];
+//}
 
 /** Decrypts blob data for stories. key and iv are base 64 encoded. */
-- (NSData *)decryptCBCWithKey:(NSString *)key iv:(NSString *)iv {
+- (NSData *)decryptStoryWithKey:(NSString *)key iv:(NSString *)iv {
     // Decode the key and IV
     NSData *keyData = [[NSData alloc] initWithBase64EncodedString:key options:0];
-    NSData *ivData = [[NSData alloc] initWithBase64EncodedString:iv options:0];
+    NSData *ivData  = [[NSData alloc] initWithBase64EncodedString:iv options:0];
     
-    NSData *decrypted = [self AES128DecryptedDataWithKeyData:keyData ivData:ivData];
-    
-    // Probably unnecessary to trim the data, not sure until I get a successful decryption.
-//    unsigned char buffer[1];
-//    [decrypted getBytes:buffer range:NSMakeRange(decrypted.length-1, 1)];
-//    NSUInteger padding = (NSUInteger)buffer;
-//    decrypted.length -= padding;
-    
-    return decrypted;
+    return [self AES128DecryptedDataWithKeyData:keyData ivData:ivData];
 }
 
 @end

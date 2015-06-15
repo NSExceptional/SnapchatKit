@@ -35,4 +35,19 @@
             NSStringFromClass(self.class), self.username, self.matureContent, self.stories];
 }
 
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKStoryCollection class]])
+        return [self isEqualToStoryCollection:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToStoryCollection:(SKStoryCollection *)collection {
+    return [self.username isEqualToString:collection.username];
+}
+
+- (NSUInteger)hash {
+    return self.username.hash;
+}
+
 @end

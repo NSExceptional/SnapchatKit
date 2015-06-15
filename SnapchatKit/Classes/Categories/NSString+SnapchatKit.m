@@ -143,9 +143,35 @@
     
     NSMutableArray *strings = [NSMutableArray new];
     for (NSTextCheckingResult *result in matches)
-        [strings addObject:[self substringWithRange:result.range]];
+        [strings addObject:[self substringWithRange:[result rangeAtIndex:1]]];
     
     return strings;
+}
+
+- (NSString *)textFromHTML {
+    if (!self.length)
+        return @"";
+    
+    NSArray *strings = [self allMatchesForRegex:@"<[^>]*>(.*)<[^>]*>"];
+    NSMutableString *text = [NSMutableString string];
+    
+    for (NSString *s in strings)
+        if (s.length)
+            [text appendFormat:@"%@—", s];
+    [text deleteCharactersInRange:NSMakeRange(text.length-1, 1)];
+    
+    return text;
+}
+
+- (NSString *)stringByReplacingMatchesForRegex:(NSString *)pattern withString:(NSString *)replacement {
+    if (!pattern.length || !self.length)
+        return self;
+    
+    NSMutableString *m = self.mutableCopy;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:nil];
+    [regex replaceMatchesInString:m options:0 range:NSMakeRange(0, m.length) withTemplate:replacement];
+    
+    return m;
 }
 
 @end

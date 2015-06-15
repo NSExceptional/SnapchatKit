@@ -29,4 +29,15 @@
             NSStringFromClass(self.class), self.viewer, self.screenshot];
 }
 
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKStoryNote class]])
+        return [self isEqualToStoryNote:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToStoryNote:(SKStoryNote *)storyNote {
+    return [self.viewer isEqualToString:storyNote.viewer] && [self.viewDate isEqualToDate:storyNote.viewDate];;
+}
+
 @end

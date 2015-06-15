@@ -16,13 +16,16 @@
 /** @param recipients An array of username strings. */
 - (void)sendTypingToUsers:(NSArray *)recipients;
 - (void)sendTypingToUser:(NSString *)user;
-- (void)markRead:(SKConversation *)conversation completion:(BooleanBlock)completion;
+- (void)markRead:(SKConversation *)conversation completion:(ErrorBlock)completion;
 /** Keys are "mac" and "payload" */
 - (void)conversationAuth:(NSString *)user completion:(DictionaryBlock)completion;
 /** Callback takes an SKConversation object. */
 - (void)conversationWithUser:(NSString *)user completion:(ResponseBlock)completion;
 /** conversations is an array of SKCovnersation objects, failed is an array of usernames indicating conversations unable to be retrieved. */
 - (void)conversationsWithUsers:(NSArray *)users completion:(void (^)(NSArray *conversations, NSArray *failed, NSError *error))completion;
+
+- (void)clearConversationWithIdentifier:(NSString *)identifier completion:(BooleanBlock)completion;
+- (void)clearFeed:(BooleanBlock)completion;
 
 /** Callback takes an SKConversation object. */
 - (void)sendMessage:(NSString *)message to:(NSString *)username completion:(ResponseBlock)completion;

@@ -11,13 +11,6 @@
 
 @class SKMessage, SKConversation;
 
-typedef NS_ENUM(NSUInteger, SKStoryPrivacy)
-{
-    SKStoryPrivacyEveryone = 1,
-    SKStoryPrivacyFriends,
-    SKStoryPrivacyCustom
-};
-
 extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
 

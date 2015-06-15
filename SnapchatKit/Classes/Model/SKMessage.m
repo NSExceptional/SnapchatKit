@@ -109,6 +109,10 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
     return [self.identifier isEqualToString:message.identifier] && [self.text isEqualToString:message.text];
 }
 
+- (NSUInteger)hash {
+    return self.identifier.hash;
+}
+
 - (NSComparisonResult)compare:(SKThing<SKPagination> *)thing {
     if ([thing respondsToSelector:@selector(created)])
         return [self.created compare:thing.created];

@@ -10,6 +10,7 @@
 
 @interface NSArray (JSON)
 
+/** Will never return nil. */
 - (NSString *)JSONString;
 
 @end

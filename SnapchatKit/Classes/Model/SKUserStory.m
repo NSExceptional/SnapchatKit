@@ -41,9 +41,4 @@
     return self;
 }
 
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ screenshots=%lu, views=%lu, notes=%lu>%@",
-            NSStringFromClass(self.class), (unsigned long)self.screenshotCount, (unsigned long)self.viewCount, (unsigned long)self.notes.count, [super description]];
-}
-
 @end

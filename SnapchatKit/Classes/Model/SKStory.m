@@ -7,6 +7,7 @@
 //
 
 #import "SKStory.h"
+#import "SKClient+Stories.h"
 
 @implementation SKStory
 
@@ -58,6 +59,60 @@
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ id=%@, viewed=%hhd, duration=%lu, text=%@, time left=%lu>",
             NSStringFromClass(self.class), self.identifier, self.viewed, (unsigned long)self.duration, self.text, (unsigned long)self.timeLeft];
+}
+
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKStory class]])
+        return [self isEqualToStory:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToStory:(SKStory *)story {
+    return [story.identifier isEqualToString:self.identifier];
+}
+
+- (NSUInteger)hash {
+    return self.identifier.hash;
+}
+
+@end
+
+@implementation SKStory (SKClient)
+
+- (void)load:(ErrorBlock)completion {
+    NSParameterAssert(completion);
+    [[SKClient sharedClient] loadStoryBlob:self completion:^(SKBlob *blob, NSError *error) {
+        if (!error) {
+            _blob = blob;
+            completion(nil);
+        } else {
+            completion(error);
+        }
+    }];
+}
+
+- (void)loadThumbnail:(ErrorBlock)completion {
+    NSParameterAssert(completion);
+    [[SKClient sharedClient] loadStoryThumbnailBlob:self completion:^(SKBlob *blob, NSError *error) {
+        if (!error) {
+            _thumbnailBlob = blob;
+            completion(nil);
+        } else {
+            completion(error);
+        }
+    }];
+}
+
+- (NSString *)suggestedFilename {
+    if (!self.blob)
+        return nil;
+    if (self.blob.isImage)
+        return [NSString stringWithFormat:@"%@.jpg", self.identifier];
+    else if (self.blob.overlay)
+        return self.identifier;
+    else
+        return [NSString stringWithFormat:@"%@.mp4", self.identifier];
 }
 
 @end

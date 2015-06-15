@@ -36,6 +36,8 @@
 @interface NSString (Regex)
 - (NSString *)matchGroupAtIndex:(NSUInteger)idx forRegex:(NSString *)regex;
 - (NSArray *)allMatchesForRegex:(NSString *)regex;
+- (NSString *)textFromHTML;
+- (NSString *)stringByReplacingMatchesForRegex:(NSString *)regex withString:(NSString *)replacement;
 @end
 
 @interface NSString (Snapchat)

@@ -47,4 +47,8 @@
     return [self.identifier isEqualToString:snap.identifier];
 }
 
+- (NSUInteger)hash {
+    return self.identifier.hash;
+}
+
 @end

@@ -34,4 +34,15 @@
             NSStringFromClass(self.class), self.username, self.friendmoji, self.needsLove, self.canSeeCustomStories, self.isSharedStory];
 }
 
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKUser class]])
+        return [self isEqualToUser:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToUser:(SKUser *)user {
+    return [self.friendmoji isEqualToString:user.friendmoji] && [super isEqual:user];
+}
+
 @end

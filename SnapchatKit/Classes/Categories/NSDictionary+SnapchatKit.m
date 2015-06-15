@@ -16,3 +16,26 @@
 }
 
 @end
+
+
+@implementation NSDictionary (Util)
+
+- (NSArray *)split:(NSUInteger)entryLimit {
+    NSParameterAssert(entryLimit > 0);
+    if (self.allKeys.count <= entryLimit)
+        return @[self];
+    
+    NSMutableArray *dicts = [NSMutableArray array];
+    __block NSMutableDictionary *tmp = [NSMutableDictionary dictionary];
+    [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        tmp[key] = obj;
+        if (tmp.allKeys.count % entryLimit == 0) {
+            [dicts addObject:tmp];
+            tmp = [NSMutableDictionary dictionary];
+        }
+    }];
+    
+    return dicts;
+}
+
+@end

@@ -16,6 +16,7 @@
 // debug
 #import "NSData+SnapchatKit.h"
 @import AppKit;
+@import CoreLocation;
 
 // Comment this out on your machine
 #import "Login.h"
@@ -83,8 +84,8 @@ void registerAccount(NSString *email, NSString *password, NSString *birthday) {
 
 void markSnapsRead(NSArray *unread) {
     for (SKSnap *snap in unread)
-        [[SKClient sharedClient] markSnapViewed:snap.identifier for:1 completion:^(BOOL success, NSError *error) {
-            if (success)
+        [[SKClient sharedClient] markSnapViewed:snap.identifier for:1 completion:^(NSError *error) {
+            if (!error)
                 NSLog(@"Success: %@", snap.identifier);
             else
                 NSLog(@"Failure: %@", snap.identifier);
@@ -98,8 +99,8 @@ void markChatsRead(SKSession *session) {
             [unreadChats addObject:convo];
     
     for (SKConversation *convo in unreadChats)
-        [[SKClient sharedClient] markRead:convo completion:^(BOOL success, NSError *error) {
-            if (success)
+        [[SKClient sharedClient] markRead:convo completion:^(NSError *error) {
+            if (!error)
                 NSLog(@"Success: %@", convo.identifier);
             else
                 NSLog(@"Failure: %@", convo.identifier);
@@ -138,9 +139,41 @@ void testGetConversations() {
 }
 
 void testGetStory(SKStory *story) {
-    [[SKClient sharedClient] loadStory:story completion:^(SKBlob *blob, NSError *error) {
-        NSLog(@"%@", blob);
+    [story load:^(NSError *error) {
+        if (!error) {
+            NSLog(@"%@", story);
+            if (SKMediaKindIsImage(story.mediaKind)) {
+                NSImage *image = [[NSImage alloc] initWithData:story.blob.data];
+            }
+        }
     }];
+}
+
+void testGetAllStoriesInCollectionForUser(NSString *path, NSString *user) {
+    SKStoryCollection *collection;
+    for (SKStoryCollection *c in [SKClient sharedClient].currentSession.stories)
+        if ([c.username isEqualToString:user]) {
+            collection = c;
+            break;
+        }
+    [[SKClient sharedClient] loadStories:collection.stories completion:^(NSArray *stories, NSArray *failed, NSArray *errors) {
+        NSLog(@"%@", collection);
+        for (SKStory *story in stories) {
+            [story.blob writeToPath:[path stringByAppendingPathComponent:story.suggestedFilename] atomically:YES];
+        }
+    }];
+}
+
+void getFilterForCoordinates(double lat, double lon) {
+    CLLocation *loc = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+    [[SKClient sharedClient] loadFiltersForLocation:loc completion:^(NSArray *collection, NSError *error) {
+        if (!error) {
+            NSLog(@"%@", collection);
+        } else {
+            NSLog(@"%@", error);
+        }
+    }];
+
 }
 
 int main(int argc, const char * argv[]) {
@@ -174,10 +207,31 @@ int main(int argc, const char * argv[]) {
                 
                 // Get unread snaps
                 NSArray *unread = session.unread;
-                NSLog(@"%lu unread snaps: %@", unread.count, unread);
+//                NSLog(@"%lu unread snaps: %@", unread.count, unread);
                 
-                SKStory *story = [session.stories[0] stories][0];
-                testGetStory(story);
+                // Some locations with cool filters.
+                // Waco       31.534089, -97.123811
+                // NY         40.713054, -74.007228
+                // SF         37.780080, -122.420168
+                // LA         34.052238, -118.243344
+                // Manchester 53.480713, -2.234377
+                // Cypress    29.973334, -95.687332
+                // Houston    29.760803, -95.369506
+                // Seattle    47.603229, -122.330280
+                // Cape Crn.  28.350458 ,-80.607516
+                
+                // Disney parks. Not all of them have filters, and some are redundant
+                // Disney Paris    48.869981, 2.780242
+                // Disney HK       22.312553, 114.041862
+                // Animal Kingdom  28.355066, -81.590046
+                // Disney Tokyo    35.632913, 139.880405
+                // Courtyard Cocoa 28.350458, -80.607516
+                // Spaceship Earth 28.375281, -81.549365
+                // Hollywood       28.358270, -81.558856
+                // Magic Kingdom   28.418933 ,-81.581206
+                getFilterForCoordinates(28.355066, -81.590046);
+                
+//                testGetAllStoriesInCollectionForUser([directory stringByAppendingPathComponent:@"Test-Stories"], @"someusername");
                 
 //                testGetConversations();
                 

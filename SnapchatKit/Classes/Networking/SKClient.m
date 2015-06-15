@@ -70,25 +70,49 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     return _authToken ?: kStaticToken;
 }
 
+- (void)setUsername:(NSString *)username {
+    _username = [username lowercaseString];
+}
+
 #pragma mark Convenience
 
 - (void)handleError:(NSError *)error data:(NSData *)data response:(NSURLResponse *)response completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
+    NSInteger code = [(NSHTTPURLResponse *)response statusCode];
+    
     if (error) {
         completion(nil, error);
-    } else if (data) {
+    } else if (data.length) {
         NSError *jsonError;
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
         
+        // Could not parse JSON (it's probably HTML)
         if (jsonError) {
-            completion(nil, jsonError);
-            if (kVerboseLog)
-                NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding]);
+            NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            if ([html containsString:@"<html><head>"]) {
+                // Invalid request
+                completion(nil, [SKRequest errorWithMessage:[html textFromHTML] code:code]);
+            } else {
+                // ???
+                completion(nil, jsonError);
+            }
         }
-        else if (json)
-            completion(json, nil);
-        else
+        
+        else if (json) {
+            if (code > 199 && code < 300) {
+                // Suceeded with a response
+                completion(json, nil);
+            } else {
+                // Failed with a message
+                error = [SKRequest errorWithMessage:json[@"message"] code:code];
+            }
+        }
+        else {
             completion(nil, [SKRequest unknownError]);
+        }
+    } else if (code > 199 && code < 300) {
+        // Succeeded with no response
+        completion(nil, nil);
     } else {
         completion(nil, [SKRequest unknownError]);
     }
@@ -270,24 +294,17 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                                    @"attestation":      self.googleAttestation};
                             
                             [SKRequest postTo:kepLogin query:post gauth:gauth token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                NSInteger code = [(NSHTTPURLResponse *)response statusCode];
-                                NSDictionary *json;
-                                if (code == 200) {
-                                    json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                                    if (!json[@"logged"]) {
-                                        self.currentSession = [SKSession sessionWithJSONResponse:json];
-                                        _authToken = self.currentSession.authToken;
-                                        error = nil;
-                                    } else {
-                                        error = [SKRequest errorWithMessage:json[@"message"] code:code];
-                                    }
-                                } else if (!error) {
-                                    error = [SKRequest errorWithMessage:@"Unknown error" code:code];
-                                }
-                                
-                                dispatch_async(dispatch_get_main_queue(), ^{
-                                    completion(json, error);
-                                });
+                                [self handleError:error data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        if (!jsonerror) {
+                                            self.currentSession = [SKSession sessionWithJSONResponse:json];
+                                            _authToken = self.currentSession.authToken;
+                                            completion(json, error);
+                                        } else {
+                                            NSLog(@"%@", error.localizedDescription);
+                                        }
+                                    });
+                                }];
                             }];
                         }
                     }];
@@ -484,23 +501,24 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 #pragma mark For categories
 
-- (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(BooleanBlock)completion {
+- (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(ErrorBlock)completion {
     if (!events)   events = @[];
     if (!snapInfo) snapInfo = @{};
-    NSDictionary *query = @{@"events": [events JSONString],
-                            @"json": [snapInfo JSONString],
+    NSDictionary *query = @{@"events": events.JSONString,
+                            @"json": snapInfo.JSONString,
                             @"username": self.currentSession.username};
     
     [SKRequest postTo:kepUpdateSnaps query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (data.length == 0 && [(NSHTTPURLResponse *)response statusCode] == 200)
-                completion(YES, nil);
-            else if (error) {
-                completion(NO, error);
-            } else {
-                completion(NO, [SKRequest unknownError]);
-            }
-        });
+        if (completion)
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (data.length == 0 && [(NSHTTPURLResponse *)response statusCode] == 200)
+                    completion(nil);
+                else if (error) {
+                    completion(error);
+                } else {
+                    completion([SKRequest unknownError]);
+                }
+            });
     }];
 }
 

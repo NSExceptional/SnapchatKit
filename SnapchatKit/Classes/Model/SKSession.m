@@ -58,7 +58,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     self = [super initWithDictionary:json];
     if (self) {
         _backgroundFetchSecret = json[@"background_fetch_secret_key"];
-        _bestFriendUsernames   = friendsResponse[@"bests"];
+        _bestFriendUsernames   = [NSMutableOrderedSet orderedSetWithArray:friendsResponse[@"bests"]];
         
         _storiesDelta      = [storiesResponse[@"friend_stories_delta"] boolValue];
         _discoverSupported = ![json[@"discover"][@"compatibility"] isEqualToString:@"device_not_supported"];
@@ -187,9 +187,6 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
 }
 
 - (SKConversation *)conversationWithOtherUser:(NSString *)username {
-    if ([username isEqualToString:self.username])
-        return nil;
-    
     for (SKConversation *conversation in self.conversations)
         if ([conversation.participants containsObject:username])
             return conversation;

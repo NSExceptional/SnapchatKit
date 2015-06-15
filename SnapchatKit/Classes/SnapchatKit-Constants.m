@@ -30,6 +30,8 @@ NSString * SKStringFromAddSource(SKAddSource addSource) {
         case SKAddSourceAddedBack:
             return @"ADDED_BY_ADDED_ME_BACK";
     }
+    
+    return nil;
 }
 
 NSString * SKStringFromMediaKind(SKMediaKind mediaKind) {
@@ -49,6 +51,21 @@ NSString * SKStringFromMediaKind(SKMediaKind mediaKind) {
         case SKMediaKindStrangerSilentVideo:
             return @"SKMediaKindStrangerSilentVideo";
     }
+    
+    return nil;
+}
+
+NSString * SKStringFromStoryPrivacy(SKStoryPrivacy storyPrivacy) {
+    switch (storyPrivacy) {
+        case SKStoryPrivacyEveryone:
+            return @"EVERYONE";
+        case SKStoryPrivacyFriends:
+            return @"FRIENDS";
+        case SKStoryPrivacyCustom:
+            return @"CUSTOM";
+    }
+    
+    return nil;
 }
 
 BOOL SKMediaKindIsImage(SKMediaKind mediaKind) {
@@ -62,6 +79,7 @@ BOOL SKMediaKindIsVideo(SKMediaKind mediaKind) {
 #pragma mark General API constants
 NSString * const kUserAgent         = @"Snapchat/9.9.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
 NSString * const kURL               = @"https://feelinsonice-hrd.appspot.com";
+NSString * const kEventsURL         = @"https://sc-analytics.appspot.com/post_events";
 NSString * const kSecret            = @"iEk21fuwZApXlz93750dmW22pw389dPwOk";
 NSString * const kStaticToken       = @"m198sOkJEn37DjqZ32lpRu76xmw288xSQ9";
 NSString * const kBlobEncryptionKey = @"M02cnQ51Ji97vwT4";
@@ -108,7 +126,7 @@ NSString * const kepRetrySend         = @"/loq/retry";
 NSString * const kepSend              = @"/loq/send";
 NSString * const kepTyping            = @"/bq/chat_typing";
 NSString * const kepPostStory         = @"/bq/retry_post_story";
-NSString * const kepDeleteStory       = @"/delete_story";
+NSString * const kepDeleteStory       = @"/bq/delete_story";
 NSString * const kepMarkStoryViewed   = @"/update_stories";
 NSString * const kepBestFriends       = @"/bq/bests";
 NSString * const kepSetBestCount      = @"/bq/set_num_best_friends";
@@ -117,6 +135,13 @@ NSString * const kepSettings          = @"/bq/settings";
 NSString * const kepFeatures          = @"/bq/update_feature_settings";
 NSString * const kepSnaptag           = @"/bq/snaptag_download";
 NSString * const kepCashEligible      = @"/cash/check_recipient_eligible";
+NSString * const kepCashGenerateToken = @"/cash/generate_access_token"; // takes only username
+NSString * const kepLocationData      = @"/loq/loc_data";
 
 NSString * const kepGetStoryBlob      = @"/bq/story_blob?story_id=";
 NSString * const kepGetStoryThumb     = @"/bq/story_thumbnail?story_id=";
+
+NSString * const SKFeatureFrontFacingFlash = @"front_facing_flash";
+NSString * const SKFeatureReplaySnaps      = @"replay_snaps";
+NSString * const SKFeatureSmartFilters     = @"smart_filters";
+NSString * const SKFeatureVisualFilters    = @"visual_filters";

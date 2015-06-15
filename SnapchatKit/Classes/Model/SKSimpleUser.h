@@ -19,6 +19,6 @@
 @property (nonatomic, readonly) NSString  *displayName;
 @property (nonatomic, readonly) BOOL      addedIncoming;
 @property (nonatomic, readonly) NSDate    *expiration;
-@property (nonatomic, readonly) NSInteger type;
+@property (nonatomic, readonly) SKSnapPrivacy privacy;
 
 @end

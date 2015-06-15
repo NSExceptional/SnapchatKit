@@ -28,10 +28,10 @@
 
 + (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion {
     NSParameterAssert(encryptedBlob);
-    NSData *decryptedBlob = [encryptedBlob decryptCBCWithKey:story.mediaKey iv:story.mediaIV];
+    NSData *decryptedBlob = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
     
     // Unzipped
-    if ([encryptedBlob isJPEG] || [encryptedBlob isMPEG4]) {
+    if ([decryptedBlob isJPEG] || [decryptedBlob isMPEG4]) {
         SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
         if (blob)
             completion(blob, nil);
@@ -46,7 +46,7 @@
         
         [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
             if (succeeded) {
-                SKBlob *blob = [SKBlob blobWithContentsOfPath:path];
+                SKBlob *blob = [SKBlob blobWithContentsOfPath:unzip];
                 if (blob)
                     completion(blob, nil);
                 else
@@ -67,7 +67,7 @@
 }
 
 - (id)initWithData:(NSData *)data {
-    NSParameterAssert(data);
+    NSParameterAssert(data.length);
     
     self = [super init];
     if (self) {
@@ -134,11 +134,30 @@
     return self;
 }
 
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKBlob class]])
+        return [self isEqualToBlob:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToBlob:(SKBlob *)blob {
+    return [self.data isEqualToData:blob.data];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ isImage=%hhd, has overlay=%hhd, bytes=%lu>",
+            NSStringFromClass(self.class), self.isImage, (BOOL)self.overlay, (unsigned long)self.data.length];
+}
+
 - (void)writeToPath:(NSString *)path atomically:(BOOL)atomically {
     NSParameterAssert(path);
+    
     if (!self.overlay)
         [self.data writeToFile:path atomically:atomically];
     else {
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+            [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
         NSString *dataName = self.isImage ? @"media.jpg" : @"media.mp4";
         [self.data writeToFile:[path stringByAppendingPathComponent:dataName] atomically:atomically];
         [self.overlay writeToFile:[path stringByAppendingPathComponent:@"overlay.jpg"] atomically:atomically];

@@ -9,7 +9,9 @@
 #import "SnapchatKit-Constants.h"
 
 #import "SKClient.h"
+#import "SKClient+Account.h"
 #import "SKClient+Chat.h"
+#import "SKClient+Device.h"
 #import "SKClient+Friends.h"
 #import "SKClient+Snaps.h"
 #import "SKClient+Stories.h"
@@ -18,6 +20,7 @@
 #import "SKBlob.h"
 #import "SKCashTransaction.h"
 #import "SKConversation.h"
+#import "SKFoundFriend.h"
 #import "SKMessage.h"
 #import "SKSession.h"
 #import "SKSimpleUser.h"

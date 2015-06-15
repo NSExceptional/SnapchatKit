@@ -38,10 +38,10 @@
 @interface NSData (Blob)
 
 /** Decrypts blob data for standard images and videos. */
-- (NSData *)decryptECB;
+//- (NSData *)decryptECB;
 /** Encrypts blob data for standard images and videos. */
-- (NSData *)encryptECB;
+//- (NSData *)encryptECB;
 /** Decrypts blob data for stories. key and iv are base 64 encoded. */
-- (NSData *)decryptCBCWithKey:(NSString *)key iv:(NSString *)iv;
+- (NSData *)decryptStoryWithKey:(NSString *)key iv:(NSString *)iv;
 
 @end

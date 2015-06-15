@@ -69,11 +69,13 @@
 #pragma mark Internal
 - (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback;
 - (void)get:(NSString *)endpoint callback:(ResponseBlock)callback;
-- (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(BooleanBlock)completion;
+- (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(ErrorBlock)completion;
+/** Completion is GUARANTEED to have one and only one non-nil parameter. */
 - (void)handleError:(NSError *)error data:(NSData *)data response:(NSURLResponse *)response completion:(ResponseBlock)completion;
 
-@property (nonatomic) SKSession *currentSession;
+/** Always lowercase. */
 @property (nonatomic, readonly) NSString *username;
+@property (nonatomic) SKSession *currentSession;
 
 // Data used to sign in
 @property (nonatomic, readonly) NSString *authToken;

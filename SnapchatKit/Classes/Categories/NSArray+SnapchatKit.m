@@ -12,7 +12,7 @@
 
 - (NSString *)JSONString {
     NSData *data = [NSJSONSerialization dataWithJSONObject:self options:0 error:nil];
-    return data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : @"()";
+    return data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : @"[]";
 }
 
 @end

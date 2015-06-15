@@ -22,7 +22,7 @@
         _username      = json[@"name"];
         _displayName   = json[@"display"];
         _addedIncoming = [json[@"direction"] isEqualToString:@"INCOMING"];
-        _type          = [json[@"type"] integerValue];
+        _privacy       = [json[@"type"] integerValue];
         _expiration    = [NSDate dateWithTimeIntervalSince1970:[json[@"expiration"] doubleValue]/1000];
     }
     
@@ -45,6 +45,10 @@
 
 - (BOOL)isEqualToSimpleUser:(SKSimpleUser *)user {
     return [self.username isEqualToString:user.username];
+}
+
+- (NSUInteger)hash {
+    return self.username.hash;
 }
 
 @end

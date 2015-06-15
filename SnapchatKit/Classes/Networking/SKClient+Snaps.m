@@ -9,6 +9,7 @@
 #import "SKClient+Snaps.h"
 #import "SKRequest.h"
 #import "SKBlob.h"
+#import "SKLocation.h"
 
 #import "NSString+SnapchatKit.h"
 #import "NSData+SnapchatKit.h"
@@ -16,7 +17,7 @@
 
 @implementation SKClient (Snaps)
 
-- (void)markSnapViewed:(NSString *)identifier for:(NSUInteger)secondsViewed completion:(BooleanBlock)completion {
+- (void)markSnapViewed:(NSString *)identifier for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion {
     NSDictionary *snapInfo = @{identifier: @{@"t":@([[NSString timestamp] integerValue]),
                                              @"sv": @(secondsViewed)}};
     NSDictionary *viewed   = @{@"eventName": @"SNAP_VIEW",
@@ -78,6 +79,21 @@
         // Failed to get snap
         } else {
             completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+        }
+    }];
+}
+
+- (void)loadFiltersForLocation:(CLLocation *)location completion:(ResponseBlock)completion {
+    NSParameterAssert(location); NSParameterAssert(completion);
+    
+    NSDictionary *query = @{@"lat": @(location.coordinate.latitude),
+                            @"long": @(location.coordinate.longitude),
+                            @"screen_height": @(self.screenSize.height),
+                            @"screen_width": @(self.screenSize.width),
+                            @"username": self.username};
+    [self postTo:kepLocationData query:query callback:^(NSDictionary *json, NSError *error) {
+        if (json[@"location"]) {
+            completion([[SKLocation alloc] initWithDictionary:json[@"location"]], nil);
         }
     }];
 }

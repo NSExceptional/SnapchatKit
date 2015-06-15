@@ -52,12 +52,39 @@
     [dataTask resume];
 }
 
++ (void)sendEvents:(NSDictionary *)eventData callback:(RequestBlock)callback {
+    NSParameterAssert(eventData); NSParameterAssert(callback);
+    SKRequest *request = [[SKRequest alloc] initWithURLString:kEventsURL eventData:eventData];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:callback];
+    [dataTask resume];
+}
+
 #pragma mark Initializers
+
+- (id)initWithHeaderFields:(NSDictionary *)httpHeaders {
+    self = [super init];
+    if (self) {
+        // HTTP header fields
+        [self setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:khfContentType];
+        [self setValue:kUserAgent forHTTPHeaderField:khfUserAgent];
+        [self setValue:khvLanguage forHTTPHeaderField:khfAcceptLanguage];
+        [self setValue:khvLocale forHTTPHeaderField:khfAcceptLocale];
+        
+        if (httpHeaders)
+            [httpHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+                [self setValue:value forHTTPHeaderField:key];
+            }];
+    }
+    
+    return self;
+}
 
 - (id)initWithPOSTEndpoint:(NSString *)endpoint token:(NSString *)token query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders {
     if (!token) token = kStaticToken;
     
-    self = [super init];
+    self = [self initWithHeaderFields:httpHeaders];
     if (self) {
         self.URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kURL, endpoint]];
         self.HTTPMethod = @"POST";
@@ -70,41 +97,31 @@
         json[@"timestamp"] = @([timestamp longLongValue]);
         NSData *queryData  = [[NSString queryStringWithParams:json] dataUsingEncoding:NSASCIIStringEncoding];
         self.HTTPBody      = queryData;
-
-        // HTTP header fields
-        [self setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:khfContentType];
-        [self setValue:kUserAgent forHTTPHeaderField:khfUserAgent];
-        [self setValue:khvLanguage forHTTPHeaderField:khfAcceptLanguage];
-        [self setValue:khvLocale forHTTPHeaderField:khfAcceptLocale];
         
         if ([endpoint isEqualToString:kepBlob] || [endpoint isEqualToString:kepChatMedia])
             [self setValue:timestamp forHTTPHeaderField:khfTimestamp];
-        
-        if (httpHeaders)
-            [httpHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
-                [self setValue:value forHTTPHeaderField:key];
-            }];
     }
     return self;
 }
 
 - (id)initWithGETEndpoint:(NSString *)endpoint headers:(NSDictionary *)httpHeaders {
-    self = [super init];
+    self = [self initWithHeaderFields:httpHeaders];
     if (self) {
         self.URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kURL, endpoint]];
         self.HTTPMethod = @"GET";
-        
-        // HTTP header fields
-        [self setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:khfContentType];
-        [self setValue:kUserAgent forHTTPHeaderField:khfUserAgent];
-        [self setValue:khvLanguage forHTTPHeaderField:khfAcceptLanguage];
-        [self setValue:khvLocale forHTTPHeaderField:khfAcceptLocale];
-        
-        if (httpHeaders)
-            [httpHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
-                [self setValue:value forHTTPHeaderField:key];
-            }];
     }
+    return self;
+}
+
+- (id)initWithURLString:(NSString *)url eventData:(NSDictionary *)eventData {
+    self = [self init];
+    if (self) {
+        self.URL = [NSURL URLWithString:url];
+        self.HTTPMethod = @"POST";
+        NSData *queryData  = [[NSString queryStringWithParams:eventData] dataUsingEncoding:NSASCIIStringEncoding];
+        self.HTTPBody      = queryData;
+    }
+    
     return self;
 }
 

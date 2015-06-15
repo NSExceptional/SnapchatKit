@@ -9,6 +9,10 @@
 #import "SKClient+Friends.h"
 #import "SKRequest.h"
 #import "SKUser.h"
+#import "SKFoundFriend.h"
+
+#import "NSDictionary+SnapchatKit.h"
+#import "NSArray+SnapchatKit.h"
 
 @implementation SKClient (Friends)
 
@@ -60,11 +64,93 @@
     }];
 }
 
+- (void)addFriends:(NSArray *)toAdd removeFriends:(NSArray *)toUnfriend completion:(BooleanBlock)completion {
+    NSParameterAssert(toAdd || toUnfriend);
+    if (!toAdd) toAdd = @[];
+    if (!toUnfriend) toUnfriend = @[];
+    
+    NSDictionary *query = @{@"username": self.currentSession.username,
+                            @"action": @"multiadddelete",
+                            @"friend": @{@"friendsToAdd": toAdd,
+                                         @"friendsToDelete": toUnfriend}.JSONString};
+    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            BOOL success = [json[@"message"] isEqualToString:@"success"];
+            completion(success, nil);
+        } else {
+            completion(NO, error);
+        }
+    }];
+}
+
 - (void)bestFriendsOfUsers:(NSArray *)usernames completion:(DictionaryBlock)completion {
     NSParameterAssert(usernames);
-    NSDictionary *query = @{@"friend_usernames": usernames,
+    NSDictionary *query = @{@"friend_usernames": usernames.JSONString,
                             @"username": self.currentSession.username};
     [self postTo:kepBestFriends query:query callback:completion];
+}
+
+- (void)findFriends:(NSDictionary *)friends completion:(ArrayBlock)completion {
+    NSParameterAssert(friends.allKeys.count); NSParameterAssert(completion);
+    if (self.currentSession.shouldTextToVerifyNumber || self.currentSession.shouldCallToVerifyNumber)
+        completion(nil, [SKRequest errorWithMessage:@"You need to verify your phone number first." code:1]);
+    
+//    NSArray *findRequests = [friends split:30];
+    
+    // The people over at SnAPI say it only takes up to 30 numbers at a time,
+    // but my phone sent way more than 30 at once.
+//    for (NSDictionary *find in findRequests) {
+        NSDictionary *query = @{@"username": self.username,
+                                @"countryCode": self.currentSession.countryCode,
+                                @"numbers": friends.JSONString};
+        [self postTo:kepFindFriends query:query callback:^(NSDictionary *json, NSError *error) {
+            if (!error) {
+                NSArray *contacts = json[@"results"];
+                NSMutableArray *foundFriends = [NSMutableArray array];
+                for (NSDictionary *f in contacts)
+                    [foundFriends addObject:[[SKFoundFriend alloc] initWithDictionary:f]];
+                completion(foundFriends, nil);
+            } else {
+                completion(nil, error);
+            }
+        }];
+//    }
+}
+
+- (void)searchFriend:(NSString *)query completion:(ResponseBlock)completion {
+    NSParameterAssert(query.length); NSParameterAssert(completion);
+    [self postTo:kepFriendSearch query:@{@"query": query, @"username": self.username} callback:completion];
+}
+
+- (void)userExists:(NSString *)username completion:(BooleanBlock)completion {
+    NSParameterAssert(username); NSParameterAssert(completion);
+    
+    [self postTo:kepUserExists query:@{@"request_username": username, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            BOOL exists = [json[@"exists"] boolValue];
+            completion(exists, nil);
+        } else {
+            completion(NO, error);
+        }
+    }];
+}
+
+- (void)updateDisplayNameForUser:(NSString *)friend newName:(NSString *)displayName completion:(ErrorBlock)completion {
+    NSParameterAssert(displayName.length); NSParameterAssert(friend.length);
+    
+    NSDictionary *query = @{@"action": @"display",
+                            @"display": displayName,
+                            @"friend": friend,
+                            @"friend_id": @"",
+                            @"username": self.username};
+    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            SKUser *updated = [[SKUser alloc] initWithDictionary:json[@"object"]];
+            [self.currentSession.friends removeObject:updated];
+            [self.currentSession.friends addObject:updated];
+        }
+        completion(error);
+    }];
 }
 
 @end

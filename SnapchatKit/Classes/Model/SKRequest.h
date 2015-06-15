@@ -34,6 +34,8 @@
 
 + (void)get:(NSString *)endpoint callback:(RequestBlock)callback;
 
++ (void)sendEvents:(NSDictionary *)eventData callback:(RequestBlock)callback;
+
 /**
  Automatically adds query parameters:
  - timestamp

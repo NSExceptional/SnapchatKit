@@ -27,9 +27,23 @@ typedef void (^DataBlock)(NSData *data, NSError *error);
 typedef void (^StringBlock)(NSString *string, NSError *error);
 typedef void (^DictionaryBlock)(NSDictionary *dict, NSError *error);
 typedef void (^ArrayBlock)(NSArray *collection, NSError *error);
+typedef void (^CollectionResponseBlock)(NSArray *success, NSArray *failed, NSArray *errors);
 typedef void (^ResponseBlock)(id object, NSError *error);
 typedef void (^ErrorBlock)(NSError *error);
 typedef void (^VoidBlock)();
+
+typedef NS_ENUM(NSUInteger, SKSnapPrivacy)
+{
+    SKSnapPrivacyEveryone,
+    SKSnapPrivacyFriends
+};
+
+typedef NS_ENUM(NSUInteger, SKStoryPrivacy)
+{
+    SKStoryPrivacyFriends,
+    SKStoryPrivacyEveryone,
+    SKStoryPrivacyCustom
+};
 
 typedef NS_ENUM(NSInteger, SKAddSource)
 {
@@ -66,15 +80,10 @@ typedef NS_ENUM(NSInteger, SKFriendStatus)
     SKFriendStatusDeleted
 };
 
-typedef NS_ENUM(NSInteger, SKPrivacyStatus)
-{
-    SKPrivacyStatusEveryone,
-    SKPrivacyStatusFriends
-};
-
 extern SKAddSource SKAddSourceFromString(NSString *addSourceString);
 extern NSString * SKStringFromAddSource(SKAddSource addSource);
 extern NSString * SKStringFromMediaKind(SKMediaKind mediaKind);
+extern NSString * SKStringFromStoryPrivacy(SKStoryPrivacy);
 
 extern BOOL SKMediaKindIsImage(SKMediaKind mediaKind);
 extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
@@ -83,6 +92,7 @@ extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
 extern NSString * const kUserAgent;
 /** The API URL. iOS uses the /bq endpoint, Android clients use the /ph endpoint. */
 extern NSString * const kURL;
+extern NSString * const kEventsURL;
 /** The API secret used to create access tokens. */
 extern NSString * const kSecret;
 /** Used when no session is available. */
@@ -144,8 +154,14 @@ extern NSString * const kepSettings;
 extern NSString * const kepFeatures;
 extern NSString * const kepSnaptag;
 extern NSString * const kepCashEligible;
+extern NSString * const kepCashGenerateToken;
+extern NSString * const kepLocationData;
 
 extern NSString * const kepGetStoryBlob;
 extern NSString * const kepGetStoryThumb;
 
-
+#pragma mark Feature settings
+extern NSString * const SKFeatureFrontFacingFlash;
+extern NSString * const SKFeatureReplaySnaps;
+extern NSString * const SKFeatureSmartFilters;
+extern NSString * const SKFeatureVisualFilters;
