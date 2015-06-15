@@ -7,6 +7,7 @@
 //
 
 #import "SKThing.h"
+@class SKBlob;
 
 @interface SKSnap : SKThing
 
@@ -25,5 +26,17 @@
 /** Actual lenth of the video, or the same as _timer for images. 0.f is snap is "outgoing". */
 @property (nonatomic, readonly) CGFloat      mediaTimer;
 @property (nonatomic, readonly) NSDate       *sentDate;
+
+/** @c nil until you call @c load: */
+@property (nonatomic, readonly) SKBlob       *blob;
+
+@end
+
+
+@interface SKSnap (SKClient)
+/** Loads the blob for the story. If successful, @c blob will contain the story's blob data. */
+- (void)load:(ErrorBlock)completion;
+/** @return If @c blob is @c nil, returns nil. For images: @c {identifier}.jpg, for videos: @c {identifier}.mp4, and for videos with an overlay just {identifier} */
+@property (nonatomic, readonly) NSString *suggestedFilename;
 
 @end

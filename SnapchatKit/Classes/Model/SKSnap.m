@@ -7,6 +7,8 @@
 //
 
 #import "SKSnap.h"
+#import "SKBlob.h"
+#import "SKClient+Snaps.h"
 
 @implementation SKSnap
 
@@ -49,6 +51,34 @@
 
 - (NSUInteger)hash {
     return self.identifier.hash;
+}
+
+@end
+
+
+@implementation SKSnap (SKClient)
+
+- (void)load:(ErrorBlock)completion {
+    NSParameterAssert(completion);
+    [[SKClient sharedClient] loadSnapWithIdentifier:self.identifier completion:^(SKBlob *blob, NSError *error) {
+        if (!error) {
+            _blob = blob;
+            completion(nil);
+        } else {
+            completion(error);
+        }
+    }];
+}
+
+- (NSString *)suggestedFilename {
+    if (!self.blob)
+        return nil;
+    if (self.blob.isImage)
+        return [NSString stringWithFormat:@"%@.jpg", self.identifier];
+    else if (self.blob.overlay)
+        return self.identifier;
+    else
+        return [NSString stringWithFormat:@"%@.mp4", self.identifier];
 }
 
 @end

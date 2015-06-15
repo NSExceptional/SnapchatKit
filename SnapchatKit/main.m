@@ -109,21 +109,23 @@ void markChatsRead(SKSession *session) {
 
 void saveUnreadSnapsToDirectory(NSArray *unread, NSString *path) {
     for (SKSnap *snap in unread)
-        [snap loadMediaWithCompletion:^(SKBlob *blob, NSError *error) {
-            if (SKMediaKindIsImage(snap.mediaKind)) {
-                // Turn it into an image if you want
-                // NSImage *image = [[NSImage alloc] initWithData:snapData];
-                [blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.jpg", snap.sender, snap.identifier]] atomically:YES];
-                NSLog(@"Image snap from: %@", snap.sender);
-            }
-            else if (SKMediaKindIsVideo(snap.mediaKind)) {
-                if (blob.overlay) {
-                    [blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/media.mp4", snap.sender, snap.identifier]] atomically:YES];
-                    [blob.overlay writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/overlay.jpg", snap.sender, snap.identifier]] atomically:YES];
-                } else {
-                    [blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.mp4", snap.sender, snap.identifier]] atomically:YES];
+        [snap load:^(NSError *error) {
+            if (!error) {
+                if (SKMediaKindIsImage(snap.mediaKind)) {
+                    // Turn it into an image if you want
+                    // NSImage *image = [[NSImage alloc] initWithData:snapData];
+                    [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.jpg", snap.sender, snap.identifier]] atomically:YES];
+                    NSLog(@"Image snap from: %@", snap.sender);
                 }
-                NSLog(@"Video snap from: %@", snap.sender);
+                else if (SKMediaKindIsVideo(snap.mediaKind)) {
+                    if (snap.blob.overlay) {
+                        [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/media.mp4", snap.sender, snap.identifier]] atomically:YES];
+                        [snap.blob.overlay writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/overlay.jpg", snap.sender, snap.identifier]] atomically:YES];
+                    } else {
+                        [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.mp4", snap.sender, snap.identifier]] atomically:YES];
+                    }
+                    NSLog(@"Video snap from: %@", snap.sender);
+                }
             }
         }];
 }
@@ -207,7 +209,7 @@ int main(int argc, const char * argv[]) {
                 
                 // Get unread snaps
                 NSArray *unread = session.unread;
-//                NSLog(@"%lu unread snaps: %@", unread.count, unread);
+                NSLog(@"%lu unread snaps: %@", unread.count, unread);
                 
                 // Some locations with cool filters.
                 // Waco       31.534089, -97.123811
