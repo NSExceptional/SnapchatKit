@@ -24,6 +24,7 @@
 @interface NSData (FileFormat)
 
 - (BOOL)isJPEG;
+- (BOOL)isPNG;
 - (BOOL)isMPEG4;
 - (BOOL)isCompressed;
 
@@ -32,6 +33,8 @@
 
 @interface NSData (Encoding)
 - (NSString *)MD5Hash;
+- (NSString *)hexadecimalString;
+- (NSString *)sha256Hash;
 @end
 
 

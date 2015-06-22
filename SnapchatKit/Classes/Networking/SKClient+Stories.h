@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SKClient.h"
 
-@class SKStory, SKUserStory;
+@class SKStory, SKUserStory, SKStoryCollection;
 
 
 @interface SKClient (Stories)
@@ -25,6 +25,14 @@
 /** Callback may be nil. */
 - (void)deleteStory:(SKUserStory *)story completion:(ErrorBlock)completion;
 
-- (void)markStoryViewed:(SKStory *)story screenshotCount:(NSUInteger)sscount completion:(BooleanBlock)completion;
+/** @param stories An array of @c SKStoryUpdater objects. */
+- (void)markStoriesViewed:(NSArray *)stories completion:(ErrorBlock)completion;
+/** To batch mark stories viewed, use @c -markStoriesViewed:completion: */
+- (void)markStoryViewed:(SKStory *)story screenshotCount:(NSUInteger)sscount completion:(ErrorBlock)completion;
+
+- (void)hideSharedStory:(SKStoryCollection *)story completion:(ErrorBlock)completion;
+
+/** Does nothing if the story is not a shared story. */
+- (void)provideSharedDescription:(SKStory *)sharedStory completion:(ErrorBlock)completion;
 
 @end

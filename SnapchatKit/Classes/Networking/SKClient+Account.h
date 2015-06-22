@@ -26,5 +26,7 @@
 /** Completion takes an SKBlob object. */
 - (void)downloadSnaptag:(ResponseBlock)completion;
 
+- (void)updateTOSAgreementStatus:(BOOL)snapcash snapcashV2:(BOOL)snapcashV2 square:(BOOL)square completion:(ErrorBlock)completion;
+
 
 @end

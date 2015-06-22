@@ -7,6 +7,7 @@
 //
 
 #import "NSString+SnapchatKit.h"
+#import "NSData+SnapchatKit.h"
 #import "SnapchatKit-Constants.h"
 #import <CommonCrypto/CommonHMAC.h>
 
@@ -22,15 +23,19 @@
     return [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
 }
 
-+ (NSString *)sha256Hash:(NSData *)data {
+- (NSString *)sha256Hash {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] sha256Hash];
+}
+
+- (NSData *)sha256HashRaw {
+    NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
+    
     unsigned char result[CC_SHA256_DIGEST_LENGTH];
     CC_SHA256(data.bytes, (unsigned int)data.length, result);
     
-    NSMutableString *hash = [NSMutableString string];
-    for(int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
-        [hash appendFormat:@"%02x", result[i]];
+    data = [[NSData alloc] initWithBytes:result length:CC_SHA256_DIGEST_LENGTH];
     
-    return hash;
+    return data;
 }
 
 + (NSString *)hashSCString:(NSString *)first and:(NSString *)second {
@@ -48,8 +53,8 @@
     [secondData appendData:secretData];
     
     // SHA256 hash data
-    NSString *first  = [NSString sha256Hash:firstData];
-    NSString *second = [NSString sha256Hash:secondData];
+    NSString *first  = [firstData sha256Hash];
+    NSString *second = [secondData sha256Hash];
     
     // SC hash
     NSMutableString *hash = [NSMutableString string];
@@ -92,7 +97,11 @@
 @implementation NSString (REST)
 
 + (NSString *)timestamp {
-    NSTimeInterval time = [NSDate date].timeIntervalSince1970;
+    return [self timestampFrom:[NSDate date]];
+}
+
++ (NSString *)timestampFrom:(NSDate *)date {
+    NSTimeInterval time = date.timeIntervalSince1970;
     return [NSString stringWithFormat:@"%llu", (unsigned long long)round(time *1000.0)];
 }
 
@@ -164,14 +173,7 @@
 }
 
 - (NSString *)stringByReplacingMatchesForRegex:(NSString *)pattern withString:(NSString *)replacement {
-    if (!pattern.length || !self.length)
-        return self;
-    
-    NSMutableString *m = self.mutableCopy;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:nil];
-    [regex replaceMatchesInString:m options:0 range:NSMakeRange(0, m.length) withTemplate:replacement];
-    
-    return m;
+    return [self stringByReplacingOccurrencesOfString:pattern withString:replacement options:NSRegularExpressionSearch range:NSMakeRange(0, self.length)];
 }
 
 @end

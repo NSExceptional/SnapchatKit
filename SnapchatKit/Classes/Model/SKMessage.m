@@ -68,7 +68,7 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
                 break;
             }
             default: {
-                NSLog(@"Unknown message kind: %@", type);
+                SKLog(@"Unknown message kind: %@", type);
             }
         }
         
@@ -83,7 +83,7 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
         
         // Debugging
         if (![_type isEqualToString:@"chat_message"])
-            NSLog(@"Unknown chat message type: %@", _type);
+            SKLog(@"Unknown chat message type: %@", _type);
     }
     
     [self.knownJSONKeys addObjectsFromArray:@[@"chat_message", @"body", @"header", @"id", @"chat_message_id", @"iter_token",

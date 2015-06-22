@@ -24,7 +24,7 @@
     [SKRequest postTo:kepTyping query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         [self handleError:error data:data response:response completion:^(id object, NSError *error) {
             if (kVerboseLog && error)
-                NSLog(@"Failed to send typing notification(s): %@", recipientString);
+                SKLog(@"Failed to send typing notification(s): %@", recipientString);
         }];
     }];
 }

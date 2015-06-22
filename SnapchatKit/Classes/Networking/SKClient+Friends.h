@@ -48,4 +48,6 @@
 
 - (void)updateDisplayNameForUser:(NSString *)friend newName:(NSString *)displayName completion:(ErrorBlock)completion;
 
+- (void)blockUser:(NSString *)username completion:(ErrorBlock)completion;
+
 @end

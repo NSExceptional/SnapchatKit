@@ -12,7 +12,9 @@
 
 - (NSString *)base64Encode;
 - (NSString *)base64Decode;
-+ (NSString *)sha256Hash:(NSData *)data;
+- (NSString *)sha256Hash;
+- (NSData *)sha256HashRaw;
+
 
 /** Implementation of Snapchat's hashing algorithm. */
 + (NSString *)hashSC:(NSData *)first and:(NSData *)second;
@@ -28,6 +30,7 @@
 @interface NSString (REST)
 
 + (NSString *)timestamp;
++ (NSString *)timestampFrom:(NSDate *)date;
 + (NSString *)queryStringWithParams:(NSDictionary *)params;
 
 @end

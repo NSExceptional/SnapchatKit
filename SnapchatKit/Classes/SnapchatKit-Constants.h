@@ -12,8 +12,8 @@
 #define kScreenWidth ((NSInteger)[UIScreen mainScreen].bounds.size.width)
 #define kScreenHeight ((NSInteger)[UIScreen mainScreen].bounds.size.height)
 #else
-#define kScreenWidth (640)
-#define kScreenHeight (1136)
+#define kScreenWidth (720)
+#define kScreenHeight (1280)
 #endif
 
 #define kDebugJSON YES
@@ -31,6 +31,8 @@ typedef void (^CollectionResponseBlock)(NSArray *success, NSArray *failed, NSArr
 typedef void (^ResponseBlock)(id object, NSError *error);
 typedef void (^ErrorBlock)(NSError *error);
 typedef void (^VoidBlock)();
+
+extern void SKLog(NSString *format, ...);
 
 typedef NS_ENUM(NSUInteger, SKSnapPrivacy)
 {
@@ -90,8 +92,11 @@ extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
 
 /** Before updating this value, confirm that the library requests everything in the same way as the app. */
 extern NSString * const kUserAgent;
+/** The user agent specific to making the attestation request. */
+extern NSString * const kUserAgentForAttestation;
 /** The API URL. iOS uses the /bq endpoint, Android clients use the /ph endpoint. */
 extern NSString * const kURL;
+/** An alternate base URL for sending certain POST requests. */
 extern NSString * const kEventsURL;
 /** The API secret used to create access tokens. */
 extern NSString * const kSecret;
@@ -101,8 +106,16 @@ extern NSString * const kStaticToken;
 extern NSString * const kBlobEncryptionKey;
 /** Used to create the token for each request. */
 extern NSString * const kHashPattern;
-
+/** Used to separate form fields when sending snaps. */
 extern NSString * const kBoundary;
+/** Used to generate attestation. Base 64 encoded, and version specific. Current is 9.10.0.0. */
+extern NSString * const kAPKDigest;
+/** The sha256 digest of the certificate used to sign the Snapchat APK, base 64 encoded. It should never change. */
+extern NSString * const kAPKCertificateDigest;
+/** Google Play Services version used to make the attestation request. */
+extern NSString * const kGMSVersion;
+/** Used in making the attestation request. */
+extern NSString * const kDroidGuard;
 
 #pragma mark Header fields / values
 extern NSString * const khfClientAuthTokenHeaderField;

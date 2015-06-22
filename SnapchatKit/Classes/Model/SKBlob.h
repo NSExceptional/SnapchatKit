@@ -28,8 +28,10 @@
 @property (nonatomic, readonly) NSData *data;
 /** @c nil if not applicable. */
 @property (nonatomic, readonly) NSData *overlay;
-/** @c YES if the data is for a JPEG, @c NO if it's something other than a JPEG (most likely to be an MPEG4). */
+/** @c YES if the data is for a JPEG, @c NO if it's something other than a JPEG or PNG. */
 @property (nonatomic, readonly) BOOL isImage;
+/** @c YES if the data is for a MPEG4 video, @c NO if it's something else. */
+@property (nonatomic, readonly) BOOL isVideo;
 
 
 @end

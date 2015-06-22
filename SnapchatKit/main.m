@@ -15,6 +15,7 @@
 
 // debug
 #import "NSData+SnapchatKit.h"
+#import "NSString+SnapchatKit.h"
 @import AppKit;
 @import CoreLocation;
 
@@ -49,11 +50,11 @@ void registerAccount(NSString *email, NSString *password, NSString *birthday) {
                                     if (!error4) {
                                         
                                     } else {
-                                        NSLog(@"%@", error4.localizedFailureReason);
+                                        SKLog(@"%@", error4);
                                     }
                                 }];
                             } else {
-                                NSLog(@"%@", error3.localizedFailureReason);
+                                SKLog(@"%@", error3);
                             }
                         }];
                     else
@@ -62,21 +63,21 @@ void registerAccount(NSString *email, NSString *password, NSString *birthday) {
                                 NSString *code = @"code";
                                 [[SKClient sharedClient] verifyPhoneNumberWithCode:code completion:^(BOOL success, NSError *error) {
                                     if (success)
-                                        NSLog(@"Success!");
+                                        SKLog(@"Success!");
                                     else
-                                        NSLog(@"Failure");
+                                        SKLog(@"Failure");
                                 }];
                             } else {
-                                NSLog(@"%@", error5.localizedFailureReason);
+                                SKLog(@"%@", error5);
                             }
                         }];
                     
                 } else {
-                    NSLog(@"%@", error2.localizedFailureReason);
+                    SKLog(@"%@", error2);
                 }
             }];
         } else {
-            NSLog(@"%@", error.localizedFailureReason);
+            SKLog(@"%@", error);
         }
     }];
     
@@ -84,11 +85,11 @@ void registerAccount(NSString *email, NSString *password, NSString *birthday) {
 
 void markSnapsRead(NSArray *unread) {
     for (SKSnap *snap in unread)
-        [[SKClient sharedClient] markSnapViewed:snap.identifier for:1 completion:^(NSError *error) {
+        [[SKClient sharedClient] markSnapViewed:snap for:1 completion:^(NSError *error) {
             if (!error)
-                NSLog(@"Success: %@", snap.identifier);
+                SKLog(@"Success: %@", snap.identifier);
             else
-                NSLog(@"Failure: %@", snap.identifier);
+                SKLog(@"Failure: %@", snap.identifier);
         }];
 }
 
@@ -101,9 +102,9 @@ void markChatsRead(SKSession *session) {
     for (SKConversation *convo in unreadChats)
         [[SKClient sharedClient] markRead:convo completion:^(NSError *error) {
             if (!error)
-                NSLog(@"Success: %@", convo.identifier);
+                SKLog(@"Success: %@", convo.identifier);
             else
-                NSLog(@"Failure: %@", convo.identifier);
+                SKLog(@"Failure: %@", convo.identifier);
         }];
 }
 
@@ -115,7 +116,7 @@ void saveUnreadSnapsToDirectory(NSArray *unread, NSString *path) {
                     // Turn it into an image if you want
                     // NSImage *image = [[NSImage alloc] initWithData:snapData];
                     [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.jpg", snap.sender, snap.identifier]] atomically:YES];
-                    NSLog(@"Image snap from: %@", snap.sender);
+                    SKLog(@"Image snap from: %@", snap.sender);
                 }
                 else if (SKMediaKindIsVideo(snap.mediaKind)) {
                     if (snap.blob.overlay) {
@@ -124,7 +125,7 @@ void saveUnreadSnapsToDirectory(NSArray *unread, NSString *path) {
                     } else {
                         [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.mp4", snap.sender, snap.identifier]] atomically:YES];
                     }
-                    NSLog(@"Video snap from: %@", snap.sender);
+                    SKLog(@"Video snap from: %@", snap.sender);
                 }
             }
         }];
@@ -133,17 +134,17 @@ void saveUnreadSnapsToDirectory(NSArray *unread, NSString *path) {
 void testGetConversations() {
     [[SKClient sharedClient] conversationsWithUsers:@[@"luke_velten", @"baileybreen", @"avaallansnaps", @"abcdefgqwertyp"] completion:^(NSArray *conversations, NSArray *failed, NSError *error) {
         if (error)
-            NSLog(@"%@", error.localizedFailureReason);
-        NSLog(@"Conversations: %@", conversations);
+            SKLog(@"%@", error.localizedFailureReason);
+        SKLog(@"Conversations: %@", conversations);
         if (failed.count)
-            NSLog(@"Failed to get convos with users: %@", failed);
+            SKLog(@"Failed to get convos with users: %@", failed);
     }];
 }
 
 void testGetStory(SKStory *story) {
     [story load:^(NSError *error) {
         if (!error) {
-            NSLog(@"%@", story);
+            SKLog(@"%@", story);
             if (SKMediaKindIsImage(story.mediaKind)) {
                 NSImage *image = [[NSImage alloc] initWithData:story.blob.data];
             }
@@ -159,7 +160,7 @@ void testGetAllStoriesInCollectionForUser(NSString *path, NSString *user) {
             break;
         }
     [[SKClient sharedClient] loadStories:collection.stories completion:^(NSArray *stories, NSArray *failed, NSArray *errors) {
-        NSLog(@"%@", collection);
+        SKLog(@"%@", collection);
         for (SKStory *story in stories) {
             [story.blob writeToPath:[path stringByAppendingPathComponent:story.suggestedFilename] atomically:YES];
         }
@@ -170,12 +171,24 @@ void getFilterForCoordinates(double lat, double lon) {
     CLLocation *loc = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
     [[SKClient sharedClient] loadFiltersForLocation:loc completion:^(NSArray *collection, NSError *error) {
         if (!error) {
-            NSLog(@"%@", collection);
+            SKLog(@"%@", collection);
         } else {
-            NSLog(@"%@", error);
+            SKLog(@"%@", error);
         }
     }];
 
+}
+
+void testSendSnapFromFileAtPathToUser(NSString *path, NSString *recipient) {
+    SKBlob *blob = [SKBlob blobWithContentsOfPath:path];
+    if (!blob) {
+        SKLog(@"Error loading blob data for file at: %@", path);
+        return;
+    }
+    
+    [[SKClient sharedClient] sendSnap:blob to:@[recipient] text:nil timer:5.5 completion:^(NSError *error) {
+        SKLog(@"%@", error ?: @"Success");
+    }];
 }
 
 int main(int argc, const char * argv[]) {
@@ -194,14 +207,14 @@ int main(int argc, const char * argv[]) {
                 SKSession *session = [SKClient sharedClient].currentSession;
                 NSDictionary *json = (NSDictionary *)[session valueForKey:@"_JSON"];
                 [json writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
-                NSLog(@"Session written to file.");
+                SKLog(@"Session written to file.");
                 
                 // For debugging purposes, to see the size of the response JSON in memory. Mine was about 300 KB.
                 // Probably quadratically larger though, since each object also holds onto its JSON dictionary,
                 // ie each SKStoryCollection has the JSON for each story, and each SKStory also has its JSON.
                 // TODO: make the _JSON property of SKThing dependent on kDebugJSON.
                 NSData *data = [NSPropertyListSerialization dataWithPropertyList:[session valueForKey:@"_JSON"] format:NSPropertyListBinaryFormat_v1_0 options:0 error:nil];
-                NSLog(@"Bytes: %lu Kilobytes: %f", data.length, ((float)data.length/1024.f));
+                SKLog(@"Bytes: %lu Kilobytes: %f", data.length, ((float)data.length/1024.f));
                 
                 ////////////////////////////
                 // I'm testing stuff here //
@@ -209,7 +222,10 @@ int main(int argc, const char * argv[]) {
                 
                 // Get unread snaps
                 NSArray *unread = session.unread;
-                NSLog(@"%lu unread snaps: %@", unread.count, unread);
+                SKLog(@"%lu unread snaps: %@", unread.count, unread);
+                
+//                SKLog(@"Sending snap...");
+//                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
                 
                 // Some locations with cool filters.
                 // Waco       31.534089, -97.123811
@@ -231,7 +247,7 @@ int main(int argc, const char * argv[]) {
                 // Spaceship Earth 28.375281, -81.549365
                 // Hollywood       28.358270, -81.558856
                 // Magic Kingdom   28.418933 ,-81.581206
-                getFilterForCoordinates(28.355066, -81.590046);
+//                getFilterForCoordinates(28.355066, -81.590046);
                 
 //                testGetAllStoriesInCollectionForUser([directory stringByAppendingPathComponent:@"Test-Stories"], @"someusername");
                 
@@ -241,7 +257,7 @@ int main(int argc, const char * argv[]) {
 //                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-//                markSnapsRead(unread);
+                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);
@@ -249,10 +265,10 @@ int main(int argc, const char * argv[]) {
 //                 // Get best friends (not working, api disabled?)
 //                [[SKClient sharedClient] bestFriendsOfUsers:@[@"luke_velten"] completion:^(NSDictionary *dict, NSError *error) {
 //                    if (!error)
-//                        NSLog(@"%@", dict);
+//                        SKLog(@"%@", dict);
 //                }];
             } else {
-                NSLog(@"%@", error.localizedDescription ?: error.localizedFailureReason);
+                SKLog(@"%@", error.localizedDescription);
             }
         }];
         

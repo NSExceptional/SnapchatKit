@@ -10,6 +10,7 @@
 		B40C9EE51B185EC100B033B5 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B40C9EE41B185EC100B033B5 /* libz.1.dylib */; };
 		B4185E431B2C1D7A005975EB /* SKBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = B4185E421B2C1D7A005975EB /* SKBlob.m */; };
 		B41EE78E1AF9C0E000FD5E5B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B41EE78D1AF9C0E000FD5E5B /* main.m */; };
+		B437C54B1B300DCE00B8DD01 /* SKSnapOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B437C54A1B300DCE00B8DD01 /* SKSnapOptions.m */; };
 		B48E33FE1B199C1D0004CEAD /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = B48E33FD1B199C1D0004CEAD /* SSZipArchive.m */; };
 		B48E34171B199DFA0004CEAD /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E340F1B199DFA0004CEAD /* ioapi.c */; };
 		B48E34181B199DFA0004CEAD /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = B48E34111B199DFA0004CEAD /* mztools.c */; };
@@ -21,6 +22,7 @@
 		B4BFA1331B2E4A9A0057EB53 /* SKClient+Device.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA1321B2E4A9A0057EB53 /* SKClient+Device.m */; };
 		B4BFA1361B2E81270057EB53 /* SKFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA1351B2E81270057EB53 /* SKFilter.m */; };
 		B4BFA1391B2E81370057EB53 /* SKLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA1381B2E81370057EB53 /* SKLocation.m */; };
+		B4BFA13C1B2FFB260057EB53 /* SKStoryUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BFA13B1B2FFB260057EB53 /* SKStoryUpdater.m */; };
 		B4C21A211B0CEE23000365DE /* NSData+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */; };
 		B4C21A221B0CEE23000365DE /* NSString+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C219FE1B0CEE23000365DE /* NSString+SnapchatKit.m */; };
 		B4C21A231B0CEE23000365DE /* SKAddedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A011B0CEE23000365DE /* SKAddedFriend.m */; };
@@ -69,6 +71,8 @@
 		B4185E421B2C1D7A005975EB /* SKBlob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBlob.m; sourceTree = "<group>"; };
 		B41EE78A1AF9C0E000FD5E5B /* SnapchatKit */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SnapchatKit; sourceTree = BUILT_PRODUCTS_DIR; };
 		B41EE78D1AF9C0E000FD5E5B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B437C5491B300DCE00B8DD01 /* SKSnapOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSnapOptions.h; sourceTree = "<group>"; };
+		B437C54A1B300DCE00B8DD01 /* SKSnapOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSnapOptions.m; sourceTree = "<group>"; };
 		B44E2CB71B184F22006E9AB8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		B44E2CB91B18590B006E9AB8 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		B48E33FC1B199C1D0004CEAD /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSZipArchive.h; path = Classes/Dependencies/SSZipArchive.h; sourceTree = "<group>"; };
@@ -94,6 +98,8 @@
 		B4BFA1351B2E81270057EB53 /* SKFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKFilter.m; sourceTree = "<group>"; };
 		B4BFA1371B2E81370057EB53 /* SKLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLocation.h; sourceTree = "<group>"; };
 		B4BFA1381B2E81370057EB53 /* SKLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLocation.m; sourceTree = "<group>"; };
+		B4BFA13A1B2FFB260057EB53 /* SKStoryUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKStoryUpdater.h; sourceTree = "<group>"; };
+		B4BFA13B1B2FFB260057EB53 /* SKStoryUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKStoryUpdater.m; sourceTree = "<group>"; };
 		B4C219F61B0B7730000365DE /* Login.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
 		B4C219FB1B0CEE23000365DE /* NSData+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SnapchatKit.h"; sourceTree = "<group>"; };
 		B4C219FC1B0CEE23000365DE /* NSData+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SnapchatKit.m"; sourceTree = "<group>"; };
@@ -271,12 +277,16 @@
 				B4C21A0D1B0CEE23000365DE /* SKSimpleUser.m */,
 				B4C21A0E1B0CEE23000365DE /* SKSnap.h */,
 				B4C21A0F1B0CEE23000365DE /* SKSnap.m */,
+				B437C5491B300DCE00B8DD01 /* SKSnapOptions.h */,
+				B437C54A1B300DCE00B8DD01 /* SKSnapOptions.m */,
 				B4C21A101B0CEE23000365DE /* SKStory.h */,
 				B4C21A111B0CEE23000365DE /* SKStory.m */,
 				B4C21A121B0CEE23000365DE /* SKStoryCollection.h */,
 				B4C21A131B0CEE23000365DE /* SKStoryCollection.m */,
 				B4C21A141B0CEE23000365DE /* SKStoryNote.h */,
 				B4C21A151B0CEE23000365DE /* SKStoryNote.m */,
+				B4BFA13A1B2FFB260057EB53 /* SKStoryUpdater.h */,
+				B4BFA13B1B2FFB260057EB53 /* SKStoryUpdater.m */,
 				B4C21A161B0CEE23000365DE /* SKThing.h */,
 				B4C21A171B0CEE23000365DE /* SKThing.m */,
 				B4C21A181B0CEE23000365DE /* SKUser.h */,
@@ -422,6 +432,7 @@
 				B48E341A1B199DFA0004CEAD /* zip.c in Sources */,
 				B48E33FE1B199C1D0004CEAD /* SSZipArchive.m in Sources */,
 				B4C21A2C1B0CEE23000365DE /* SKStoryCollection.m in Sources */,
+				B437C54B1B300DCE00B8DD01 /* SKSnapOptions.m in Sources */,
 				B4185E431B2C1D7A005975EB /* SKBlob.m in Sources */,
 				B4C21A251B0CEE23000365DE /* SKConversation.m in Sources */,
 				B4C21A221B0CEE23000365DE /* NSString+SnapchatKit.m in Sources */,
@@ -434,6 +445,7 @@
 				B4C21A231B0CEE23000365DE /* SKAddedFriend.m in Sources */,
 				B4C21A311B0CEE23000365DE /* SKClient.m in Sources */,
 				B4C21A2E1B0CEE23000365DE /* SKThing.m in Sources */,
+				B4BFA13C1B2FFB260057EB53 /* SKStoryUpdater.m in Sources */,
 				B48E34171B199DFA0004CEAD /* ioapi.c in Sources */,
 				B4C21A451B151188000365DE /* SKClient+Snaps.m in Sources */,
 				B4C21A3F1B0F93D5000365DE /* NSArray+SnapchatKit.m in Sources */,

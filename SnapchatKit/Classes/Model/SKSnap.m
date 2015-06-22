@@ -60,7 +60,7 @@
 
 - (void)load:(ErrorBlock)completion {
     NSParameterAssert(completion);
-    [[SKClient sharedClient] loadSnapWithIdentifier:self.identifier completion:^(SKBlob *blob, NSError *error) {
+    [[SKClient sharedClient] loadSnap:self completion:^(SKBlob *blob, NSError *error) {
         if (!error) {
             _blob = blob;
             completion(nil);

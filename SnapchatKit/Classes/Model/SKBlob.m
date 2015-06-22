@@ -52,7 +52,7 @@
                 else
                     completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
             } else {
-                NSLog(@"%@", error.localizedDescription);
+                SKLog(@"%@", error);
             }
         }];
     } else if (decryptedBlob) {
@@ -72,7 +72,9 @@
     self = [super init];
     if (self) {
         _data = data;
-        _isImage = [_data isJPEG];
+        _isImage = _data.isJPEG || _data.isPNG;
+        _isVideo = _data.isMPEG4;
+        
     }
     
     return self;
@@ -97,7 +99,7 @@
                 if (files.count == 1) {
                     _data = [[NSData alloc] initWithContentsOfFile:[path stringByAppendingPathComponent:files[0]]];
                     if (kVerboseLog)
-                        NSLog(@"Single file in zip: %@", files[0]);
+                        SKLog(@"Single file in zip: %@", files[0]);
                 }
                 
                 // Load video blob and image blob
@@ -113,22 +115,25 @@
                 if (!_data)
                     return nil;
                 if (!_overlay && kVerboseLog)
-                    NSLog(@"Single file in zip: %@", files);
+                    SKLog(@"Single file in zip: %@", files);
                 // Image
-            } else if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+            } else {
                 _data = [[NSData alloc] initWithContentsOfFile:path];
                 if (!_data)
                     return nil;
             }
             
             // Delete file(s)
-            NSError *error = nil;
-            [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
-            if (error && kVerboseLog)
-                NSLog(@"Error deleting blob: %@", error);
+//            NSError *error = nil;
+//            [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+//            if (error && kVerboseLog)
+//                SKLog(@"Error deleting blob: %@", error);
+        } else {
+            return nil;
         }
         
-        _isImage = [self.data isJPEG];
+        _isImage = _data.isJPEG || _data.isPNG;
+        _isVideo = _data.isMPEG4;
     }
     
     return self;

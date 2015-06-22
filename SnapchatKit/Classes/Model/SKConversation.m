@@ -69,7 +69,7 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
             else if (message[@"cash_transaction"])
                 [temp addObject:[[SKCashTransaction alloc] initWithDictionary:message]];
             else
-                NSLog(@"Unhandled conversation message type:\n%@", message);
+                SKLog(@"Unhandled conversation message type:\n%@", message);
         }
         _messages = temp;
         
@@ -111,11 +111,11 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
         
         // Possible unhandled cases
         if (totalUnread == 0) {
-            NSLog(@"0 unread count, but [%@] has pending chats from %@.", participant, user);
+            SKLog(@"0 unread count, but [%@] has pending chats from %@.", participant, user);
             break;
         }
         if (totalUnread < 0) {
-            NSLog(@"Negative unread count between users: [%@] and %@.", participant, user);
+            SKLog(@"Negative unread count between users: [%@] and %@.", participant, user);
             break;
         }
         

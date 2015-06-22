@@ -7,9 +7,11 @@
 //
 
 #import "SKClient+Stories.h"
+#import "SKStoryCollection.h"
 #import "SKStory.h"
 #import "SKUserStory.h"
 #import "SKBlob.h"
+#import "SKStoryUpdater.h"
 
 #import "SKRequest.h"
 #import "NSString+SnapchatKit.h"
@@ -81,15 +83,46 @@
     }];
 }
 
-- (void)markStoryViewed:(SKStory *)story screenshotCount:(NSUInteger)sscount completion:(BooleanBlock)completion {
-    NSParameterAssert(story);
+- (void)markStoriesViewed:(NSArray *)stories completion:(ErrorBlock)completion {
+    NSParameterAssert(stories);
+    
+    NSMutableArray *friendStories = [NSMutableArray array];
+    for (SKStoryUpdater *update in stories)
+        [friendStories addObject:@{@"id": update.storyID,
+                                   @"screenshot_count": @(update.screenshotCount),
+                                   @"timestamp": update.timestamp}];
     
     NSDictionary *query = @{@"username": self.username,
-                            @"friend_stories": @[@{@"id": story.identifier,
-                                                   @"screenshot_count": @(sscount),
-                                                   @"timestamp": [NSString timestamp]}].JSONString};
+                            @"friend_stories": friendStories.JSONString};
     [self postTo:kepUpdateStories query:query callback:^(NSDictionary *json, NSError *error) {
-        completion(!error && !json, error);
+        completion(error);
+    }];
+}
+
+- (void)markStoryViewed:(SKStory *)story screenshotCount:(NSUInteger)sscount completion:(ErrorBlock)completion {
+    NSParameterAssert(story);
+    [self markStoriesViewed:@[[SKStoryUpdater viewedStory:story at:[NSDate date] screenshots:sscount]] completion:completion];
+}
+
+- (void)hideSharedStory:(SKStoryCollection *)story completion:(ErrorBlock)completion {
+    NSParameterAssert(story);
+    
+    NSDictionary *query = @{@"friend": story.username,
+                            @"hide": @"true",
+                            @"username": self.username};
+    [self postTo:kepFriendHide query:query callback:^(NSDictionary *json, NSError *error) {
+        completion(error);
+    }];
+}
+
+- (void)provideSharedDescription:(SKStory *)sharedStory completion:(ErrorBlock)completion {
+    NSParameterAssert(sharedStory);
+    if (!sharedStory.shared) return;
+    
+    NSDictionary *query = @{@"shared_id": sharedStory.identifier,
+                            @"username": self.username};
+    [self postTo:kepSharedDescription query:query callback:^(id object, NSError *error) {
+        completion(error);
     }];
 }
 

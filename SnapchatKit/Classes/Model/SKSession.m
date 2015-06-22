@@ -23,7 +23,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     if ([storyPrivacyString isEqualToString:@"CUSTOM"])
         return SKStoryPrivacyCustom;
     
-    if (kDebugJSON) NSLog(@"Unknown story privacy type: %@", storyPrivacyString);
+    if (kDebugJSON) SKLog(@"Unknown story privacy type: %@", storyPrivacyString);
     return 0;
 }
 

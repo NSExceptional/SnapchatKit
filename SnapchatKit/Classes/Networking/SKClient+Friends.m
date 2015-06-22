@@ -153,4 +153,23 @@
     }];
 }
 
+- (void)blockUser:(NSString *)username completion:(ErrorBlock)completion {
+    [self setUserBlocked:YES user:username completion:completion];
+}
+
+- (void)unblockUser:(NSString *)username completion:(ErrorBlock)completion {
+    [self setUserBlocked:NO user:username completion:completion];
+}
+
+- (void)setUserBlocked:(BOOL)blocked user:(NSString *)username completion:(ErrorBlock)completion {
+    NSParameterAssert(username);
+    
+    NSDictionary *query = @{@"action": blocked ? @"block" : @"unblock",
+                            @"friend": username,
+                            @"username": self.username};
+    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+        completion(error);
+    }];
+}
+
 @end

@@ -9,6 +9,7 @@
 #import "SKRequest.h"
 #import "SnapchatKit-Constants.h"
 #import "NSString+SnapchatKit.h"
+#import "NSData+SnapchatKit.h"
 
 @implementation SKRequest
 
@@ -86,30 +87,53 @@
     
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
-        self.URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kURL, endpoint]];
+        self.URL = [NSURL URLWithString:[kURL stringByAppendingPathComponent:endpoint]];
         self.HTTPMethod = @"POST";
         
         NSMutableDictionary *json = [params mutableCopy];
         NSString *timestamp = [NSString timestamp];
         
         // HTTP body
-        json[@"req_token"] = [NSString hashSCString:token and:timestamp];
-        json[@"timestamp"] = @([timestamp longLongValue]);
-        NSData *queryData  = [[NSString queryStringWithParams:json] dataUsingEncoding:NSASCIIStringEncoding];
-        self.HTTPBody      = queryData;
+        if (!json[@"req_token"]) json[@"req_token"] = [NSString hashSCString:token and:timestamp];
+        if (!json[@"timestamp"]) json[@"timestamp"] = @([timestamp longLongValue]);
         
+        // Set HTTPBody
+        // Only for uploading snaps here
+        if ([endpoint isEqualToString:kepUpload]) {
+            NSString *first = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"", kBoundary];
+//            NSString *second = @"\"\r\n\r\n";
+//            NSString *third = @"\r\n";
+            NSMutableString *dataString = [NSMutableString string];
+            [dataString appendFormat:@"--%@\r\nContent-Disposition: form-data; name=\"req_token\"\r\n\r\n%@\r\n", kBoundary, json[@"req_token"]];
+            [json enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+                if ([key isEqualToString:@"req_token"]) return;
+                if (![key isEqualToString:@"data"]) {
+                    [dataString appendFormat:@"%@%@\"\r\n\r\n%@\r\n", first, key, value];
+                } else {
+                    [dataString appendFormat:@"%@data\"; filename=\"data\"\r\nContent-Type: application/octet-stream\r\n\r\n%@\r\n", first, [[NSString alloc] initWithData:value encoding:NSASCIIStringEncoding]];
+                }
+            }];
+            [dataString appendFormat:@"--%@--", kBoundary];
+            self.HTTPBody = [dataString dataUsingEncoding:NSASCIIStringEncoding];
+        } else {
+            NSData *queryData  = [[NSString queryStringWithParams:json] dataUsingEncoding:NSASCIIStringEncoding];
+            self.HTTPBody      = queryData;
+        }
+
         if ([endpoint isEqualToString:kepBlob] || [endpoint isEqualToString:kepChatMedia])
             [self setValue:timestamp forHTTPHeaderField:khfTimestamp];
     }
+    
     return self;
 }
 
 - (id)initWithGETEndpoint:(NSString *)endpoint headers:(NSDictionary *)httpHeaders {
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
-        self.URL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", kURL, endpoint]];
+        self.URL = [NSURL URLWithString:[kURL stringByAppendingPathComponent:endpoint]];
         self.HTTPMethod = @"GET";
     }
+    
     return self;
 }
 

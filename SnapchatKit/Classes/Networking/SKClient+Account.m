@@ -134,4 +134,19 @@
     }];
 }
 
+- (void)updateTOSAgreementStatus:(BOOL)snapcash snapcashV2:(BOOL)snapcashV2 square:(BOOL)square completion:(ErrorBlock)completion {
+    NSString *acceptSnapCashTos   = snapcash   ? @"true": @"false";
+    NSString *acceptSnapCashV2Tos = snapcashV2 ? @"true": @"false";
+    NSString *acceptSquareTos     = square     ? @"true": @"false";
+    
+    NSDictionary *agreements = @{@"snapcash_new_tos_accepted": acceptSnapCashTos,
+                                 @"snapcash_tos_v2_accepted": acceptSnapCashV2Tos,
+                                 @"square_tos_accepted": acceptSquareTos};
+    NSDictionary *query = @{@"username": self.username,
+                            @"client_properties": agreements.JSONString};
+    [self postTo:kepUpdateUser query:query callback:^(NSDictionary *json, NSError *error) {
+        completion(error);
+    }];
+}
+
 @end

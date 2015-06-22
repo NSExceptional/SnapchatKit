@@ -11,15 +11,21 @@
 #import "SKSnap.h"
 
 #import <CoreLocation/CLLocation.h>
+@class SKSnapOptions;
+
 
 @interface SKClient (Snaps)
 
-- (void)markSnapViewed:(NSString *)identifier for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion;
+/** @c blob can be created with any @c NSData object. */
+- (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ErrorBlock)completion;
+/** @c duration must be greater than @c 9. @note @c text is not actually put into the image, that's your job. @c blob can be created with any @c NSData object. */
+- (void)sendSnap:(SKBlob *)blob to:(NSArray *)recipients text:(NSString *)text timer:(NSTimeInterval)duration completion:(ErrorBlock)completion;
+
+- (void)markSnapViewed:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion;
+- (void)markSnapScreenshot:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion;
 
 /** callback takes an SKBlob object. */
 - (void)loadSnap:(SKSnap *)snap completion:(ResponseBlock)completion;
-/** callback takes an SKBlob object. */
-- (void)loadSnapWithIdentifier:(NSString *)identifier completion:(ResponseBlock)completion;
 
 /** Callback takes an SKLocation object. */
 - (void)loadFiltersForLocation:(CLLocation *)location completion:(ResponseBlock)completion;

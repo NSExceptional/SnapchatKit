@@ -20,28 +20,28 @@
 }
 
 - (NSData *)AES128DecryptedDataWithKey:(NSString *)key {
-    return [[self pad:0] AES128DecryptedDataWithKey:key iv:nil];
+    return [self AES128DecryptedDataWithKey:key iv:nil];
 }
 
 - (NSData *)AES128EncryptedDataWithKey:(NSString *)key iv:(NSString *)iv {
-    return [self AES128Operation:kCCEncrypt key:key iv:iv];
+    return [self AES128Operation:kCCEncrypt key:key iv:iv options:kCCOptionPKCS7Padding | kCCOptionECBMode];
 }
 
 - (NSData *)AES128DecryptedDataWithKey:(NSString *)key iv:(NSString *)iv {
-    return [[self pad:0] AES128Operation:kCCDecrypt key:key iv:iv];
+    return [self AES128Operation:kCCDecrypt key:key iv:iv options:kCCOptionPKCS7Padding];
 }
 
 - (NSData *)AES128DecryptedDataWithKeyData:(NSData *)key ivData:(NSData *)iv {
-    return [[self pad:0] AES128Operation:kCCDecrypt keyData:key ivData:iv];
+    return [self AES128Operation:kCCDecrypt keyData:key ivData:iv options:kCCOptionPKCS7Padding];
 }
 
-- (NSData *)AES128Operation:(CCOperation)operation key:(NSString *)key iv:(NSString *)iv {
-    return [self AES128Operation:operation keyData:[key dataUsingEncoding:NSUTF8StringEncoding] ivData:[iv dataUsingEncoding:NSUTF8StringEncoding]];
+- (NSData *)AES128Operation:(CCOperation)operation key:(NSString *)key iv:(NSString *)iv options:(uint32_t)options {
+    return [[self pad:0] AES128Operation:operation keyData:[key dataUsingEncoding:NSUTF8StringEncoding] ivData:[iv dataUsingEncoding:NSUTF8StringEncoding] options:options];
 }
 
 // kCCModeCBC
-- (NSData *)AES128Operation:(CCOperation)operation keyData:(NSData *)key ivData:(NSData *)iv {
-    NSParameterAssert(key); NSParameterAssert(iv);
+- (NSData *)AES128Operation:(CCOperation)operation keyData:(NSData *)key ivData:(NSData *)iv options:(uint32_t)options {
+    NSParameterAssert(key);
     
     size_t bufferSize = self.length + kCCKeySizeAES128;
     void *buffer = malloc(bufferSize);
@@ -49,7 +49,7 @@
     size_t decryptedLength = 0;
     CCCryptorStatus cryptStatus = CCCrypt(operation,
                                           kCCAlgorithmAES128,
-                                          kCCOptionPKCS7Padding,
+                                          options,
                                           key.bytes,
                                           kCCKeySizeAES256,
                                           iv.bytes,
@@ -85,7 +85,14 @@
     uint8_t a, b, c, d;
     [self getHeader:&a b:&b c:&c d:&d];
     
-    return a == 0xFF && b == 0xD8 && c == 0xFF && d == 0xE0;
+    return a == 0xFF && b == 0xD8 && c == 0xFF && (d == 0xE0 || d == 0xE1 || d == 0xE8);
+}
+
+- (BOOL)isPNG {
+    uint8_t a, b, c, d;
+    [self getHeader:&a b:&b c:&c d:&d];
+    
+    return a == 0x89 && b == 0x50 && c == 0x4E && d == 0x47;
 }
 
 - (BOOL)isMPEG4 {
@@ -113,6 +120,7 @@
 @end
 
 @implementation NSData (Encoding)
+
 - (NSString *)MD5Hash {
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     CC_MD5( self.bytes, (CC_LONG)self.length, result ); // This is the md5 call
@@ -124,6 +132,33 @@
             result[12], result[13], result[14], result[15]
             ];  
 }
+
+- (NSString *)hexadecimalString {
+    const unsigned char *dataBuffer = (const unsigned char *)self.bytes;
+    
+    if (!dataBuffer)
+        return [NSString string];
+    
+    NSUInteger      dataLength  = self.length;
+    NSMutableString *hexString  = [NSMutableString stringWithCapacity:(dataLength * 2)];
+    
+    for (int i = 0; i < dataLength; ++i)
+        [hexString appendString:[NSString stringWithFormat:@"%02lx", (unsigned long)dataBuffer[i]]];
+    
+    return hexString;
+}
+
+- (NSString *)sha256Hash {
+    unsigned char result[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256(self.bytes, (unsigned int)self.length, result);
+    
+    NSMutableString *hash = [NSMutableString string];
+    for(int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++)
+        [hash appendFormat:@"%02x", result[i]];
+    
+    return hash;
+}
+
 @end
 
 

@@ -10,27 +10,101 @@
 #import "SKRequest.h"
 #import "SKBlob.h"
 #import "SKLocation.h"
+#import "SKSnapOptions.h"
 
 #import "NSString+SnapchatKit.h"
+#import "NSArray+SnapchatKit.h"
 #import "NSData+SnapchatKit.h"
 #import "SSZipArchive.h"
 
 @implementation SKClient (Snaps)
 
-- (void)markSnapViewed:(NSString *)identifier for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion {
-    NSDictionary *snapInfo = @{identifier: @{@"t":@([[NSString timestamp] integerValue]),
+// TODO: pass back snap objects
+
+- (void)sendSnap:(SKBlob *)blob to:(NSArray *)recipients text:(NSString *)text timer:(NSTimeInterval)duration completion:(ErrorBlock)completion {
+    SKSnapOptions *options = [SKSnapOptions new];
+    options.recipients = recipients;
+    options.text = text;
+    options.timer = duration;
+    [self sendSnap:blob options:options completion:completion];
+}
+
+- (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ErrorBlock)completion {
+    NSParameterAssert(blob); NSParameterAssert(options);
+    
+    [self uploadSnap:blob callback:^(NSString *mediaID, NSError *error) {
+        if (!error) {
+            NSDictionary *query = @{@"camera_front_facing": @(options.cameraFrontFacing),
+                                    @"country_code":        self.currentSession.countryCode,
+                                    @"media_id":            mediaID,
+                                    @"recipients":          options.recipients,
+                                    @"reply":               @(options.isReply),
+                                    @"time":                @((NSUInteger)options.timer),
+                                    @"zipped":              @0,
+                                    @"username":            self.username};
+            [self postTo:kepSend query:query callback:^(NSDictionary *json, NSError *sendError) {
+                completion(sendError);
+            }];
+        } else {
+            completion(error);
+        }
+    }];
+}
+
+- (void)uploadSnap:(SKBlob *)blob callback:(ResponseBlock)callback {
+    NSString *uuid = [[NSString stringWithFormat:@"%@~%@", self.username, SKUniqueIdentifier()] uppercaseString];
+    
+    NSDictionary *query = @{@"media_id": uuid,
+                            @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
+                            @"data": [blob.data AES128EncryptedDataWithKey:@"M02cnQ51Ji97vwT4"],
+                            @"zipped": @0,
+                            @"username": self.username};
+    NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
+                              khfContentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", kBoundary]};
+    
+    [SKRequest postTo:kepUpload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self handleError:error data:data response:response completion:^(id object, NSError *error) {
+                if (!error) {
+                    callback(uuid, nil);
+                } else {
+                    callback(nil, error);
+                }
+            }];
+        });
+    }];
+}
+
+// TODO: add random offset to secondsViewed
+
+- (void)markSnapViewed:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion {
+    NSDictionary *snapInfo = @{snap.identifier: @{@"t":@([[NSString timestamp] integerValue]),
                                              @"sv": @(secondsViewed)}};
     NSDictionary *viewed   = @{@"eventName": @"SNAP_VIEW",
-                               @"params": @{@"id":identifier},
+                               @"params": @{@"id":snap.identifier},
                                @"ts": @(([[NSString timestamp] integerValue]/1000) - secondsViewed)};
     NSDictionary *expire   = @{@"eventName": @"SNAP_EXPIRED",
-                               @"params": @{@"id":identifier},
+                               @"params": @{@"id":snap.identifier},
                                @"ts": @([[NSString timestamp] integerValue]/1000)};
     NSArray *events = @[viewed, expire];
     [self sendEvents:events data:snapInfo completion:completion];
 }
 
+- (void)markSnapScreenshot:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion {
+    NSParameterAssert(snap);
+    
+    NSDictionary *snapInfo   = @{snap.identifier: @{@"t":@([[NSString timestamp] integerValue]),
+                                                    @"sv": @(secondsViewed),
+                                                    @"c": @(SKSnapStatusScreenshot)}};
+    NSDictionary *screenshot = @{@"eventName": @"SNAP_SCREENSHOT",
+                                 @"params": @{@"id":snap.identifier},
+                                 @"ts": @([[NSString timestamp] integerValue]/1000)};
+    NSArray *events = @[screenshot];
+    [self sendEvents:events data:snapInfo completion:completion];
+}
+
 - (void)loadSnap:(SKSnap *)snap completion:(ResponseBlock)completion {
+    NSParameterAssert([snap isKindOfClass:[SKSnap class]]);
     [self loadSnapWithIdentifier:snap.identifier completion:completion];
 }
 
@@ -63,7 +137,7 @@
                         else
                             completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
                     } else {
-                        NSLog(@"%@", error.localizedDescription);
+                        SKLog(@"%@", error);
                     }
                 }];
                 
