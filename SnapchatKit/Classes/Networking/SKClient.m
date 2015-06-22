@@ -22,8 +22,6 @@
 NSString * const kAttestationURLString     = @"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA";
 NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJvaWQaIC8cqvyh7TDQtOOIY+76vqDoFXEfpM95uCJRmoJZ2VpYIgAojKq/AzIECgASADoECAEQAUD4kP+pBRIA";
 
-#define SKAssertIsSignedIn() if (!self.isSignedIn) [NSException raise:NSInternalInconsistencyException format:@"You must be signed in to call this method."];
-
 @implementation SKClient
 
 @synthesize authToken = _authToken;
@@ -178,10 +176,10 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     
     request.HTTPMethod = @"POST";
     request.HTTPBody   = [postFieldString dataUsingEncoding:NSASCIIStringEncoding];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:khfContentType];
     [request setValue:@"378c184c6070c26c" forHTTPHeaderField:@"device"];
     [request setValue:@"com.snapchat.android" forHTTPHeaderField:@"app"];
-    [request setValue:@"GoogleAuth/1.4 (mako JDQ39)" forHTTPHeaderField:@"User-Agent"];
+    [request setValue:@"GoogleAuth/1.4 (mako JDQ39)" forHTTPHeaderField:khfUserAgent];
     [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -309,7 +307,6 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 if (error2 || !attestation) {
                     completion(nil, [SKRequest errorWithMessage:@"Could not retrieve attestation." code:error2.code?:1]);
                 } else {
-                    
                     [self getDeviceToken:^(NSDictionary *dict, NSError *error3) {
                         if (error3 || !dict) {
                             completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Snapchat device token." code:error3.code?:1]);

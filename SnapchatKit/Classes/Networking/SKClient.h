@@ -85,3 +85,9 @@
 @property (nonatomic, readonly) NSString *googleAttestation;
 
 @end
+
+// Used in most method calls
+NS_INLINE void SKAssertIsSignedIn() {
+    if (![SKClient sharedClient].isSignedIn)
+        [NSException raise:NSInternalInconsistencyException format:@"You must be signed in to call this method."];
+}
