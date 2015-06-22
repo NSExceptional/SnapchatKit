@@ -51,7 +51,7 @@
  @param params The JSON key-value mapping parameters of the request. Example: ?foo=bar would be @{@"foo": @"bar"}
  @param httpHeaders Additional HTTP header fields to set or override. This parameter may be nil.
  */
-- (id)initWithPOSTEndpoint:(NSString *)endpoint token:(NSString *)token query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders;
+- (id)initWithPOSTEndpoint:(NSString *)endpoint token:(NSString *)token query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders ts:(NSString *)timestamp;
 
 
 /**

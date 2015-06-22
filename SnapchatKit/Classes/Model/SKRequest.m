@@ -37,7 +37,7 @@
 + (void)postTo:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders token:(NSString *)token callback:(RequestBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(callback);
     
-    SKRequest *request = [[SKRequest alloc] initWithPOSTEndpoint:endpoint token:token query:json headers:httpHeaders];
+    SKRequest *request = [[SKRequest alloc] initWithPOSTEndpoint:endpoint token:token query:json headers:httpHeaders ts:nil];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:callback];
@@ -82,7 +82,7 @@
     return self;
 }
 
-- (id)initWithPOSTEndpoint:(NSString *)endpoint token:(NSString *)token query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders {
+- (id)initWithPOSTEndpoint:(NSString *)endpoint token:(NSString *)token query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders ts:(NSString *)timestamp {
     if (!token) token = kStaticToken;
     
     self = [self initWithHeaderFields:httpHeaders];
@@ -91,7 +91,7 @@
         self.HTTPMethod = @"POST";
         
         NSMutableDictionary *json = [params mutableCopy];
-        NSString *timestamp = [NSString timestamp];
+        if (!timestamp) timestamp = [NSString timestamp];
         
         // HTTP body
         if (!json[@"req_token"]) json[@"req_token"] = [NSString hashSCString:token and:timestamp];

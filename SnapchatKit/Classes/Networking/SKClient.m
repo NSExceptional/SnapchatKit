@@ -155,13 +155,13 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 /** Gauth. */
 - (void)getAuthTokenForGmail:(NSString *)gmailAddress password:(NSString *)password callback:(StringBlock)callback {
     NSDictionary *postFields = @{@"google_play_services_version": @"7097038",
-                                 @"Email":           gmailAddress,
-                                 @"Passwd":          password,
                                  @"device_country":  @"us",
                                  @"operatorCountry": @"us",
                                  @"lang":            @"en_US",
                                  @"sdk_version":     @"19",
                                  @"accountType":     @"HOSTED_OR_GOOGLE",
+                                 @"Email":           gmailAddress,
+                                 @"Passwd":          password,
                                  @"service":         @"audience:server:client_id:694893979329-l59f3phl42et9clpoo296d8raqoljl6p.apps.googleusercontent.com",
                                  @"source":          @"android",
                                  @"androidId":       @"378c184c6070c26c",
@@ -317,7 +317,6 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             _deviceToken1i     = dict[@"dtoken1i"];
                             _deviceToken1v     = dict[@"dtoken1v"];
                             
-                            
                             NSString *req_token = [NSString hashSCString:kStaticToken and:timestamp];
                             NSString *string    = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, req_token];
                             NSString *deviceSig = [[NSString hashHMac:string key:self.deviceToken1v] substringWithRange:NSMakeRange(0, 20)];
@@ -336,7 +335,11 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                                    @"attestation":      self.googleAttestation,
                                                    @"timestamp":        timestamp};
                             
-                            [SKRequest postTo:kepLogin query:post gauth:gauth token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error4) {
+                            NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken]};
+                            SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:kepLogin token:nil query:post headers:headers ts:timestamp];
+                            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+                            
+                            NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error4) {
                                 [self handleError:error4 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         if (!jsonerror) {
@@ -349,6 +352,21 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                     });
                                 }];
                             }];
+                            [dataTask resume];
+                            
+//                            [SKRequest postTo:kepLogin query:post gauth:gauth token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error4) {
+//                                [self handleError:error4 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
+//                                    dispatch_async(dispatch_get_main_queue(), ^{
+//                                        if (!jsonerror) {
+//                                            self.currentSession = [SKSession sessionWithJSONResponse:json];
+//                                            _authToken = self.currentSession.authToken;
+//                                            completion(json, nil);
+//                                        } else {
+//                                            completion(nil, jsonerror);
+//                                        }
+//                                    });
+//                                }];
+//                            }];
                         }
                     }];
                 }
