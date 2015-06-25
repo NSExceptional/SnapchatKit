@@ -88,7 +88,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
             NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             if ([html containsString:@"<html><head>"]) {
                 // Invalid request
-                completion(nil, [SKRequest errorWithMessage:[html textFromHTML] code:code]);
+                completion(nil, [SKRequest errorWithMessage:html.textFromHTML code:code]);
             } else {
                 // ???
                 completion(nil, jsonError);
@@ -98,8 +98,9 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
         else if (json) {
             if (code > 199 && code < 300) {
                 // Suceeded with a response
-                if (json[@"logged"]) {
-                    if ([json[@"logged"] integerValue] == 1)
+                NSNumber *logged = json[@"logged"] ?: json[@"updates_response"][@"logged"];
+                if (logged) {
+                    if (logged.integerValue == 1)
                         completion(json, nil);
                     else
                         completion(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
@@ -224,18 +225,16 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 - (void)getAttestationWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
     NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, kepLogin];
     NSString *nonce          = [hashString.sha256HashRaw base64EncodedStringWithOptions:0];
-    NSString *authentication = @"cp4craTcEr82Pdf5j8mwFKyb8FNZbcel";
-    NSString *urlString      = @"http://attest.casper.io/attestation";
     
     NSDictionary *query = @{@"nonce": nonce,
-                            @"authentication": authentication,
-                            @"apk_digest": kAPKDigest,
+                            @"authentication": kAttestationAuth,
+                            @"apk_digest": kAPKDigest9_8,
                             @"timestamp": ts};
     NSData *queryData  = [[NSString queryStringWithParams:query] dataUsingEncoding:NSASCIIStringEncoding];
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
-    request.HTTPMethod = @"POST";
-    request.HTTPBody   = queryData;
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:kAttestationURLCasper]];
+    request.HTTPMethod  = @"POST";
+    request.HTTPBody    = queryData;
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];

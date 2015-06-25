@@ -187,8 +187,13 @@
 
 @end
 
+NSString * SKMediaIdentifier(NSString *sender) {
+    NSString *uuid = [NSUUID new].UUIDString.MD5Hash;
+    return [NSString stringWithFormat:@"%@~%@", sender.uppercaseString, uuid];
+}
+
 NSString * SKUniqueIdentifier() {
-    NSString *uuid = [[NSUUID new].UUIDString MD5Hash];
+    NSString *uuid = [NSUUID new].UUIDString.MD5Hash;
     return [NSString stringWithFormat:@"%8@-%4@-%4@-%4@-%12@",
             [uuid substringWithRange:NSMakeRange(0, 8)],
             [uuid substringWithRange:NSMakeRange(8, 4)],

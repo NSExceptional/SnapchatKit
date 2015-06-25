@@ -38,6 +38,7 @@
                                     @"country_code":        self.currentSession.countryCode,
                                     @"media_id":            mediaID,
                                     @"recipients":          options.recipients,
+                                    @"recipient_ids":       options.recipients,
                                     @"reply":               @(options.isReply),
                                     @"time":                @((NSUInteger)options.timer),
                                     @"zipped":              @0,
@@ -52,12 +53,13 @@
 }
 
 - (void)uploadSnap:(SKBlob *)blob callback:(ResponseBlock)callback {
-    NSString *uuid = [[NSString stringWithFormat:@"%@~%@", self.username, SKUniqueIdentifier()] uppercaseString];
+    NSString *uuid = SKMediaIdentifier(self.username);
     
     NSDictionary *query = @{@"media_id": uuid,
                             @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
                             @"data": [blob.data AES128EncryptedDataWithKey:@"M02cnQ51Ji97vwT4"],
                             @"zipped": @0,
+                            @"features_map": @{},
                             @"username": self.username};
     NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
                               khfContentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", kBoundary]};

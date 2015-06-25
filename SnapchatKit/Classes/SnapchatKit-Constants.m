@@ -85,7 +85,7 @@ BOOL SKMediaKindIsVideo(SKMediaKind mediaKind) {
 }
 
 #pragma mark General API constants
-NSString * const kUserAgent               = @"Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
+NSString * const kUserAgent               = @"Snapchat/9.10.0.0 (SM-N9005; Android 5.0.2; gzip)";//Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
 NSString * const kUserAgentForAttestation = @"SafetyNet/7329000 (klte KOT49H); gzip";
 NSString * const kURL                     = @"https://feelinsonice-hrd.appspot.com";
 NSString * const kEventsURL               = @"https://sc-analytics.appspot.com/post_events";
@@ -94,10 +94,13 @@ NSString * const kStaticToken             = @"m198sOkJEn37DjqZ32lpRu76xmw288xSQ9
 NSString * const kBlobEncryptionKey       = @"M02cnQ51Ji97vwT4";
 NSString * const kHashPattern             = @"0001110111101110001111010101111011010001001110011000110001000110";
 NSString * const kBoundary                = @"Boundary+0xAbCdEfGbOuNdArY";
-NSString * const kAPKDigest               = @"JJShKOLH4YYjWZlJQ71A2dPTcmxbaMboyfo0nsKYayE=";
-NSString * const kAPKCertificateDigest    = @"Lxyq/KHtMNC044hj7vq+oOgVcR+kz3m4IlGaglnZWlg=";
 NSString * const kGMSVersion              = @"7329038";
-NSString * const kDroidGuard              = @"CgbMYHoVNWLYAQE4YRoMCMKa2IIDEKC349kCqgERCLikhu8CEKL-jf34_____wHoAfLYvrb7_____wHoAbjLt877_____wE4azhLEokMuKToh_JDOAH8CvNUrmmbUkT045BmT6P_KNQSwOPtKxfJzK43U0I8A3x9lhvIbj5rbW3EREoNXLsI4okM7eonVUPt_PNYSK-b3U-T_bCfQkhKZ6hQ2ByXyi81LMp9IbzCho9KzRi_3zn9ffewSW2UjaGj71_gm4iapZXcQCigaWJ28VW10g8aeVcXVnXMg7UfDfx7NXghb0ZtlNXu8QxSCTWzUrW5nQH_TcYVKKhO4uFkX_sPr9MVwchg5oUSfvAZ2X2ZnsrkszrUr_NtlLS3w56DnPJvcOnN7X0N70p5Hj8Uqlx-a39c6BO4zfd_TAsqiV02zLoVctaht332OHA8Ejh1tIs89d0xKryMBq3OUSKKfLuMcfohU9gLuYF5_yfh3LGt2A4KSlUF1_DKcgxhiBV-QlNJWOL45fXjPl1_h7KcxfegJy19tpZ8cZ_KAWd4W00NJb5AmSGnzIB0iAkh0iC6fwpxngWS9ew_1gQC68wHrxZ8oBsLjZyzWk1eV69Xt3FSsTRzhpaIgnveaEtRZt6KsZUy2sCgzU1BvBF-Cm9kW1taPLvhURVxljUABxyKSsEmCFkyJbKDqz6bnTmAEXoJVJ3OW0OW9bpLX7IsKSlnIKOAnET0aH0e7CLkpj2nke8h8nv5PoW-s60Cc_5SirP4hTZRJDvXJecYljQcTTX6MOKx-gRiLdvc0NWzow8yrGTuCqQ0rYBEUELh8U7dGYQk6WX92aJEWa6uZb3AN9WFGg0GxiY1Bpq9kO58mHSBqeJXCrQ4mq2GJJxhxUE13zzbqsWyPi66MbTH1-YRTrjVPj5nkZqomuCtWIyWnC573IyG37lt8eYLXLNTbwuVDmUfaXytgntNExITdf9iiN2zFEYAlKSEROMc3FEKwApy9zzeTC9ItHsXGm63vv9s_2zaKEk4kUP3ozNfIMYeImk2piUs5OhEzpdAx_xyHbQICac2IA5arJ0_kqZ42tcuIjnzw8IJuU4xTDfEK12Ju7HaK8KA2i8v5Wtv28EQdqUUXByM39t_u16yI2y_Me545HGO18r-GCH3XJPe1GqwMq_J8vJSx3ecZhEXWBOZsyW5OvZ4YjHULRBDphZpyOmVsW7pLUprr42cU1BtitQy0aJm-qzd1ud4FspjRf-bsuRvWruqdqPTG80NbB-WUPCDNTSZ49bwQ9_CW0VQbqzDRupyG-xl16DwCWvqeWVd-v2DYTKCESsKfJhUHmYyK_GbTgsEioZIKmgN6UERMYLxKRRibkT8r0vWpsqx53xB_MenVzfOmpsOCJt5ITalsMVINUnuYekYw1YG9b6HRLtR4dSZj36j6gMDwGpOEPtHeEt6Fjym0SjMNA6kL2qp8rqxSiKrc37RE7Y6f6d2RlarGZG5woPl59F4onBR3Z1SR5mc9Srzrsezn6petEl19w0GtPocw5mrbYphgmjqGKNKqgLCKQ5yhfA1FQMkaZQQSJRd_zg5DuKUr7Bi_fc0ag-iJ1YqCrSiR-AmZV2DUGcNuYe9BOKt70GpfYfyc2DIcSA6oNNnRyi5uqjA7FUvggsWh80s-1yHSl4klFmQN0X10X-FszbmP2PYOlipbG6lNe2qCdlT49XgO17625Spfu7ehpeP-wRjWxgG5A-l7HabM3BrJRvYiW4YXWmloH2C8qOiqnHtC_mDjWAChSK9unVfMLQOeHiBInGR3s44wZvgtVzn_uSHuIacbqCr8VW-efmRVJ5m3iNado9smCCn74xnkMFR4_nRTCz-uwTsQp6Vvk7A6B-avGIkSBWK26nn7p0wB-btIYVZhbHlvs7eRL4PF5sc7gDgS6fpTVOVTCUEUYDfOeyu2TD-JUv0tnNxyH8zdeMHYjtQKgHDNMoWHlA1ly_1BqbU2urn3N07I4BuoBWhSfzcsRmOXtBtylCrVRhC9MEOR-I8QGgFByZfixG4XwGQnbCx-LyAtn6ngcii79W0pA8AoG_-a0s-3aIebEpcz2_qPXqxZ1qk4ByA10VjIBTC73vY1_ChkHg6bvmOsgYcrOFmD9nrbBCgapBGOx_yWsPLLwAD-cGj";
+NSString * const kAttestationAuth         = @"cp4craTcEr82Pdf5j8mwFKyb8FNZbcel";
+NSString * const kAttestationURLSK        = @"[redacted]";
+NSString * const kAttestationURLCasper    = @"http://attest.casper.io/attestation";
+NSString * const kAPKDigest9_10           = @"JJShKOLH4YYjWZlJQ71A2dPTcmxbaMboyfo0nsKYayE=";
+NSString * const kAPKDigest9_8            = @"vXCcGhQ7RfL1LUiE3F6vcNORNo7IFSOvuDBunK87mEI=";
+NSString * const kAPKCertificateDigest    = @"Lxyq/KHtMNC044hj7vq+oOgVcR+kz3m4IlGaglnZWlg=";
 
 NSString * const khfClientAuthTokenHeaderField = @"X-Snapchat-Client-Auth-Token";
 NSString * const khfTimestamp                  = @"X-Timestamp";
@@ -133,7 +136,7 @@ NSString * const kepUpdateSnaps       = @"/bq/update_snaps";
 NSString * const kepSharedDescription = @"/shared/description";
 NSString * const kepUpdateStories     = @"/bq/update_stories";
 NSString * const kepUpdateUser        = @"/loq/update_user";
-NSString * const kepUpload            = @"/bq/upload";
+NSString * const kepUpload            = @"/ph/upload";
 NSString * const kepRetrySend         = @"/loq/retry";
 NSString * const kepSend              = @"/loq/send";
 NSString * const kepTyping            = @"/bq/chat_typing";

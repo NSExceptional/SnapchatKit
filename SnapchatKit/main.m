@@ -225,7 +225,7 @@ int main(int argc, const char * argv[]) {
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
 //                SKLog(@"Sending snap...");
-//                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
+                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
                 
                 // Some locations with cool filters.
                 // Waco       31.534089, -97.123811
@@ -257,7 +257,7 @@ int main(int argc, const char * argv[]) {
 //                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-                markSnapsRead(unread);
+//                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);

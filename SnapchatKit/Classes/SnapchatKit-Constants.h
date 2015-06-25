@@ -114,8 +114,17 @@ extern NSString * const kAPKDigest;
 extern NSString * const kAPKCertificateDigest;
 /** Google Play Services version used to make the attestation request. */
 extern NSString * const kGMSVersion;
-/** Used in making the attestation request. */
-extern NSString * const kDroidGuard;
+
+/** Authentication token sent to verify requests with the server to prevent abuse. */
+extern NSString * const kAttestationAuth;
+/** SnapKeep™ attestation request URL. Special thanks to Harry! */
+extern NSString * const kAttestationURLSK;
+/** Casper™ attestation request URL. Special thanks to Liam! */
+extern NSString * const kAttestationURLCasper;
+/** This one does not work. */
+extern NSString * const kAPKDigest9_10;
+/** This one works for some reason. */
+extern NSString * const kAPKDigest9_8;
 
 #pragma mark Header fields / values
 extern NSString * const khfClientAuthTokenHeaderField;

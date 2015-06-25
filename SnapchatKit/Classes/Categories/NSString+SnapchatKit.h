@@ -47,4 +47,5 @@
 + (NSString *)SCIdentifierWith:(NSString *)first and:(NSString *)second;
 @end
 
+extern NSString * SKMediaIdentifier(NSString *sender);
 extern NSString * SKUniqueIdentifier();
