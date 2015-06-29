@@ -1,3 +1,6 @@
+[![Issues](https://img.shields.io/github/issues-raw/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/issues)
+[![Stars](https://img.shields.io/github/stars/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/stargazers)
+
 # SnapchatKit
 An Objective-C implementation of the unofficial Snapchat API. Inspired by [RedditKit](https://github.com/samsymons/RedditKit). Work in progress!
 
