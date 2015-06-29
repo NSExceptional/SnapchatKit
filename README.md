@@ -13,4 +13,5 @@ WIP [Snapchat API documentation](https://github.com/ThePantsThief/SnapchatKit/bl
 
 - Everyone who built and maintains the [PHP implementation](https://github.com/mgp25/SC-API/).
 - Steve, who also worked on the PHP implementation.
+- Harry "The Man" Gulliford
 - Sam Symons, author of [RedditKit](https://github.com/samsymons/RedditKit).
