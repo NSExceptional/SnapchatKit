@@ -57,13 +57,13 @@
     
     NSDictionary *query = @{@"media_id": uuid,
                             @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
-                            @"data": [blob.data AES128EncryptedDataWithKey:@"M02cnQ51Ji97vwT4"],
+                            @"data": blob.data,//[blob.data AES128EncryptedDataWithKey:@"M02cnQ51Ji97vwT4"],
                             @"zipped": @0,
-                            @"features_map": @{},
+                            @"features_map": @"{}",
                             @"username": self.username};
     NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
                               khfContentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", kBoundary]};
-    
+
     [SKRequest postTo:kepUpload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self handleError:error data:data response:response completion:^(id object, NSError *error) {

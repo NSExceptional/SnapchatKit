@@ -100,24 +100,29 @@
         // Set HTTPBody
         // Only for uploading snaps here
         if ([endpoint isEqualToString:kepUpload]) {
-            NSString *first = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"", kBoundary];
-//            NSString *second = @"\"\r\n\r\n";
-//            NSString *third = @"\r\n";
-            NSMutableString *dataString = [NSMutableString string];
-            [dataString appendFormat:@"--%@\r\nContent-Disposition: form-data; name=\"req_token\"\r\n\r\n%@\r\n", kBoundary, json[@"req_token"]];
-            [json enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
-                if ([key isEqualToString:@"req_token"]) return;
-                if (![key isEqualToString:@"data"]) {
-                    [dataString appendFormat:@"%@%@\"\r\n\r\n%@\r\n", first, key, value];
-                } else {
-                    [dataString appendFormat:@"%@data\"; filename=\"data\"\r\nContent-Type: application/octet-stream\r\n\r\n%@\r\n", first, [[NSString alloc] initWithData:value encoding:NSASCIIStringEncoding]];
-                }
-            }];
-            [dataString appendFormat:@"--%@--", kBoundary];
-            self.HTTPBody = [dataString dataUsingEncoding:NSASCIIStringEncoding];
+            NSString *contDisp = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"", kBoundary];
+
+            NSString *features_map = [NSString stringWithFormat:@"%@features_map\"\r\n\r\n%@\r\n", contDisp, @"{}"];//json[@"features_map"]];
+            NSString *media_id     = [NSString stringWithFormat:@"%@media_id\"\r\n\r\n%@\r\n", contDisp, json[@"media_id"]];
+            NSString *req_token    = [NSString stringWithFormat:@"%@req_token\"\r\n\r\n%@\r\n", contDisp, json[@"req_token"]];
+            NSString *timestamp    = [NSString stringWithFormat:@"%@timestamp\"\r\n\r\n%@\r\n", contDisp, json[@"timestamp"]];
+            NSString *type         = [NSString stringWithFormat:@"%@type\"\r\n\r\n%@\r\n", contDisp, json[@"type"]];
+            NSString *username     = [NSString stringWithFormat:@"%@username\"\r\n\r\n%@\r\n", contDisp, json[@"username"]];
+            NSString *dataString   = [NSString stringWithFormat:@"%@%@%@%@%@%@", features_map, media_id, req_token, timestamp, type, username];
+            
+            NSMutableData *body    = [dataString dataUsingEncoding:NSUTF8StringEncoding].mutableCopy;
+            
+            // Append image data
+            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", kBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Disposition: form-data; name=\"data\"; filename=\"data\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:json[@"data"]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+            
+            self.HTTPBody = body;//[dataString dataUsingEncoding:NSUTF8StringEncoding];
         } else {
-            NSData *queryData  = [[NSString queryStringWithParams:json] dataUsingEncoding:NSASCIIStringEncoding];
-            self.HTTPBody      = queryData;
+            NSData *queryData = [[NSString queryStringWithParams:json] dataUsingEncoding:NSUTF8StringEncoding];
+            self.HTTPBody     = queryData;
         }
 
         if ([endpoint isEqualToString:kepBlob] || [endpoint isEqualToString:kepChatMedia])
@@ -142,7 +147,7 @@
     if (self) {
         self.URL = [NSURL URLWithString:url];
         self.HTTPMethod = @"POST";
-        NSData *queryData  = [[NSString queryStringWithParams:eventData] dataUsingEncoding:NSASCIIStringEncoding];
+        NSData *queryData  = [[NSString queryStringWithParams:eventData] dataUsingEncoding:NSUTF8StringEncoding];
         self.HTTPBody      = queryData;
     }
     

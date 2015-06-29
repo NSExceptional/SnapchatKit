@@ -176,7 +176,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://android.clients.google.com/auth"]];
     
     request.HTTPMethod = @"POST";
-    request.HTTPBody   = [postFieldString dataUsingEncoding:NSASCIIStringEncoding];
+    request.HTTPBody   = [postFieldString dataUsingEncoding:NSUTF8StringEncoding];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:khfContentType];
     [request setValue:@"378c184c6070c26c" forHTTPHeaderField:@"device"];
     [request setValue:@"com.snapchat.android" forHTTPHeaderField:@"app"];
@@ -230,7 +230,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             @"authentication": kAttestationAuth,
                             @"apk_digest": kAPKDigest9_8,
                             @"timestamp": ts};
-    NSData *queryData  = [[NSString queryStringWithParams:query] dataUsingEncoding:NSASCIIStringEncoding];
+    NSData *queryData  = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:kAttestationURLCasper]];
     request.HTTPMethod  = @"POST";
@@ -377,7 +377,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 - (void)signOut {
     [SKRequest postTo:kepLogout query:@{@"username": self.currentSession.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (kVerboseLog) {
-            NSString *result = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+            NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             if (result.length == 0)
                 SKLog(@"Signed out");
             else

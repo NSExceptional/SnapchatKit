@@ -43,7 +43,7 @@
 }
 
 + (NSString *)hashSC:(NSData *)a and:(NSData *)b {
-    NSData *secretData = [kSecret dataUsingEncoding:NSASCIIStringEncoding];
+    NSData *secretData = [kSecret dataUsingEncoding:NSUTF8StringEncoding];
     
     NSMutableData *firstData  = secretData.mutableCopy;
     NSMutableData *secondData = b.mutableCopy;
@@ -69,8 +69,8 @@
 }
 
 + (NSString *)hashHMac:(NSString *)data key:(NSString *)key {
-    const char *cKey  = [key cStringUsingEncoding:NSASCIIStringEncoding];
-    const char *cData = [data cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cKey  = [key cStringUsingEncoding:NSUTF8StringEncoding];
+    const char *cData = [data cStringUsingEncoding:NSUTF8StringEncoding];
     unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
     
     CCHmac(kCCHmacAlgSHA256, cKey, strlen(cKey), cData, strlen(cData), cHMAC);

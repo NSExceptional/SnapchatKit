@@ -224,6 +224,10 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
+                [[SKClient sharedClient] addFriend:@"bellathornedab" completion:^(id object, NSError *error) {
+                    NSLog(@"%@", error);
+                }];
+                
 //                SKLog(@"Sending snap...");
                 testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
                 
@@ -236,7 +240,7 @@ int main(int argc, const char * argv[]) {
                 // Cypress    29.973334, -95.687332
                 // Houston    29.760803, -95.369506
                 // Seattle    47.603229, -122.330280
-                // Cape Crn.  28.350458 ,-80.607516
+                // Cape Crn.  28.350458, -80.607516
                 
                 // Disney parks. Not all of them have filters, and some are redundant
                 // Disney Paris    48.869981, 2.780242
@@ -246,7 +250,7 @@ int main(int argc, const char * argv[]) {
                 // Courtyard Cocoa 28.350458, -80.607516
                 // Spaceship Earth 28.375281, -81.549365
                 // Hollywood       28.358270, -81.558856
-                // Magic Kingdom   28.418933 ,-81.581206
+                // Magic Kingdom   28.418933, -81.581206
 //                getFilterForCoordinates(28.355066, -81.590046);
                 
 //                testGetAllStoriesInCollectionForUser([directory stringByAppendingPathComponent:@"Test-Stories"], @"someusername");
@@ -254,10 +258,10 @@ int main(int argc, const char * argv[]) {
 //                testGetConversations();
                 
                 // Download and save unread snaps
-//                saveUnreadSnapsToDirectory(unread, directory);
+                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-//                markSnapsRead(unread);
+                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);
@@ -272,9 +276,7 @@ int main(int argc, const char * argv[]) {
             }
         }];
         
-        while (waiting) {
-            [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]];
-        }
+        while (waiting) { [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:.1]]; }
     }
     return 0;
 }
