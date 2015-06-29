@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #import "SKThing.h"
 
 typedef NS_ENUM(NSUInteger, SKMessageKind)

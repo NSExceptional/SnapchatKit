@@ -120,6 +120,22 @@
     return q;
 }
 
++ (NSString *)boundaryWithName:(NSString *)name contentString:(id)content {
+    
+    NSString *nl = @"\r\n";
+    
+    NSMutableString *boundary = [NSMutableString string];
+    [boundary appendString:[NSString stringWithFormat:@"--%@", kBoundary]];
+    [boundary appendString:nl];
+    [boundary appendString:[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"", name]];
+    [boundary appendString:nl];
+    [boundary appendString:nl];
+    [boundary appendString:content];
+    [boundary appendString:nl];
+    
+    return boundary;
+}
+
 @end
 
 

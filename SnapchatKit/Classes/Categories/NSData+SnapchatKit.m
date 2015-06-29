@@ -161,6 +161,20 @@
 
 @end
 
+@implementation NSData (REST)
+
++ (NSData *)boundaryWithData:(id)data {
+    NSMutableData *boundary = [NSMutableData data];
+    [boundary appendData:[[NSString stringWithFormat:@"--%@\r\n", kBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [boundary appendData:[@"Content-Disposition: form-data; name=\"data\"; filename=\"data\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [boundary appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    [boundary appendData:data];
+    [boundary appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    return boundary;
+}
+
+@end
 
 @implementation NSData (Blob)
 

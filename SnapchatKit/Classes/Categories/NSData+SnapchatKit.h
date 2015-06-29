@@ -38,6 +38,11 @@
 @end
 
 
+@interface NSData (REST)
++ (NSData *)boundaryWithData:(id)data;
+@end
+
+
 @interface NSData (Blob)
 
 /** Decrypts blob data for standard images and videos. */
