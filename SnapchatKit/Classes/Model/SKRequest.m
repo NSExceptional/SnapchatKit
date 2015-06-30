@@ -100,26 +100,20 @@
         // Set HTTPBody
         // Only for uploading snaps here
         if ([endpoint isEqualToString:kepUpload]) {
-            NSString *contDisp = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"", kBoundary];
-
-            NSString *features_map = [NSString stringWithFormat:@"%@features_map\"\r\n\r\n%@\r\n", contDisp, @"{}"];//json[@"features_map"]];
-            NSString *media_id     = [NSString stringWithFormat:@"%@media_id\"\r\n\r\n%@\r\n", contDisp, json[@"media_id"]];
-            NSString *req_token    = [NSString stringWithFormat:@"%@req_token\"\r\n\r\n%@\r\n", contDisp, json[@"req_token"]];
-            NSString *timestamp    = [NSString stringWithFormat:@"%@timestamp\"\r\n\r\n%@\r\n", contDisp, json[@"timestamp"]];
-            NSString *type         = [NSString stringWithFormat:@"%@type\"\r\n\r\n%@\r\n", contDisp, json[@"type"]];
-            NSString *username     = [NSString stringWithFormat:@"%@username\"\r\n\r\n%@\r\n", contDisp, json[@"username"]];
-            NSString *dataString   = [NSString stringWithFormat:@"%@%@%@%@%@%@", features_map, media_id, req_token, timestamp, type, username];
             
-            NSMutableData *body    = [dataString dataUsingEncoding:NSUTF8StringEncoding].mutableCopy;
+            NSMutableData *body = [NSMutableData data];
             
-            // Append image data
-            [body appendData:[[NSString stringWithFormat:@"--%@\r\n", kBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
-            [body appendData:[@"Content-Disposition: form-data; name=\"data\"; filename=\"data\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-            [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-            [body appendData:json[@"data"]];
-            [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+            for (id key in json) {
+                if ([key isEqualToString:@"data"]) {
+                    [body appendData:[NSData boundaryWithKey:key forDataValue:[json objectForKey:key]]];
+                } else {
+                    [body appendData:[NSData boundaryWithKey:key forStringValue:(NSString *)[json objectForKey:key]]];
+                }
+            }
             
-            self.HTTPBody = body;//[dataString dataUsingEncoding:NSUTF8StringEncoding];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", kBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            
+            self.HTTPBody = body;
         } else {
             NSData *queryData = [[NSString queryStringWithParams:json] dataUsingEncoding:NSUTF8StringEncoding];
             self.HTTPBody     = queryData;

@@ -32,13 +32,13 @@
 - (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ErrorBlock)completion {
     NSParameterAssert(blob); NSParameterAssert(options);
     
-    [self uploadSnap:blob callback:^(NSString *mediaID, NSError *error) {
+    [self uploadSnap:blob completion:^(NSString *mediaID, NSError *error) {
         if (!error) {
             NSDictionary *query = @{@"camera_front_facing": @(options.cameraFrontFacing),
                                     @"country_code":        self.currentSession.countryCode,
                                     @"media_id":            mediaID,
-                                    @"recipients":          options.recipients,
-                                    @"recipient_ids":       options.recipients,
+                                    @"recipients":          [options.recipients formatRecipients],
+                                    @"recipient_ids":       [options.recipients formatRecipients],
                                     @"reply":               @(options.isReply),
                                     @"time":                @((NSUInteger)options.timer),
                                     @"zipped":              @0,
@@ -52,12 +52,12 @@
     }];
 }
 
-- (void)uploadSnap:(SKBlob *)blob callback:(ResponseBlock)callback {
+- (void)uploadSnap:(SKBlob *)blob completion:(ResponseBlock)completion {
     NSString *uuid = SKMediaIdentifier(self.username);
     
     NSDictionary *query = @{@"media_id": uuid,
                             @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
-                            @"data": blob.data,//[blob.data AES128EncryptedDataWithKey:@"M02cnQ51Ji97vwT4"],
+                            @"data": blob.data,
                             @"zipped": @0,
                             @"features_map": @"{}",
                             @"username": self.username};
@@ -68,9 +68,9 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self handleError:error data:data response:response completion:^(id object, NSError *error) {
                 if (!error) {
-                    callback(uuid, nil);
+                    completion(uuid, nil);
                 } else {
-                    callback(nil, error);
+                    completion(nil, error);
                 }
             }];
         });

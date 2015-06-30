@@ -28,11 +28,9 @@
 
 
 @interface NSString (REST)
-
 + (NSString *)timestamp;
 + (NSString *)timestampFrom:(NSDate *)date;
 + (NSString *)queryStringWithParams:(NSDictionary *)params;
-
 @end
 
 

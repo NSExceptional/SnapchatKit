@@ -33,20 +33,11 @@
     NSParameterAssert(recipients);
     if (recipients.count == 0) return;
     
-    NSMutableString *recipientsString = [NSMutableString string];
-    [recipientsString appendString:@"["];
-    
-    for (NSString *username in recipients)
-        [recipientsString appendFormat:@"\"%@\",", username];
-    
-    [recipientsString deleteCharactersInRange:NSMakeRange(recipientsString.length-1, 1)];
-    [recipientsString appendString:@"]"];
-    
-    [self sendTyping:recipientsString];
+    [self sendTyping:[recipients formatRecipients]];
 }
 
 - (void)sendTypingToUser:(NSString *)user {
-    user = [NSString stringWithFormat:@"[%@]", user];
+    user = [NSString stringWithFormat:@"[\"%@\"]", user];
     [self sendTyping:user];
 }
 
