@@ -16,3 +16,22 @@
 }
 
 @end
+
+@implementation NSArray (REST)
+
+- (NSString *)formatRecipients {
+    
+    NSMutableString *formattedRecipients = [@"[" mutableCopy];
+    for (int i = 0; i < self.count; i++) {
+        if (i != (self.count - 1)) {
+            [formattedRecipients appendFormat:@"\"%@\",", self[i]];
+        } else {
+            [formattedRecipients appendFormat:@"\"%@\"", self[i]];
+        }
+    }
+    [formattedRecipients appendString:@"]"];
+    
+    return formattedRecipients;
+}
+
+@end

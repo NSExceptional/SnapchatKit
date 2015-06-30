@@ -38,6 +38,12 @@
 @end
 
 
+@interface NSData (REST)
++ (NSData *)boundaryWithKey:(NSString *)key forStringValue:(NSString *)string;
++ (NSData *)boundaryWithKey:(NSString *)key forDataValue:(NSData *)data;
+@end
+
+
 @interface NSData (Blob)
 
 /** Decrypts blob data for standard images and videos. */

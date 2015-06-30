@@ -14,3 +14,7 @@
 - (NSString *)JSONString;
 
 @end
+
+@interface NSArray (REST)
+- (NSString *)formatRecipients;
+@end
