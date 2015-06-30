@@ -128,7 +128,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _addedFriendsTimestamp      = [NSDate dateWithTimeIntervalSince1970:[updatesResponse[@"added_friends_timestamp"] doubleValue]/1000];
         _authToken                  = updatesResponse[@"auth_token"];
         _canSeeMatureContent        = [updatesResponse[@"can_view_mature_content"] boolValue];
-        _countryCode                = updatesResponse[@"country_code"];
+        _countryCode                = updatesResponse[@"country_code"] ?: @"US";
         _lastTimestamp              = [NSDate dateWithTimeIntervalSince1970:[updatesResponse[@"cash_provider"] doubleValue]/1000];
         _devicetoken                = updatesResponse[@"device_token"];
         _canSaveStoryToGallery      = [updatesResponse[@"enable_save_story_to_gallery"] boolValue];

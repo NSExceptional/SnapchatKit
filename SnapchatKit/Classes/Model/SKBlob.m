@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 #import "SKBlob.h"
 #import "SnapchatKit-Constants.h"
 #import "NSData+SnapchatKit.h"

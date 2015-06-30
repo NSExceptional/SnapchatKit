@@ -46,6 +46,8 @@
 		B4C21A421B151147000365DE /* SKClient+Friends.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A411B151147000365DE /* SKClient+Friends.m */; };
 		B4C21A451B151188000365DE /* SKClient+Snaps.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A441B151188000365DE /* SKClient+Snaps.m */; };
 		B4C21A481B151195000365DE /* SKClient+Chat.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C21A471B151195000365DE /* SKClient+Chat.m */; };
+		B4EBB00D1B42480700B8B398 /* SKStoryOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EBB00C1B42480700B8B398 /* SKStoryOptions.m */; };
+		B4EBB0101B4250E400B8B398 /* SKSnapResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EBB00F1B4250E400B8B398 /* SKSnapResponse.m */; };
 		DF676B668268364B4426D46E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1274B31F6DF0D6C723D99DF3 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -148,6 +150,10 @@
 		B4C21A441B151188000365DE /* SKClient+Snaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Snaps.m"; sourceTree = "<group>"; };
 		B4C21A461B151195000365DE /* SKClient+Chat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Chat.h"; sourceTree = "<group>"; };
 		B4C21A471B151195000365DE /* SKClient+Chat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Chat.m"; sourceTree = "<group>"; };
+		B4EBB00B1B42480700B8B398 /* SKStoryOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKStoryOptions.h; sourceTree = "<group>"; };
+		B4EBB00C1B42480700B8B398 /* SKStoryOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKStoryOptions.m; sourceTree = "<group>"; };
+		B4EBB00E1B4250E400B8B398 /* SKSnapResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSnapResponse.h; sourceTree = "<group>"; };
+		B4EBB00F1B4250E400B8B398 /* SKSnapResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSnapResponse.m; sourceTree = "<group>"; };
 		CC7FDCCF39DD67879C29F1F5 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -279,8 +285,12 @@
 				B4C21A0F1B0CEE23000365DE /* SKSnap.m */,
 				B437C5491B300DCE00B8DD01 /* SKSnapOptions.h */,
 				B437C54A1B300DCE00B8DD01 /* SKSnapOptions.m */,
+				B4EBB00E1B4250E400B8B398 /* SKSnapResponse.h */,
+				B4EBB00F1B4250E400B8B398 /* SKSnapResponse.m */,
 				B4C21A101B0CEE23000365DE /* SKStory.h */,
 				B4C21A111B0CEE23000365DE /* SKStory.m */,
+				B4EBB00B1B42480700B8B398 /* SKStoryOptions.h */,
+				B4EBB00C1B42480700B8B398 /* SKStoryOptions.m */,
 				B4C21A121B0CEE23000365DE /* SKStoryCollection.h */,
 				B4C21A131B0CEE23000365DE /* SKStoryCollection.m */,
 				B4C21A141B0CEE23000365DE /* SKStoryNote.h */,
@@ -426,6 +436,7 @@
 			files = (
 				B4C21A2F1B0CEE23000365DE /* SKUser.m in Sources */,
 				B4BFA1301B2D64370057EB53 /* SKClient+Account.m in Sources */,
+				B4EBB0101B4250E400B8B398 /* SKSnapResponse.m in Sources */,
 				B4BFA1331B2E4A9A0057EB53 /* SKClient+Device.m in Sources */,
 				B4C21A291B0CEE23000365DE /* SKSimpleUser.m in Sources */,
 				B48E34191B199DFA0004CEAD /* unzip.c in Sources */,
@@ -439,6 +450,7 @@
 				B4C21A2B1B0CEE23000365DE /* SKStory.m in Sources */,
 				B4C21A421B151147000365DE /* SKClient+Friends.m in Sources */,
 				B4C21A241B0CEE23000365DE /* SKCashTransaction.m in Sources */,
+				B4EBB00D1B42480700B8B398 /* SKStoryOptions.m in Sources */,
 				B4C21A2A1B0CEE23000365DE /* SKSnap.m in Sources */,
 				B4BFA1361B2E81270057EB53 /* SKFilter.m in Sources */,
 				B41EE78E1AF9C0E000FD5E5B /* main.m in Sources */,

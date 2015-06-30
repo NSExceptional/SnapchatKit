@@ -11,6 +11,7 @@
 #import "SKBlob.h"
 #import "SKLocation.h"
 #import "SKSnapOptions.h"
+#import "SKSnapResponse.h"
 
 #import "NSString+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
@@ -21,7 +22,7 @@
 
 // TODO: pass back snap objects
 
-- (void)sendSnap:(SKBlob *)blob to:(NSArray *)recipients text:(NSString *)text timer:(NSTimeInterval)duration completion:(ErrorBlock)completion {
+- (void)sendSnap:(SKBlob *)blob to:(NSArray *)recipients text:(NSString *)text timer:(NSTimeInterval)duration completion:(ResponseBlock)completion {
     SKSnapOptions *options = [SKSnapOptions new];
     options.recipients = recipients;
     options.text = text;
@@ -29,7 +30,7 @@
     [self sendSnap:blob options:options completion:completion];
 }
 
-- (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ErrorBlock)completion {
+- (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ResponseBlock)completion {
     NSParameterAssert(blob); NSParameterAssert(options);
     
     [self uploadSnap:blob completion:^(NSString *mediaID, NSError *error) {
@@ -37,17 +38,21 @@
             NSDictionary *query = @{@"camera_front_facing": @(options.cameraFrontFacing),
                                     @"country_code":        self.currentSession.countryCode,
                                     @"media_id":            mediaID,
-                                    @"recipients":          [options.recipients formatRecipients],
-                                    @"recipient_ids":       [options.recipients formatRecipients],
+                                    @"recipients":          options.recipients.recipientsString,
+                                    @"recipient_ids":       options.recipients.recipientsString,
                                     @"reply":               @(options.isReply),
                                     @"time":                @((NSUInteger)options.timer),
                                     @"zipped":              @0,
                                     @"username":            self.username};
             [self postTo:kepSend query:query callback:^(NSDictionary *json, NSError *sendError) {
-                completion(sendError);
+                if (!sendError) {
+                    completion([[SKSnapResponse alloc] initWithDictionary:json], nil);
+                } else {
+                    completion(nil, sendError);
+                }
             }];
         } else {
-            completion(error);
+            completion(nil, error);
         }
     }];
 }

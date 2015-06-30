@@ -16,10 +16,10 @@
 
 @interface SKClient (Snaps)
 
-/** @c blob can be created with any @c NSData object. */
-- (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ErrorBlock)completion;
-/** @c duration must be greater than @c 9. @note @c text is not actually put into the image, that's your job. @c blob can be created with any @c NSData object. */
-- (void)sendSnap:(SKBlob *)blob to:(NSArray *)recipients text:(NSString *)text timer:(NSTimeInterval)duration completion:(ErrorBlock)completion;
+/** @c blob can be created with any @c NSData object. Callback takes an @c SKSnapResponse object. */
+- (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ResponseBlock)completion;
+/** @c duration must be greater than @c 0. @note @c text is not actually put into the image, that's your job. @c blob can be created with any @c NSData object. Callback takes an @c SKSnapResponse object.  */
+- (void)sendSnap:(SKBlob *)blob to:(NSArray *)recipients text:(NSString *)text timer:(NSTimeInterval)duration completion:(ResponseBlock)completion;
 
 - (void)markSnapViewed:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion;
 - (void)markSnapScreenshot:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion;

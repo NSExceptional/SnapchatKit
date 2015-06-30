@@ -105,6 +105,8 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                         completion(json, nil);
                     else
                         completion(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+                } else {
+                    completion(json, nil);
                 }
             } else {
                 // Failed with a message
