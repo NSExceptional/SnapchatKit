@@ -15,6 +15,7 @@
 
 // debug
 #import "NSData+SnapchatKit.h"
+#import "NSArray+SnapchatKit.h"
 #import "NSString+SnapchatKit.h"
 @import AppKit;
 @import CoreLocation;
@@ -186,8 +187,11 @@ void testSendSnapFromFileAtPathToUser(NSString *path, NSString *recipient) {
         return;
     }
     
-    [[SKClient sharedClient] sendSnap:blob to:@[recipient] text:nil timer:5.5 completion:^(NSError *error) {
-        SKLog(@"%@", error ?: @"Success");
+    [[SKClient sharedClient] sendSnap:blob to:@[recipient] text:nil timer:5.5 completion:^(SKSnapResponse *response, NSError *error) {
+        if (!error)
+            NSLog(@"Sent snap: %@", response);
+        else
+            NSLog(@"Failed to send snap: %@", error);
     }];
 }
 
@@ -202,6 +206,11 @@ int main(int argc, const char * argv[]) {
         // Cannot seem to "solve" a captcha.
 //        registerAccount(@"Tatem1984@jourrapide.com", @"12345678h", @"1995-08-01");
         
+//        NSArray *t = @[@"tannerbennett"];
+//        NSArray *tt = @[@"sam", @"bob", @"sally"];
+//        NSString *s = t.recipientsString;
+//        NSString *ss = tt.recipientsString;
+        
         [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
@@ -214,7 +223,7 @@ int main(int argc, const char * argv[]) {
                 // ie each SKStoryCollection has the JSON for each story, and each SKStory also has its JSON.
                 // TODO: make the _JSON property of SKThing dependent on kDebugJSON.
                 NSData *data = [NSPropertyListSerialization dataWithPropertyList:[session valueForKey:@"_JSON"] format:NSPropertyListBinaryFormat_v1_0 options:0 error:nil];
-                SKLog(@"Bytes: %lu Kilobytes: %f", data.length, ((float)data.length/1024.f));
+                SKLog(@"Bytes: %lu Kilobytes: %f", data.length, ((float)data.length/1024));
                 
                 ////////////////////////////
                 // I'm testing stuff here //
@@ -223,10 +232,6 @@ int main(int argc, const char * argv[]) {
                 // Get unread snaps
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
-                
-                [[SKClient sharedClient] addFriend:@"bellathornedab" completion:^(id object, NSError *error) {
-                    NSLog(@"%@", error);
-                }];
                 
 //                SKLog(@"Sending snap...");
                 testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
@@ -258,10 +263,10 @@ int main(int argc, const char * argv[]) {
 //                testGetConversations();
                 
                 // Download and save unread snaps
-                saveUnreadSnapsToDirectory(unread, directory);
+//                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-                markSnapsRead(unread);
+//                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);

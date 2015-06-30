@@ -9,14 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "SKClient.h"
 #import "SKBlob.h"
-#import "SKStoryOptions.h"
 
-@class SKStory, SKUserStory, SKStoryCollection;
+@class SKStory, SKUserStory, SKStoryCollection, SKStoryOptions;
 
 
 @interface SKClient (Stories)
 
+/** @c blob can be created with any @c NSData object. */
 - (void)postStory:(SKBlob *)blob options:(SKStoryOptions *)options completion:(ErrorBlock)completion;
+/** @c duration must be greater than @c 0.
+ @note @c text is not actually put into the image, that's your job. @c blob can be created with any @c NSData object.
+ @note Assumes camera not front facing. */
+- (void)postStory:(SKBlob *)blob for:(NSTimeInterval)duration completion:(ErrorBlock)completion;
 
 /** Callback takes an @c SKBlob object. */
 - (void)loadStoryBlob:(SKStory *)story completion:(ResponseBlock)completion;

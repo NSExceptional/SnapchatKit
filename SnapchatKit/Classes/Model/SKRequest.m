@@ -103,11 +103,11 @@
             
             NSMutableData *body = [NSMutableData data];
             
-            for (id key in json) {
+            for (NSString *key in json.allKeys) {
                 if ([key isEqualToString:@"data"]) {
-                    [body appendData:[NSData boundaryWithKey:key forDataValue:[json objectForKey:key]]];
+                    [body appendData:[NSData boundaryWithKey:key forDataValue:json[key]]];
                 } else {
-                    [body appendData:[NSData boundaryWithKey:key forStringValue:(NSString *)[json objectForKey:key]]];
+                    [body appendData:[NSData boundaryWithKey:key forStringValue:(NSString *)json[key]]];
                 }
             }
             

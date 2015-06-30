@@ -22,8 +22,8 @@
     self = [super init];
     if (self) {
         _recipients = @[];
-        _text = @"";
-        _timer = 3.f;
+        _text       = @"";
+        _timer      = 3;
     }
     
     return self;

@@ -11,12 +11,18 @@
 #import "SKStory.h"
 #import "SKUserStory.h"
 #import "SKStoryUpdater.h"
+#import "SKStoryOptions.h"
 
 #import "SKRequest.h"
 #import "NSString+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
 
 @implementation SKClient (Stories)
+
+- (void)postStory:(SKBlob *)blob for:(NSTimeInterval)duration completion:(ErrorBlock)completion {
+    SKStoryOptions *options = [SKStoryOptions storyWithText:nil timer:duration];
+    [self postStory:blob options:options completion:completion];
+}
 
 - (void)postStory:(SKBlob *)blob options:(SKStoryOptions *)options completion:(ErrorBlock)completion {
     NSParameterAssert(blob); NSParameterAssert(options);
@@ -25,6 +31,7 @@
         if (!error) {
             NSDictionary *query = @{@"caption_text_display": options.text,
                                     @"story_timestamp":      [NSString timestamp],
+                                    @"type":                 blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
                                     @"media_id":             mediaID,
                                     @"client_id":            mediaID,
                                     @"time":                 @((NSUInteger)options.timer),
@@ -32,9 +39,7 @@
                                     @"camera_front_facing":  @(options.cameraFrontFacing),
                                     @"my_story":             @"true",
                                     @"zipped":               @0,
-                                    @"shared_ids":           @"{}",
-                                    @"type":                 blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo)
-                                    };
+                                    @"shared_ids":           @"{}"};
             [self postTo:kepPostStory query:query callback:^(NSDictionary *json, NSError *sendError) {
                 completion(sendError);
             }];

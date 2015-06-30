@@ -10,10 +10,10 @@
 
 @implementation SKStoryOptions
 
-+ (instancetype)setText:(NSString *)text for:(NSTimeInterval)timer {
++ (instancetype)storyWithText:(NSString *)text timer:(NSTimeInterval)timer {
     SKStoryOptions *options = [self new];
-    options.text           = text;
-    options.timer          = timer;
+    options.text            = text;
+    options.timer           = timer;
     return options;
 }
 
@@ -21,7 +21,7 @@
     self = [super init];
     if (self) {
         _text = @"";
-        _timer = 3.f;
+        _timer = 3;
     }
     
     return self;

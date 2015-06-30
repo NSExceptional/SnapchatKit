@@ -16,5 +16,5 @@
 @end
 
 @interface NSArray (REST)
-- (NSString *)formatRecipients;
+- (NSString *)recipientsString;
 @end

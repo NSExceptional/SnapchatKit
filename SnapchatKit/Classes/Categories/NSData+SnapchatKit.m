@@ -13,6 +13,7 @@
 
 #import "SnapchatKit-Constants.h"
 
+#pragma mark Encryption
 @implementation NSData (Encryption)
 
 - (NSData *)AES128EncryptedDataWithKey:(NSString *)key {
@@ -79,6 +80,7 @@
 
 @end
 
+#pragma mark FileFormat
 @implementation NSData (FileFormat)
 
 - (BOOL)isJPEG {
@@ -119,6 +121,8 @@
 
 @end
 
+
+#pragma mark Encoding
 @implementation NSData (Encoding)
 
 - (NSString *)MD5Hash {
@@ -161,6 +165,8 @@
 
 @end
 
+
+#pragma mark REST
 @implementation NSData (REST)
 
 + (NSData *)boundaryWithKey:(NSString *)key forStringValue:(NSString *)string {
@@ -183,6 +189,8 @@
 
 @end
 
+
+#pragma mark Blob
 @implementation NSData (Blob)
 
 /** Decrypts blob data for standard images and videos. */

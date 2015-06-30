@@ -33,7 +33,7 @@
     NSParameterAssert(recipients);
     if (recipients.count == 0) return;
     
-    [self sendTyping:[recipients formatRecipients]];
+    [self sendTyping:recipients.recipientsString];
 }
 
 - (void)sendTypingToUser:(NSString *)user {
