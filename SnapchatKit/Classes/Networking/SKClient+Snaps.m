@@ -37,8 +37,8 @@
             NSDictionary *query = @{@"camera_front_facing": @(options.cameraFrontFacing),
                                     @"country_code":        self.currentSession.countryCode,
                                     @"media_id":            mediaID,
-                                    @"recipients":          options.recipients,
-                                    @"recipient_ids":       options.recipients,
+                                    @"recipients":          [options.recipients formatRecipients],
+                                    @"recipient_ids":       [options.recipients formatRecipients],
                                     @"reply":               @(options.isReply),
                                     @"time":                @((NSUInteger)options.timer),
                                     @"zipped":              @0,
@@ -57,7 +57,7 @@
     
     NSDictionary *query = @{@"media_id": uuid,
                             @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
-                            @"data": blob.data,//[blob.data AES128EncryptedDataWithKey:@"M02cnQ51Ji97vwT4"],
+                            @"data": blob.data,
                             @"zipped": @0,
                             @"features_map": @"{}",
                             @"username": self.username};

@@ -100,18 +100,18 @@
         // Set HTTPBody
         // Only for uploading snaps here
         if ([endpoint isEqualToString:kepUpload]) {
-            NSMutableString *bodyString = [NSMutableString string];
-            [bodyString appendString:[NSString boundaryWithName:@"media_id" contentString:json[@"media_id"]]];
-            [bodyString appendString:[NSString boundaryWithName:@"username" contentString:json[@"username"]]];
-            [bodyString appendString:[NSString boundaryWithName:@"type" contentString:[json[@"type"] stringValue]]];
-            [bodyString appendString:[NSString boundaryWithName:@"timestamp" contentString:[json[@"timestamp"] stringValue]]];
-            [bodyString appendString:[NSString boundaryWithName:@"req_token" contentString:json[@"req_token"]]];
-            [bodyString appendString:[NSString boundaryWithName:@"features_map" contentString:json[@"features_map"]]];
             
             NSMutableData *body = [NSMutableData data];
-            [body appendData:[bodyString dataUsingEncoding:NSUTF8StringEncoding]];
-            [body appendData:[NSData boundaryWithData:json[@"data"]]];
-            [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", kBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            
+            for (id key in json) {
+                if ([key isEqualToString:@"data"]) {
+                    [body appendData:[NSData boundaryWithKey:key forDataValue:[json objectForKey:key]]];
+                } else {
+                    [body appendData:[NSData boundaryWithKey:key forStringValue:(NSString *)[json objectForKey:key]]];
+                }
+            }
+            
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", kBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
             
             self.HTTPBody = body;
         } else {

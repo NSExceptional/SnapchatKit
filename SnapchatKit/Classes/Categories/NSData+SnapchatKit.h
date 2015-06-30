@@ -39,7 +39,8 @@
 
 
 @interface NSData (REST)
-+ (NSData *)boundaryWithData:(id)data;
++ (NSData *)boundaryWithKey:(NSString *)key forStringValue:(NSString *)string;
++ (NSData *)boundaryWithKey:(NSString *)key forDataValue:(NSData *)data;
 @end
 
 

@@ -28,11 +28,9 @@
 
 
 @interface NSString (REST)
-
 + (NSString *)timestamp;
 + (NSString *)timestampFrom:(NSDate *)date;
 + (NSString *)queryStringWithParams:(NSDictionary *)params;
-+ (NSString *)boundaryWithName:(NSString *)name contentString:(id)content;
 @end
 
 
