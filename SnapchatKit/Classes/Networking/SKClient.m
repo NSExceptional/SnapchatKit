@@ -10,6 +10,7 @@
 #import "SKSession.h"
 #import "SKRequest.h"
 #import "SKConversation.h"
+#import "SKBlob.h"
 
 #import "SnapchatKit-Constants.h"
 #import "NSData+SnapchatKit.h"

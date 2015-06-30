@@ -32,7 +32,7 @@
 - (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ErrorBlock)completion {
     NSParameterAssert(blob); NSParameterAssert(options);
     
-    [self uploadSnap:blob callback:^(NSString *mediaID, NSError *error) {
+    [self uploadSnap:blob completion:^(NSString *mediaID, NSError *error) {
         if (!error) {
             NSDictionary *query = @{@"camera_front_facing": @(options.cameraFrontFacing),
                                     @"country_code":        self.currentSession.countryCode,
@@ -52,7 +52,7 @@
     }];
 }
 
-- (void)uploadSnap:(SKBlob *)blob callback:(ResponseBlock)callback {
+- (void)uploadSnap:(SKBlob *)blob completion:(ResponseBlock)completion {
     NSString *uuid = SKMediaIdentifier(self.username);
     
     NSDictionary *query = @{@"media_id": uuid,
@@ -68,9 +68,9 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [self handleError:error data:data response:response completion:^(id object, NSError *error) {
                 if (!error) {
-                    callback(uuid, nil);
+                    completion(uuid, nil);
                 } else {
-                    callback(nil, error);
+                    completion(nil, error);
                 }
             }];
         });

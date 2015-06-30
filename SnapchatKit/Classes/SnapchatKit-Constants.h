@@ -167,6 +167,7 @@ extern NSString * const kepRetrySend;
 extern NSString * const kepSend;
 extern NSString * const kepTyping;
 extern NSString * const kepPostStory;
+extern NSString * const kepPostStoryRetry;
 extern NSString * const kepDeleteStory;
 extern NSString * const kepUpdateStories;
 extern NSString * const kepBestFriends;

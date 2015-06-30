@@ -8,11 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "SKClient.h"
+#import "SKBlob.h"
+#import "SKStoryOptions.h"
 
 @class SKStory, SKUserStory, SKStoryCollection;
 
 
 @interface SKClient (Stories)
+
+- (void)postStory:(SKBlob *)blob options:(SKStoryOptions *)options completion:(ErrorBlock)completion;
 
 /** Callback takes an @c SKBlob object. */
 - (void)loadStoryBlob:(SKStory *)story completion:(ResponseBlock)completion;

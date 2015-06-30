@@ -10,7 +10,6 @@
 #import "SKStoryCollection.h"
 #import "SKStory.h"
 #import "SKUserStory.h"
-#import "SKBlob.h"
 #import "SKStoryUpdater.h"
 
 #import "SKRequest.h"
@@ -18,6 +17,57 @@
 #import "NSArray+SnapchatKit.h"
 
 @implementation SKClient (Stories)
+
+- (void)postStory:(SKBlob *)blob options:(SKStoryOptions *)options completion:(ErrorBlock)completion {
+    NSParameterAssert(blob); NSParameterAssert(options);
+    
+    [self uploadStory:blob completion:^(NSString *mediaID, NSError *error) {
+        if (!error) {
+            NSDictionary *query = @{@"caption_text_display": options.text,
+                                    @"story_timestamp":      [NSString timestamp],
+                                    @"media_id":             mediaID,
+                                    @"client_id":            mediaID,
+                                    @"time":                 @((NSUInteger)options.timer),
+                                    @"username":             self.username,
+                                    @"camera_front_facing":  @(options.cameraFrontFacing),
+                                    @"my_story":             @"true",
+                                    @"zipped":               @0,
+                                    @"shared_ids":           @"{}",
+                                    @"type":                 blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo)
+                                    };
+            [self postTo:kepPostStory query:query callback:^(NSDictionary *json, NSError *sendError) {
+                completion(sendError);
+            }];
+        } else {
+            completion(error);
+        }
+    }];
+}
+
+- (void)uploadStory:(SKBlob *)blob completion:(ResponseBlock)completion {
+    NSString *uuid = SKMediaIdentifier(self.username);
+    
+    NSDictionary *query = @{@"media_id": uuid,
+                            @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
+                            @"data": blob.data,
+                            @"zipped": @0,
+                            @"features_map": @"{}",
+                            @"username": self.username};
+    NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
+                              khfContentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", kBoundary]};
+    
+    [SKRequest postTo:kepUpload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self handleError:error data:data response:response completion:^(id object, NSError *error) {
+                if (!error) {
+                    completion(uuid, nil);
+                } else {
+                    completion(nil, error);
+                }
+            }];
+        });
+    }];
+}
 
 - (void)loadStoryBlob:(SKStory *)story completion:(ResponseBlock)completion {
     NSParameterAssert(story); NSParameterAssert(completion);
