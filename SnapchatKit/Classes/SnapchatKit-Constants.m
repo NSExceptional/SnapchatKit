@@ -128,6 +128,7 @@ NSString * const kepConversation      = @"/loq/conversation";
 NSString * const kepConvoClear        = @"/loq/clear_conversation";
 NSString * const kepConvoPostMessages = @"/loq/conversation_post_messages";
 NSString * const kepFindFriends       = @"/ph/find_friends";
+NSString * const kepFindNearby        = @"/bq/find_nearby_friends";
 NSString * const kepFriendSearch      = @"/loq/friend_search";
 NSString * const kepUserExists        = @"/bq/user_exists";
 NSString * const kepFriends           = @"/bq/friend";

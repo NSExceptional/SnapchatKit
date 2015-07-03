@@ -157,6 +157,7 @@ extern NSString * const kepFindFriends;
 extern NSString * const kepFriendSearch;
 extern NSString * const kepUserExists;
 extern NSString * const kepFriends;
+extern NSString * const kepFindNearby;
 extern NSString * const kepFriendHide;
 extern NSString * const kepUpdateSnaps;
 extern NSString * const kepSharedDescription;

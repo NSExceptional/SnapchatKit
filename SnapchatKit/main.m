@@ -17,6 +17,7 @@
 #import "NSData+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
 #import "NSString+SnapchatKit.h"
+#import "TBTimeInterval.h"
 @import AppKit;
 @import CoreLocation;
 
@@ -168,7 +169,7 @@ void testGetAllStoriesInCollectionForUser(NSString *path, NSString *user) {
     }];
 }
 
-void getFilterForCoordinates(double lat, double lon) {
+void getFilterForCoordinates(CGFloat lat, CGFloat lon) {
     CLLocation *loc = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
     [[SKClient sharedClient] loadFiltersForLocation:loc completion:^(NSArray *collection, NSError *error) {
         if (!error) {
@@ -195,6 +196,18 @@ void testSendSnapFromFileAtPathToUser(NSString *path, NSString *recipient) {
     }];
 }
 
+void testFindFriendsNearby(CGFloat lat, CGFloat lon) {
+    CLLocation *loc = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+    
+    [TBTimer startTimer];
+    for (NSUInteger i = 0; i < 5; i++) {
+        [[SKClient sharedClient] findFriendsNear:loc accuracy:50 pollDurationSoFar:(NSUInteger)([TBTimer lap]*1000) completion:^(NSArray *collection, NSError *error) {
+            NSLog(@"%@", collection ?: error.localizedDescription);
+        }];
+        sleep(2);
+    }
+}
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
@@ -205,11 +218,6 @@ int main(int argc, const char * argv[]) {
         // Testing account registration.
         // Cannot seem to "solve" a captcha.
 //        registerAccount(@"Tatem1984@jourrapide.com", @"12345678h", @"1995-08-01");
-        
-//        NSArray *t = @[@"tannerbennett"];
-//        NSArray *tt = @[@"sam", @"bob", @"sally"];
-//        NSString *s = t.recipientsString;
-//        NSString *ss = tt.recipientsString;
         
         [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
             if (!error) {
@@ -233,11 +241,13 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
+                testFindFriendsNearby(40.713054, -74.007228);
+                
 //                SKLog(@"Sending snap...");
-                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
+//                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
                 
                 // Some locations with cool filters.
-                // Waco       31.534089, -97.123811
+                // Waco       31.534173, -97.123863
                 // NY         40.713054, -74.007228
                 // SF         37.780080, -122.420168
                 // LA         34.052238, -118.243344
