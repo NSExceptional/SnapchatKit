@@ -114,19 +114,14 @@ void saveUnreadSnapsToDirectory(NSArray *unread, NSString *path) {
     for (SKSnap *snap in unread)
         [snap load:^(NSError *error) {
             if (!error) {
+                // Turn it into an image if you want (if it's an image)
+                // NSImage *image = [[NSImage alloc] initWithData:snap.blob.data];
+                [snap.blob writeToPath:path filename:[NSString stringWithFormat:@"%@-%@", snap.sender, snap.identifier] atomically:YES];
+                
                 if (SKMediaKindIsImage(snap.mediaKind)) {
-                    // Turn it into an image if you want
-                    // NSImage *image = [[NSImage alloc] initWithData:snapData];
-                    [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.jpg", snap.sender, snap.identifier]] atomically:YES];
                     SKLog(@"Image snap from: %@", snap.sender);
                 }
                 else if (SKMediaKindIsVideo(snap.mediaKind)) {
-                    if (snap.blob.overlay) {
-                        [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/media.mp4", snap.sender, snap.identifier]] atomically:YES];
-                        [snap.blob.overlay writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/overlay.jpg", snap.sender, snap.identifier]] atomically:YES];
-                    } else {
-                        [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.mp4", snap.sender, snap.identifier]] atomically:YES];
-                    }
                     SKLog(@"Video snap from: %@", snap.sender);
                 }
             }
@@ -164,7 +159,7 @@ void testGetAllStoriesInCollectionForUser(NSString *path, NSString *user) {
     [[SKClient sharedClient] loadStories:collection.stories completion:^(NSArray *stories, NSArray *failed, NSArray *errors) {
         SKLog(@"%@", collection);
         for (SKStory *story in stories) {
-            [story.blob writeToPath:[path stringByAppendingPathComponent:story.suggestedFilename] atomically:YES];
+            [story.blob writeToPath:path filename:story.suggestedFilename atomically:YES];
         }
     }];
 }
@@ -219,6 +214,7 @@ int main(int argc, const char * argv[]) {
         // Cannot seem to "solve" a captcha.
 //        registerAccount(@"Tatem1984@jourrapide.com", @"12345678h", @"1995-08-01");
         
+        
         [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
@@ -232,7 +228,7 @@ int main(int argc, const char * argv[]) {
                 // TODO: make the _JSON property of SKThing dependent on kDebugJSON.
                 NSData *data = [NSPropertyListSerialization dataWithPropertyList:[session valueForKey:@"_JSON"] format:NSPropertyListBinaryFormat_v1_0 options:0 error:nil];
                 SKLog(@"Bytes: %lu Kilobytes: %f", data.length, ((float)data.length/1024));
-                
+
                 ////////////////////////////
                 // I'm testing stuff here //
                 ////////////////////////////
@@ -241,7 +237,7 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
-                testFindFriendsNearby(40.713054, -74.007228);
+//                testFindFriendsNearby(40.713054, -74.007228);
                 
 //                SKLog(@"Sending snap...");
 //                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");

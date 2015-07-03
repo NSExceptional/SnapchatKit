@@ -27,8 +27,8 @@
 
 + (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion {
     NSParameterAssert(encryptedBlob);
-    NSData *decryptedBlob = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
-    
+    NSData *decryptedBlob = nil;//[encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
+    decryptedBlob = encryptedBlob;
     // Unzipped
     if ([decryptedBlob isJPEG] || [decryptedBlob isMPEG4]) {
         SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
@@ -154,17 +154,18 @@
             NSStringFromClass(self.class), self.isImage, (BOOL)self.overlay, (unsigned long)self.data.length];
 }
 
-- (void)writeToPath:(NSString *)path atomically:(BOOL)atomically {
+- (void)writeToPath:(NSString *)path filename:(NSString *)filename atomically:(BOOL)atomically {
     NSParameterAssert(path);
     
     if (!self.overlay)
         [self.data writeToFile:path atomically:atomically];
     else {
-        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-            [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-        NSString *dataName = self.isImage ? @"media.jpg" : @"media.mp4";
-        [self.data writeToFile:[path stringByAppendingPathComponent:dataName] atomically:atomically];
-        [self.overlay writeToFile:[path stringByAppendingPathComponent:@"overlay.jpg"] atomically:atomically];
+        path = [path stringByAppendingPathComponent:filename];
+        NSString *overlay    = [filename stringByAppendingString:[@"-overlay" stringByAppendingString:self.overlay.appropriateFileExtension]];
+        NSString *video      = [filename stringByAppendingString:self.data.appropriateFileExtension];
+        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        [self.data writeToFile:[path stringByAppendingPathComponent:video] atomically:atomically];
+        [self.overlay writeToFile:[path stringByAppendingPathComponent:overlay] atomically:atomically];
     }
 }
 

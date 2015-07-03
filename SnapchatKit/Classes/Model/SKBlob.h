@@ -21,8 +21,8 @@
 /** Callback takes an SKBlob object. Specifically for story blobs, because they're CBC encrypted and possibly zipped if it's a video. */
 + (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion;
 
-/** If the blob has an overlay, it will write data and overlay to a folder as @c media.[jpg|mp4] and @c overlay.jpg. If not, only @c data is written to the specified file. */
-- (void)writeToPath:(NSString *)path atomically:(BOOL)atomically;
+/** If the blob has an overlay, it will write data and overlay to a folder as @c filename/filename.[jpg|mp4] and @c filename/filename.jpg. If not, only @c data is written to the specified file. */
+- (void)writeToPath:(NSString *)path filename:(NSString *)filename atomically:(BOOL)atomically;
 
 /** The data for the image or video. */
 @property (nonatomic, readonly) NSData *data;
