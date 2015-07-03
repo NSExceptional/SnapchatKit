@@ -134,6 +134,34 @@
     }];
 }
 
+- (void)uploadSnaptagAvatar:(NSArray *)datas completion:(ErrorBlock)completion {
+    // multipart/form-data; takes a single "data" parameter in addition to the usual "username" param
+}
+
+- (void)downloadSnaptagAvatarForUser:(NSString *)username completion:(ResponseBlock)completion {
+    NSParameterAssert(completion);
+    
+    NSDictionary *query = @{@"username": self.username,
+                            @"size": @"MEDIUM",
+                            @"username_image": username};
+    [SKRequest postTo:kepDownloadSnaptagAvatar query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!error) {
+                if ([(NSHTTPURLResponse *)response statusCode] == 200) {
+                    if (data.length)
+                        [[SKBlob blobWithData:data] decompress:^(SKBlob *blob, NSError *error) {
+                            completion(blob, error);
+                        }];
+                    else
+                        completion(nil, [SKRequest errorWithMessage:@"Error retrieving snaptag" code:1]);
+                }
+            } else {
+                completion(nil, error);
+            }
+        });
+    }];
+}
+
 - (void)updateTOSAgreementStatus:(BOOL)snapcash snapcashV2:(BOOL)snapcashV2 square:(BOOL)square completion:(ErrorBlock)completion {
     NSString *acceptSnapCashTos   = snapcash   ? @"true": @"false";
     NSString *acceptSnapCashV2Tos = snapcashV2 ? @"true": @"false";

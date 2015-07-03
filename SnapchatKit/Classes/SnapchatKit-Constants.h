@@ -180,6 +180,8 @@ extern NSString * const kepSnaptag;
 extern NSString * const kepCashEligible;
 extern NSString * const kepCashGenerateToken;
 extern NSString * const kepLocationData;
+extern NSString * const kepDownloadSnaptagAvatar;
+extern NSString * const kepUploadSnaptagAvatar;
 
 extern NSString * const kepGetStoryBlob;
 extern NSString * const kepGetStoryThumb;

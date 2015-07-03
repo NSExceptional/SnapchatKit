@@ -25,7 +25,10 @@
 
 /** Completion takes an SKBlob object. */
 - (void)downloadSnaptag:(ResponseBlock)completion;
-
+/** @param datas An array of 5 image @c NSData objects. */
+- (void)uploadSnaptagAvatar:(NSArray *)datas completion:(ErrorBlock)completion;
+/** Completion *should* take an array of 5 @c SKBlob objects, but as of now takes one possibly encrypted @c SKBlob object. */
+- (void)downloadSnaptagAvatarForUser:(NSString *)username completion:(ResponseBlock)completion;
 - (void)updateTOSAgreementStatus:(BOOL)snapcash snapcashV2:(BOOL)snapcashV2 square:(BOOL)square completion:(ErrorBlock)completion;
 
 

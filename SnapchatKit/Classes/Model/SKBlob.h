@@ -21,6 +21,9 @@
 /** Callback takes an SKBlob object. Specifically for story blobs, because they're CBC encrypted and possibly zipped if it's a video. */
 + (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion;
 
+/** Used to unarchive blobs initialized with anonymous data. Callback takes a new @c SKBlob object, and returns immediately if not compressed. */
+- (void)decompress:(ResponseBlock)completion;
+
 /** If the blob has an overlay, it will write data and overlay to a folder as @c filename/filename.[jpg|mp4] and @c filename/filename.jpg. If not, only @c data is written to the specified file. */
 - (void)writeToPath:(NSString *)path filename:(NSString *)filename atomically:(BOOL)atomically;
 
