@@ -91,3 +91,5 @@ NS_INLINE void SKAssertIsSignedIn() {
     if (![SKClient sharedClient].isSignedIn)
         [NSException raise:NSInternalInconsistencyException format:@"You must be signed in to call this method."];
 }
+
+extern BOOL hasActiveConnection();

@@ -10,8 +10,7 @@
 #import "SKClient.h"
 #import "SKSnap.h"
 
-#import <CoreLocation/CLLocation.h>
-@class SKSnapOptions;
+@class SKSnapOptions, CLLocation;
 
 
 @interface SKClient (Snaps)

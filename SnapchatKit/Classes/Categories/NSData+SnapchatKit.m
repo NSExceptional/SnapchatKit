@@ -119,6 +119,14 @@
     [self getBytes:d range:NSMakeRange(3, 1)];
 }
 
+- (NSString *)appropriateFileExtension {
+    if (self.isJPEG) return @".jpg";
+    if (self.isPNG) return @".png";
+    if (self.isMPEG4) return @".mp4";
+    if (self.isCompressed) return @".zip";
+    return @".dat";
+}
+
 @end
 
 

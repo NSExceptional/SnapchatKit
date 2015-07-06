@@ -17,6 +17,7 @@
 #import "NSData+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
 #import "NSString+SnapchatKit.h"
+#import "TBTimeInterval.h"
 @import AppKit;
 @import CoreLocation;
 
@@ -113,19 +114,14 @@ void saveUnreadSnapsToDirectory(NSArray *unread, NSString *path) {
     for (SKSnap *snap in unread)
         [snap load:^(NSError *error) {
             if (!error) {
+                // Turn it into an image if you want (if it's an image)
+                // NSImage *image = [[NSImage alloc] initWithData:snap.blob.data];
+                [snap.blob writeToPath:path filename:[NSString stringWithFormat:@"%@-%@", snap.sender, snap.identifier] atomically:YES];
+                
                 if (SKMediaKindIsImage(snap.mediaKind)) {
-                    // Turn it into an image if you want
-                    // NSImage *image = [[NSImage alloc] initWithData:snapData];
-                    [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.jpg", snap.sender, snap.identifier]] atomically:YES];
                     SKLog(@"Image snap from: %@", snap.sender);
                 }
                 else if (SKMediaKindIsVideo(snap.mediaKind)) {
-                    if (snap.blob.overlay) {
-                        [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/media.mp4", snap.sender, snap.identifier]] atomically:YES];
-                        [snap.blob.overlay writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@/overlay.jpg", snap.sender, snap.identifier]] atomically:YES];
-                    } else {
-                        [snap.blob.data writeToFile:[path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@.mp4", snap.sender, snap.identifier]] atomically:YES];
-                    }
                     SKLog(@"Video snap from: %@", snap.sender);
                 }
             }
@@ -163,12 +159,12 @@ void testGetAllStoriesInCollectionForUser(NSString *path, NSString *user) {
     [[SKClient sharedClient] loadStories:collection.stories completion:^(NSArray *stories, NSArray *failed, NSArray *errors) {
         SKLog(@"%@", collection);
         for (SKStory *story in stories) {
-            [story.blob writeToPath:[path stringByAppendingPathComponent:story.suggestedFilename] atomically:YES];
+            [story.blob writeToPath:path filename:story.suggestedFilename atomically:YES];
         }
     }];
 }
 
-void getFilterForCoordinates(double lat, double lon) {
+void getFilterForCoordinates(CGFloat lat, CGFloat lon) {
     CLLocation *loc = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
     [[SKClient sharedClient] loadFiltersForLocation:loc completion:^(NSArray *collection, NSError *error) {
         if (!error) {
@@ -195,6 +191,18 @@ void testSendSnapFromFileAtPathToUser(NSString *path, NSString *recipient) {
     }];
 }
 
+void testFindFriendsNearby(CGFloat lat, CGFloat lon) {
+    CLLocation *loc = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+    
+    [TBTimer startTimer];
+    for (NSUInteger i = 0; i < 5; i++) {
+        [[SKClient sharedClient] findFriendsNear:loc accuracy:50 pollDurationSoFar:(NSUInteger)([TBTimer lap]*1000) completion:^(NSArray *collection, NSError *error) {
+            NSLog(@"%@", collection ?: error.localizedDescription);
+        }];
+        sleep(2);
+    }
+}
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
@@ -206,10 +214,6 @@ int main(int argc, const char * argv[]) {
         // Cannot seem to "solve" a captcha.
 //        registerAccount(@"Tatem1984@jourrapide.com", @"12345678h", @"1995-08-01");
         
-//        NSArray *t = @[@"tannerbennett"];
-//        NSArray *tt = @[@"sam", @"bob", @"sally"];
-//        NSString *s = t.recipientsString;
-//        NSString *ss = tt.recipientsString;
         
         [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
             if (!error) {
@@ -224,7 +228,7 @@ int main(int argc, const char * argv[]) {
                 // TODO: make the _JSON property of SKThing dependent on kDebugJSON.
                 NSData *data = [NSPropertyListSerialization dataWithPropertyList:[session valueForKey:@"_JSON"] format:NSPropertyListBinaryFormat_v1_0 options:0 error:nil];
                 SKLog(@"Bytes: %lu Kilobytes: %f", data.length, ((float)data.length/1024));
-                
+
                 ////////////////////////////
                 // I'm testing stuff here //
                 ////////////////////////////
@@ -233,11 +237,17 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
+                [[SKClient sharedClient] downloadSnaptagAvatarForUser:session.username completion:^(id object, NSError *error) {
+                    NSLog(@"%@", object ?: error);
+                }];
+                
+//                testFindFriendsNearby(40.713054, -74.007228);
+                
 //                SKLog(@"Sending snap...");
-                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
+//                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
                 
                 // Some locations with cool filters.
-                // Waco       31.534089, -97.123811
+                // Waco       31.534173, -97.123863
                 // NY         40.713054, -74.007228
                 // SF         37.780080, -122.420168
                 // LA         34.052238, -118.243344

@@ -27,10 +27,10 @@
 
 + (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion {
     NSParameterAssert(encryptedBlob);
-    NSData *decryptedBlob = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
-    
+    NSData *decryptedBlob = nil;//[encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
+    decryptedBlob = encryptedBlob;
     // Unzipped
-    if ([decryptedBlob isJPEG] || [decryptedBlob isMPEG4]) {
+    if (decryptedBlob.isJPEG || decryptedBlob.isMPEG4) {
         SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
         if (blob)
             completion(blob, nil);
@@ -38,7 +38,7 @@
             completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
         
         // Needs to be unzipped
-    } else if ([decryptedBlob isCompressed]) {
+    } else if (decryptedBlob.isCompressed) {
         NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", story.identifier]];
         NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", story.identifier]];
         [decryptedBlob writeToFile:path atomically:YES];
@@ -154,17 +154,43 @@
             NSStringFromClass(self.class), self.isImage, (BOOL)self.overlay, (unsigned long)self.data.length];
 }
 
-- (void)writeToPath:(NSString *)path atomically:(BOOL)atomically {
+- (void)writeToPath:(NSString *)path filename:(NSString *)filename atomically:(BOOL)atomically {
     NSParameterAssert(path);
     
     if (!self.overlay)
-        [self.data writeToFile:path atomically:atomically];
+        [self.data writeToFile:[path stringByAppendingPathComponent:[filename stringByAppendingString:self.data.appropriateFileExtension]] atomically:atomically];
     else {
-        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
-            [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-        NSString *dataName = self.isImage ? @"media.jpg" : @"media.mp4";
-        [self.data writeToFile:[path stringByAppendingPathComponent:dataName] atomically:atomically];
-        [self.overlay writeToFile:[path stringByAppendingPathComponent:@"overlay.jpg"] atomically:atomically];
+        path = [path stringByAppendingPathComponent:filename];
+        NSString *overlay    = [filename stringByAppendingString:[@"-overlay" stringByAppendingString:self.overlay.appropriateFileExtension]];
+        NSString *video      = [filename stringByAppendingString:self.data.appropriateFileExtension];
+        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        [self.data writeToFile:[path stringByAppendingPathComponent:video] atomically:atomically];
+        [self.overlay writeToFile:[path stringByAppendingPathComponent:overlay] atomically:atomically];
+    }
+}
+
+- (void)decompress:(ResponseBlock)completion {
+    if (self.data.isCompressed) {
+        NSString *uuid = [NSUUID UUID].UUIDString;
+        NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", uuid]];
+        NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", uuid]];
+        [self.data writeToFile:path atomically:YES];
+        
+        [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
+            NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
+            
+            if (succeeded) {
+                SKBlob *blob = [SKBlob blobWithContentsOfPath:unzip];
+                if (blob)
+                    completion(blob, nil);
+                else
+                    completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
+            } else {
+                SKLog(@"%@", error);
+            }
+        }];
+    } else {
+        completion(self, nil);
     }
 }
 

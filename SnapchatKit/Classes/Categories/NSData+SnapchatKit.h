@@ -27,6 +27,7 @@
 - (BOOL)isPNG;
 - (BOOL)isMPEG4;
 - (BOOL)isCompressed;
+- (NSString *)appropriateFileExtension;
 
 @end
 

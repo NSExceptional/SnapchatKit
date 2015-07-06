@@ -18,6 +18,8 @@
 #import "NSData+SnapchatKit.h"
 #import "SSZipArchive.h"
 
+#import <CoreLocation/CLLocation.h>
+
 @implementation SKClient (Snaps)
 
 // TODO: pass back snap objects

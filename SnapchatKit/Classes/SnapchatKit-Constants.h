@@ -157,6 +157,7 @@ extern NSString * const kepFindFriends;
 extern NSString * const kepFriendSearch;
 extern NSString * const kepUserExists;
 extern NSString * const kepFriends;
+extern NSString * const kepFindNearby;
 extern NSString * const kepFriendHide;
 extern NSString * const kepUpdateSnaps;
 extern NSString * const kepSharedDescription;
@@ -179,6 +180,8 @@ extern NSString * const kepSnaptag;
 extern NSString * const kepCashEligible;
 extern NSString * const kepCashGenerateToken;
 extern NSString * const kepLocationData;
+extern NSString * const kepDownloadSnaptagAvatar;
+extern NSString * const kepUploadSnaptagAvatar;
 
 extern NSString * const kepGetStoryBlob;
 extern NSString * const kepGetStoryThumb;

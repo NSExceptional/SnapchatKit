@@ -10,9 +10,12 @@
 #import "SKRequest.h"
 #import "SKUser.h"
 #import "SKFoundFriend.h"
+#import "SKNearbyUser.h"
 
 #import "NSDictionary+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
+
+#import <CoreLocation/CLLocation.h>
 
 @implementation SKClient (Friends)
 
@@ -117,6 +120,29 @@
 //    }
 }
 
+- (void)findFriendsNear:(CLLocation *)location accuracy:(CGFloat)meters pollDurationSoFar:(NSUInteger)milliseconds completion:(ArrayBlock)completion {
+    NSParameterAssert(location); NSParameterAssert(completion);
+    if (meters <= 0)
+        meters = 10;
+    
+    NSDictionary *query = @{@"username": self.username,
+                            @"accuracyMeters": @(meters),
+                            @"action": @"update",
+                            @"lat": @(location.coordinate.latitude),
+                            @"long": @(location.coordinate.longitude),
+                            @"totalPollingDurationMillis": @(milliseconds)};
+    [self postTo:kepFindNearby query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            NSMutableArray *nearby = [NSMutableArray array];
+            for (NSDictionary *user in json[@"nearby_snapchatters"])
+                [nearby addObject:[SKNearbyUser username:user[@"username"] identifier:user[@"user_id"]]];
+            completion(nearby.copy, nil);
+        } else {
+            completion(nil, error);
+        }
+    }];
+}
+
 - (void)searchFriend:(NSString *)query completion:(ResponseBlock)completion {
     NSParameterAssert(query.length); NSParameterAssert(completion);
     [self postTo:kepFriendSearch query:@{@"query": query, @"username": self.username} callback:completion];
@@ -171,5 +197,6 @@
         completion(error);
     }];
 }
+
 
 @end
