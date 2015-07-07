@@ -157,7 +157,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 #pragma mark Signing in
 
 - (BOOL)isSignedIn {
-    return self.googleAuthToken && self.authToken && self.currentSession && self.username;
+    return self.googleAuthToken && self.authToken && self.username;
 }
 
 /** Gauth. */
@@ -381,6 +381,18 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
             }];
         }
     }];
+}
+
+- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken {
+    NSParameterAssert(username); NSParameterAssert(authToken); NSParameterAssert(googleAuthToken);
+    _username        = username;
+    _authToken       = authToken;
+    _googleAuthToken = googleAuthToken;
+}
+
+- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken doGetUpdates:(ErrorBlock)completion {
+    [self restoreSessionWithUsername:username snapchatAuthToken:authToken googleAuthToken:googleAuthToken];
+    [self updateSession:completion];
 }
 
 - (void)signOut {
