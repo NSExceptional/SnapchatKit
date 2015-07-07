@@ -9,9 +9,48 @@
 #import "SKRequest.h"
 #import "SnapchatKit-Constants.h"
 #import "NSString+SnapchatKit.h"
+#import "NSDictionary+SnapchatKit.h"
 #import "NSData+SnapchatKit.h"
 
 @implementation SKRequest
+
+#pragma mark Request overrides
+
+static NSDictionary *headerOverrides;
+static NSMutableDictionary *scopeKeyValueOverrides;
+static NSDictionary *globalKeyValueOverrides;
+static NSDictionary *endpointOverrides;
+
++ (void)overrideHeaderValues:(NSDictionary *)headers {
+    NSParameterAssert([headers isKindOfClass:[NSDictionary class]] || !headers);
+    headerOverrides = headers;
+}
+
++ (void)overrideValuesForKeys:(NSDictionary *)queries forEndpoint:(NSString *)endpoint {
+    NSParameterAssert([queries isKindOfClass:[NSDictionary class]] || !queries); NSParameterAssert(endpoint);
+    if (!scopeKeyValueOverrides)
+        scopeKeyValueOverrides = [NSMutableDictionary dictionary];
+    
+    scopeKeyValueOverrides[endpoint] = queries;
+}
+
++ (void)overrideValuesForKeysGlobally:(NSDictionary *)queries {
+    NSParameterAssert([queries isKindOfClass:[NSDictionary class]] || !queries);
+    globalKeyValueOverrides = queries;
+}
+
++ (void)overrideEndpoints:(NSDictionary *)endpoints {
+    endpointOverrides = endpoints;
+}
+
+void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
+    *params = [*params dictionaryByReplacingValuesForKeys:globalKeyValueOverrides];
+    *params = [*params dictionaryByReplacingValuesForKeys:scopeKeyValueOverrides[*endpoint]];
+    if (*endpoint)
+        *endpoint = endpointOverrides[*endpoint] ?: *endpoint;
+}
+
+#pragma mark Convenience
 
 + (NSDictionary *)parseJSON:(NSData *)jsonData {
     return [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
@@ -87,6 +126,8 @@
     
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
+        SKRequestApplyOverrides(&endpoint, &params);
+        
         self.URL = [NSURL URLWithString:[kURL stringByAppendingPathComponent:endpoint]];
         self.HTTPMethod = @"POST";
         
@@ -129,6 +170,7 @@
 - (id)initWithGETEndpoint:(NSString *)endpoint headers:(NSDictionary *)httpHeaders {
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
+        SKRequestApplyOverrides(&endpoint, NULL);
         self.URL = [NSURL URLWithString:[kURL stringByAppendingPathComponent:endpoint]];
         self.HTTPMethod = @"GET";
     }

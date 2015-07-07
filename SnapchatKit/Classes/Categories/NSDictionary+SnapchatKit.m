@@ -38,4 +38,27 @@
     return dicts;
 }
 
+- (NSDictionary *)dictionaryByReplacingValuesForKeys:(NSDictionary *)dictionary {
+    if (!dictionary || !self) return self;
+    
+    NSMutableDictionary *m = self.mutableCopy;
+    for (NSString *key in dictionary.allKeys)
+        m[key] = dictionary[key];
+    
+    return m;
+}
+
+- (NSDictionary *)dictionaryByReplacingKeysWithNewKeys:(NSDictionary *)oldKeysToNewKeys {
+    if (!oldKeysToNewKeys || !self) return self;
+    
+    NSMutableDictionary *m = self.mutableCopy;
+    [oldKeysToNewKeys enumerateKeysAndObjectsUsingBlock:^(NSString *oldKey, NSString *newKey, BOOL *stop) {
+        id val = m[oldKey];
+        m[oldKey] = nil;
+        m[newKey] = val;
+    }];
+    
+    return m;
+}
+
 @end

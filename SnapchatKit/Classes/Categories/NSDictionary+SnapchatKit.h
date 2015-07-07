@@ -19,4 +19,7 @@
 /** @c entryLimit must be greater than @c 0. */
 - (NSArray *)split:(NSUInteger)entryLimit;
 
+- (NSDictionary *)dictionaryByReplacingValuesForKeys:(NSDictionary *)dictionary;
+- (NSDictionary *)dictionaryByReplacingKeysWithNewKeys:(NSDictionary *)oldKeysToNewKeys;
+
 @end

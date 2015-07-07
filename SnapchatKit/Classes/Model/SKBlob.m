@@ -177,8 +177,6 @@
         [self.data writeToFile:path atomically:YES];
         
         [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
-            NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
-            
             if (succeeded) {
                 SKBlob *blob = [SKBlob blobWithContentsOfPath:unzip];
                 if (blob)
