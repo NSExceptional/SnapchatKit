@@ -101,6 +101,8 @@ NSString * const kAttestationURLCasper    = @"http://attest.casper.io/attestatio
 NSString * const kAPKDigest9_10           = @"JJShKOLH4YYjWZlJQ71A2dPTcmxbaMboyfo0nsKYayE=";
 NSString * const kAPKDigest9_8            = @"vXCcGhQ7RfL1LUiE3F6vcNORNo7IFSOvuDBunK87mEI=";
 NSString * const kAPKCertificateDigest    = @"Lxyq/KHtMNC044hj7vq+oOgVcR+kz3m4IlGaglnZWlg=";
+NSString * const kDeviceToken1i           = @"dtoken1i";
+NSString * const kDeviceToken1v           = @"dtoken1v";
 
 NSString * const khfClientAuthTokenHeaderField = @"X-Snapchat-Client-Auth-Token";
 NSString * const khfTimestamp                  = @"X-Timestamp";

@@ -121,10 +121,12 @@ extern NSString * const kAttestationAuth;
 extern NSString * const kAttestationURLSK;
 /** Casper™ attestation request URL. Special thanks to Liam! */
 extern NSString * const kAttestationURLCasper;
-/** This one does not work. */
+/** 9.10.0.0 digest. */
 extern NSString * const kAPKDigest9_10;
 /** This one works for some reason. */
 extern NSString * const kAPKDigest9_8;
+extern NSString * const kDeviceToken1i;
+extern NSString * const kDeviceToken1v;
 
 #pragma mark Header fields / values
 extern NSString * const khfClientAuthTokenHeaderField;

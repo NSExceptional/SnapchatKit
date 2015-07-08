@@ -209,23 +209,32 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 /** Snapchat device token. */
 - (void)getDeviceToken:(DictionaryBlock)completion {
-    [SKRequest postTo:kepDeviceToken query:@{} headers:@{khfClientAuthTokenHeaderField: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            completion(nil, error);
-        } else if (data) {
-            NSError *jsonError;
-            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-            
-            if (jsonError)
-                completion(nil, jsonError);
-            else if (json)
-                completion(json, nil);
-            else
+    NSString *dt1i = [[NSUserDefaults standardUserDefaults] stringForKey:kDeviceToken1i];
+    NSString *dt1v = [[NSUserDefaults standardUserDefaults] stringForKey:kDeviceToken1v];
+    
+    if (dt1i && dt1v)
+        completion(@{kDeviceToken1i: dt1i, kDeviceToken1v: dt1v}, nil);
+    else
+        [SKRequest postTo:kepDeviceToken query:@{} headers:@{khfClientAuthTokenHeaderField: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (error) {
+                completion(nil, error);
+            } else if (data) {
+                NSError *jsonError;
+                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+                
+                if (jsonError ) {
+                    completion(nil, jsonError);
+                } else if (json) {
+                    [[NSUserDefaults standardUserDefaults] setObject:json[kDeviceToken1i] forKey:kDeviceToken1i];
+                    [[NSUserDefaults standardUserDefaults] setObject:json[kDeviceToken1v] forKey:kDeviceToken1v];
+                    completion(json, nil);
+                } else {
+                    completion(nil, [SKRequest unknownError]);
+                }
+            } else {
                 completion(nil, [SKRequest unknownError]);
-        } else {
-            completion(nil, [SKRequest unknownError]);
-        }
-    }];
+            }
+        }];
 }
 
 /** Attestation, courtesy of @c casper.io. */
@@ -235,7 +244,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     
     NSDictionary *query = @{@"nonce": nonce,
                             @"authentication": kAttestationAuth,
-                            @"apk_digest": kAPKDigest9_8,
+                            @"apk_digest": kAPKDigest9_10,
                             @"timestamp": ts};
     NSData *queryData  = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
     
@@ -304,8 +313,6 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion {
     NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(gmailEmail); NSParameterAssert(gmailPassword); NSParameterAssert(completion);
     
-    
-    
     [self getAuthTokenForGmail:gmailEmail password:gmailPassword callback:^(NSString *gauth, NSError *error1) {
         if (error1 || !gauth) {
             completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Google auth token." code:error1.code?:1]);
@@ -322,8 +329,8 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             
                             _googleAuthToken   = gauth;
                             _googleAttestation = attestation;
-                            _deviceToken1i     = dict[@"dtoken1i"];
-                            _deviceToken1v     = dict[@"dtoken1v"];
+                            _deviceToken1i     = dict[kDeviceToken1i];
+                            _deviceToken1v     = dict[kDeviceToken1v];
                             
                             NSString *req_token = [NSString hashSCString:kStaticToken and:timestamp];
                             NSString *string    = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, req_token];
