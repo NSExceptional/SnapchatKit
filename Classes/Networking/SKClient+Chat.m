@@ -136,18 +136,18 @@
     }
 }
 
-- (void)clearConversationWithIdentifier:(NSString *)identifier completion:(BooleanBlock)completion {
+- (void)clearConversationWithIdentifier:(NSString *)identifier completion:(ErrorBlock)completion {
     NSParameterAssert(identifier);
     [self postTo:kepConvoClear query:@{@"conversation_id": identifier, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
         if (completion)
-            completion(!json && !error, error);
+            completion(error);
     }];
 }
 
-- (void)clearFeed:(BooleanBlock)completion {
+- (void)clearFeed:(ErrorBlock)completion {
     [self postTo:kepClearFeed query:@{@"username": self.username} callback:^(NSDictionary *json, NSError *error) {
         if (completion)
-            completion(!json && !error, error);
+            completion(error);
     }];
 }
 

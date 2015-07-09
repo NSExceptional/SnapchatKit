@@ -13,37 +13,63 @@
 
 @interface SKClient (Chat)
 
-/** @param recipients An array of username strings. */
+/** Sends the typing notification to the given users.
+ @param recipients An array of username strings.*/
 - (void)sendTypingToUsers:(NSArray *)recipients;
-- (void)sendTypingToUser:(NSString *)user;
+/** Sends the typing notification to a single user. */
+- (void)sendTypingToUser:(NSString *)username;
+/** Not working, but is supposed to mark all chat messages in a conversation as read.
+ @param completion Takes an error, if any. */
 - (void)markRead:(SKConversation *)conversation completion:(ErrorBlock)completion;
-/** Keys are "mac" and "payload" */
-- (void)conversationAuth:(NSString *)user completion:(DictionaryBlock)completion;
-/** Callback takes an SKConversation object. */
-- (void)conversationWithUser:(NSString *)user completion:(ResponseBlock)completion;
-/** conversations is an array of SKCovnersation objects, failed is an array of usernames indicating conversations unable to be retrieved. */
-- (void)conversationsWithUsers:(NSArray *)users completion:(void (^)(NSArray *conversations, NSArray *failed, NSError *error))completion;
+/** Retrieves the conversation auth mac and payload for a conversation with \c user.
+ @param completion Takes an error, if any, and a dictionary with keys \c "mac" and \c "payload" */
+- (void)conversationAuth:(NSString *)username completion:(DictionaryBlock)completion;
+/** Retrieves the conversation with \e username.
+ @param completion Takes an error, if any, and an \c SKConversation object. */
+- (void)conversationWithUser:(NSString *)username completion:(ResponseBlock)completion;
+/** Fetches the conversations for all users in \e usernames
+ @param completion Takes an error, if any, an array \e conversations of \c SKCovnersation objects, and an array \e failed of usernames indicating conversations unable to be retrieved. */
+- (void)conversationsWithUsers:(NSArray *)usernames completion:(void (^)(NSArray *conversations, NSArray *failed, NSError *error))completion;
 
-- (void)clearConversationWithIdentifier:(NSString *)identifier completion:(BooleanBlock)completion;
-- (void)clearFeed:(BooleanBlock)completion;
+/** Clears the conversation with the given identifier.
+ @param identifier The identifier of the conversation to clear.
+ @param completion Takes an error, if any. */
+- (void)clearConversationWithIdentifier:(NSString *)identifier completion:(ErrorBlock)completion;
+/** Clears the entire feed.
+ @param completion Takes an error, if any. */
+- (void)clearFeed:(ErrorBlock)completion;
 
-/** Callback takes an SKConversation object. */
+/** Sends a message \e message to \e username.
+ @param message The message to send.
+ @param username The username of the recipient.
+ @param completion Takes an error, if any, and an \c SKConversation object. */
 - (void)sendMessage:(NSString *)message to:(NSString *)username completion:(ResponseBlock)completion;
-/** Callback takes an array of SKConversation objects and an array of usernames who could not be sent the message. */
+/** Sends a message \e message to each user in \e recipients.
+ @param message The message to send.
+ @param recipients An array of username strings.
+ @param completion Takes an error, if any, an array \e conversations of \c SKConversation objects, and an array \e failed of usernames who could not be sent the message. */
 - (void)sendMessage:(NSString *)message toEach:(NSArray *)recipients completion:(void (^)(NSArray *conversations, NSArray *failed, NSError *error))completion;
 
 #pragma mark Loading old data
 
-/** Loads another page of conversations in the feed after the given conversation and updates _currentSession.conversations accordingly. Callback takes an array of SKConversation objects. */
+/** Loads another page of conversations in the feed after the given conversation.
+ @discussion This method will update \c [SKClient sharedClient],currentSession.conversations accordingly.
+ @param conversation The conversation after which to load more conversations.
+ @param completion Takes an error, if any, and an array of \c SKConversation objects. */
 - (void)loadConversationsAfter:(SKConversation *)conversation completion:(ArrayBlock)completion;
-/** Loads every conversation and updates _currentSession.conversations accordingly. Callback takes an array of fetched SKConversation objects, AND an error if it failed to get the rest at some point. */
+/** Loads every conversation.
+ @discussion This method will update \c [SKClient sharedClient].currentSession.conversations accordingly.
+ @param completion Takes an error, if any, and an array of fetched SKConversation objects.
+ @note \e completion will still take an error if it retrieved some conversations, but failed to get the rest after some point. */
 - (void)allConversations:(ArrayBlock)completion;
-/**
- Loads more messages after the given message or transaction. Callback takes a new SKConversation with (only) the additional messages, or nil if no more could be loaded.
- @warning Do not pass an SKConversation object to messageOrTransaction.
- */
+/** Loads more messages after the given message or cash transaction.
+ @param messageOrTransaction any object conforming to SKPagination \b EXCEPT AN \C SKConversation.
+ @warning Do not pass an \c SKConversation object to messageOrTransaction. Doing so will raise an exception.
+ @param completion Takes an error, if any, and a new \c SKConversation with (only) the additional messages, or \c nil if no more could be loaded. */
 - (void)loadMessagesAfterPagination:(SKThing<SKPagination> *)messageOrTransaction completion:(ResponseBlock)completion;
-/** Loads every message in the given thread and adds them to that SKConversation object. */
+/** Loads every message in the given thread and adds them to that SKConversation object.
+ @param conversation The conversation to load completely.
+ @param completion Takes an error, if any. */
 - (void)fullConversation:(SKConversation *)conversation completion:(ErrorBlock)completion;
 
 @end
