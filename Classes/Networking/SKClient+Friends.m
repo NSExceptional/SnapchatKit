@@ -67,7 +67,7 @@
     }];
 }
 
-- (void)addFriends:(NSArray *)toAdd removeFriends:(NSArray *)toUnfriend completion:(BooleanBlock)completion {
+- (void)addFriends:(NSArray *)toAdd removeFriends:(NSArray *)toUnfriend completion:(ErrorBlock)completion {
     NSParameterAssert(toAdd || toUnfriend);
     if (!toAdd) toAdd = @[];
     if (!toUnfriend) toUnfriend = @[];
@@ -78,10 +78,10 @@
                                          @"friendsToDelete": toUnfriend}.JSONString};
     [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
-            BOOL success = [json[@"message"] isEqualToString:@"success"];
-            completion(success, nil);
+//            BOOL success = [json[@"message"] isEqualToString:@"success"];
+            completion(nil);
         } else {
-            completion(NO, error);
+            completion(error);
         }
     }];
 }
