@@ -22,14 +22,14 @@
 - (void)unfriend:(NSString *)username completion:(ResponseBlock)completion;
 
 /**
- @c friends is a number->name map, where "name" is the desired screen name of that friend and "number" is their phone number.
+ \c friends is a number->name map, where "name" is the desired screen name of that friend and "number" is their phone number.
  Callback takes an array of SKFoundFriend objects.
  */
 - (void)findFriends:(NSDictionary *)friends completion:(ArrayBlock)completion;
 /**
- Finds nearby snapchatters. Completion takes an array of @c SKNearbyUser objects.
+ Finds nearby snapchatters. Completion takes an array of \c SKNearbyUser objects.
  @param location The location to search from.
- @param meters The radius to find nearby snapchatters at @c location.
+ @param meters The radius to find nearby snapchatters at \c location.
  @param milliseconds The total poll duration so far. If you're polling in a for-loop for example, pass the time in milliseconds since you started polling.
  */
 - (void)findFriendsNear:(CLLocation *)location accuracy:(CGFloat)meters pollDurationSoFar:(NSUInteger)milliseconds completion:(ArrayBlock)completion;

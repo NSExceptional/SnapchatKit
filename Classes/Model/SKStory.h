@@ -39,19 +39,19 @@
 @property (nonatomic, readonly) NSUInteger timeLeft;
 @property (nonatomic, readonly) NSDate     *created;
 
-/** @c nil until you call @c load: */
+/** \c nil until you call \c load: */
 @property (nonatomic, readonly) SKBlob     *blob;
-/** @c nil until you call @c loadThumbnail: */
+/** \c nil until you call \c loadThumbnail: */
 @property (nonatomic, readonly) SKBlob     *thumbnailBlob;
 
 @end
 
 @interface SKStory (SKClient)
-/** Loads the blob for the story. If successful, @c blob will contain the story's blob data. */
+/** Loads the blob for the story. If successful, \c blob will contain the story's blob data. */
 - (void)load:(ErrorBlock)completion;
-/** Loads the blob for the story thumbnail. If successful, @c thumbnailBlob will contain the story's thumbnail blob data. */
+/** Loads the blob for the story thumbnail. If successful, \c thumbnailBlob will contain the story's thumbnail blob data. */
 - (void)loadThumbnail:(ErrorBlock)completion;
-/** @return If @c blob is @c nil, returns nil. For images: @c {identifier}.jpg, for videos: @c {identifier}.mp4, and for videos with an overlay just {identifier} */
+/** @return If \c blob is \c nil, returns nil. For images: \c {identifier}.jpg, for videos: \c {identifier}.mp4, and for videos with an overlay just {identifier} */
 @property (nonatomic, readonly) NSString *suggestedFilename;
 
 @end

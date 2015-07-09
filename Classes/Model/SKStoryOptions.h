@@ -12,14 +12,14 @@
 @interface SKStoryOptions : NSObject
 
 /**
- If you wish, you can also just create an instance of this class with @c +new and customize it.
+ If you wish, you can also just create an instance of this class with \c +new and customize it.
  @param recipients An array of username strings.
  */
 + (instancetype)storyWithText:(NSString *)text timer:(NSTimeInterval)timer;
 
 /** An array of username strings. */
 @property (nonatomic) NSString       *text;
-/** Defaults to @c NO. */
+/** Defaults to \c NO. */
 @property (nonatomic) BOOL           cameraFrontFacing;
 /** Defaults to 3. */
 @property (nonatomic) NSTimeInterval timer;

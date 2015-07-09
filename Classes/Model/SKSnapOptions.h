@@ -12,7 +12,7 @@
 @interface SKSnapOptions : NSObject
 
 /**
- If you wish, you can also just create an instance of this class with @c +new and customize it.
+ If you wish, you can also just create an instance of this class with \c +new and customize it.
  @param recipients An array of username strings.
  */
 + (instancetype)sendTo:(NSArray *)recipients text:(NSString *)text for:(NSTimeInterval)timer;

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 @class SKStory;
 
-/** The purpose of this class is to minimize error with the @c -markStoriesViewed: method in @c SKClient+Stories.h. */
+/** The purpose of this class is to minimize error with the \c -markStoriesViewed: method in \c SKClient+Stories.h. */
 @interface SKStoryUpdater : NSObject
 
 + (instancetype)viewedStory:(SKStory *)story at:(NSDate *)date screenshots:(NSUInteger)sscount;

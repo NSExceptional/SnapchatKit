@@ -12,7 +12,7 @@
 
 @interface SKSnapResponse : SKThing
 
-/** An array of @c SKSentSnap objects. */
+/** An array of \c SKSentSnap objects. */
 @property (nonatomic, readonly) NSArray *sentSnaps;
 @property (nonatomic, readonly) BOOL    success;
 

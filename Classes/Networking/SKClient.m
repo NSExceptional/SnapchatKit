@@ -248,7 +248,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
         }];
 }
 
-/** Attestation, courtesy of @c casper.io. */
+/** Attestation, courtesy of \c casper.io. */
 - (void)getAttestationWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
     NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, kepLogin];
     NSString *nonce          = [hashString.sha256HashRaw base64EncodedStringWithOptions:0];

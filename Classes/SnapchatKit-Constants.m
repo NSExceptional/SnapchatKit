@@ -39,6 +39,7 @@ NSString * SKStringFromAddSource(SKAddSource addSource) {
             return @"ADDED_BY_ADDED_ME_BACK";
     }
     
+    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKAddSource string", addSource];
     return nil;
 }
 
@@ -60,6 +61,7 @@ NSString * SKStringFromMediaKind(SKMediaKind mediaKind) {
             return @"SKMediaKindStrangerSilentVideo";
     }
     
+    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKMediaKind string", mediaKind];
     return nil;
 }
 
@@ -73,6 +75,7 @@ NSString * SKStringFromStoryPrivacy(SKStoryPrivacy storyPrivacy) {
             return @"CUSTOM";
     }
     
+    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKStoryPrivacy string", storyPrivacy];
     return nil;
 }
 
@@ -154,7 +157,7 @@ NSString * const kepSettings              = @"/bq/settings";
 NSString * const kepFeatures              = @"/bq/update_feature_settings";
 NSString * const kepSnaptag               = @"/bq/snaptag_download";
 NSString * const kepCashEligible          = @"/cash/check_recipient_eligible";
-/** Takes only @c username, returns: @code
+/** Takes only \c username, returns: @code
  {
      "access_token": {
          "access_token": "GVkM5JUEpgs_Ekh_weoxUA",

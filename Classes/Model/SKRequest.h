@@ -45,7 +45,7 @@
 + (void)overrideValuesForKeysGlobally:(NSDictionary *)queries;
 
 /** @brief Replaces endpoint \c some_endpoint with \e endpoints[some_endpoint].
- @discussion @c overrideValuesForKeys:forEndpoint: takes precedence over this method. This method will replace all ekeys in a request query with the given values in \c endpoints. */
+ @discussion \c overrideValuesForKeys:forEndpoint: takes precedence over this method. This method will replace all ekeys in a request query with the given values in \c endpoints. */
 + (void)overrideEndpoints:(NSDictionary *)endpoints;
 
 /**

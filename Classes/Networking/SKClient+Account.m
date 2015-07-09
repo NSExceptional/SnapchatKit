@@ -42,6 +42,7 @@
 }
 
 - (void)updateSnapPrivacy:(SKSnapPrivacy)privacy completion:(ErrorBlock)completion {
+    privacy = MIN(privacy, 1);
     NSDictionary *query = @{@"action": @"updatePrivacy",
                             @"privacySetting": @(privacy),
                             @"username": self.username};

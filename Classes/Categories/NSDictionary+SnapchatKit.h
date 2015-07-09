@@ -16,7 +16,7 @@
 
 
 @interface NSDictionary (Util)
-/** @c entryLimit must be greater than @c 0. */
+/** \c entryLimit must be greater than \c 0. */
 - (NSArray *)split:(NSUInteger)entryLimit;
 
 - (NSDictionary *)dictionaryByReplacingValuesForKeys:(NSDictionary *)dictionary;
