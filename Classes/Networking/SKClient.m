@@ -443,7 +443,8 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             @"height": @(self.screenSize.height),
                             @"width": @(self.screenSize.width),
                             @"max_video_height": @(self.maxVideoSize.height),
-                            @"max_video_width": @(self.maxVideoSize.width)};
+                            @"max_video_width": @(self.maxVideoSize.width),
+                            @"include_client_settings": @"true"};
     [self postTo:kepAllUpdates query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             _currentSession = [[SKSession alloc] initWithDictionary:json];

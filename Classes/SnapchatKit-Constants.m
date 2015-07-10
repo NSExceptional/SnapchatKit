@@ -180,3 +180,16 @@ NSString * const SKFeatureFrontFacingFlash = @"front_facing_flash";
 NSString * const SKFeatureReplaySnaps      = @"replay_snaps";
 NSString * const SKFeatureSmartFilters     = @"smart_filters";
 NSString * const SKFeatureVisualFilters    = @"visual_filters";
+NSString * const SKFeaturePowerSaveMode    = @"power_save_mode";
+NSString * const SKFeatureSpecialText      = @"special_text";
+NSString * const SKFeatureSwipeCashMode    = @"swipe_cash_mode";
+NSString * const SKFeatureTravelMode       = @"travel_mode";
+
+
+
+
+
+
+
+
+

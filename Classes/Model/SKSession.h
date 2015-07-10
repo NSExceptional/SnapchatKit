@@ -86,6 +86,7 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 /** Unknown. */
 @property (nonatomic, readonly) BOOL         canVideoTranscodingAndroid;
 @property (nonatomic, readonly) BOOL         imageCaption;
+@property (nonatomic, readonly) BOOL         requireRefreshingProfileMedia;
 /** Unknown. */
 @property (nonatomic, readonly) BOOL         isTwoFAEnabled;
 @property (nonatomic, readonly) NSDate       *lastAddressBookUpdateDate;
@@ -102,10 +103,10 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 /** Unknown. */
 @property (nonatomic, readonly) NSString     *snapchatPhoneNumber;
 @property (nonatomic, readonly) NSDictionary *studySettings;
-/** Unknown. */
+/** Contains keys "age" and "gender". */
 @property (nonatomic, readonly) NSDictionary *targeting;
 @property (nonatomic, readonly) NSString     *userIdentifier;
-@property (nonatomic, readonly) BOOL         enableVideoFilters;
+@property (nonatomic, readonly) BOOL         videoFiltersEnabled;
 @property (nonatomic, readonly) NSString     *QRPath;
 
 
@@ -124,5 +125,6 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL enableSpecialText;
 @property (nonatomic, readonly) BOOL enableSwipeCashMode;
 @property (nonatomic, readonly) BOOL enableVisualFilters;
+@property (nonatomic, readonly) BOOL enableTravelMode;
 
 @end

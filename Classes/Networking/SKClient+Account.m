@@ -95,7 +95,7 @@
 
 
 - (void)updateFeatureSettings:(NSDictionary *)settings completion:(ErrorBlock)completion {
-    NSParameterAssert(settings.allKeys.count < 5);
+    NSParameterAssert(settings.allKeys.count < 9);
     if (!settings.allKeys.count) {
         if (completion)
             completion(nil);
@@ -105,7 +105,11 @@
     NSDictionary *features = @{SKFeatureFrontFacingFlash: settings[SKFeatureFrontFacingFlash] ?: @(self.currentSession.enableFrontFacingFlash),
                                SKFeatureReplaySnaps:      settings[SKFeatureReplaySnaps] ?: @(self.currentSession.enableReplaySnaps),
                                SKFeatureSmartFilters:     settings[SKFeatureSmartFilters] ?: @(self.currentSession.enableSmartFilters),
-                               SKFeatureVisualFilters:    settings[SKFeatureVisualFilters] ?: @(self.currentSession.enableVisualFilters)};
+                               SKFeatureVisualFilters:    settings[SKFeatureVisualFilters] ?: @(self.currentSession.enableVisualFilters),
+                               SKFeaturePowerSaveMode:    settings[SKFeaturePowerSaveMode] ?: @(self.currentSession.enablePowerSaveMode),
+                               SKFeatureSpecialText:      settings[SKFeatureSpecialText] ?: @(self.currentSession.enableSpecialText),
+                               SKFeatureSwipeCashMode:    settings[SKFeatureSwipeCashMode] ?: @(self.currentSession.enableSwipeCashMode),
+                               SKFeatureTravelMode:       settings[SKFeatureTravelMode] ?: @(self.currentSession.enableTravelMode)};
     
     NSDictionary *query = @{@"settings": features.JSONString,
                             @"username": self.username};

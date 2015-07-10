@@ -193,3 +193,7 @@ extern NSString * const SKFeatureFrontFacingFlash;
 extern NSString * const SKFeatureReplaySnaps;
 extern NSString * const SKFeatureSmartFilters;
 extern NSString * const SKFeatureVisualFilters;
+extern NSString * const SKFeaturePowerSaveMode;
+extern NSString * const SKFeatureSpecialText;
+extern NSString * const SKFeatureSwipeCashMode;
+extern NSString * const SKFeatureTravelMode;

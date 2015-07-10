@@ -48,7 +48,7 @@
 /** Updates your account's feature settings.
  @discussion See the \c SKFeature string constants in \c SnapchatKit-Constants.h for valid keys. Invalid keys will be silently ignored.
  @param settings A dictionary of string-boolean pairs. Missing keys-value pairs default to the current values. Behavior is undefined for values other than @YES and @NO.
- @warning Raises an exception if \e settings contains more than 4 key-value pairs.
+ @warning Raises an exception if \e settings contains more than 8 key-value pairs.
  @param completion Takes an error, if any. */
 - (void)updateFeatureSettings:(NSDictionary *)settings completion:(ErrorBlock)completion;
 

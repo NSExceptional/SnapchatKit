@@ -236,10 +236,6 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
-                [[SKClient sharedClient] downloadSnaptagAvatarForUser:session.username completion:^(id object, NSError *error) {
-                    NSLog(@"%@", object ?: error);
-                }];
-                
 //                testFindFriendsNearby(40.713054, -74.007228);
                 
 //                SKLog(@"Sending snap...");
@@ -272,10 +268,10 @@ int main(int argc, const char * argv[]) {
 //                testGetConversations();
                 
                 // Download and save unread snaps
-                saveUnreadSnapsToDirectory(unread, directory);
+//                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-                markSnapsRead(unread);
+//                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);
