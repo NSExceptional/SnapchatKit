@@ -27,6 +27,10 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL storiesDelta;
 @property (nonatomic, readonly) BOOL discoverSupported;
 @property (nonatomic, readonly) BOOL emailVerified;
+@property (nonatomic, readonly) BOOL highAccuracyRequiredForNearby;
+@property (nonatomic, readonly) BOOL requirePhonePasswordConfirmed;
+@property (nonatomic, readonly) CGFloat redGearDurationMilliseconds;
+@property (nonatomic, readonly) NSUInteger suggestedFriendFetchThresholdHours;
 
 @property (nonatomic, readonly) NSString *backgroundFetchSecret;
 

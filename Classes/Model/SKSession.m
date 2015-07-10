@@ -63,6 +63,10 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _storiesDelta      = [storiesResponse[@"friend_stories_delta"] boolValue];
         _discoverSupported = ![json[@"discover"][@"compatibility"] isEqualToString:@"device_not_supported"];
         _emailVerified     = [identity[@"is_email_verified"] boolValue];
+        _highAccuracyRequiredForNearby      = [identity[@"is_high_accuracy_required_for_nearby"] boolValue];
+        _requirePhonePasswordConfirmed      = [identity[@"require_phone_password_confirmed"] boolValue];
+        _redGearDurationMilliseconds        = [identity[@"red_gear_duration_millis"] doubleValue];
+        _suggestedFriendFetchThresholdHours = [identity[@"suggested_friend_fetch_threshold_hours"] integerValue];
         
         // Friends
         NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];
