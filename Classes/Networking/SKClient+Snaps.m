@@ -182,12 +182,3 @@
 }
 
 @end
-
-
-@implementation SKSnap (Networking)
-
-- (void)loadMediaWithCompletion:(ResponseBlock)completion {
-    [[SKClient sharedClient] loadSnap:self completion:completion];
-}
-
-@end

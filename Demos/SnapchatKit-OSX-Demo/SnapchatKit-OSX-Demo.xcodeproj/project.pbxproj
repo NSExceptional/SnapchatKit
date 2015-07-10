@@ -151,7 +151,7 @@
 		B45442351B4E246D00B1A214 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		B45442371B4E246D00B1A214 /* TBTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBTimer.h; sourceTree = "<group>"; };
 		B45442381B4E246D00B1A214 /* TBTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBTimer.m; sourceTree = "<group>"; };
-		B45442391B4E246D00B1A214 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = ../../../Login.h; sourceTree = "<group>"; };
+		B45442391B4E246D00B1A214 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = ../../../../../../Login.h; sourceTree = "<group>"; };
 		B45442631B4E249F00B1A214 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = usr/lib/libz.1.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
