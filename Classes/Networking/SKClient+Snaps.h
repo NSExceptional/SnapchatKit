@@ -17,6 +17,7 @@
 
 /** Sends a snap with the given options.
  @param blob The \c SKBlob object containing the image or video data to send. Can be created with any \c NSData object.
+ @param options The options for the snap to be sent.
  @param completion Takes an error, if any, and an \c SKSnapResponse object. */
 - (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ResponseBlock)completion;
 /** Sends a snap to everyone in \c recipients with text \c text for \c duration seconds.
