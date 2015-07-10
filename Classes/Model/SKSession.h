@@ -25,7 +25,6 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
 /** Not sure what this is for. Might be "new stories since you last checked". */
 @property (nonatomic, readonly) BOOL storiesDelta;
-@property (nonatomic, readonly) BOOL discoverSupported;
 @property (nonatomic, readonly) BOOL emailVerified;
 @property (nonatomic, readonly) BOOL highAccuracyRequiredForNearby;
 @property (nonatomic, readonly) BOOL requirePhonePasswordConfirmed;
@@ -54,6 +53,14 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) NSMutableOrderedSet *userStories;
 /** Array of SKStory objects of the user's group stories. Empty so far. */
 @property (nonatomic, readonly) NSMutableOrderedSet *groupStories;
+
+#pragma mark Discover
+@property (nonatomic, readonly) BOOL discoverSupported;
+@property (nonatomic, readonly) BOOL discoverSharingEnabled;
+@property (nonatomic, readonly) NSString *discoverGetChannels;
+@property (nonatomic, readonly) NSString *discoverResourceParamName;
+@property (nonatomic, readonly) NSString *discoverResourceParamValue;
+@property (nonatomic, readonly) NSString *discoverVideoCatalog;
 
 #pragma mark Cash information
 @property (nonatomic, readonly) BOOL         canUseCash;
@@ -91,7 +98,7 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL         canVideoTranscodingAndroid;
 @property (nonatomic, readonly) BOOL         imageCaption;
 @property (nonatomic, readonly) BOOL         requireRefreshingProfileMedia;
-/** Unknown. */
+/** Whether two-factor-authentication is enabled. */
 @property (nonatomic, readonly) BOOL         isTwoFAEnabled;
 @property (nonatomic, readonly) NSDate       *lastAddressBookUpdateDate;
 @property (nonatomic, readonly) NSDate       *lastReplayedSnapDate;

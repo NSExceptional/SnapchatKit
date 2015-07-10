@@ -45,6 +45,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     NSDictionary *updatesResponse = json[@"updates_response"];
     NSDictionary *identity        = json[@"identity_check_response"];
     NSDictionary *features        = updatesResponse[@"feature_settings"];
+    NSDictionary *discover        = json[@"discover"];
     
     NSArray *friendStories = storiesResponse[@"friend_stories"];
     NSArray *myStories     = storiesResponse[@"my_stories"];
@@ -61,12 +62,18 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _bestFriendUsernames   = [NSMutableOrderedSet orderedSetWithArray:friendsResponse[@"bests"]];
         
         _storiesDelta      = [storiesResponse[@"friend_stories_delta"] boolValue];
-        _discoverSupported = ![json[@"discover"][@"compatibility"] isEqualToString:@"device_not_supported"];
         _emailVerified     = [identity[@"is_email_verified"] boolValue];
         _highAccuracyRequiredForNearby      = [identity[@"is_high_accuracy_required_for_nearby"] boolValue];
         _requirePhonePasswordConfirmed      = [identity[@"require_phone_password_confirmed"] boolValue];
         _redGearDurationMilliseconds        = [identity[@"red_gear_duration_millis"] doubleValue];
         _suggestedFriendFetchThresholdHours = [identity[@"suggested_friend_fetch_threshold_hours"] integerValue];
+        
+        _discoverSupported          = [discover[@"compatibility"] isEqualToString:@"supported"];// alternative is @"device_not_supported"
+        _discoverSharingEnabled     = [discover[@"sharing_enabled"] boolValue];
+        _discoverGetChannels        = discover[@"get_channels"];
+        _discoverResourceParamName  = discover[@"resource_parameter_name"];
+        _discoverResourceParamValue = discover[@"resource_parameter_value"];
+        _discoverVideoCatalog       = discover[@"video_catalog"];
         
         // Friends
         NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];
