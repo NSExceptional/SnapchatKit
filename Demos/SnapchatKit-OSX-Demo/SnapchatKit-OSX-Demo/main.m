@@ -272,10 +272,10 @@ int main(int argc, const char * argv[]) {
 //                testGetConversations();
                 
                 // Download and save unread snaps
-//                saveUnreadSnapsToDirectory(unread, directory);
+                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-//                markSnapsRead(unread);
+                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);

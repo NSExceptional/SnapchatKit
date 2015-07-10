@@ -49,20 +49,20 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 @property (nonatomic, readonly) NSString     *pagination;
 
 @property (nonatomic, readonly) SKChatType   lastChatType;
-/** nil if not applicable. */
+/** \c nil if not applicable. */
 @property (nonatomic, readonly) SKSnap       *lastSnap;
-/** nil if not applicable. */
+/** \c nil if not applicable. */
 @property (nonatomic, readonly) NSDate       *lastInteraction;
-/** nil if not applicable. */
+/** \c nil if not applicable. */
 @property (nonatomic, readonly) NSDate       *lastChatRead;
-/** nil if not applicable. */
+/** \c nil if not applicable. */
 @property (nonatomic, readonly) NSDate       *lastChatWrite;
-/** nil if not applicable. */
+/** \c nil if not applicable. */
 @property (nonatomic, readonly) NSString     *lastChatReader;
-/** nil if not applicable. */
+/** \c nil if not applicable. */
 @property (nonatomic, readonly) NSString     *lastChatWriter;
 
-/** nil if not applicable. */
+/** \c nil if not applicable. */
 @property (nonatomic, readonly) SKCashTransaction *lastTransaction;
 
 /** Array of username strings. */

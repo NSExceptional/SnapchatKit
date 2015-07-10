@@ -34,7 +34,9 @@
 
 
 @interface SKSnap (SKClient)
-/** Loads the blob for the story. If successful, \c blob will contain the story's blob data. */
+/** Loads the blob for the story.
+ @discussion If successful, the \c blob property of the original \c SKSnap will contain the snap's blob data.
+ @param completion Takes an error, if any. */
 - (void)load:(ErrorBlock)completion;
 /** @return If \c blob is \c nil, returns nil. For images: \c {identifier}.jpg, for videos: \c {identifier}.mp4, and for videos with an overlay just {identifier} */
 @property (nonatomic, readonly) NSString *suggestedFilename;

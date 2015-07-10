@@ -61,7 +61,7 @@
 - (void)uploadSnaptagAvatar:(NSArray *)datas completion:(ErrorBlock)completion;
 /** Downloads the snaptag animated avatar for \c user. Currently encrypted, or something.
  @param username The username tied to the avatar to download.
- @param completion Takes an error, if any, and hopefully an array of 5 \c SKBlob objects, but as of now takes one possibly encrypted \c SKBlob object. */
+ @param completion Takes an error, if any, and ideally an array of 5 \c SKBlob objects or \c nil if the user does not have an avatar, but as of now takes one possibly encrypted \c SKBlob object. */
 - (void)downloadSnaptagAvatarForUser:(NSString *)username completion:(ResponseBlock)completion;
 /** Updates your TOS agreement status for each of the three Terms of Service's.
  @param completion Takes an error, if any. */

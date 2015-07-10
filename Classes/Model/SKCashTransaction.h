@@ -8,6 +8,7 @@
 
 #import "SKThing.h"
 
+/** Represents a cash transaction via chat. */
 @interface SKCashTransaction : SKThing <SKPagination>
 
 // SKPagination

@@ -150,11 +150,11 @@
             if (!error) {
                 if ([(NSHTTPURLResponse *)response statusCode] == 200) {
                     if (data.length)
-                        [[SKBlob blobWithData:data] decompress:^(SKBlob *blob, NSError *error) {
-                            completion(blob, error);
-                        }];
+                        [[SKBlob blobWithData:data] decompress:completion];
                     else
                         completion(nil, [SKRequest errorWithMessage:@"Error retrieving snaptag" code:1]);
+                } else if ([(NSHTTPURLResponse *)response statusCode] == 204) {
+                    completion(nil, nil);
                 }
             } else {
                 completion(nil, error);

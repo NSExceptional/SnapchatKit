@@ -8,9 +8,12 @@
 
 #import "SKSimpleUser.h"
 
+/** Appears in the \c addedFriends property of \c SKSession. */
 @interface SKAddedFriend : SKSimpleUser
 
+/** How they were added. */
 @property (nonatomic, readonly) SKAddSource addSourceType;
+/** When they were added. */
 @property (nonatomic, readonly) NSDate      *timestamp;
 
 @end
