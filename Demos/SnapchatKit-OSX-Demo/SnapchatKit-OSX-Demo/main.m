@@ -30,8 +30,8 @@ void registerAccount(NSString *email, NSString *password, NSString *birthday) {
             NSArray *suggestions = jsonemail[@"username_suggestions"];
             
             // And this works
-            [[SKClient sharedClient] registerUsername:suggestions[0] withEmail:jsonemail[@"email"] gmail:kGmail gmailPassword:kGmailPassword completion:^(BOOL success, NSError *error2) {
-                if (success) {
+            [[SKClient sharedClient] registerUsername:suggestions[0] withEmail:jsonemail[@"email"] gmail:kGmail gmailPassword:kGmailPassword completion:^(NSError *error2) {
+                if (!error2) {
                     
                     BOOL phone = NO;
                     if (!phone)
@@ -52,34 +52,34 @@ void registerAccount(NSString *email, NSString *password, NSString *birthday) {
                                     if (!error4) {
                                         
                                     } else {
-                                        SKLog(@"%@", error4);
+                                        SKLog(@"%@", error4.localizedDescription);
                                     }
                                 }];
                             } else {
-                                SKLog(@"%@", error3);
+                                SKLog(@"%@", error3.localizedDescription);
                             }
                         }];
                     else
                         [[SKClient sharedClient] sendPhoneVerification:kMobileNumber sendText:YES completion:^(NSDictionary *dict, NSError *error5) {
                             if (!error5) {
                                 NSString *code = @"code";
-                                [[SKClient sharedClient] verifyPhoneNumberWithCode:code completion:^(BOOL success, NSError *error) {
-                                    if (success)
+                                [[SKClient sharedClient] verifyPhoneNumberWithCode:code completion:^(NSError *error6) {
+                                    if (!error6)
                                         SKLog(@"Success!");
                                     else
-                                        SKLog(@"Failure");
+                                        SKLog(@"Failure: %@", error.localizedDescription);
                                 }];
                             } else {
-                                SKLog(@"%@", error5);
+                                SKLog(@"%@", error5.localizedDescription);
                             }
                         }];
                     
                 } else {
-                    SKLog(@"%@", error2);
+                    SKLog(@"%@", error2.localizedDescription);
                 }
             }];
         } else {
-            SKLog(@"%@", error);
+            SKLog(@"%@", error.localizedDescription);
         }
     }];
     

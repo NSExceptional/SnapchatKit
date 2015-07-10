@@ -280,6 +280,8 @@
 		B45442161B4E246D00B1A214 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				B45442231B4E246D00B1A214 /* SKClient.h */,
+				B45442241B4E246D00B1A214 /* SKClient.m */,
 				B45442171B4E246D00B1A214 /* SKClient+Account.h */,
 				B45442181B4E246D00B1A214 /* SKClient+Account.m */,
 				B45442191B4E246D00B1A214 /* SKClient+Chat.h */,
@@ -292,8 +294,6 @@
 				B45442201B4E246D00B1A214 /* SKClient+Snaps.m */,
 				B45442211B4E246D00B1A214 /* SKClient+Stories.h */,
 				B45442221B4E246D00B1A214 /* SKClient+Stories.m */,
-				B45442231B4E246D00B1A214 /* SKClient.h */,
-				B45442241B4E246D00B1A214 /* SKClient.m */,
 			);
 			path = Networking;
 			sourceTree = "<group>";

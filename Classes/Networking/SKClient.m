@@ -402,26 +402,34 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 }
 
 - (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken {
+
+}
+
+- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken doGetUpdates:(ErrorBlock)completion {
     NSParameterAssert(username); NSParameterAssert(authToken); NSParameterAssert(googleAuthToken);
     _username        = username;
     _authToken       = authToken;
     _googleAuthToken = googleAuthToken;
+    if (completion)
+        [self updateSession:completion];
 }
 
-- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken doGetUpdates:(ErrorBlock)completion {
-    [self restoreSessionWithUsername:username snapchatAuthToken:authToken googleAuthToken:googleAuthToken];
-    [self updateSession:completion];
-}
-
-- (void)signOut {
+- (void)signOut:(ErrorBlock)completion {
     [SKRequest postTo:kepLogout query:@{@"username": self.currentSession.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (kVerboseLog) {
             NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            if (result.length == 0)
-                SKLog(@"Signed out");
-            else
-                SKLog(@"%@", result);
-            
+            if (result.length == 0) {
+                _currentSession    = nil;
+                _username          = nil;
+                _authToken         = nil;
+                _googleAuthToken   = nil;
+                _googleAttestation = nil;
+                _deviceToken1i     = nil;
+                _deviceToken1v     = nil;
+                completion(nil);
+            } else {
+                completion([SKRequest errorWithMessage:result code:1]);
+            }
         }
     }];
 }
@@ -483,7 +491,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     }];
 }
 
-- (void)registerUsername:(NSString *)username withEmail:(NSString *)registeredEmail gmail:(NSString *)gmail gmailPassword:(NSString *)gpass completion:(BooleanBlock)completion {
+- (void)registerUsername:(NSString *)username withEmail:(NSString *)registeredEmail gmail:(NSString *)gmail gmailPassword:(NSString *)gpass completion:(ErrorBlock)completion {
     NSParameterAssert(username); NSParameterAssert(registeredEmail); NSParameterAssert(gmail); NSParameterAssert(gpass); NSParameterAssert(completion);
     NSDictionary *query = @{@"username": registeredEmail,
                             @"selected_username": username};
@@ -496,15 +504,16 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 // Continue registration
                 self.currentSession = [[SKSession alloc] initWithDictionary:json];
                 if (kDebugJSON && !self.currentSession) {
+                    completion([SKRequest unknownError]);
                     SKLog(@"Unknown error: %@", json);
                 } else {
                     _username = self.currentSession.username;
-                    completion(YES, nil);
+                    completion(nil);
                 }
             }
             // Failed for some reason
             else {
-                completion(NO, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+                completion([SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
             }
         }];
     }];
@@ -585,7 +594,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     }];
 }
 
-- (void)verifyPhoneNumberWithCode:(NSString *)code completion:(BooleanBlock)completion {
+- (void)verifyPhoneNumberWithCode:(NSString *)code completion:(ErrorBlock)completion {
     NSParameterAssert(code); NSParameterAssert(completion);
     NSDictionary *query = @{@"action": @"verifyPhoneNumber",
                             @"username": self.username,
