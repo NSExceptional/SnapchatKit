@@ -61,6 +61,12 @@
  @param completion Takes an error, if any. */
 - (void)blockUser:(NSString *)username completion:(ErrorBlock)completion;
 
+/** This appears to be for an upcoming feature: suggested friends?
+ @param usernames I assume this is for usernames; it's always been empty.
+ @param seen Whether to mark as seen.
+ @param completion Takes an error, if any. */
+- (void)seenSuggestedFriends:(NSArray *)usernames seen:(BOOL)seen completion:(ErrorBlock)completion;
+
 
 /** Depricated API call. Best friends will be empty. Callback dictionary is in the following format:
  @code

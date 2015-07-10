@@ -44,10 +44,13 @@ static NSDictionary *endpointOverrides;
 }
 
 void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
-    *params = [*params dictionaryByReplacingValuesForKeys:globalKeyValueOverrides];
-    *params = [*params dictionaryByReplacingValuesForKeys:scopeKeyValueOverrides[*endpoint]];
-    if (*endpoint)
+    if (params != NULL) {
+        *params = [*params dictionaryByReplacingValuesForKeys:globalKeyValueOverrides];
+        *params = [*params dictionaryByReplacingValuesForKeys:scopeKeyValueOverrides[*endpoint]];
+    }
+    if (*endpoint) {
         *endpoint = endpointOverrides[*endpoint] ?: *endpoint;
+    }
 }
 
 #pragma mark Convenience

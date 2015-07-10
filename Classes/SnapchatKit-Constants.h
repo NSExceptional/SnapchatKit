@@ -184,9 +184,16 @@ extern NSString * const kepCashGenerateToken;
 extern NSString * const kepLocationData;
 extern NSString * const kepDownloadSnaptagAvatar;
 extern NSString * const kepUploadSnaptagAvatar;
+extern NSString * const kepIPRouting; // not sure what this is for. POST: takes ip_routing_key {} returns json with "url_server_json" key
+extern NSString * const kepSeenSuggestedFriends; // new feature?
 
 extern NSString * const kepGetStoryBlob;
 extern NSString * const kepGetStoryThumb;
+extern NSString * const kepAuthStoryThumb; // no idea what this is for. POST: takes username and story_id, returns data
+
+#pragma mark Discover
+extern NSString * const kepDiscoverChannels;
+extern NSString * const kepDiscoverIcons;
 
 #pragma mark Feature settings
 extern NSString * const SKFeatureFrontFacingFlash;

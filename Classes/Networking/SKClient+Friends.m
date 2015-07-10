@@ -89,6 +89,7 @@
 - (void)bestFriendsOfUsers:(NSArray *)usernames completion:(DictionaryBlock)completion {
     NSParameterAssert(usernames);
     NSDictionary *query = @{@"friend_usernames": usernames.JSONString,
+                            @"friend_user_ids": @"", // TODO: user ids
                             @"username": self.currentSession.username};
     [self postTo:kepBestFriends query:query callback:completion];
 }
@@ -181,6 +182,24 @@
 
 - (void)blockUser:(NSString *)username completion:(ErrorBlock)completion {
     [self setUserBlocked:YES user:username completion:completion];
+}
+
+- (void)seenSuggestedFriends:(NSArray *)usernames seen:(BOOL)seen completion:(ErrorBlock)completion {
+    if (!usernames.count) usernames = @[];
+    
+    NSDictionary *query = @{@"action": @"update",
+                            @"seen": @(seen),
+                            @"seen_suggested_friend_list": usernames.JSONString,
+                            @"username": self.username};
+    [self postTo:kepSeenSuggestedFriends query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            BOOL success = [json[@"logged"] boolValue];
+            if (success)
+                completion(nil);
+            else
+                completion([SKRequest errorWithMessage:json[@"message"] code:1]);
+        }
+    }];
 }
 
 - (void)unblockUser:(NSString *)username completion:(ErrorBlock)completion {

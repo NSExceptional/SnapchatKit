@@ -236,6 +236,11 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
+                [[SKClient sharedClient] get:[NSString stringWithFormat:@"%@US", kepDiscoverChannels] callback:^(id object, NSError *error) {
+                    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:object options:0 error:NULL];
+                    NSLog(@"Discover: %@", JSON ?: error.localizedDescription);
+                }];
+                
 //                testFindFriendsNearby(40.713054, -74.007228);
                 
 //                SKLog(@"Sending snap...");

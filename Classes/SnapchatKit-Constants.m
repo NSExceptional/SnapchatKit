@@ -172,10 +172,21 @@ NSString * const kepCashGenerateToken     = @"/cash/generate_access_token";// ta
 NSString * const kepLocationData          = @"/loq/loc_data";
 NSString * const kepDownloadSnaptagAvatar = @"/bq/download_profile_data";
 NSString * const kepUploadSnaptagAvatar   = @"/bq/upload_profile_data";
+NSString * const kepIPRouting             = @"/bq/ip_routing/";
+NSString * const kepSeenSuggestedFriends  = @"/bq/suggest_friend";
 
 NSString * const kepGetStoryBlob      = @"/bq/story_blob?story_id=";
 NSString * const kepGetStoryThumb     = @"/bq/story_thumbnail?story_id=";
+NSString * const kepAuthStoryThumb    = @"/bq/auth_story_thumbnail/";
 
+
+#pragma mark Discover
+NSString * const kepDiscoverChannels = @"/discover/channel_list?region=";
+NSString * const kepDiscoverIcons    = @"/discover/icons?icon="; // does not need to be signed in, returns image data
+NSString * const kepDiscoverIntroVideos = @"/discover/intro_videos?publisher="; // &intro_video= &currentSession.resourceParamName=currentSession.resourceParamValue
+NSString * const kepDiscoverSnaps       = @"/discover/dsnaps?edition_id="; // &snap_id= &hash= &publisher= &currentSession.resourceParamName=currentSession.resourceParamValue
+
+#pragma mark Feature settings
 NSString * const SKFeatureFrontFacingFlash = @"front_facing_flash";
 NSString * const SKFeatureReplaySnaps      = @"replay_snaps";
 NSString * const SKFeatureSmartFilters     = @"smart_filters";

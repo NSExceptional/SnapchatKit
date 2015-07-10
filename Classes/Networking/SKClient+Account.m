@@ -122,6 +122,7 @@
     NSParameterAssert(completion);
     
     NSDictionary *query = @{@"image": self.currentSession.QRPath,
+                            @"type": @"SVG",
                             @"username": self.username};
     [SKRequest postTo:kepSnaptag query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{

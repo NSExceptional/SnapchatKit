@@ -50,6 +50,7 @@
 		B45442611B4E246D00B1A214 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = B45442351B4E246D00B1A214 /* SSZipArchive.m */; };
 		B45442621B4E246D00B1A214 /* TBTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = B45442381B4E246D00B1A214 /* TBTimer.m */; };
 		B45442641B4E249F00B1A214 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B45442631B4E249F00B1A214 /* libz.1.dylib */; };
+		B48633E71B4FA9B100854526 /* SKClient+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = B48633E61B4FA9B100854526 /* SKClient+Discover.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -153,6 +154,8 @@
 		B45442381B4E246D00B1A214 /* TBTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBTimer.m; sourceTree = "<group>"; };
 		B45442391B4E246D00B1A214 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = ../../../../../../Login.h; sourceTree = "<group>"; };
 		B45442631B4E249F00B1A214 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = usr/lib/libz.1.dylib; sourceTree = SDKROOT; };
+		B48633E51B4FA9B100854526 /* SKClient+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Discover.h"; sourceTree = "<group>"; };
+		B48633E61B4FA9B100854526 /* SKClient+Discover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Discover.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -288,6 +291,8 @@
 				B454421A1B4E246D00B1A214 /* SKClient+Chat.m */,
 				B454421B1B4E246D00B1A214 /* SKClient+Device.h */,
 				B454421C1B4E246D00B1A214 /* SKClient+Device.m */,
+				B48633E51B4FA9B100854526 /* SKClient+Discover.h */,
+				B48633E61B4FA9B100854526 /* SKClient+Discover.m */,
 				B454421D1B4E246D00B1A214 /* SKClient+Friends.h */,
 				B454421E1B4E246D00B1A214 /* SKClient+Friends.m */,
 				B454421F1B4E246D00B1A214 /* SKClient+Snaps.h */,
@@ -418,6 +423,7 @@
 				B454425B1B4E246D00B1A214 /* SKClient.m in Sources */,
 				B45442511B4E246D00B1A214 /* SKStoryUpdater.m in Sources */,
 				B454424B1B4E246D00B1A214 /* SKSnapOptions.m in Sources */,
+				B48633E71B4FA9B100854526 /* SKClient+Discover.m in Sources */,
 				B45442451B4E246D00B1A214 /* SKMessage.m in Sources */,
 				B45442521B4E246D00B1A214 /* SKThing.m in Sources */,
 				B45442481B4E246D00B1A214 /* SKSession.m in Sources */,
