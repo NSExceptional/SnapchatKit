@@ -9,6 +9,7 @@
 #import "SKClient+Chat.h"
 #import "SKRequest.h"
 #import "SKConversation.h"
+#import "SKNewConversation.h"
 
 #import "NSString+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
@@ -121,8 +122,16 @@
                     if (!error2) {
                         NSArray *jsonConvos = json[@"conversations"];
                         NSMutableArray *conversations = [NSMutableArray array];
-                        for (NSDictionary *convo in jsonConvos)
-                            [conversations addObject:[[SKConversation alloc] initWithDictionary:convo]];
+                        
+                        if (jsonConvos.count) {
+                            for (NSDictionary *convo in jsonConvos)
+                                [conversations addObject:[[SKConversation alloc] initWithDictionary:convo]];
+                        } else {
+                            // Tricky because if no conversations were returned and we're trying to send to multiple users,
+                            // I feat this last POST might only return the auth data for one user... idk what else to do here
+                            [conversations addObject:[SKNewConversation newConvoWithAuth:auth withOtherUser:failed.firstObject ?: users[0]]];
+                        }
+                        
                         
                         completion(conversations, failed, nil);
                     } else {
@@ -153,6 +162,7 @@
     NSParameterAssert(completion);
     [self sendMessage:message toEach:@[username] completion:^(NSArray *conversations, NSArray *failed, NSError *error) {
         if (!error && failed.count == 0) {
+            NSParameterAssert(conversations.count > 0);
             completion(conversations[0], nil);
         } else if (error) {
             completion(nil, error);
@@ -171,11 +181,12 @@
     [self conversationsWithUsers:recipients completion:^(NSArray *convos, NSArray *failedConvos, NSError *error) {
         if (!error) {
             [failed addObjectsFromArray:failedConvos];
+            NSParameterAssert(convos.count > 0);
             
             // Existing conversations
             for (SKConversation *convo in convos) {
                 NSUInteger sequenceNum = [convo.state[@"conversation_state"][@"user_sequences"][self.username] integerValue];
-                NSString *recipient = [convo.participants[0] isEqualToString:self.username] ? convo.participants[1] : convo.participants[0];
+                NSString *recipient = convo.recipient;
                 NSDictionary *newMessage = @{@"body": @{@"type": @"text", @"text": message},
                                              @"chat_message_id": SKUniqueIdentifier(),
                                              @"seq_num": @(sequenceNum+1),
@@ -205,6 +216,8 @@
                     completion(nil, recipients, error2);
                 }
             }];
+        } else {
+            completion(@[], failedConvos, error);
         }
     }];
 }

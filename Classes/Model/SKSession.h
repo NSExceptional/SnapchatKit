@@ -7,6 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreGraphics/CGBase.h>
+
 #import "SKThing.h"
 
 @class SKMessage, SKConversation;

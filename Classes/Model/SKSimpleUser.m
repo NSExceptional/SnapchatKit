@@ -28,7 +28,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ username=%@, displayn=%@, incoming=%hhd>",
+    return [NSString stringWithFormat:@"<%@ username=%@, displayn=%@, incoming=%d>",
             NSStringFromClass(self.class), self.username, self.displayName, self.addedIncoming];
 }
 

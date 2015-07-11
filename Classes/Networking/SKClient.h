@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreGraphics/CGGeometry.h>
 #import "SnapchatKit-Constants.h"
 
 #import "SKSession.h"

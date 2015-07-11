@@ -7,6 +7,7 @@
 //
 
 #import "SKThing.h"
+#import <CoreGraphics/CGGeometry.h>
 
 typedef NS_ENUM(NSUInteger, SKMessageKind)
 {

@@ -31,7 +31,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ username=%@, NSFW=%hhd, stories=\n%@\n>",
+    return [NSString stringWithFormat:@"<%@ username=%@, NSFW=%d, stories=\n%@\n>",
             NSStringFromClass(self.class), self.username, self.matureContent, self.stories];
 }
 

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
+#import <CoreGraphics/CGBase.h>
 #import "SKThing.h"
 @class SKBlob;
 

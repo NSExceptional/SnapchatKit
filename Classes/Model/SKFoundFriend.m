@@ -22,7 +22,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ displayn=%@, username=%@, private=%hhd>",
+    return [NSString stringWithFormat:@"<%@ displayn=%@, username=%@, private=%d>",
             NSStringFromClass(self.class), self.displayName, self.username, self.isPrivate];
 }
 

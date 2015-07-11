@@ -30,7 +30,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ username=%@, emoji=%@, needs love=%hhd, sees your stories=%hhd, is live story=%hhd>",
+    return [NSString stringWithFormat:@"<%@ username=%@, emoji=%@, needs love=%d, sees your stories=%d, is live story=%d>",
             NSStringFromClass(self.class), self.username, self.friendmoji, self.needsLove, self.canSeeCustomStories, self.isSharedStory];
 }
 

@@ -42,7 +42,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ dynamic=%hhd, sponsored=%hhd, priority=%ld image=%@>",
+    return [NSString stringWithFormat:@"<%@ dynamic=%d, sponsored=%d, priority=%ld image=%@>",
             NSStringFromClass(self.class), self.isDynamic, self.isSponsored, (long)self.priority, self.imageURL.absoluteString];
 }
 

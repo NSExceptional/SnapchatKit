@@ -53,7 +53,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ success=%hhd> Snaps:\n%@",
+    return [NSString stringWithFormat:@"<%@ success=%d> Snaps:\n%@",
             NSStringFromClass(self.class), self.success, self.sentSnaps];
 }
 

@@ -51,6 +51,7 @@
 		B45442621B4E246D00B1A214 /* TBTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = B45442381B4E246D00B1A214 /* TBTimer.m */; };
 		B45442641B4E249F00B1A214 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B45442631B4E249F00B1A214 /* libz.1.dylib */; };
 		B48633E71B4FA9B100854526 /* SKClient+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = B48633E61B4FA9B100854526 /* SKClient+Discover.m */; };
+		B48634B31B51033700854526 /* SKNewConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634B21B51033700854526 /* SKNewConversation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -135,9 +136,9 @@
 		B45442211B4E246D00B1A214 /* SKClient+Stories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = "SKClient+Stories.h"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		B45442221B4E246D00B1A214 /* SKClient+Stories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Stories.m"; sourceTree = "<group>"; };
 		B45442231B4E246D00B1A214 /* SKClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKClient.h; sourceTree = "<group>"; };
-		B45442241B4E246D00B1A214 /* SKClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SKClient.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		B45442241B4E246D00B1A214 /* SKClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SKClient.m; sourceTree = "<group>"; };
 		B45442251B4E246D00B1A214 /* SnapchatKit-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SnapchatKit-Constants.h"; sourceTree = "<group>"; };
-		B45442261B4E246D00B1A214 /* SnapchatKit-Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "SnapchatKit-Constants.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		B45442261B4E246D00B1A214 /* SnapchatKit-Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "SnapchatKit-Constants.m"; sourceTree = "<group>"; };
 		B45442271B4E246D00B1A214 /* SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapchatKit.h; sourceTree = "<group>"; };
 		B454422B1B4E246D00B1A214 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		B454422C1B4E246D00B1A214 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
@@ -156,6 +157,8 @@
 		B45442631B4E249F00B1A214 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = usr/lib/libz.1.dylib; sourceTree = SDKROOT; };
 		B48633E51B4FA9B100854526 /* SKClient+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Discover.h"; sourceTree = "<group>"; };
 		B48633E61B4FA9B100854526 /* SKClient+Discover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Discover.m"; sourceTree = "<group>"; };
+		B48634B11B51033700854526 /* SKNewConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKNewConversation.h; sourceTree = "<group>"; };
+		B48634B21B51033700854526 /* SKNewConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKNewConversation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +251,8 @@
 				B45441F71B4E246D00B1A214 /* SKMessage.m */,
 				B45441F81B4E246D00B1A214 /* SKNearbyUser.h */,
 				B45441F91B4E246D00B1A214 /* SKNearbyUser.m */,
+				B48634B11B51033700854526 /* SKNewConversation.h */,
+				B48634B21B51033700854526 /* SKNewConversation.m */,
 				B45441FA1B4E246D00B1A214 /* SKRequest.h */,
 				B45441FB1B4E246D00B1A214 /* SKRequest.m */,
 				B45441FC1B4E246D00B1A214 /* SKSession.h */,
@@ -417,6 +422,7 @@
 				B454423C1B4E246D00B1A214 /* NSDictionary+SnapchatKit.m in Sources */,
 				B45442471B4E246D00B1A214 /* SKRequest.m in Sources */,
 				B45442551B4E246D00B1A214 /* SKClient+Account.m in Sources */,
+				B48634B31B51033700854526 /* SKNewConversation.m in Sources */,
 				B45442621B4E246D00B1A214 /* TBTimer.m in Sources */,
 				B454423A1B4E246D00B1A214 /* NSArray+SnapchatKit.m in Sources */,
 				B45442461B4E246D00B1A214 /* SKNearbyUser.m in Sources */,

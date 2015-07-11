@@ -106,8 +106,8 @@
                                                     @"sv": @(secondsViewed),
                                                     @"c": @(SKSnapStatusScreenshot)}};
     NSDictionary *screenshot = @{@"eventName": @"SNAP_SCREENSHOT",
-                                 @"params": @{@"id":snap.identifier},
-                                 @"ts": @([[NSString timestamp] integerValue]/1000)};
+                                 @"params":    @{@"id":snap.identifier},
+                                 @"ts":        @([[NSString timestamp] integerValue]/1000)};
     NSArray *events = @[screenshot];
     [self sendEvents:events data:snapInfo completion:completion];
 }

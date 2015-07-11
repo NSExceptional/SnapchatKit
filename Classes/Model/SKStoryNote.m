@@ -25,7 +25,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ viewer=%@, screenshot=%hhd>",
+    return [NSString stringWithFormat:@"<%@ viewer=%@, screenshot=%d>",
             NSStringFromClass(self.class), self.viewer, self.screenshot];
 }
 
