@@ -90,6 +90,8 @@ extern NSString * SKStringFromStoryPrivacy(SKStoryPrivacy);
 extern BOOL SKMediaKindIsImage(SKMediaKind mediaKind);
 extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
 
+extern NSString * const SKNoConversationExistsYet;
+
 /** Before updating this value, confirm that the library requests everything in the same way as the app. */
 extern NSString * const kUserAgent;
 /** The user agent specific to making the attestation request. */

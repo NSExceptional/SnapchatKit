@@ -58,7 +58,7 @@
         if ((json[@"mac"] && json[@"payload"]) || error)
             completion(json, error);
         else if (!error)
-            completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:1]);
+            completion(nil, [SKRequest errorWithMessage:@"Could not get conversation auth. Are you friends?" code:1]);
     }];
 }
 
@@ -69,8 +69,6 @@
             completion(conversations[0], nil);
         else if (error) {
             completion(nil, error);
-        } else {
-            completion(nil, [SKRequest errorWithMessage:[NSString stringWithFormat:@"Failed to get conversation for: %@", user] code:1]);
         }
     }];
 }

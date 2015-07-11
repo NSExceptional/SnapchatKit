@@ -87,6 +87,8 @@ BOOL SKMediaKindIsVideo(SKMediaKind mediaKind) {
     return mediaKind == SKMediaKindVideo || mediaKind == SKMediaKindSilentVideo || mediaKind == SKMediaKindStrangerVideo || mediaKind == SKMediaKindStrangerSilentVideo;
 }
 
+NSString * const SKNoConversationExistsYet = @"No conversation exists between these users.";
+
 #pragma mark General API constants
 NSString * const kUserAgent               = @"Snapchat/9.10.0.0 (SM-N9005; Android 5.0.2; gzip)";//Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
 NSString * const kUserAgentForAttestation = @"SafetyNet/7329000 (klte KOT49H); gzip";

@@ -217,8 +217,7 @@ int main(int argc, const char * argv[]) {
         [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
-                NSDictionary *json = (NSDictionary *)[session valueForKey:@"_JSON"];
-                [json writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
+                [dict writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
                 SKLog(@"Session written to file.");
                 
                 // For debugging purposes, to see the size of the response JSON in memory. Mine was about 300 KB.
@@ -236,9 +235,13 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
-                [[SKClient sharedClient] get:[NSString stringWithFormat:@"%@US", kepDiscoverChannels] callback:^(id object, NSError *error) {
-                    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:object options:0 error:NULL];
-                    NSLog(@"Discover: %@", JSON ?: error.localizedDescription);
+//                [[SKClient sharedClient] get:[NSString stringWithFormat:@"%@US", kepDiscoverChannels] callback:^(id object, NSError *error) {
+//                    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:object options:0 error:NULL];
+//                    NSLog(@"Discover: %@", JSON ?: error.localizedDescription);
+//                }];
+                
+                [[SKClient sharedClient] sendMessage:@"test message" to:@"snapkeep.demo1" completion:^(SKConversation *convo, NSError *error) {
+                    NSLog(@"Result: %@", convo ?: error.localizedDescription);
                 }];
                 
 //                testFindFriendsNearby(40.713054, -74.007228);
