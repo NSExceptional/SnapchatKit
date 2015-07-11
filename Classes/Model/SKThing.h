@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SnapchatKit-Constants.h"
 
+/** The root class of most classes in this framework. */
 @interface SKThing : NSObject <NSCoding>
 
 - (id)initWithDictionary:(NSDictionary *)json;
@@ -20,7 +21,7 @@
  */
 @property (nonatomic) NSMutableArray *knownJSONKeys;
 
-/** Calculated once when first accessed, using _knownJSONKeys. */
+/** Calculated once when first accessed, using \c knownJSONKeys. */
 @property (nonatomic, readonly) NSArray *unknownJSONKeys;
 
 @end

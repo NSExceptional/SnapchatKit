@@ -11,7 +11,7 @@
 
 @interface SKRequest : NSMutableURLRequest
 
-// Misc
+// Internal use //
 + (NSError *)unknownError;
 + (NSError *)errorWithMessage:(NSString *)message code:(NSInteger)code;
 

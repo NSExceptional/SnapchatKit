@@ -11,9 +11,11 @@
 
 @interface SKStoryCollection : SKThing
 
+/** The username of the user associated with this story collection. */
 @property (nonatomic, readonly) NSString *username;
+/** Whether this story contains explicit content. */
 @property (nonatomic, readonly) BOOL matureContent;
-/** Array of SKStory objects. */
+/** An array of \c SKStory objects. */
 @property (nonatomic, readonly) NSArray *stories;
 
 @end

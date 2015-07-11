@@ -72,7 +72,7 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 /** Array of SKSnap objects. */
 @property (nonatomic, readonly) NSArray      *pendingRecievedSnaps;
 
-/** @param participant Must be in _participants. @return An array of SKMessage objects, or an empty array if N/A. */
+/** @param participant Must be in \c participants. @return An array of \c SKMessage objects, or an empty array if N/A. */
 - (NSArray *)unreadChatsForParticipant:(NSString *)participant;
 
 /** Merges _messages with conversation.messages. */

@@ -12,10 +12,6 @@
 
 @implementation SKSimpleUser
 
-+ (instancetype)userFromResponse:(NSDictionary *)json {
-    return [[self.class alloc] initWithDictionary:json];
-}
-
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
     if (self) {

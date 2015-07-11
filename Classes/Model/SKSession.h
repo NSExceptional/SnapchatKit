@@ -58,8 +58,11 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL discoverSupported;
 @property (nonatomic, readonly) BOOL discoverSharingEnabled;
 @property (nonatomic, readonly) NSString *discoverGetChannels;
+/** Used internally to load Discover snaps. */
 @property (nonatomic, readonly) NSString *discoverResourceParamName;
+/** Used internally to load Discover snaps. */
 @property (nonatomic, readonly) NSString *discoverResourceParamValue;
+/** Used internally to load Discover snaps. */
 @property (nonatomic, readonly) NSString *discoverVideoCatalog;
 
 #pragma mark Cash information

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+/** Passed to the callback of \c -[SKClient findFriendsNear:accuracy:pollDurationSoFar:completion: */
 @interface SKNearbyUser : NSObject
 
 + (instancetype)username:(NSString *)username identifier:(NSString *)identifier;

@@ -29,16 +29,16 @@ extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 @property (nonatomic, readonly) NSString      *messageIdentifier;
 @property (nonatomic, readonly) SKMessageKind messageKind;
 
-/** nil if _messageKind is SKMessageKindMedia. */
+/** \c nil if \c messageKind is \c SKMessageKindMedia. */
 @property (nonatomic, readonly) NSString      *text;
 
-/** nil if _messageKind is SKMessageKindText. */
+/** \c nil if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) NSString      *mediaIdentifier;
-/** {0,0} if _messageKind is SKMessageKindText. */
+/** \c {0,0} if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) CGSize        mediaSize;
-/** nil if _messageKind is SKMessageKindText. */
+/** \c nil if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) NSString      *mediaIV;
-/** nil if _messageKind is SKMessageKindText. */
+/** \c nil if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) NSString      *mediaKey;
 /** i.e. "VIDEO" */
 @property (nonatomic, readonly) NSString      *mediaType;

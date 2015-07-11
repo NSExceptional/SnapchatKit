@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SKThing.h"
 
-
+/** Passed to the completion of both of the \c -[SKClient sendSnap:...] methods. */
 @interface SKSnapResponse : SKThing
 
 /** An array of \c SKSentSnap objects. */
@@ -18,7 +18,7 @@
 
 @end
 
-
+/** Used as part of the \c SKSnapResponse class. */
 @interface SKSentSnap : SKThing
 @property (nonatomic, readonly) NSString *sender;
 @property (nonatomic, readonly) NSString *identifier;

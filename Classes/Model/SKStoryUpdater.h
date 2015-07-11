@@ -14,8 +14,11 @@
 
 + (instancetype)viewedStory:(SKStory *)story at:(NSDate *)date screenshots:(NSUInteger)sscount;
 
+/** Used internally. */
 @property (nonatomic, readonly) NSString   *storyID;
+/** Used internally. */
 @property (nonatomic, readonly) NSString   *timestamp;
+/** Used internally. */
 @property (nonatomic, readonly) NSUInteger screenshotCount;
 
 @end

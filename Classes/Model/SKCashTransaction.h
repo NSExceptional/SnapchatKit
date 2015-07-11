@@ -11,7 +11,8 @@
 /** Represents a cash transaction via chat. */
 @interface SKCashTransaction : SKThing <SKPagination>
 
-// SKPagination
+// SKPagination properties //
+
 @property (nonatomic, readonly) NSString     *conversationIdentifier;
 @property (nonatomic, readonly) NSString     *pagination;
 @property (nonatomic, readonly) NSDate       *created;
@@ -26,6 +27,7 @@
 @property (nonatomic, readonly) NSDate       *lastUpdated;
 /** Example: "$2.50". */
 @property (nonatomic, readonly) NSString     *message;
+/** No idea */
 @property (nonatomic, readonly) BOOL         rain;
 
 @property (nonatomic, readonly) NSString     *identifier;

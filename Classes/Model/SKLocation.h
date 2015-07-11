@@ -10,9 +10,13 @@
 
 @interface SKLocation : SKThing
 
-@property (nonatomic, readonly) NSArray *filters;
+/** An array of \c SKFilter objects. */
+@property (nonatomic, readonly) NSArray      *filters;
+/** Undocumented */
 @property (nonatomic, readonly) NSDictionary *weather;
-@property (nonatomic, readonly) NSArray *ourStoryAuths;
-@property (nonatomic, readonly) NSArray *preCacheGeofilters;
+/** Undocumented */
+@property (nonatomic, readonly) NSArray      *ourStoryAuths;
+/** Undocumented */
+@property (nonatomic, readonly) NSArray      *preCacheGeofilters;
 
 @end
