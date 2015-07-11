@@ -88,13 +88,13 @@
 
 - (void)markSnapViewed:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion {
     NSDictionary *snapInfo = @{snap.identifier: @{@"t":@([[NSString timestamp] integerValue]),
-                                             @"sv": @(secondsViewed)}};
+                                                  @"sv": @(secondsViewed*1000)}};
     NSDictionary *viewed   = @{@"eventName": @"SNAP_VIEW",
-                               @"params": @{@"id":snap.identifier},
-                               @"ts": @(([[NSString timestamp] integerValue]/1000) - secondsViewed)};
+                               @"params":    @{@"id":snap.identifier},
+                               @"ts":        @(([[NSString timestamp] integerValue]/1000) - secondsViewed)};
     NSDictionary *expire   = @{@"eventName": @"SNAP_EXPIRED",
-                               @"params": @{@"id":snap.identifier},
-                               @"ts": @([[NSString timestamp] integerValue]/1000)};
+                               @"params":    @{@"id":snap.identifier},
+                               @"ts":        @([[NSString timestamp] integerValue]/1000)};
     NSArray *events = @[viewed, expire];
     [self sendEvents:events data:snapInfo completion:completion];
 }
