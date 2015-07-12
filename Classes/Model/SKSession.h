@@ -11,7 +11,7 @@
 
 #import "SKThing.h"
 
-@class SKMessage, SKConversation;
+@class SKMessage, SKConversation, SKUser;
 
 extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
@@ -142,5 +142,12 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL enableSwipeCashMode;
 @property (nonatomic, readonly) BOOL enableVisualFilters;
 @property (nonatomic, readonly) BOOL enableTravelMode;
+
+@end
+
+
+@interface SKSession (Friends)
+
+- (SKUser *)userWithUsername:(NSString *)username;
 
 @end

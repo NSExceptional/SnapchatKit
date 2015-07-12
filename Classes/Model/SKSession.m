@@ -208,3 +208,13 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
 }
 
 @end
+
+
+@implementation SKSession (Friends)
+
+- (SKUser *)userWithUsername:(NSString *)username {
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"username", username];
+    return [self.friends filteredOrderedSetUsingPredicate:filter][0];
+}
+
+@end
