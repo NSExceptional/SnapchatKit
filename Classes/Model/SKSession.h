@@ -20,10 +20,8 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
 + (instancetype)sessionWithJSONResponse:(NSDictionary *)json;
 
-/** Array unread SKSnap and SKMessage objects in _conversations. */
+/** @return An array of unread \c SKSnap and \c SKMessage objects in \c conversations. */
 - (NSArray *)unread;
-/** Returns the SKConversation associated with the given username, or nil if it hasn't been loaded or does not exist (or if username == self.username). */
-- (SKConversation *)conversationWithOtherUser:(NSString *)username;
 
 /** Not sure what this is for. Might be "new stories since you last checked". */
 @property (nonatomic, readonly) BOOL storiesDelta;
@@ -147,7 +145,24 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
 
 @interface SKSession (Friends)
-
+/** @return The \c SKUser object associated with \e username, or \c nil if the user could not be found. */
 - (SKUser *)userWithUsername:(NSString *)username;
-
+/** @return The \c SKConversation associated \e username, or \c nil if it hasn't been loaded or does not exist. @note It makes no sense to pass in your own username. */
+- (SKConversation *)conversationWithUser:(NSString *)username;
 @end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

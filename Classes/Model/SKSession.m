@@ -199,13 +199,6 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     return unread;
 }
 
-- (SKConversation *)conversationWithOtherUser:(NSString *)username {
-    for (SKConversation *conversation in self.conversations)
-        if ([conversation.participants containsObject:username])
-            return conversation;
-    
-    return nil;
-}
 
 @end
 
@@ -214,7 +207,13 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
 
 - (SKUser *)userWithUsername:(NSString *)username {
     NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"username", username];
-    return [self.friends filteredOrderedSetUsingPredicate:filter][0];
+    return [self.friends filteredOrderedSetUsingPredicate:filter].firstObject;
 }
+
+- (SKConversation *)conversationWithUser:(NSString *)username {
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"recipient", username];
+    return [self.conversations filteredOrderedSetUsingPredicate:filter].firstObject;
+}
+
 
 @end
