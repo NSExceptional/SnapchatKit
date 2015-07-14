@@ -619,6 +619,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 #pragma mark For categories
 
 - (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(ErrorBlock)completion {
+    if (!completion) completion = ^(id e){};
     if (!events)   events = @[];
     if (!snapInfo) snapInfo = @{};
     NSDictionary *query = @{@"events": events.JSONString,

@@ -44,7 +44,7 @@
             completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
         
         // Needs to be unzipped
-    } else if (decryptedBlob.isCompressed) {
+    } else if (decryptedBlob.isCompressed || story.zipped) {
         NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", story.identifier]];
         NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", story.identifier]];
         [decryptedBlob writeToFile:path atomically:YES];
@@ -57,17 +57,27 @@
                 else
                     completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
             } else {
-                SKLog(@"%@", error);
+                NSData *thirdTimesTheCharm = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
+                if (thirdTimesTheCharm.isCompressed) {
+                    [self blobWithStoryData:thirdTimesTheCharm forStory:story completion:completion];
+                } else {
+                    SKLog(@"%@", error);
+                }
             }
         }];
-    } else if (decryptedBlob) {
-        SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
-        if (blob)
-            completion(blob, [SKRequest errorWithMessage:@"Unknown blob format" code:1]);
-        else
-            completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
     } else {
-        completion(nil, [SKRequest errorWithMessage:[NSString stringWithFormat:@"Error retrieving story: %@", story.identifier] code:2]);
+        NSData *thirdTimesTheCharm = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
+        if (thirdTimesTheCharm.isCompressed) {
+            [self blobWithStoryData:thirdTimesTheCharm forStory:story completion:completion];
+        } else if (thirdTimesTheCharm.isJPEG || thirdTimesTheCharm.isPNG || thirdTimesTheCharm.isMPEG4) {
+            completion([SKBlob blobWithData:thirdTimesTheCharm], nil);
+        } else {
+            SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
+            if (blob)
+                completion(blob, [SKRequest errorWithMessage:@"Unknown blob format" code:1]);
+            else
+                completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+        }
     }
 }
 
@@ -160,18 +170,21 @@
             NSStringFromClass(self.class), self.isImage, (BOOL)self.overlay, (unsigned long)self.data.length];
 }
 
-- (void)writeToPath:(NSString *)path filename:(NSString *)filename atomically:(BOOL)atomically {
+- (NSArray *)writeToPath:(NSString *)path filename:(NSString *)filename atomically:(BOOL)atomically {
     NSParameterAssert(path);
     
-    if (!self.overlay)
-        [self.data writeToFile:[path stringByAppendingPathComponent:[filename stringByAppendingString:self.data.appropriateFileExtension]] atomically:atomically];
-    else {
+    if (!self.overlay) {
+        path = [path stringByAppendingPathComponent:[filename stringByAppendingString:self.data.appropriateFileExtension]];
+        [self.data writeToFile:path atomically:atomically];
+        return @[path];
+    } else {
         path = [path stringByAppendingPathComponent:filename];
-        NSString *overlay    = [filename stringByAppendingString:[@"-overlay" stringByAppendingString:self.overlay.appropriateFileExtension]];
-        NSString *video      = [filename stringByAppendingString:self.data.appropriateFileExtension];
+        NSString *overlay    = [path stringByAppendingPathComponent:[filename stringByAppendingString:[@"-overlay" stringByAppendingString:self.overlay.appropriateFileExtension]]];
+        NSString *video      = [path stringByAppendingPathComponent:[filename stringByAppendingString:self.data.appropriateFileExtension]];
         [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-        [self.data writeToFile:[path stringByAppendingPathComponent:video] atomically:atomically];
-        [self.overlay writeToFile:[path stringByAppendingPathComponent:overlay] atomically:atomically];
+        [self.data writeToFile:video atomically:atomically];
+        [self.overlay writeToFile:overlay atomically:atomically];
+        return @[video, overlay];
     }
 }
 

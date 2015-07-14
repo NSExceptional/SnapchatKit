@@ -37,8 +37,9 @@
  If not, only \c data is written to the specified file.
  @param path The \e directory to which to write the receiver's bytes. Pass the desired filename to \e filename. See \c -[NSData writeToFile:atomically:] for more information.
  @param filename The name to serialize the blob under.
- @param atomically See \c -[NSData writeToFile:atomically:] */
-- (void)writeToPath:(NSString *)directoryPath filename:(NSString *)filename atomically:(BOOL)atomically;
+ @param atomically See \c -[NSData writeToFile:atomically:]
+ @return An array of strings paths to the written files. Overlay is always the second object if applicable. */
+- (NSArray *)writeToPath:(NSString *)directoryPath filename:(NSString *)filename atomically:(BOOL)atomically;
 
 /** The data for the image or video. */
 @property (nonatomic, readonly) NSData *data;
