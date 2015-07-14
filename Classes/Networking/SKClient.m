@@ -154,10 +154,18 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     [SKRequest get:endpoint callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
-                if ([(NSHTTPURLResponse *)response statusCode] == 200)
+                NSInteger code = [(NSHTTPURLResponse *)response statusCode];
+                if (code == 200)
                     callback(data, nil);
-                else
-                    callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+                else {
+                    NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                    if ([html containsString:@"<html><head>"]) {
+                        // Invalid request
+                        callback(nil, [SKRequest errorWithMessage:html.textFromHTML code:code]);
+                    } else {
+                        callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+                    }
+                }
             } else {
                 callback(nil, error);
             }
@@ -226,7 +234,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     if (dt1i && dt1v)
         completion(@{kDeviceToken1i: dt1i, kDeviceToken1v: dt1v}, nil);
     else
-        [SKRequest postTo:kepDeviceToken query:@{} headers:@{khfClientAuthTokenHeaderField: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [SKRequest postTo:kepDeviceToken query:@{} headers:@{khfClientAuthToken: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (error) {
                 completion(nil, error);
             } else if (data) {
@@ -361,7 +369,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                                    @"attestation":      self.googleAttestation,
                                                    @"timestamp":        timestamp};
                             
-                            NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken]};
+                            NSDictionary *headers = @{khfClientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken]};
                             SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:kepLogin token:nil query:post headers:headers ts:timestamp];
                             NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
                             

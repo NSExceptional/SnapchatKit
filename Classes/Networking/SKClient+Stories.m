@@ -58,7 +58,7 @@
                             @"zipped": @0,
                             @"features_map": @"{}",
                             @"username": self.username};
-    NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
+    NSDictionary *headers = @{khfClientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
                               khfContentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", kBoundary]};
     
     [SKRequest postTo:kepUpload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -76,19 +76,40 @@
 
 - (void)loadStoryBlob:(SKStory *)story completion:(ResponseBlock)completion {
     NSParameterAssert(story); NSParameterAssert(completion);
-    [self get:[NSString stringWithFormat:@"%@%@", kepGetStoryBlob, story.mediaIdentifier] callback:^(NSData *data, NSError *error) {
-        if (!error) {
-            [SKBlob blobWithStoryData:data forStory:story completion:^(SKBlob *storyBlob, NSError *blobError) {
-                if (!blobError) {
-                    completion(storyBlob, nil);
+    // I was using this, but... [NSString stringWithFormat:@"%@%@", kepGetStoryBlob, story.mediaIdentifier]
+    if (story.needsAuth) {
+        NSDictionary *query = @{@"story_id": story.mediaIdentifier, @"username": self.username};
+        [SKRequest postTo:kepAuthStoryBlob query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (!error) {
+                NSInteger code = [(NSHTTPURLResponse *)response statusCode];
+                if (code == 200) {
+                    [SKBlob blobWithStoryData:data forStory:story completion:^(SKBlob *storyBlob, NSError *blobError) {
+                        if (!blobError) {
+                            completion(storyBlob, nil);
+                        } else {
+                            completion(nil, blobError);
+                        }
+                    }];
                 } else {
-                    completion(nil, blobError);
+                    [self handleError:error data:data response:response completion:completion];
                 }
-            }];
-        } else {
-            completion(nil, error);
-        }
-    }];
+            }
+        }];
+    } else {
+        [self get:[story.mediaURL.absoluteString stringByReplacingOccurrencesOfString:kURL withString:@""] callback:^(NSData *data, NSError *error) {
+            if (!error) {
+                [SKBlob blobWithStoryData:data forStory:story completion:^(SKBlob *storyBlob, NSError *blobError) {
+                    if (!blobError) {
+                        completion(storyBlob, nil);
+                    } else {
+                        completion(nil, blobError);
+                    }
+                }];
+            } else {
+                completion(nil, error);
+            }
+        }];
+    }
 }
 
 - (void)loadStoryThumbnailBlob:(SKStory *)story completion:(ResponseBlock)completion {

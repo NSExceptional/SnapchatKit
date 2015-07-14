@@ -72,7 +72,7 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
 #pragma mark POST / GET
 
 + (void)postTo:(NSString *)endpoint query:(NSDictionary *)json gauth:(NSString *)gauth token:(NSString *)token callback:(RequestBlock)callback {
-    NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", gauth]};
+    NSDictionary *headers = @{khfClientAuthToken: [NSString stringWithFormat:@"Bearer %@", gauth]};
     [self postTo:endpoint query:json headers:headers token:token callback:callback];
 }
 

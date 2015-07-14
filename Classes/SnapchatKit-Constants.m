@@ -88,6 +88,7 @@ BOOL SKMediaKindIsVideo(SKMediaKind mediaKind) {
 }
 
 NSString * const SKNoConversationExistsYet = @"No conversation exists between these users.";
+NSString * const SKTemporaryLoginFailure = @"Oh no! Your login temporarily failed, so please try again later. If your login continues to fail, please visit https://support.snapchat.com/a/failed-login :)";
 
 #pragma mark General API constants
 NSString * const kUserAgent               = @"Snapchat/9.10.0.0 (SM-N9005; Android 5.0.2; gzip)";//Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
@@ -109,14 +110,15 @@ NSString * const kAPKCertificateDigest    = @"Lxyq/KHtMNC044hj7vq+oOgVcR+kz3m4Il
 NSString * const kDeviceToken1i           = @"dtoken1i";
 NSString * const kDeviceToken1v           = @"dtoken1v";
 
-NSString * const khfClientAuthTokenHeaderField = @"X-Snapchat-Client-Auth-Token";
-NSString * const khfTimestamp                  = @"X-Timestamp";
-NSString * const khfContentType                = @"Content-Type";
-NSString * const khfUserAgent                  = @"User-Agent";
-NSString * const khfAcceptLanguage             = @"Accept-Language";
-NSString * const khfAcceptLocale               = @"Accept-Locale";
-NSString * const khvLanguage                   = @"en";
-NSString * const khvLocale                     = @"en_US";
+NSString * const khfClientAuthToken = @"X-Snapchat-Client-Auth-Token";
+NSString * const khfClientAuth      = @"X-Snapchat-Client-Auth";
+NSString * const khfTimestamp       = @"X-Timestamp";
+NSString * const khfContentType     = @"Content-Type";
+NSString * const khfUserAgent       = @"User-Agent";
+NSString * const khfAcceptLanguage  = @"Accept-Language";
+NSString * const khfAcceptLocale    = @"Accept-Locale";
+NSString * const khvLanguage        = @"en";
+NSString * const khvLocale          = @"en_US";
 
 NSString * const kepLogin                 = @"/loq/login";
 NSString * const kepLogout                = @"/ph/logout";
@@ -174,12 +176,13 @@ NSString * const kepCashGenerateToken     = @"/cash/generate_access_token";// ta
 NSString * const kepLocationData          = @"/loq/loc_data";
 NSString * const kepDownloadSnaptagAvatar = @"/bq/download_profile_data";
 NSString * const kepUploadSnaptagAvatar   = @"/bq/upload_profile_data";
-NSString * const kepIPRouting             = @"/bq/ip_routing/";
+NSString * const kepIPRouting             = @"/bq/ip_routing";
 NSString * const kepSeenSuggestedFriends  = @"/bq/suggest_friend";
 
 NSString * const kepGetStoryBlob      = @"/bq/story_blob?story_id=";
 NSString * const kepGetStoryThumb     = @"/bq/story_thumbnail?story_id=";
-NSString * const kepAuthStoryThumb    = @"/bq/auth_story_thumbnail/";
+NSString * const kepAuthStoryThumb    = @"/bq/auth_story_thumbnail";
+NSString * const kepAuthStoryBlob     = @"/bq/auth_story_blob";
 
 
 #pragma mark Discover

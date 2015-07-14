@@ -16,7 +16,7 @@
     self = [super initWithDictionary:json];
     if (self) {
         _username      = json[@"name"];
-        _displayName   = json[@"display"];
+        _displayName   = [json[@"display"] length] ? json[@"display"] : nil;
         _addedIncoming = [json[@"direction"] isEqualToString:@"INCOMING"];
         _privacy       = [json[@"type"] integerValue];
         _expiration    = [NSDate dateWithTimeIntervalSince1970:[json[@"expiration"] doubleValue]/1000];

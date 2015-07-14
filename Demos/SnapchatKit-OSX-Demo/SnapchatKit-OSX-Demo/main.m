@@ -240,10 +240,6 @@ int main(int argc, const char * argv[]) {
 //                    NSLog(@"Discover: %@", JSON ?: error.localizedDescription);
 //                }];
                 
-                [[SKClient sharedClient] sendMessage:@"test message" to:@"tannerbennett" completion:^(SKConversation *convo, NSError *error) {
-                    NSLog(@"Result: %@", convo ?: error.localizedDescription);
-                }];
-                
 //                testFindFriendsNearby(40.713054, -74.007228);
                 
 //                SKLog(@"Sending snap...");
@@ -276,7 +272,7 @@ int main(int argc, const char * argv[]) {
 //                testGetConversations();
                 
                 // Download and save unread snaps
-                saveUnreadSnapsToDirectory(unread, directory);
+//                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
                 markSnapsRead(unread);

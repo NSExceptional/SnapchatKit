@@ -68,7 +68,7 @@
                             @"zipped": @0,
                             @"features_map": @"{}",
                             @"username": self.username};
-    NSDictionary *headers = @{khfClientAuthTokenHeaderField: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
+    NSDictionary *headers = @{khfClientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
                               khfContentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", kBoundary]};
 
     [SKRequest postTo:kepUpload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {

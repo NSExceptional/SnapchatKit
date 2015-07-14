@@ -57,7 +57,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ id=%@, viewed=%hhd, duration=%lu, text=%@, time left=%lu>",
+    return [NSString stringWithFormat:@"<%@ id=%@, viewed=%d, duration=%lu, text=%@, time left=%lu>",
             NSStringFromClass(self.class), self.identifier, self.viewed, (unsigned long)self.duration, self.text, (unsigned long)self.timeLeft];
 }
 

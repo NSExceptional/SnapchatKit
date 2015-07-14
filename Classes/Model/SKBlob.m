@@ -27,8 +27,14 @@
 
 + (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion {
     NSParameterAssert(encryptedBlob);
-    NSData *decryptedBlob = nil;//[encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
-    decryptedBlob = encryptedBlob;
+    
+    NSData *decryptedBlob;
+    if (story.needsAuth) {
+        decryptedBlob = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
+    } else {
+        decryptedBlob = encryptedBlob;
+    }
+    
     // Unzipped
     if (decryptedBlob.isJPEG || decryptedBlob.isMPEG4) {
         SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
@@ -150,7 +156,7 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ isImage=%hhd, has overlay=%hhd, bytes=%lu>",
+    return [NSString stringWithFormat:@"<%@ isImage=%d, has overlay=%d, bytes=%lu>",
             NSStringFromClass(self.class), self.isImage, (BOOL)self.overlay, (unsigned long)self.data.length];
 }
 

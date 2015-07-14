@@ -91,6 +91,7 @@ extern BOOL SKMediaKindIsImage(SKMediaKind mediaKind);
 extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
 
 extern NSString * const SKNoConversationExistsYet;
+extern NSString * const SKTemporaryLoginFailure;
 
 /** Before updating this value, confirm that the library requests everything in the same way as the app. */
 extern NSString * const kUserAgent;
@@ -131,7 +132,7 @@ extern NSString * const kDeviceToken1i;
 extern NSString * const kDeviceToken1v;
 
 #pragma mark Header fields / values
-extern NSString * const khfClientAuthTokenHeaderField;
+extern NSString * const khfClientAuthToken;
 extern NSString * const khfTimestamp;
 extern NSString * const khfContentType;
 extern NSString * const khfUserAgent;
@@ -191,7 +192,8 @@ extern NSString * const kepSeenSuggestedFriends; // new feature?
 
 extern NSString * const kepGetStoryBlob;
 extern NSString * const kepGetStoryThumb;
-extern NSString * const kepAuthStoryThumb; // no idea what this is for. POST: takes username and story_id, returns data
+extern NSString * const kepAuthStoryThumb; // Used for stories which require auth
+extern NSString * const kepAuthStoryBlob;
 
 #pragma mark Discover
 extern NSString * const kepDiscoverChannels;
