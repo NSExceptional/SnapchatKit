@@ -1,0 +1,786 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B48633F71B50F13400854526 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B48633F61B50F13400854526 /* main.m */; };
+		B48633FA1B50F13400854526 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B48633F91B50F13400854526 /* AppDelegate.m */; };
+		B48634031B50F13400854526 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B48634011B50F13400854526 /* Main.storyboard */; };
+		B48634051B50F13400854526 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B48634041B50F13400854526 /* Images.xcassets */; };
+		B48634081B50F13400854526 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B48634061B50F13400854526 /* LaunchScreen.xib */; };
+		B48634141B50F13400854526 /* SnapchatKit_iOS_DemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634131B50F13400854526 /* SnapchatKit_iOS_DemoTests.m */; };
+		B486341F1B50F1B000854526 /* SNTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B486341E1B50F1B000854526 /* SNTableViewController.m */; };
+		B48634801B50F25A00854526 /* NSArray+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634251B50F25A00854526 /* NSArray+SnapchatKit.m */; };
+		B48634811B50F25A00854526 /* NSData+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634271B50F25A00854526 /* NSData+SnapchatKit.m */; };
+		B48634821B50F25A00854526 /* NSDictionary+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634291B50F25A00854526 /* NSDictionary+SnapchatKit.m */; };
+		B48634831B50F25A00854526 /* NSString+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B486342B1B50F25A00854526 /* NSString+SnapchatKit.m */; };
+		B48634841B50F25A00854526 /* SKAddedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = B486342E1B50F25A00854526 /* SKAddedFriend.m */; };
+		B48634851B50F25A00854526 /* SKBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634301B50F25A00854526 /* SKBlob.m */; };
+		B48634861B50F25A00854526 /* SKCashTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634321B50F25A00854526 /* SKCashTransaction.m */; };
+		B48634871B50F25A00854526 /* SKConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634341B50F25A00854526 /* SKConversation.m */; };
+		B48634881B50F25A00854526 /* SKFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634361B50F25A00854526 /* SKFilter.m */; };
+		B48634891B50F25A00854526 /* SKFoundFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634381B50F25A00854526 /* SKFoundFriend.m */; };
+		B486348A1B50F25A00854526 /* SKLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = B486343A1B50F25A00854526 /* SKLocation.m */; };
+		B486348B1B50F25A00854526 /* SKMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B486343C1B50F25A00854526 /* SKMessage.m */; };
+		B486348C1B50F25A00854526 /* SKNearbyUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B486343E1B50F25A00854526 /* SKNearbyUser.m */; };
+		B486348D1B50F25A00854526 /* SKRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634401B50F25A00854526 /* SKRequest.m */; };
+		B486348E1B50F25A00854526 /* SKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634421B50F25A00854526 /* SKSession.m */; };
+		B486348F1B50F25A00854526 /* SKSimpleUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634441B50F25A00854526 /* SKSimpleUser.m */; };
+		B48634901B50F25A00854526 /* SKSnap.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634461B50F25A00854526 /* SKSnap.m */; };
+		B48634911B50F25A00854526 /* SKSnapOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634481B50F25A00854526 /* SKSnapOptions.m */; };
+		B48634921B50F25A00854526 /* SKSnapResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = B486344A1B50F25A00854526 /* SKSnapResponse.m */; };
+		B48634931B50F25A00854526 /* SKStory.m in Sources */ = {isa = PBXBuildFile; fileRef = B486344C1B50F25A00854526 /* SKStory.m */; };
+		B48634941B50F25A00854526 /* SKStoryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = B486344E1B50F25A00854526 /* SKStoryCollection.m */; };
+		B48634951B50F25A00854526 /* SKStoryNote.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634501B50F25A00854526 /* SKStoryNote.m */; };
+		B48634961B50F25A00854526 /* SKStoryOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634521B50F25A00854526 /* SKStoryOptions.m */; };
+		B48634971B50F25A00854526 /* SKStoryUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634541B50F25A00854526 /* SKStoryUpdater.m */; };
+		B48634981B50F25A00854526 /* SKThing.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634561B50F25A00854526 /* SKThing.m */; };
+		B48634991B50F25A00854526 /* SKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634581B50F25A00854526 /* SKUser.m */; };
+		B486349A1B50F25A00854526 /* SKUserStory.m in Sources */ = {isa = PBXBuildFile; fileRef = B486345A1B50F25A00854526 /* SKUserStory.m */; };
+		B486349B1B50F25A00854526 /* SKClient+Account.m in Sources */ = {isa = PBXBuildFile; fileRef = B486345D1B50F25A00854526 /* SKClient+Account.m */; };
+		B486349C1B50F25A00854526 /* SKClient+Chat.m in Sources */ = {isa = PBXBuildFile; fileRef = B486345F1B50F25A00854526 /* SKClient+Chat.m */; };
+		B486349D1B50F25A00854526 /* SKClient+Device.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634611B50F25A00854526 /* SKClient+Device.m */; };
+		B486349E1B50F25A00854526 /* SKClient+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634631B50F25A00854526 /* SKClient+Discover.m */; };
+		B486349F1B50F25A00854526 /* SKClient+Friends.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634651B50F25A00854526 /* SKClient+Friends.m */; };
+		B48634A01B50F25A00854526 /* SKClient+Snaps.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634671B50F25A00854526 /* SKClient+Snaps.m */; };
+		B48634A11B50F25A00854526 /* SKClient+Stories.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634691B50F25A00854526 /* SKClient+Stories.m */; };
+		B48634A21B50F25A00854526 /* SKClient.m in Sources */ = {isa = PBXBuildFile; fileRef = B486346B1B50F25A00854526 /* SKClient.m */; };
+		B48634A31B50F25A00854526 /* SnapchatKit-Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B486346D1B50F25A00854526 /* SnapchatKit-Constants.m */; };
+		B48634A41B50F25A00854526 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B48634731B50F25A00854526 /* ioapi.c */; };
+		B48634A51B50F25A00854526 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = B48634751B50F25A00854526 /* mztools.c */; };
+		B48634A61B50F25A00854526 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B48634771B50F25A00854526 /* unzip.c */; };
+		B48634A71B50F25A00854526 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B48634791B50F25A00854526 /* zip.c */; };
+		B48634A81B50F25A00854526 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = B486347C1B50F25A00854526 /* SSZipArchive.m */; };
+		B48634A91B50F25A00854526 /* TBTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = B486347F1B50F25A00854526 /* TBTimer.m */; };
+		B48634AB1B50F54A00854526 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B48634AA1B50F54A00854526 /* CoreGraphics.framework */; };
+		B48634AD1B50F7AB00854526 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B48634AC1B50F7AB00854526 /* libz.1.dylib */; };
+		B48634B01B5100E800854526 /* SKNewConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = B48634AF1B5100E800854526 /* SKNewConversation.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B486340E1B50F13400854526 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B48633E91B50F13400854526 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B48633F01B50F13400854526;
+			remoteInfo = "SnapchatKit-iOS-Demo";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		B48633F11B50F13400854526 /* SnapchatKit-iOS-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SnapchatKit-iOS-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B48633F51B50F13400854526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B48633F61B50F13400854526 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B48633F81B50F13400854526 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B48633F91B50F13400854526 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B48634021B50F13400854526 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B48634041B50F13400854526 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		B48634071B50F13400854526 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		B486340D1B50F13400854526 /* SnapchatKit-iOS-DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SnapchatKit-iOS-DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B48634121B50F13400854526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B48634131B50F13400854526 /* SnapchatKit_iOS_DemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SnapchatKit_iOS_DemoTests.m; sourceTree = "<group>"; };
+		B486341D1B50F1B000854526 /* SNTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SNTableViewController.h; path = Classes/SNTableViewController.h; sourceTree = "<group>"; };
+		B486341E1B50F1B000854526 /* SNTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SNTableViewController.m; path = Classes/SNTableViewController.m; sourceTree = "<group>"; };
+		B48634241B50F25A00854526 /* NSArray+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SnapchatKit.h"; sourceTree = "<group>"; };
+		B48634251B50F25A00854526 /* NSArray+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SnapchatKit.m"; sourceTree = "<group>"; };
+		B48634261B50F25A00854526 /* NSData+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SnapchatKit.h"; sourceTree = "<group>"; };
+		B48634271B50F25A00854526 /* NSData+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+SnapchatKit.m"; sourceTree = "<group>"; };
+		B48634281B50F25A00854526 /* NSDictionary+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+SnapchatKit.h"; sourceTree = "<group>"; };
+		B48634291B50F25A00854526 /* NSDictionary+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SnapchatKit.m"; sourceTree = "<group>"; };
+		B486342A1B50F25A00854526 /* NSString+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SnapchatKit.h"; sourceTree = "<group>"; };
+		B486342B1B50F25A00854526 /* NSString+SnapchatKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SnapchatKit.m"; sourceTree = "<group>"; };
+		B486342D1B50F25A00854526 /* SKAddedFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKAddedFriend.h; sourceTree = "<group>"; };
+		B486342E1B50F25A00854526 /* SKAddedFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAddedFriend.m; sourceTree = "<group>"; };
+		B486342F1B50F25A00854526 /* SKBlob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBlob.h; sourceTree = "<group>"; };
+		B48634301B50F25A00854526 /* SKBlob.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBlob.m; sourceTree = "<group>"; };
+		B48634311B50F25A00854526 /* SKCashTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKCashTransaction.h; sourceTree = "<group>"; };
+		B48634321B50F25A00854526 /* SKCashTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKCashTransaction.m; sourceTree = "<group>"; };
+		B48634331B50F25A00854526 /* SKConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKConversation.h; sourceTree = "<group>"; };
+		B48634341B50F25A00854526 /* SKConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKConversation.m; sourceTree = "<group>"; };
+		B48634351B50F25A00854526 /* SKFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKFilter.h; sourceTree = "<group>"; };
+		B48634361B50F25A00854526 /* SKFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKFilter.m; sourceTree = "<group>"; };
+		B48634371B50F25A00854526 /* SKFoundFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKFoundFriend.h; sourceTree = "<group>"; };
+		B48634381B50F25A00854526 /* SKFoundFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKFoundFriend.m; sourceTree = "<group>"; };
+		B48634391B50F25A00854526 /* SKLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKLocation.h; sourceTree = "<group>"; };
+		B486343A1B50F25A00854526 /* SKLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKLocation.m; sourceTree = "<group>"; };
+		B486343B1B50F25A00854526 /* SKMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKMessage.h; sourceTree = "<group>"; };
+		B486343C1B50F25A00854526 /* SKMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKMessage.m; sourceTree = "<group>"; };
+		B486343D1B50F25A00854526 /* SKNearbyUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKNearbyUser.h; sourceTree = "<group>"; };
+		B486343E1B50F25A00854526 /* SKNearbyUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKNearbyUser.m; sourceTree = "<group>"; };
+		B486343F1B50F25A00854526 /* SKRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKRequest.h; sourceTree = "<group>"; };
+		B48634401B50F25A00854526 /* SKRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKRequest.m; sourceTree = "<group>"; };
+		B48634411B50F25A00854526 /* SKSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSession.h; sourceTree = "<group>"; };
+		B48634421B50F25A00854526 /* SKSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSession.m; sourceTree = "<group>"; };
+		B48634431B50F25A00854526 /* SKSimpleUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSimpleUser.h; sourceTree = "<group>"; };
+		B48634441B50F25A00854526 /* SKSimpleUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSimpleUser.m; sourceTree = "<group>"; };
+		B48634451B50F25A00854526 /* SKSnap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSnap.h; sourceTree = "<group>"; };
+		B48634461B50F25A00854526 /* SKSnap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSnap.m; sourceTree = "<group>"; };
+		B48634471B50F25A00854526 /* SKSnapOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSnapOptions.h; sourceTree = "<group>"; };
+		B48634481B50F25A00854526 /* SKSnapOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSnapOptions.m; sourceTree = "<group>"; };
+		B48634491B50F25A00854526 /* SKSnapResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSnapResponse.h; sourceTree = "<group>"; };
+		B486344A1B50F25A00854526 /* SKSnapResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSnapResponse.m; sourceTree = "<group>"; };
+		B486344B1B50F25A00854526 /* SKStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKStory.h; sourceTree = "<group>"; };
+		B486344C1B50F25A00854526 /* SKStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKStory.m; sourceTree = "<group>"; };
+		B486344D1B50F25A00854526 /* SKStoryCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKStoryCollection.h; sourceTree = "<group>"; };
+		B486344E1B50F25A00854526 /* SKStoryCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKStoryCollection.m; sourceTree = "<group>"; };
+		B486344F1B50F25A00854526 /* SKStoryNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKStoryNote.h; sourceTree = "<group>"; };
+		B48634501B50F25A00854526 /* SKStoryNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKStoryNote.m; sourceTree = "<group>"; };
+		B48634511B50F25A00854526 /* SKStoryOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKStoryOptions.h; sourceTree = "<group>"; };
+		B48634521B50F25A00854526 /* SKStoryOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKStoryOptions.m; sourceTree = "<group>"; };
+		B48634531B50F25A00854526 /* SKStoryUpdater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKStoryUpdater.h; sourceTree = "<group>"; };
+		B48634541B50F25A00854526 /* SKStoryUpdater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKStoryUpdater.m; sourceTree = "<group>"; };
+		B48634551B50F25A00854526 /* SKThing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKThing.h; sourceTree = "<group>"; };
+		B48634561B50F25A00854526 /* SKThing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKThing.m; sourceTree = "<group>"; };
+		B48634571B50F25A00854526 /* SKUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKUser.h; sourceTree = "<group>"; };
+		B48634581B50F25A00854526 /* SKUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKUser.m; sourceTree = "<group>"; };
+		B48634591B50F25A00854526 /* SKUserStory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKUserStory.h; sourceTree = "<group>"; };
+		B486345A1B50F25A00854526 /* SKUserStory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKUserStory.m; sourceTree = "<group>"; };
+		B486345C1B50F25A00854526 /* SKClient+Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Account.h"; sourceTree = "<group>"; };
+		B486345D1B50F25A00854526 /* SKClient+Account.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Account.m"; sourceTree = "<group>"; };
+		B486345E1B50F25A00854526 /* SKClient+Chat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Chat.h"; sourceTree = "<group>"; };
+		B486345F1B50F25A00854526 /* SKClient+Chat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Chat.m"; sourceTree = "<group>"; };
+		B48634601B50F25A00854526 /* SKClient+Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Device.h"; sourceTree = "<group>"; };
+		B48634611B50F25A00854526 /* SKClient+Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Device.m"; sourceTree = "<group>"; };
+		B48634621B50F25A00854526 /* SKClient+Discover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Discover.h"; sourceTree = "<group>"; };
+		B48634631B50F25A00854526 /* SKClient+Discover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Discover.m"; sourceTree = "<group>"; };
+		B48634641B50F25A00854526 /* SKClient+Friends.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Friends.h"; sourceTree = "<group>"; };
+		B48634651B50F25A00854526 /* SKClient+Friends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Friends.m"; sourceTree = "<group>"; };
+		B48634661B50F25A00854526 /* SKClient+Snaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Snaps.h"; sourceTree = "<group>"; };
+		B48634671B50F25A00854526 /* SKClient+Snaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Snaps.m"; sourceTree = "<group>"; };
+		B48634681B50F25A00854526 /* SKClient+Stories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SKClient+Stories.h"; sourceTree = "<group>"; };
+		B48634691B50F25A00854526 /* SKClient+Stories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Stories.m"; sourceTree = "<group>"; };
+		B486346A1B50F25A00854526 /* SKClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKClient.h; sourceTree = "<group>"; };
+		B486346B1B50F25A00854526 /* SKClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKClient.m; sourceTree = "<group>"; };
+		B486346C1B50F25A00854526 /* SnapchatKit-Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SnapchatKit-Constants.h"; sourceTree = "<group>"; };
+		B486346D1B50F25A00854526 /* SnapchatKit-Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SnapchatKit-Constants.m"; sourceTree = "<group>"; };
+		B486346E1B50F25A00854526 /* SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapchatKit.h; sourceTree = "<group>"; };
+		B48634721B50F25A00854526 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		B48634731B50F25A00854526 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		B48634741B50F25A00854526 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		B48634751B50F25A00854526 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		B48634761B50F25A00854526 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		B48634771B50F25A00854526 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		B48634781B50F25A00854526 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		B48634791B50F25A00854526 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		B486347A1B50F25A00854526 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		B486347B1B50F25A00854526 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
+		B486347C1B50F25A00854526 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		B486347E1B50F25A00854526 /* TBTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBTimer.h; sourceTree = "<group>"; };
+		B486347F1B50F25A00854526 /* TBTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBTimer.m; sourceTree = "<group>"; };
+		B48634AA1B50F54A00854526 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B48634AC1B50F7AB00854526 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = usr/lib/libz.1.dylib; sourceTree = SDKROOT; };
+		B48634AE1B5100E800854526 /* SKNewConversation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKNewConversation.h; sourceTree = "<group>"; };
+		B48634AF1B5100E800854526 /* SKNewConversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKNewConversation.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B48633EE1B50F13400854526 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B48634AD1B50F7AB00854526 /* libz.1.dylib in Frameworks */,
+				B48634AB1B50F54A00854526 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B486340A1B50F13400854526 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B48633E81B50F13400854526 = {
+			isa = PBXGroup;
+			children = (
+				B48634AC1B50F7AB00854526 /* libz.1.dylib */,
+				B48634AA1B50F54A00854526 /* CoreGraphics.framework */,
+				B48633F31B50F13400854526 /* SnapchatKit-iOS-Demo */,
+				B48634101B50F13400854526 /* SnapchatKit-iOS-DemoTests */,
+				B48633F21B50F13400854526 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B48633F21B50F13400854526 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B48633F11B50F13400854526 /* SnapchatKit-iOS-Demo.app */,
+				B486340D1B50F13400854526 /* SnapchatKit-iOS-DemoTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B48633F31B50F13400854526 /* SnapchatKit-iOS-Demo */ = {
+			isa = PBXGroup;
+			children = (
+				B48634041B50F13400854526 /* Images.xcassets */,
+				B48634061B50F13400854526 /* LaunchScreen.xib */,
+				B48633F81B50F13400854526 /* AppDelegate.h */,
+				B48633F91B50F13400854526 /* AppDelegate.m */,
+				B48634011B50F13400854526 /* Main.storyboard */,
+				B48634211B50F23E00854526 /* SnapchatKit */,
+				B48634201B50F1B400854526 /* Classes */,
+				B48633F41B50F13400854526 /* Supporting Files */,
+			);
+			path = "SnapchatKit-iOS-Demo";
+			sourceTree = "<group>";
+		};
+		B48633F41B50F13400854526 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B48633F51B50F13400854526 /* Info.plist */,
+				B48633F61B50F13400854526 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B48634101B50F13400854526 /* SnapchatKit-iOS-DemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				B48634131B50F13400854526 /* SnapchatKit_iOS_DemoTests.m */,
+				B48634111B50F13400854526 /* Supporting Files */,
+			);
+			path = "SnapchatKit-iOS-DemoTests";
+			sourceTree = "<group>";
+		};
+		B48634111B50F13400854526 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B48634121B50F13400854526 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B48634201B50F1B400854526 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B486341D1B50F1B000854526 /* SNTableViewController.h */,
+				B486341E1B50F1B000854526 /* SNTableViewController.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		B48634211B50F23E00854526 /* SnapchatKit */ = {
+			isa = PBXGroup;
+			children = (
+				B48634221B50F25A00854526 /* Classes */,
+				B486346F1B50F25A00854526 /* External */,
+			);
+			name = SnapchatKit;
+			sourceTree = "<group>";
+		};
+		B48634221B50F25A00854526 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				B48634231B50F25A00854526 /* Categories */,
+				B486342C1B50F25A00854526 /* Model */,
+				B486345B1B50F25A00854526 /* Networking */,
+				B486346C1B50F25A00854526 /* SnapchatKit-Constants.h */,
+				B486346D1B50F25A00854526 /* SnapchatKit-Constants.m */,
+				B486346E1B50F25A00854526 /* SnapchatKit.h */,
+			);
+			name = Classes;
+			path = ../../../Classes;
+			sourceTree = "<group>";
+		};
+		B48634231B50F25A00854526 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				B48634241B50F25A00854526 /* NSArray+SnapchatKit.h */,
+				B48634251B50F25A00854526 /* NSArray+SnapchatKit.m */,
+				B48634261B50F25A00854526 /* NSData+SnapchatKit.h */,
+				B48634271B50F25A00854526 /* NSData+SnapchatKit.m */,
+				B48634281B50F25A00854526 /* NSDictionary+SnapchatKit.h */,
+				B48634291B50F25A00854526 /* NSDictionary+SnapchatKit.m */,
+				B486342A1B50F25A00854526 /* NSString+SnapchatKit.h */,
+				B486342B1B50F25A00854526 /* NSString+SnapchatKit.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		B486342C1B50F25A00854526 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B486342D1B50F25A00854526 /* SKAddedFriend.h */,
+				B486342E1B50F25A00854526 /* SKAddedFriend.m */,
+				B486342F1B50F25A00854526 /* SKBlob.h */,
+				B48634301B50F25A00854526 /* SKBlob.m */,
+				B48634311B50F25A00854526 /* SKCashTransaction.h */,
+				B48634321B50F25A00854526 /* SKCashTransaction.m */,
+				B48634331B50F25A00854526 /* SKConversation.h */,
+				B48634341B50F25A00854526 /* SKConversation.m */,
+				B48634351B50F25A00854526 /* SKFilter.h */,
+				B48634361B50F25A00854526 /* SKFilter.m */,
+				B48634371B50F25A00854526 /* SKFoundFriend.h */,
+				B48634381B50F25A00854526 /* SKFoundFriend.m */,
+				B48634391B50F25A00854526 /* SKLocation.h */,
+				B486343A1B50F25A00854526 /* SKLocation.m */,
+				B486343B1B50F25A00854526 /* SKMessage.h */,
+				B486343C1B50F25A00854526 /* SKMessage.m */,
+				B486343D1B50F25A00854526 /* SKNearbyUser.h */,
+				B486343E1B50F25A00854526 /* SKNearbyUser.m */,
+				B48634AE1B5100E800854526 /* SKNewConversation.h */,
+				B48634AF1B5100E800854526 /* SKNewConversation.m */,
+				B486343F1B50F25A00854526 /* SKRequest.h */,
+				B48634401B50F25A00854526 /* SKRequest.m */,
+				B48634411B50F25A00854526 /* SKSession.h */,
+				B48634421B50F25A00854526 /* SKSession.m */,
+				B48634431B50F25A00854526 /* SKSimpleUser.h */,
+				B48634441B50F25A00854526 /* SKSimpleUser.m */,
+				B48634451B50F25A00854526 /* SKSnap.h */,
+				B48634461B50F25A00854526 /* SKSnap.m */,
+				B48634471B50F25A00854526 /* SKSnapOptions.h */,
+				B48634481B50F25A00854526 /* SKSnapOptions.m */,
+				B48634491B50F25A00854526 /* SKSnapResponse.h */,
+				B486344A1B50F25A00854526 /* SKSnapResponse.m */,
+				B486344B1B50F25A00854526 /* SKStory.h */,
+				B486344C1B50F25A00854526 /* SKStory.m */,
+				B486344D1B50F25A00854526 /* SKStoryCollection.h */,
+				B486344E1B50F25A00854526 /* SKStoryCollection.m */,
+				B486344F1B50F25A00854526 /* SKStoryNote.h */,
+				B48634501B50F25A00854526 /* SKStoryNote.m */,
+				B48634511B50F25A00854526 /* SKStoryOptions.h */,
+				B48634521B50F25A00854526 /* SKStoryOptions.m */,
+				B48634531B50F25A00854526 /* SKStoryUpdater.h */,
+				B48634541B50F25A00854526 /* SKStoryUpdater.m */,
+				B48634551B50F25A00854526 /* SKThing.h */,
+				B48634561B50F25A00854526 /* SKThing.m */,
+				B48634571B50F25A00854526 /* SKUser.h */,
+				B48634581B50F25A00854526 /* SKUser.m */,
+				B48634591B50F25A00854526 /* SKUserStory.h */,
+				B486345A1B50F25A00854526 /* SKUserStory.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		B486345B1B50F25A00854526 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				B486345C1B50F25A00854526 /* SKClient+Account.h */,
+				B486345D1B50F25A00854526 /* SKClient+Account.m */,
+				B486345E1B50F25A00854526 /* SKClient+Chat.h */,
+				B486345F1B50F25A00854526 /* SKClient+Chat.m */,
+				B48634601B50F25A00854526 /* SKClient+Device.h */,
+				B48634611B50F25A00854526 /* SKClient+Device.m */,
+				B48634621B50F25A00854526 /* SKClient+Discover.h */,
+				B48634631B50F25A00854526 /* SKClient+Discover.m */,
+				B48634641B50F25A00854526 /* SKClient+Friends.h */,
+				B48634651B50F25A00854526 /* SKClient+Friends.m */,
+				B48634661B50F25A00854526 /* SKClient+Snaps.h */,
+				B48634671B50F25A00854526 /* SKClient+Snaps.m */,
+				B48634681B50F25A00854526 /* SKClient+Stories.h */,
+				B48634691B50F25A00854526 /* SKClient+Stories.m */,
+				B486346A1B50F25A00854526 /* SKClient.h */,
+				B486346B1B50F25A00854526 /* SKClient.m */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		B486346F1B50F25A00854526 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				B48634701B50F25A00854526 /* SSZipArchive */,
+				B486347D1B50F25A00854526 /* TBTimer */,
+			);
+			name = External;
+			path = ../../../External;
+			sourceTree = "<group>";
+		};
+		B48634701B50F25A00854526 /* SSZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				B48634711B50F25A00854526 /* minizip */,
+				B486347B1B50F25A00854526 /* SSZipArchive.h */,
+				B486347C1B50F25A00854526 /* SSZipArchive.m */,
+			);
+			path = SSZipArchive;
+			sourceTree = "<group>";
+		};
+		B48634711B50F25A00854526 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				B48634721B50F25A00854526 /* crypt.h */,
+				B48634731B50F25A00854526 /* ioapi.c */,
+				B48634741B50F25A00854526 /* ioapi.h */,
+				B48634751B50F25A00854526 /* mztools.c */,
+				B48634761B50F25A00854526 /* mztools.h */,
+				B48634771B50F25A00854526 /* unzip.c */,
+				B48634781B50F25A00854526 /* unzip.h */,
+				B48634791B50F25A00854526 /* zip.c */,
+				B486347A1B50F25A00854526 /* zip.h */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
+		B486347D1B50F25A00854526 /* TBTimer */ = {
+			isa = PBXGroup;
+			children = (
+				B486347E1B50F25A00854526 /* TBTimer.h */,
+				B486347F1B50F25A00854526 /* TBTimer.m */,
+			);
+			path = TBTimer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B48633F01B50F13400854526 /* SnapchatKit-iOS-Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B48634171B50F13400854526 /* Build configuration list for PBXNativeTarget "SnapchatKit-iOS-Demo" */;
+			buildPhases = (
+				B48633ED1B50F13400854526 /* Sources */,
+				B48633EE1B50F13400854526 /* Frameworks */,
+				B48633EF1B50F13400854526 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SnapchatKit-iOS-Demo";
+			productName = "SnapchatKit-iOS-Demo";
+			productReference = B48633F11B50F13400854526 /* SnapchatKit-iOS-Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B486340C1B50F13400854526 /* SnapchatKit-iOS-DemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B486341A1B50F13400854526 /* Build configuration list for PBXNativeTarget "SnapchatKit-iOS-DemoTests" */;
+			buildPhases = (
+				B48634091B50F13400854526 /* Sources */,
+				B486340A1B50F13400854526 /* Frameworks */,
+				B486340B1B50F13400854526 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B486340F1B50F13400854526 /* PBXTargetDependency */,
+			);
+			name = "SnapchatKit-iOS-DemoTests";
+			productName = "SnapchatKit-iOS-DemoTests";
+			productReference = B486340D1B50F13400854526 /* SnapchatKit-iOS-DemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B48633E91B50F13400854526 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = SN;
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "Tanner Bennett";
+				TargetAttributes = {
+					B48633F01B50F13400854526 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
+					B486340C1B50F13400854526 = {
+						CreatedOnToolsVersion = 6.3.1;
+						TestTargetID = B48633F01B50F13400854526;
+					};
+				};
+			};
+			buildConfigurationList = B48633EC1B50F13400854526 /* Build configuration list for PBXProject "SnapchatKit-iOS-Demo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B48633E81B50F13400854526;
+			productRefGroup = B48633F21B50F13400854526 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B48633F01B50F13400854526 /* SnapchatKit-iOS-Demo */,
+				B486340C1B50F13400854526 /* SnapchatKit-iOS-DemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B48633EF1B50F13400854526 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B48634031B50F13400854526 /* Main.storyboard in Resources */,
+				B48634081B50F13400854526 /* LaunchScreen.xib in Resources */,
+				B48634051B50F13400854526 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B486340B1B50F13400854526 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B48633ED1B50F13400854526 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B48634931B50F25A00854526 /* SKStory.m in Sources */,
+				B48634851B50F25A00854526 /* SKBlob.m in Sources */,
+				B486349F1B50F25A00854526 /* SKClient+Friends.m in Sources */,
+				B48634B01B5100E800854526 /* SKNewConversation.m in Sources */,
+				B48634961B50F25A00854526 /* SKStoryOptions.m in Sources */,
+				B48634A91B50F25A00854526 /* TBTimer.m in Sources */,
+				B48634911B50F25A00854526 /* SKSnapOptions.m in Sources */,
+				B48634861B50F25A00854526 /* SKCashTransaction.m in Sources */,
+				B486348A1B50F25A00854526 /* SKLocation.m in Sources */,
+				B486349B1B50F25A00854526 /* SKClient+Account.m in Sources */,
+				B48634921B50F25A00854526 /* SKSnapResponse.m in Sources */,
+				B486349D1B50F25A00854526 /* SKClient+Device.m in Sources */,
+				B48634A71B50F25A00854526 /* zip.c in Sources */,
+				B48634A11B50F25A00854526 /* SKClient+Stories.m in Sources */,
+				B486341F1B50F1B000854526 /* SNTableViewController.m in Sources */,
+				B48634871B50F25A00854526 /* SKConversation.m in Sources */,
+				B486349E1B50F25A00854526 /* SKClient+Discover.m in Sources */,
+				B48634891B50F25A00854526 /* SKFoundFriend.m in Sources */,
+				B48634941B50F25A00854526 /* SKStoryCollection.m in Sources */,
+				B48634821B50F25A00854526 /* NSDictionary+SnapchatKit.m in Sources */,
+				B486348C1B50F25A00854526 /* SKNearbyUser.m in Sources */,
+				B48634841B50F25A00854526 /* SKAddedFriend.m in Sources */,
+				B486348D1B50F25A00854526 /* SKRequest.m in Sources */,
+				B48634801B50F25A00854526 /* NSArray+SnapchatKit.m in Sources */,
+				B486349A1B50F25A00854526 /* SKUserStory.m in Sources */,
+				B486349C1B50F25A00854526 /* SKClient+Chat.m in Sources */,
+				B48634991B50F25A00854526 /* SKUser.m in Sources */,
+				B48634A21B50F25A00854526 /* SKClient.m in Sources */,
+				B486348B1B50F25A00854526 /* SKMessage.m in Sources */,
+				B48634811B50F25A00854526 /* NSData+SnapchatKit.m in Sources */,
+				B48634831B50F25A00854526 /* NSString+SnapchatKit.m in Sources */,
+				B48634951B50F25A00854526 /* SKStoryNote.m in Sources */,
+				B48634981B50F25A00854526 /* SKThing.m in Sources */,
+				B486348E1B50F25A00854526 /* SKSession.m in Sources */,
+				B48634A81B50F25A00854526 /* SSZipArchive.m in Sources */,
+				B48634971B50F25A00854526 /* SKStoryUpdater.m in Sources */,
+				B48634A31B50F25A00854526 /* SnapchatKit-Constants.m in Sources */,
+				B48634881B50F25A00854526 /* SKFilter.m in Sources */,
+				B48634A41B50F25A00854526 /* ioapi.c in Sources */,
+				B48633FA1B50F13400854526 /* AppDelegate.m in Sources */,
+				B48634A61B50F25A00854526 /* unzip.c in Sources */,
+				B48634A01B50F25A00854526 /* SKClient+Snaps.m in Sources */,
+				B486348F1B50F25A00854526 /* SKSimpleUser.m in Sources */,
+				B48633F71B50F13400854526 /* main.m in Sources */,
+				B48634A51B50F25A00854526 /* mztools.c in Sources */,
+				B48634901B50F25A00854526 /* SKSnap.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B48634091B50F13400854526 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B48634141B50F13400854526 /* SnapchatKit_iOS_DemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B486340F1B50F13400854526 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B48633F01B50F13400854526 /* SnapchatKit-iOS-Demo */;
+			targetProxy = B486340E1B50F13400854526 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B48634011B50F13400854526 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B48634021B50F13400854526 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B48634061B50F13400854526 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B48634071B50F13400854526 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B48634151B50F13400854526 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B48634161B50F13400854526 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B48634181B50F13400854526 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "SnapchatKit-iOS-Demo/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		B48634191B50F13400854526 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "SnapchatKit-iOS-Demo/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		B486341B1B50F13400854526 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "SnapchatKit-iOS-DemoTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SnapchatKit-iOS-Demo.app/SnapchatKit-iOS-Demo";
+			};
+			name = Debug;
+		};
+		B486341C1B50F13400854526 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "SnapchatKit-iOS-DemoTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SnapchatKit-iOS-Demo.app/SnapchatKit-iOS-Demo";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B48633EC1B50F13400854526 /* Build configuration list for PBXProject "SnapchatKit-iOS-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B48634151B50F13400854526 /* Debug */,
+				B48634161B50F13400854526 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B48634171B50F13400854526 /* Build configuration list for PBXNativeTarget "SnapchatKit-iOS-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B48634181B50F13400854526 /* Debug */,
+				B48634191B50F13400854526 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B486341A1B50F13400854526 /* Build configuration list for PBXNativeTarget "SnapchatKit-iOS-DemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B486341B1B50F13400854526 /* Debug */,
+				B486341C1B50F13400854526 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B48633E91B50F13400854526 /* Project object */;
+}

@@ -9,7 +9,6 @@ build/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-*.xcworkspace
 !default.xcworkspace
 xcuserdata
 profile
@@ -25,8 +24,6 @@ DerivedData
 *.swp
 *.lock
 *.xcuserstate
-
-Luna.xcworkspace/xcuserdata/tantan.xcuserdatad/UserInterfaceState.xcuserstate
 
 .AppleDouble
 .LSOverride
@@ -48,3 +45,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 SnapchatKit/Login.h
+
+Login.h

@@ -6,13 +6,18 @@ An Objective-C implementation of the unofficial Snapchat API. Inspired by [Reddi
 
 WIP [Snapchat API documentation](https://github.com/ThePantsThief/SnapchatKit/blob/master/SK-API-Docs.md), with the help of everything below.
 
-## Third party resources:
+## Installation
+- Add the `Classes` and `External` folders to your project
+- In your project file under "Build Phases" link with `libz.dylib` (might appear as `libz.1.dylib` or something)
+- `#import "SnapchatKit.h"` wherever you need to use it!
+
+## Third party resources
 
 - http://gibsonsec.org/snapchat/fulldisclosure/
 - https://github.com/mgp25/SC-API/wiki/API-v2-Research/
 - https://github.com/mgp25/SC-API/
 
-## Special thanks to:
+## Special thanks to
 
 - Everyone who built and maintains the [PHP implementation](https://github.com/mgp25/SC-API/).
 - Steve, who also worked on the PHP implementation.
