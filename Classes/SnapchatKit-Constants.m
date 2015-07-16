@@ -104,14 +104,18 @@ NS_NAMESPACE_IMP(SKAttestation) {
     .URLCasper         = @"http://attest.casper.io/attestation",
     .URLSnapKeep       = @"[redacted]",
     .digest9_8         = @"vXCcGhQ7RfL1LUiE3F6vcNORNo7IFSOvuDBunK87mEI=",
+    .digest9_9         = @"Yk9Wqmx7TrTatldWI+5PWbQjGA8Gi8ZoO8X9OUAw1hg=",
     .digest9_10        = @"JJShKOLH4YYjWZlJQ71A2dPTcmxbaMboyfo0nsKYayE=",
-    .digest9_12        = @""
+    .digest9_11        = @"nNsTUhHYJ943NG6vAPNl+tRr1vktNb9HpvRxZuu/rrE=",
+    .digest9_12_0_1    = @"W4snbl56it9XbT2lsL4gyHwMsElnmOPBDp+iIYqbGcI=",
+    .digest9_12_1      = @"fGZExseKdFH1bltkKloaAGfGx0vnKDDymKiJAiLo3dU=",
+    .digest9_12_2      = @"LMQNajaQ4SO7vNaQS1FRokxCtQXeIHwKZiJYhMczDGk="
 };
 
 #pragma mark Misc
 NS_NAMESPACE_IMP(SKConsts) {
     .baseURL           = @"https://feelinsonice-hrd.appspot.com",
-    .userAgent         = @"Snapchat/9.10.0.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
+    .userAgent         = @"Snapchat/9.12.2.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
     .eventsURL         = @"https://sc-analytics.appspot.com/post_events",
     .secret            = @"iEk21fuwZApXlz93750dmW22pw389dPwOk",
     .staticToken       = @"m198sOkJEn37DjqZ32lpRu76xmw288xSQ9",

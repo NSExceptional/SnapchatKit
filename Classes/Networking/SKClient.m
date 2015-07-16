@@ -263,7 +263,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     
     NSDictionary *query = @{@"nonce": nonce,
                             @"authentication": SKAttestation.auth,
-                            @"apk_digest": SKAttestation.digest9_10,
+                            @"apk_digest": SKAttestation.digest9_12_2,
                             @"timestamp": ts};
     NSData *queryData  = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
     

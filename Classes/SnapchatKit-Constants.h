@@ -113,8 +113,13 @@ NS_NAMESPACE(SKAttestation, {
     /** SnapKeep™ attestation request URL. Special thanks to Harry! */
     NSNSString *URLSnapKeep;
     NSNSString *digest9_8;
+    NSNSString *digest9_9;
     NSNSString *digest9_10;
-    NSNSString *digest9_12;
+    NSNSString *digest9_11;
+    NSNSString *digest9_12_0_1;
+    NSNSString *digest9_12_1;
+    NSNSString *digest9_12_2;
+    
 });
 
 NS_NAMESPACE(SKConsts, {
