@@ -28,8 +28,9 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     NSParameterAssert(json.allKeys.count > 2);
     // Required keys: conversation_messages, conversation_state, id
     
-    NSDictionary *convoMessages   = json[@"conversation_messages"];
+    self = [super initWithDictionary:json];
     
+    NSDictionary *convoMessages   = json[@"conversation_messages"];
     NSDictionary *lastChatActions = json[@"last_chat_actions"];
     NSDictionary *lastTransaction = json[@"last_cash_transaction"];
     NSArray *pendingRecievedSnaps = json[@"pending_received_snaps"];
@@ -37,7 +38,6 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     NSDictionary *lastSnap        = json[@"last_snap"];
     CGFloat lastInteraction       = [json[@"last_interaction_ts"] doubleValue];
     
-    self = [super initWithDictionary:json];
     if (self) {
         _messagingAuth = convoMessages[@"messaging_auth"];
         

@@ -55,14 +55,14 @@
 /** Downloads your account's snaptag, a personal Snapchat QR code.
  @param completion Takes an error, if any, and an SKBlob object with the snaptag data. */
 - (void)downloadSnaptag:(ResponseBlock)completion;
-/** Uploads a new snaptag animated avatar. Not working yet.
+/** Uploads a new animated avatar. Not working yet.
  @param datas An array of 5 image \c NSData objects.
  @param completion Takes an error, if any. */
-- (void)uploadSnaptagAvatar:(NSArray *)datas completion:(ErrorBlock)completion;
-/** Downloads the snaptag animated avatar for \c user. Currently encrypted, or something.
+- (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion;
+/** Downloads the animated avatar for \c user. Currently encrypted, or something.
  @param username The username tied to the avatar to download.
  @param completion Takes an error, if any, and ideally an array of 5 \c SKBlob objects or \c nil if the user does not have an avatar, but as of now takes one possibly encrypted \c SKBlob object. */
-- (void)downloadSnaptagAvatarForUser:(NSString *)username completion:(ResponseBlock)completion;
+- (void)downloadAvatar:(NSString *)username completion:(ResponseBlock)completion;
 /** Updates your TOS agreement status for each of the three Terms of Service's.
  @param completion Takes an error, if any. */
 - (void)updateTOSAgreementStatus:(BOOL)snapcash snapcashV2:(BOOL)snapcashV2 square:(BOOL)square completion:(ErrorBlock)completion;

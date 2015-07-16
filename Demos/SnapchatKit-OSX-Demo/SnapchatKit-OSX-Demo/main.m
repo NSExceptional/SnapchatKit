@@ -12,6 +12,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SnapchatKit.h"
+#import "SnapchatKit-Constants.h"
 
 // debug
 #import "NSData+SnapchatKit.h"
@@ -275,7 +276,7 @@ int main(int argc, const char * argv[]) {
 //                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-                markSnapsRead(unread);
+//                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);

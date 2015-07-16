@@ -43,7 +43,7 @@
 }
 
 + (NSString *)hashSC:(NSData *)a and:(NSData *)b {
-    NSData *secretData = [kSecret dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *secretData = [SKConsts.secret dataUsingEncoding:NSUTF8StringEncoding];
     
     NSMutableData *firstData  = secretData.mutableCopy;
     NSMutableData *secondData = b.mutableCopy;
@@ -58,8 +58,8 @@
     
     // SC hash
     NSMutableString *hash = [NSMutableString string];
-    for (int i = 0; i < kHashPattern.length; i++) {
-        if ([kHashPattern characterAtIndex:i] == '0')
+    for (int i = 0; i < SKConsts.hashPattern.length; i++) {
+        if ([SKConsts.hashPattern characterAtIndex:i] == '0')
             [hash appendFormat:@"%C", [first characterAtIndex:i]];
         else
             [hash appendFormat:@"%C", [second characterAtIndex:i]];

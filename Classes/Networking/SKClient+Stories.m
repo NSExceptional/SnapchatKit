@@ -40,7 +40,7 @@
                                     @"my_story":             @"true",
                                     @"zipped":               @0,
                                     @"shared_ids":           @"{}"};
-            [self postTo:kepPostStory query:query callback:^(NSDictionary *json, NSError *sendError) {
+            [self postTo:SKEPStories.post query:query callback:^(NSDictionary *json, NSError *sendError) {
                 completion(sendError);
             }];
         } else {
@@ -58,10 +58,10 @@
                             @"zipped": @0,
                             @"features_map": @"{}",
                             @"username": self.username};
-    NSDictionary *headers = @{khfClientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
-                              khfContentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", kBoundary]};
+    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
+                              SKHeaders.contentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", SKConsts.boundary]};
     
-    [SKRequest postTo:kepUpload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPStories.upload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self handleError:error data:data response:response completion:^(id object, NSError *error) {
                 if (!error) {
@@ -79,7 +79,7 @@
     // I was using this, but... [NSString stringWithFormat:@"%@%@", kepGetStoryBlob, story.mediaIdentifier]
     if (story.needsAuth) {
         NSDictionary *query = @{@"story_id": story.mediaIdentifier, @"username": self.username};
-        [SKRequest postTo:kepAuthStoryBlob query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [SKRequest postTo:SKEPStories.authBlob query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (!error) {
                 NSInteger code = [(NSHTTPURLResponse *)response statusCode];
                 if (code == 200) {
@@ -96,7 +96,7 @@
             }
         }];
     } else {
-        [self get:[story.mediaURL.absoluteString stringByReplacingOccurrencesOfString:kURL withString:@""] callback:^(NSData *data, NSError *error) {
+        [self get:[story.mediaURL.absoluteString stringByReplacingOccurrencesOfString:SKConsts.baseURL withString:@""] callback:^(NSData *data, NSError *error) {
             if (!error) {
                 [SKBlob blobWithStoryData:data forStory:story completion:^(SKBlob *storyBlob, NSError *blobError) {
                     if (!blobError) {
@@ -114,7 +114,7 @@
 
 - (void)loadStoryThumbnailBlob:(SKStory *)story completion:(ResponseBlock)completion {
     NSParameterAssert(story); NSParameterAssert(completion);
-    [self get:[NSString stringWithFormat:@"%@%@", kepGetStoryThumb, story.mediaIdentifier] callback:^(NSData *data, NSError *error) {
+    [self get:[NSString stringWithFormat:@"%@%@", SKEPStories.thumb, story.mediaIdentifier] callback:^(NSData *data, NSError *error) {
         if (!error) {
             [SKBlob blobWithStoryData:data forStory:story completion:^(SKBlob *thumbBlob, NSError *blobError) {
                 if (!blobError) {
@@ -152,7 +152,7 @@
     NSParameterAssert(story);
     NSDictionary *query = @{@"story_id": story.identifier,
                             @"username": self.username};
-    [self postTo:kepDeleteStory query:query callback:^(id object, NSError *error) {
+    [self postTo:SKEPStories.remove query:query callback:^(id object, NSError *error) {
         if (!error)
             [self.currentSession.userStories removeObject:story];
         completion(error);
@@ -170,7 +170,7 @@
     
     NSDictionary *query = @{@"username": self.username,
                             @"friend_stories": friendStories.JSONString};
-    [self postTo:kepUpdateStories query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPUpdate.stories query:query callback:^(NSDictionary *json, NSError *error) {
         completion(error);
     }];
 }
@@ -186,7 +186,7 @@
     NSDictionary *query = @{@"friend": story.username,
                             @"hide": @"true",
                             @"username": self.username};
-    [self postTo:kepFriendHide query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.hide query:query callback:^(NSDictionary *json, NSError *error) {
         completion(error);
     }];
 }

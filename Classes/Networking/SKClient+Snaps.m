@@ -46,7 +46,7 @@
                                     @"time":                @((NSUInteger)options.timer),
                                     @"zipped":              @0,
                                     @"username":            self.username};
-            [self postTo:kepSend query:query callback:^(NSDictionary *json, NSError *sendError) {
+            [self postTo:SKEPSnaps.send query:query callback:^(NSDictionary *json, NSError *sendError) {
                 if (!sendError) {
                     completion([[SKSnapResponse alloc] initWithDictionary:json], nil);
                 } else {
@@ -68,10 +68,10 @@
                             @"zipped": @0,
                             @"features_map": @"{}",
                             @"username": self.username};
-    NSDictionary *headers = @{khfClientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
-                              khfContentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", kBoundary]};
+    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
+                              SKHeaders.contentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", SKConsts.boundary]};
 
-    [SKRequest postTo:kepUpload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPSnaps.upload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self handleError:error data:data response:response completion:^(id object, NSError *error) {
                 if (!error) {
@@ -121,7 +121,7 @@
     NSParameterAssert(identifier); NSParameterAssert(completion);
     
     NSDictionary *query = @{@"id": identifier, @"username": self.username};
-    [SKRequest postTo:kepBlob query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPSnaps.loadBlob query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         // Did get snap
         if ([(NSHTTPURLResponse *)response statusCode] == 200) {
             // Unzipped
@@ -174,7 +174,7 @@
                             @"screen_height": @(self.screenSize.height),
                             @"screen_width": @(self.screenSize.width),
                             @"username": self.username};
-    [self postTo:kepLocationData query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPMisc.locationData query:query callback:^(NSDictionary *json, NSError *error) {
         if (json[@"location"]) {
             completion([[SKLocation alloc] initWithDictionary:json[@"location"]], nil);
         }

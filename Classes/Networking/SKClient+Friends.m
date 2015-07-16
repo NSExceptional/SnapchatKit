@@ -38,7 +38,7 @@
                             @"friend": username,
                             @"username": self.currentSession.username,
                             @"added_by": @"ADDED_BY_USERNAME"};
-    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.friend query:query callback:^(NSDictionary *json, NSError *error) {
         [self handleResponse:json error:error completion:completion];
     }];
 }
@@ -49,7 +49,7 @@
                             @"friend": username,
                             @"username": self.currentSession.username,
                             @"added_by": @"ADDED_BY_ADDED_ME_BACK"};
-    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.friend query:query callback:^(NSDictionary *json, NSError *error) {
         [self handleResponse:json error:error completion:completion];
     }];
 }
@@ -59,7 +59,7 @@
     NSDictionary *query = @{@"action": @"delete",
                             @"friend": friend,
                             @"username": self.currentSession.username};
-    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.friend query:query callback:^(NSDictionary *json, NSError *error) {
         [self handleResponse:json error:error completion:^(SKUser *oldFriend, NSError *error) {
             [self.currentSession.friends removeObject:oldFriend];
             completion(oldFriend, error);
@@ -76,7 +76,7 @@
                             @"action": @"multiadddelete",
                             @"friend": @{@"friendsToAdd": toAdd,
                                          @"friendsToDelete": toUnfriend}.JSONString};
-    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.friend query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
 //            BOOL success = [json[@"message"] isEqualToString:@"success"];
             completion(nil);
@@ -91,7 +91,7 @@
     NSDictionary *query = @{@"friend_usernames": usernames.JSONString,
                             @"friend_user_ids": @"", // TODO: user ids
                             @"username": self.currentSession.username};
-    [self postTo:kepBestFriends query:query callback:completion];
+    [self postTo:SKEPFriends.bests query:query callback:completion];
 }
 
 - (void)findFriends:(NSDictionary *)friends completion:(ArrayBlock)completion {
@@ -107,7 +107,7 @@
         NSDictionary *query = @{@"username": self.username,
                                 @"countryCode": self.currentSession.countryCode,
                                 @"numbers": friends.JSONString};
-        [self postTo:kepFindFriends query:query callback:^(NSDictionary *json, NSError *error) {
+        [self postTo:SKEPFriends.find query:query callback:^(NSDictionary *json, NSError *error) {
             if (!error) {
                 NSArray *contacts = json[@"results"];
                 NSMutableArray *foundFriends = [NSMutableArray array];
@@ -132,7 +132,7 @@
                             @"lat": @(location.coordinate.latitude),
                             @"long": @(location.coordinate.longitude),
                             @"totalPollingDurationMillis": @(milliseconds)};
-    [self postTo:kepFindNearby query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.findNearby query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             NSMutableArray *nearby = [NSMutableArray array];
             for (NSDictionary *user in json[@"nearby_snapchatters"])
@@ -146,13 +146,13 @@
 
 - (void)searchFriend:(NSString *)query completion:(ResponseBlock)completion {
     NSParameterAssert(query.length); NSParameterAssert(completion);
-    [self postTo:kepFriendSearch query:@{@"query": query, @"username": self.username} callback:completion];
+    [self postTo:SKEPFriends.search query:@{@"query": query, @"username": self.username} callback:completion];
 }
 
 - (void)userExists:(NSString *)username completion:(BooleanBlock)completion {
     NSParameterAssert(username); NSParameterAssert(completion);
     
-    [self postTo:kepUserExists query:@{@"request_username": username, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.exists query:@{@"request_username": username, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             BOOL exists = [json[@"exists"] boolValue];
             completion(exists, nil);
@@ -170,7 +170,7 @@
                             @"friend": friend,
                             @"friend_id": @"",
                             @"username": self.username};
-    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.friend query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             SKUser *updated = [[SKUser alloc] initWithDictionary:json[@"object"]];
             [self.currentSession.friends removeObject:updated];
@@ -191,7 +191,7 @@
                             @"seen": @(seen),
                             @"seen_suggested_friend_list": usernames.JSONString,
                             @"username": self.username};
-    [self postTo:kepSeenSuggestedFriends query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPMisc.suggestFriend query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             BOOL success = [json[@"logged"] boolValue];
             if (success)
@@ -212,7 +212,7 @@
     NSDictionary *query = @{@"action": blocked ? @"block" : @"unblock",
                             @"friend": username,
                             @"username": self.username};
-    [self postTo:kepFriends query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPFriends.friend query:query callback:^(NSDictionary *json, NSError *error) {
         completion(error);
     }];
 }
