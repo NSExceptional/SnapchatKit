@@ -409,10 +409,6 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     }];
 }
 
-- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken {
-
-}
-
 - (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken doGetUpdates:(ErrorBlock)completion {
     NSParameterAssert(username); NSParameterAssert(authToken); NSParameterAssert(googleAuthToken);
     _username        = username;

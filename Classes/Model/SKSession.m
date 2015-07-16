@@ -39,6 +39,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
 }
 
 - (id)initWithDictionary:(NSDictionary *)json {
+    self = [super initWithDictionary:json];
     
     NSDictionary *storiesResponse = json[@"stories_response"];
     NSDictionary *friendsResponse = json[@"friends_response"];
@@ -55,8 +56,6 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     NSArray *added         = friendsResponse[@"added_friends"];
     NSArray *conversations = json[@"conversations_response"];
     
-    
-    self = [super initWithDictionary:json];
     if (self) {
         _backgroundFetchSecret = json[@"background_fetch_secret_key"];
         _bestFriendUsernames   = [NSMutableOrderedSet orderedSetWithArray:friendsResponse[@"bests"]];
