@@ -20,6 +20,7 @@
 
 #import "SSZipArchive.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
+#import "AFHTTPRequestOperationManager.h"
 
 BOOL SKHasActiveConnection() {
     SCNetworkReachabilityFlags flags;
@@ -269,8 +270,35 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
         }];
 }
 
-/** Attestation, courtesy of \c casper.io. */
-- (void)getAttestationWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
+/** Attestation, courtesy of \c casper.io. Using AFNetworking due to an unknown issue with NSURLRequest causing logins to fail 50% of the time */
+- (void)getAttestationUsingAFNetworkingWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
+    NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, SKEPAccount.login];
+    NSString *nonce          = [hashString.sha256HashRaw base64EncodedStringWithOptions:0];
+    
+    NSDictionary *query = @{@"nonce": nonce,
+                            @"authentication": SKAttestation.auth,
+                            @"apk_digest": SKAttestation.digest9_12_2,
+                            @"timestamp": ts};
+    
+    
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    [manager POST:SKAttestation.URLCasper parameters:query success:^(AFHTTPRequestOperation *operation, id json) {
+        
+        if ([json[@"code"] intValue] == 200)
+            completion(json[@"signedAttestation"], nil);
+        else
+            completion(nil, [SKRequest unknownError]);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *errorOperation) {
+        // :: DEBUG :: NSLog(@"Error: %@", errorOperation);
+        completion(nil, [SKRequest unknownError]);
+    }];
+}
+
+/** Attestation, courtesy of \c casper.io. Using NSURLRequest */
+- (void)getAttestationUsingNSURLRequestWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
     NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, SKEPAccount.login];
     NSString *nonce          = [hashString.sha256HashRaw base64EncodedStringWithOptions:0];
     
@@ -307,41 +335,6 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     [dataTask resume];
 }
 
-/** Google account attestation. */
-- (void)getAttestationOld:(StringBlock)completion {
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:kAttestationURLString]];
-    NSData *binaryRequest = [[NSData alloc] initWithBase64EncodedString:kAttestationBase64Request options:0];
-    
-    request.HTTPMethod = @"POST";
-    request.HTTPBody   = binaryRequest;
-    [request setValue:@"application/x-protobuf" forHTTPHeaderField:@"Content-type"];
-    [request setValue:SKAttestation.userAgent forHTTPHeaderField:@"User-Agent"];
-//    [request setValue:@"" forHTTPHeaderField:@"Accept"];
-//    [request setValue:@"" forHTTPHeaderField:@"Expect"];
-//    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            completion(nil, error);
-        } else if (data) {
-            NSError *jsonError;
-            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-            
-            if (jsonError)
-                completion(nil, jsonError);
-            else if (json)
-                completion(json[@"signedAttestation"], nil);
-            else
-                completion(nil, [SKRequest unknownError]);
-        } else {
-            completion(nil, [SKRequest unknownError]);
-        }
-    }];
-    
-    [dataTask resume];
-}
-
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion {
     NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(gmailEmail); NSParameterAssert(gmailPassword); NSParameterAssert(completion);
     
@@ -350,7 +343,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
             completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Google auth token." code:error1.code?:1]);
         } else {
             NSString *timestamp = [NSString timestamp];
-            [self getAttestationWithUsername:username password:password ts:timestamp callback:^(NSString *attestation, NSError *error2) {
+            [self getAttestationUsingAFNetworkingWithUsername:username password:password ts:timestamp callback:^(NSString *attestation, NSError *error2) {
                 if (error2 || !attestation) {
                     completion(nil, [SKRequest errorWithMessage:@"Could not retrieve attestation." code:error2.code?:1]);
                 } else {
