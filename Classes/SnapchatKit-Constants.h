@@ -34,6 +34,7 @@ typedef void (^DictionaryBlock)(NSDictionary *dict, NSError *error);
 typedef void (^ArrayBlock)(NSArray *collection, NSError *error);
 typedef void (^CollectionResponseBlock)(NSArray *success, NSArray *failed, NSArray *errors);
 typedef void (^ResponseBlock)(id object, NSError *error);
+typedef void (^MiddleManBlock)(id object, NSError *error, NSURLResponse *response);
 typedef void (^ErrorBlock)(NSError *error);
 typedef void (^VoidBlock)();
 

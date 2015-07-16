@@ -91,6 +91,19 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 - (void)handleError:(NSError *)error data:(NSData *)data response:(NSURLResponse *)response completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
+    
+    // Pass data to the man-in-the-middle
+    MiddleManBlock callback;
+    if (self.middleMan) {
+        callback = ^(id json, NSError *error, NSURLResponse *response) {
+            [self.middleMan restructureJSON:json error:error response:response completion:completion];
+        };
+    } else {
+        callback = ^(id json, NSError *error, NSURLResponse *response) {
+            completion(json, error);
+        };
+    }
+    
     NSInteger code = [(NSHTTPURLResponse *)response statusCode];
     
     if (error) {
@@ -104,10 +117,10 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
             NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             if ([html containsString:@"<html><head>"]) {
                 // Invalid request
-                completion(nil, [SKRequest errorWithMessage:html.textFromHTML code:code]);
+                callback(nil, [SKRequest errorWithMessage:html.textFromHTML code:code], response);
             } else {
                 // ???
-                completion(nil, jsonError);
+                callback(nil, jsonError, response);
             }
         }
         
@@ -117,26 +130,26 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 NSNumber *logged = json[@"logged"] ?: json[@"updates_response"][@"logged"];
                 if (logged) {
                     if (logged.integerValue == 1)
-                        completion(json, nil);
+                        callback(json, nil, response);
                     else
-                        completion(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+                        callback(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]], response);
                 } else {
-                    completion(json, nil);
+                    callback(json, nil, response);
                 }
             } else {
                 // Failed with a message
                 error = [SKRequest errorWithMessage:json[@"message"] code:code];
-                completion(nil, error);
+                callback(nil, error, response);
             }
         }
         else {
-            completion(nil, [SKRequest unknownError]);
+            callback(nil, [SKRequest unknownError], response);
         }
     } else if (code > 199 && code < 300) {
         // Succeeded with no response
-        completion(nil, nil);
+        callback(nil, nil, response);
     } else {
-        completion(nil, [SKRequest unknownError]);
+        callback(nil, [SKRequest unknownError], response);
     }
 }
 
