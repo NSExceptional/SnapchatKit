@@ -29,10 +29,10 @@
                     friendCount++;
             
             NSString *timestamp = [NSString timestamp];
-            NSString *batchID = [NSString stringWithFormat:@"%@-%@%@", uuid, [kUserAgent stringByReplacingMatchesForRegex:@"[\\W]+" withString:@""], timestamp];
+            NSString *batchID = [NSString stringWithFormat:@"%@-%@%@", uuid, [SKConsts.userAgent stringByReplacingMatchesForRegex:@"[\\W]+" withString:@""], timestamp];
             NSDictionary *eventDict = @{@"common_params": @{@"user_id":self.username.MD5Hash,
                                                             @"city": kUnimplemented,
-                                                            @"sc_user_agent": kUserAgent,
+                                                            @"sc_user_agent": SKConsts.userAgent,
                                                             @"session_id":@"00000000-0000-0000-0000-000000000000",
                                                             @"region": kUnimplemented,
                                                             @"latlon": kUnimplemented,

@@ -72,7 +72,7 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
 #pragma mark POST / GET
 
 + (void)postTo:(NSString *)endpoint query:(NSDictionary *)json gauth:(NSString *)gauth token:(NSString *)token callback:(RequestBlock)callback {
-    NSDictionary *headers = @{khfClientAuthToken: [NSString stringWithFormat:@"Bearer %@", gauth]};
+    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", gauth]};
     [self postTo:endpoint query:json headers:headers token:token callback:callback];
 }
 
@@ -97,7 +97,7 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
 
 + (void)sendEvents:(NSDictionary *)eventData callback:(RequestBlock)callback {
     NSParameterAssert(eventData); NSParameterAssert(callback);
-    SKRequest *request = [[SKRequest alloc] initWithURLString:kEventsURL eventData:eventData];
+    SKRequest *request = [[SKRequest alloc] initWithURLString:SKConsts.eventsURL eventData:eventData];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:callback];
@@ -110,10 +110,10 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
     self = [super init];
     if (self) {
         // HTTP header fields
-        [self setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:khfContentType];
-        [self setValue:kUserAgent forHTTPHeaderField:khfUserAgent];
-        [self setValue:khvLanguage forHTTPHeaderField:khfAcceptLanguage];
-        [self setValue:khvLocale forHTTPHeaderField:khfAcceptLocale];
+        [self setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:SKHeaders.contentType];
+        [self setValue:SKConsts.userAgent forHTTPHeaderField:SKHeaders.userAgent];
+        [self setValue:SKHeaders.values.language forHTTPHeaderField:SKHeaders.acceptLanguage];
+        [self setValue:SKHeaders.values.locale forHTTPHeaderField:SKHeaders.acceptLocale];
         
         if (httpHeaders)
             [httpHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
@@ -125,13 +125,13 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
 }
 
 - (id)initWithPOSTEndpoint:(NSString *)endpoint token:(NSString *)token query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders ts:(NSString *)timestamp {
-    if (!token) token = kStaticToken;
+    if (!token) token = SKConsts.staticToken;
     
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
         SKRequestApplyOverrides(&endpoint, &params);
         
-        self.URL = [NSURL URLWithString:[kURL stringByAppendingPathComponent:endpoint]];
+        self.URL = [NSURL URLWithString:[SKConsts.baseURL stringByAppendingPathComponent:endpoint]];
         self.HTTPMethod = @"POST";
         
         NSMutableDictionary *json = [params mutableCopy];
@@ -143,7 +143,7 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
         
         // Set HTTPBody
         // Only for uploading snaps here
-        if ([endpoint isEqualToString:kepUpload]) {
+        if ([endpoint isEqualToString:SKEPSnaps.upload]) {
             
             NSMutableData *body = [NSMutableData data];
             
@@ -155,7 +155,7 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
                 }
             }
             
-            [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", kBoundary] dataUsingEncoding:NSUTF8StringEncoding]];
+            [body appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", SKConsts.boundary] dataUsingEncoding:NSUTF8StringEncoding]];
             
             self.HTTPBody = body;
         } else {
@@ -163,8 +163,8 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
             self.HTTPBody     = queryData;
         }
 
-        if ([endpoint isEqualToString:kepBlob] || [endpoint isEqualToString:kepChatMedia])
-            [self setValue:timestamp forHTTPHeaderField:khfTimestamp];
+        if ([endpoint isEqualToString:SKEPSnaps.loadBlob] || [endpoint isEqualToString:SKEPChat.media])
+            [self setValue:timestamp forHTTPHeaderField:SKHeaders.timestamp];
     }
     
     return self;
@@ -174,7 +174,7 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
         SKRequestApplyOverrides(&endpoint, NULL);
-        self.URL = [NSURL URLWithString:[kURL stringByAppendingPathComponent:endpoint]];
+        self.URL = [NSURL URLWithString:[SKConsts.baseURL stringByAppendingPathComponent:endpoint]];
         self.HTTPMethod = @"GET";
     }
     

@@ -170,14 +170,14 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _storyPrivacy              = SKStoryPrivacyFromString(updatesResponse[@"story_privacy"]);
         
         // Features
-        _enableFrontFacingFlash = [features[SKFeatureFrontFacingFlash] boolValue];
-        _enablePowerSaveMode    = [features[SKFeaturePowerSaveMode] boolValue];
-        _enableReplaySnaps      = [features[SKFeatureReplaySnaps] boolValue];
-        _enableSmartFilters     = [features[SKFeatureSmartFilters] boolValue];
-        _enableSpecialText      = [features[SKFeatureSpecialText] boolValue];
-        _enableSwipeCashMode    = [features[SKFeatureSwipeCashMode] boolValue];
-        _enableVisualFilters    = [features[SKFeatureVisualFilters] boolValue];
-        _enableTravelMode       = [features[SKFeatureTravelMode] boolValue];
+        _enableFrontFacingFlash = [features[SKFeatureSettings.frontFacingFlash] boolValue];
+        _enablePowerSaveMode    = [features[SKFeatureSettings.powerSaveMode] boolValue];
+        _enableReplaySnaps      = [features[SKFeatureSettings.replaySnaps] boolValue];
+        _enableSmartFilters     = [features[SKFeatureSettings.smartFilters] boolValue];
+        _enableSpecialText      = [features[SKFeatureSettings.specialText] boolValue];
+        _enableSwipeCashMode    = [features[SKFeatureSettings.swipeCashMode] boolValue];
+        _enableVisualFilters    = [features[SKFeatureSettings.visualFilters] boolValue];
+        _enableTravelMode       = [features[SKFeatureSettings.travelMode] boolValue];
     }
     
     [self.knownJSONKeys addObjectsFromArray:@[@"stories_response", @"friends_response", @"updates_response", @"identity_check_response", @"background_fetch_secret_key", @"discover"]];

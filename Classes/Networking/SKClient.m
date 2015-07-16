@@ -80,7 +80,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 }
 
 - (NSString *)authToken {
-    return _authToken ?: kStaticToken;
+    return _authToken ?: SKConsts.staticToken;
 }
 
 - (void)setUsername:(NSString *)username {
@@ -203,10 +203,10 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     
     request.HTTPMethod = @"POST";
     request.HTTPBody   = [postFieldString dataUsingEncoding:NSUTF8StringEncoding];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:khfContentType];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:SKHeaders.contentType];
     [request setValue:@"378c184c6070c26c" forHTTPHeaderField:@"device"];
     [request setValue:@"com.snapchat.android" forHTTPHeaderField:@"app"];
-    [request setValue:@"GoogleAuth/1.4 (mako JDQ39)" forHTTPHeaderField:khfUserAgent];
+    [request setValue:@"GoogleAuth/1.4 (mako JDQ39)" forHTTPHeaderField:SKHeaders.userAgent];
     [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -228,13 +228,13 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 /** Snapchat device token. */
 - (void)getDeviceToken:(DictionaryBlock)completion {
-    NSString *dt1i = [[NSUserDefaults standardUserDefaults] stringForKey:kDeviceToken1i];
-    NSString *dt1v = [[NSUserDefaults standardUserDefaults] stringForKey:kDeviceToken1v];
+    NSString *dt1i = [[NSUserDefaults standardUserDefaults] stringForKey:SKConsts.deviceToken1i];
+    NSString *dt1v = [[NSUserDefaults standardUserDefaults] stringForKey:SKConsts.deviceToken1v];
     
     if (dt1i && dt1v)
-        completion(@{kDeviceToken1i: dt1i, kDeviceToken1v: dt1v}, nil);
+        completion(@{SKConsts.deviceToken1i: dt1i, SKConsts.deviceToken1v: dt1v}, nil);
     else
-        [SKRequest postTo:kepDeviceToken query:@{} headers:@{khfClientAuthToken: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [SKRequest postTo:SKEPDevice.identifier query:@{} headers:@{SKHeaders.clientAuthToken: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (error) {
                 completion(nil, error);
             } else if (data) {
@@ -244,8 +244,8 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 if (jsonError ) {
                     completion(nil, jsonError);
                 } else if (json) {
-                    [[NSUserDefaults standardUserDefaults] setObject:json[kDeviceToken1i] forKey:kDeviceToken1i];
-                    [[NSUserDefaults standardUserDefaults] setObject:json[kDeviceToken1v] forKey:kDeviceToken1v];
+                    [[NSUserDefaults standardUserDefaults] setObject:json[SKConsts.deviceToken1i] forKey:SKConsts.deviceToken1i];
+                    [[NSUserDefaults standardUserDefaults] setObject:json[SKConsts.deviceToken1v] forKey:SKConsts.deviceToken1v];
                     completion(json, nil);
                 } else {
                     completion(nil, [SKRequest unknownError]);
@@ -258,16 +258,16 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 /** Attestation, courtesy of \c casper.io. */
 - (void)getAttestationWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
-    NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, kepLogin];
+    NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, SKEPAccount.login];
     NSString *nonce          = [hashString.sha256HashRaw base64EncodedStringWithOptions:0];
     
     NSDictionary *query = @{@"nonce": nonce,
-                            @"authentication": kAttestationAuth,
-                            @"apk_digest": kAPKDigest9_10,
+                            @"authentication": SKAttestation.auth,
+                            @"apk_digest": SKAttestation.digest9_10,
                             @"timestamp": ts};
     NSData *queryData  = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:kAttestationURLCasper]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:SKAttestation.URLCasper]];
     request.HTTPMethod  = @"POST";
     request.HTTPBody    = queryData;
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
@@ -302,7 +302,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     request.HTTPMethod = @"POST";
     request.HTTPBody   = binaryRequest;
     [request setValue:@"application/x-protobuf" forHTTPHeaderField:@"Content-type"];
-    [request setValue:kUserAgentForAttestation forHTTPHeaderField:@"User-Agent"];
+    [request setValue:SKAttestation.userAgent forHTTPHeaderField:@"User-Agent"];
 //    [request setValue:@"" forHTTPHeaderField:@"Accept"];
 //    [request setValue:@"" forHTTPHeaderField:@"Expect"];
 //    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
@@ -348,10 +348,10 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             
                             _googleAuthToken   = gauth;
                             _googleAttestation = attestation;
-                            _deviceToken1i     = dict[kDeviceToken1i];
-                            _deviceToken1v     = dict[kDeviceToken1v];
+                            _deviceToken1i     = dict[SKConsts.deviceToken1i];
+                            _deviceToken1v     = dict[SKConsts.deviceToken1v];
                             
-                            NSString *req_token = [NSString hashSCString:kStaticToken and:timestamp];
+                            NSString *req_token = [NSString hashSCString:SKConsts.staticToken and:timestamp];
                             NSString *string    = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, req_token];
                             NSString *deviceSig = [[NSString hashHMac:string key:self.deviceToken1v] substringWithRange:NSMakeRange(0, 20)];
                             
@@ -369,8 +369,8 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                                    @"attestation":      self.googleAttestation,
                                                    @"timestamp":        timestamp};
                             
-                            NSDictionary *headers = @{khfClientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken]};
-                            SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:kepLogin token:nil query:post headers:headers ts:timestamp];
+                            NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken]};
+                            SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login token:nil query:post headers:headers ts:timestamp];
                             NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
                             
                             NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error4) {
@@ -423,7 +423,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 }
 
 - (void)signOut:(ErrorBlock)completion {
-    [SKRequest postTo:kepLogout query:@{@"username": self.currentSession.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPAccount.login query:@{@"username": self.currentSession.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (kVerboseLog) {
             NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             if (result.length == 0) {
@@ -453,7 +453,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             @"max_video_height": @(self.maxVideoSize.height),
                             @"max_video_width": @(self.maxVideoSize.width),
                             @"include_client_settings": @"true"};
-    [self postTo:kepAllUpdates query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPUpdate.all query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             _currentSession = [[SKSession alloc] initWithDictionary:json];
             _authToken = self.currentSession.authToken;
@@ -481,7 +481,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
         "snapchat_phone_number" = "+19372034486";
         "username_suggestions" = (username5, username03, etc);
     } */
-    [self postTo:kepRegister query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.registration.start query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             // Continue registration
             if ([json[@"logged"] boolValue]) {
@@ -507,7 +507,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     
     [self getAuthTokenForGmail:gmail password:gpass callback:^(NSString *gauth, NSError *error) {
         _googleAuthToken = gauth;
-        [self postTo:kepRegisterUsername query:query callback:^(NSDictionary *json, NSError *error) {
+        [self postTo:SKEPAccount.registration.username query:query callback:^(NSDictionary *json, NSError *error) {
             if (!error) {
                 
                 // Continue registration
@@ -529,7 +529,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 }
 
 - (void)getCaptcha:(ArrayBlock)completion {
-    [SKRequest postTo:kepCaptchaGet query:@{@"username": self.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPAccount.registration.getCaptcha query:@{@"username": self.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         // Did get captcha ZIP
         if ([(NSHTTPURLResponse *)response statusCode] == 200) {
             NSString *dataPath   = [NSString stringWithFormat:@"%@sck-captcha.tmp", NSTemporaryDirectory()];
@@ -567,7 +567,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     NSDictionary *query = @{@"username": self.username,
                             @"captcha_id": [NSString SCIdentifierWith:self.username and:[[NSString timestamp] substringToIndex:13]],
                             @"captcha_solution": solution};
-    [self postTo:kepCaptchaSolve query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.registration.solveCaptcha query:query callback:^(NSDictionary *json, NSError *error) {
         SKLog(@"%@", json);
     }];
 }
@@ -598,7 +598,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             @"countryCode": countryCode,
                             @"action": @"updatePhoneNumber",
                             @"skipConfirmation": @YES};
-    [self postTo:kepPhoneVerify query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.registration.verifyPhone query:query callback:^(NSDictionary *json, NSError *error) {
         SKLog(@"%@", json);
     }];
 }
@@ -609,7 +609,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             @"username": self.username,
                             @"code": code};
     // Hash timestamp with static token before passing as token?
-    [SKRequest postTo:kepPhoneVerify query:query gauth:self.googleAuthToken token:kStaticToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPAccount.registration.verifyPhone query:query gauth:self.googleAuthToken token:SKConsts.staticToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         [self handleError:error data:data response:response completion:^(NSDictionary *json, NSError *error) {
             SKLog(@"%@", json);
         }];
@@ -626,7 +626,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             @"json": snapInfo.JSONString,
                             @"username": self.currentSession.username};
     
-    [SKRequest postTo:kepUpdateSnaps query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPUpdate.all query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (completion)
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (data.length == 0 && [(NSHTTPURLResponse *)response statusCode] == 200)

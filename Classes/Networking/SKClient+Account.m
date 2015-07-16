@@ -28,7 +28,7 @@
     if (number < 3) number = 3;
     if (number > 7) number = 7;
     
-    [self postTo:kepSetBestCount query:@{@"num_best_friends": @(number), @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.setBestsCount query:@{@"num_best_friends": @(number), @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             [self.currentSession.bestFriendUsernames removeAllObjects];
             [self.currentSession.bestFriendUsernames addObjectsFromArray:json[@"best_friends"]];
@@ -46,7 +46,7 @@
     NSDictionary *query = @{@"action": @"updatePrivacy",
                             @"privacySetting": @(privacy),
                             @"username": self.username};
-    [self postTo:kepSettings query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
         [self handleCallback:json error:error callback:completion];
     }];
 }
@@ -56,7 +56,7 @@
                             @"privacySetting": SKStringFromStoryPrivacy(privacy),
                             @"storyFriendsToBlock": friends.JSONString,
                             @"username": self.username};
-    [self postTo:kepSettings query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
         [self handleCallback:json error:error callback:completion];
     }];
 }
@@ -66,7 +66,7 @@
     NSDictionary *query = @{@"action": @"updateEmail",
                             @"email": address,
                             @"username": self.username};
-    [self postTo:kepSettings query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
         [self handleCallback:json error:error callback:completion];
     }];
 }
@@ -75,7 +75,7 @@
     NSDictionary *query = @{@"action": @"updateSearchableByPhoneNumber",
                             @"searchable": @(searchable),
                             @"username": self.username};
-    [self postTo:kepSettings query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
         [self handleCallback:json error:error callback:completion];
     }];
 }
@@ -84,7 +84,7 @@
     NSDictionary *query = @{@"action": @"updateNotificationSoundSetting",
                             @"notificationSoundSetting": enableSound ? @"ON" : @"OFF",
                             @"username": self.username};
-    [self postTo:kepSettings query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
         [self handleCallback:json error:error callback:completion];
     }];
 }
@@ -102,18 +102,18 @@
         return;
     }
     
-    NSDictionary *features = @{SKFeatureFrontFacingFlash: settings[SKFeatureFrontFacingFlash] ?: @(self.currentSession.enableFrontFacingFlash),
-                               SKFeatureReplaySnaps:      settings[SKFeatureReplaySnaps] ?: @(self.currentSession.enableReplaySnaps),
-                               SKFeatureSmartFilters:     settings[SKFeatureSmartFilters] ?: @(self.currentSession.enableSmartFilters),
-                               SKFeatureVisualFilters:    settings[SKFeatureVisualFilters] ?: @(self.currentSession.enableVisualFilters),
-                               SKFeaturePowerSaveMode:    settings[SKFeaturePowerSaveMode] ?: @(self.currentSession.enablePowerSaveMode),
-                               SKFeatureSpecialText:      settings[SKFeatureSpecialText] ?: @(self.currentSession.enableSpecialText),
-                               SKFeatureSwipeCashMode:    settings[SKFeatureSwipeCashMode] ?: @(self.currentSession.enableSwipeCashMode),
-                               SKFeatureTravelMode:       settings[SKFeatureTravelMode] ?: @(self.currentSession.enableTravelMode)};
+    NSDictionary *features = @{SKFeatureSettings.frontFacingFlash: settings[SKFeatureSettings.frontFacingFlash] ?: @(self.currentSession.enableFrontFacingFlash),
+                               SKFeatureSettings.replaySnaps:      settings[SKFeatureSettings.replaySnaps]      ?: @(self.currentSession.enableReplaySnaps),
+                               SKFeatureSettings.smartFilters:     settings[SKFeatureSettings.smartFilters]     ?: @(self.currentSession.enableSmartFilters),
+                               SKFeatureSettings.visualFilters:    settings[SKFeatureSettings.visualFilters]    ?: @(self.currentSession.enableVisualFilters),
+                               SKFeatureSettings.powerSaveMode:    settings[SKFeatureSettings.powerSaveMode]    ?: @(self.currentSession.enablePowerSaveMode),
+                               SKFeatureSettings.specialText:      settings[SKFeatureSettings.specialText]      ?: @(self.currentSession.enableSpecialText),
+                               SKFeatureSettings.swipeCashMode:    settings[SKFeatureSettings.swipeCashMode]    ?: @(self.currentSession.enableSwipeCashMode),
+                               SKFeatureSettings.travelMode:       settings[SKFeatureSettings.travelMode]       ?: @(self.currentSession.enableTravelMode)};
     
     NSDictionary *query = @{@"settings": features.JSONString,
                             @"username": self.username};
-    [self postTo:kepFeatures query:query callback:^(id object, NSError *error) {
+    [self postTo:SKEPUpdate.featureSettings query:query callback:^(id object, NSError *error) {
         completion(error);
     }];
 }
@@ -124,7 +124,7 @@
     NSDictionary *query = @{@"image": self.currentSession.QRPath,
                             @"type": @"SVG",
                             @"username": self.username};
-    [SKRequest postTo:kepSnaptag query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPAccount.snaptag query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 if ([(NSHTTPURLResponse *)response statusCode] == 200) {
@@ -140,17 +140,18 @@
     }];
 }
 
-- (void)uploadSnaptagAvatar:(NSArray *)datas completion:(ErrorBlock)completion {
+- (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion {
+    // SKEPAccount.avatar.set
     // multipart/form-data; takes a single "data" parameter in addition to the usual "username" param
 }
 
-- (void)downloadSnaptagAvatarForUser:(NSString *)username completion:(ResponseBlock)completion {
+- (void)downloadAvatar:(NSString *)username completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
     
     NSDictionary *query = @{@"username": self.username,
                             @"size": @"MEDIUM",
                             @"username_image": username};
-    [SKRequest postTo:kepDownloadSnaptagAvatar query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPAccount.avatar.get query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 if ([(NSHTTPURLResponse *)response statusCode] == 200) {
@@ -178,7 +179,7 @@
                                  @"square_tos_accepted": acceptSquareTos};
     NSDictionary *query = @{@"username": self.username,
                             @"client_properties": agreements.JSONString};
-    [self postTo:kepUpdateUser query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPUpdate.user query:query callback:^(NSDictionary *json, NSError *error) {
         completion(error);
     }];
 }

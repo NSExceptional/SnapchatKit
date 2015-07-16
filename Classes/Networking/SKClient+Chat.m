@@ -22,7 +22,7 @@
     NSDictionary *query = @{@"recipient_usernames": recipientString,
                             @"username": self.currentSession.username};
     
-    [SKRequest postTo:kepTyping query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPChat.typing query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         [self handleError:error data:data response:response completion:^(id object, NSError *error) {
             if (kVerboseLog && error)
                 SKLog(@"Failed to send typing notification(s): %@", recipientString);
@@ -54,7 +54,7 @@
 - (void)conversationAuth:(NSString *)user completion:(DictionaryBlock)completion {
     NSParameterAssert(user); NSParameterAssert(completion);
     NSString *cid = [NSString SCIdentifierWith:self.username and:user];
-    [self postTo:kepConvoAuth query:@{@"username": self.username, @"conversation_id": cid} callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPChat.authToken query:@{@"username": self.username, @"conversation_id": cid} callback:^(NSDictionary *json, NSError *error) {
         json = json[@"messaging_auth"];
         if ((json[@"mac"] && json[@"payload"]) || error)
             completion(json, error);
@@ -118,7 +118,7 @@
                 NSDictionary *query = @{@"auth_token": self.authToken,
                                         @"messages": [messages JSONString],
                                         @"username": self.username};
-                [self postTo:kepConvoPostMessages query:query callback:^(NSDictionary *json, NSError *error2) {
+                [self postTo:SKEPChat.sendMessage query:query callback:^(NSDictionary *json, NSError *error2) {
                     if (!error2) {
                         NSArray *jsonConvos = json[@"conversations"];
                         NSMutableArray *conversations = [NSMutableArray array];
@@ -145,14 +145,14 @@
 
 - (void)clearConversationWithIdentifier:(NSString *)identifier completion:(ErrorBlock)completion {
     NSParameterAssert(identifier);
-    [self postTo:kepConvoClear query:@{@"conversation_id": identifier, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPChat.clearConvo query:@{@"conversation_id": identifier, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
         if (completion)
             completion(error);
     }];
 }
 
 - (void)clearFeed:(ErrorBlock)completion {
-    [self postTo:kepClearFeed query:@{@"username": self.username} callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPChat.clearFeed query:@{@"username": self.username} callback:^(NSDictionary *json, NSError *error) {
         if (completion)
             completion(error);
     }];
@@ -205,7 +205,7 @@
             NSDictionary *query = @{@"auth_token": self.authToken,
                                     @"messages": [messages JSONString],
                                     @"username": self.username};
-            [self postTo:kepConvoPostMessages query:query callback:^(NSDictionary *json, NSError *error2) {
+            [self postTo:SKEPChat.sendMessage query:query callback:^(NSDictionary *json, NSError *error2) {
                 if (!error2) {
                     NSArray *convoJsons = json[@"conversations"];
                     NSMutableArray *conversations = [NSMutableArray array];
@@ -234,7 +234,7 @@
     NSDictionary *query = @{@"username": self.username,
                             @"checksum": [self.username MD5Hash],
                             @"offset": conversation.pagination};
-    [self postTo:kepConversations query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPChat.conversations query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             // Parse all returned conversations
             NSArray *convoJson = json[@"conversations_response"];
@@ -297,7 +297,7 @@
     NSDictionary *query = @{@"username": self.username,
                             @"conversation_id": messageOrTransaction.conversationIdentifier,
                             @"offset": messageOrTransaction.pagination};
-    [self postTo:kepConversation query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPChat.conversation query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             // Parse returned conversation
             SKConversation *conversation = [[SKConversation alloc] initWithDictionary:json[@"conversation"]];

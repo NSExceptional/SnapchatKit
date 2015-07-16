@@ -21,6 +21,11 @@
 
 #define SKTempDirectory() [NSTemporaryDirectory() stringByAppendingPathComponent:@"SnapchatKit-tmp"]
 
+#define NSNSString __unsafe_unretained NSString
+#define NS_NAMESPACE(name, vals) extern const struct name vals name
+#define NS_NAMESPACE_IMP(name) const struct name name =
+
+
 typedef void (^RequestBlock)(NSData *data, NSURLResponse *response, NSError *error);
 typedef void (^BooleanBlock)(BOOL success, NSError *error);
 typedef void (^DataBlock)(NSData *data, NSError *error);
@@ -93,118 +98,191 @@ extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
 extern NSString * const SKNoConversationExistsYet;
 extern NSString * const SKTemporaryLoginFailure;
 
-/** Before updating this value, confirm that the library requests everything in the same way as the app. */
-extern NSString * const kUserAgent;
-/** The user agent specific to making the attestation request. */
-extern NSString * const kUserAgentForAttestation;
-/** The API URL. iOS uses the /bq endpoint, Android clients use the /ph endpoint. */
-extern NSString * const kURL;
-/** An alternate base URL for sending certain POST requests. */
-extern NSString * const kEventsURL;
-/** The API secret used to create access tokens. */
-extern NSString * const kSecret;
-/** Used when no session is available. */
-extern NSString * const kStaticToken;
-/** Used to encrypt and decrypt media. */
-extern NSString * const kBlobEncryptionKey;
-/** Used to create the token for each request. */
-extern NSString * const kHashPattern;
-/** Used to separate form fields when sending snaps. */
-extern NSString * const kBoundary;
-/** Used to generate attestation. Base 64 encoded, and version specific. Current is 9.10.0.0. */
-extern NSString * const kAPKDigest;
-/** The sha256 digest of the certificate used to sign the Snapchat APK, base 64 encoded. It should never change. */
-extern NSString * const kAPKCertificateDigest;
-/** Google Play Services version used to make the attestation request. */
-extern NSString * const kGMSVersion;
+/** Various attestation related strings. */
+NS_NAMESPACE(SKAttestation, {
+    /** The user agent specific to making the attestation request. */
+    NSNSString *userAgent;
+    /** The sha256 digest of the certificate used to sign the Snapchat APK, base 64 encoded. It should never change. */
+    NSNSString *certificateDigest;
+    /** Google Play Services version used to make the attestation request. */
+    NSNSString *GMSVersion;
+    /** Authentication token sent to verify requests with the server to prevent abuse. */
+    NSNSString *auth;
+    /** Casper™ attestation request URL. Special thanks to Liam! */
+    NSNSString *URLCasper;
+    /** SnapKeep™ attestation request URL. Special thanks to Harry! */
+    NSNSString *URLSnapKeep;
+    NSNSString *digest9_8;
+    NSNSString *digest9_10;
+    NSNSString *digest9_12;
+});
 
-/** Authentication token sent to verify requests with the server to prevent abuse. */
-extern NSString * const kAttestationAuth;
-/** SnapKeep™ attestation request URL. Special thanks to Harry! */
-extern NSString * const kAttestationURLSK;
-/** Casper™ attestation request URL. Special thanks to Liam! */
-extern NSString * const kAttestationURLCasper;
-/** 9.10.0.0 digest. */
-extern NSString * const kAPKDigest9_10;
-/** This one works for some reason. */
-extern NSString * const kAPKDigest9_8;
-extern NSString * const kDeviceToken1i;
-extern NSString * const kDeviceToken1v;
+NS_NAMESPACE(SKConsts, {
+    /** The API URL. iOS uses the /bq endpoint, Android clients use the /ph endpoint. */
+    NSNSString *baseURL;
+    /** Before updating this value, confirm that the library requests everything in the same way as the app. */
+    NSNSString *userAgent;
+    /** An alternate base URL for sending certain POST requests. */
+    NSNSString *eventsURL;
+    /** The API secret used to create access tokens. */
+    NSNSString *secret;
+    /** Used when no session is available. */
+    NSNSString *staticToken;
+    /** Used to encrypt and decrypt media. */
+    NSNSString *blobEncryptionKey;
+    /** Used to create the token for each request. */
+    NSNSString *hashPattern;
+    /** Used to separate form fields when sending snaps. */
+    NSNSString *boundary;
+    NSNSString *deviceToken1i;
+    NSNSString *deviceToken1v;
+});
 
 #pragma mark Header fields / values
-extern NSString * const khfClientAuthToken;
-extern NSString * const khfTimestamp;
-extern NSString * const khfContentType;
-extern NSString * const khfUserAgent;
-extern NSString * const khfAcceptLanguage;
-extern NSString * const khfAcceptLocale;
-extern NSString * const khvLanguage;
-extern NSString * const khvLocale;
-
-#pragma mark Endpoints
-extern NSString * const kepLogin;
-extern NSString * const kepLogout;
-extern NSString * const kepRegister;
-extern NSString * const kepRegisterUsername;
-extern NSString * const kepCaptchaGet;
-extern NSString * const kepCaptchaSolve;
-extern NSString * const kepBlob;
-extern NSString * const kepChatMedia;
-extern NSString * const kepPhoneVerify;
-extern NSString * const kepDeviceToken;
-extern NSString * const kepAllUpdates;
-extern NSString * const kepConvoAuth;
-extern NSString * const kepConversations;
-extern NSString * const kepConversation;
-extern NSString * const kepConvoClear;
-extern NSString * const kepConvoPostMessages;
-extern NSString * const kepFindFriends;
-extern NSString * const kepFriendSearch;
-extern NSString * const kepUserExists;
-extern NSString * const kepFriends;
-extern NSString * const kepFindNearby;
-extern NSString * const kepFriendHide;
-extern NSString * const kepUpdateSnaps;
-extern NSString * const kepSharedDescription;
-extern NSString * const kepUpdateStories;
-extern NSString * const kepUpdateUser;
-extern NSString * const kepUpload;
-extern NSString * const kepRetrySend;
-extern NSString * const kepSend;
-extern NSString * const kepTyping;
-extern NSString * const kepPostStory;
-extern NSString * const kepPostStoryRetry;
-extern NSString * const kepDeleteStory;
-extern NSString * const kepUpdateStories;
-extern NSString * const kepBestFriends;
-extern NSString * const kepSetBestCount;
-extern NSString * const kepClearFeed;
-extern NSString * const kepSettings;
-extern NSString * const kepFeatures;
-extern NSString * const kepSnaptag;
-extern NSString * const kepCashEligible;
-extern NSString * const kepCashGenerateToken;
-extern NSString * const kepLocationData;
-extern NSString * const kepDownloadSnaptagAvatar;
-extern NSString * const kepUploadSnaptagAvatar;
-extern NSString * const kepIPRouting; // not sure what this is for. POST: takes ip_routing_key {} returns json with "url_server_json" key
-extern NSString * const kepSeenSuggestedFriends; // new feature?
-
-extern NSString * const kepGetStoryBlob;
-extern NSString * const kepGetStoryThumb;
-extern NSString * const kepAuthStoryThumb; // Used for stories which require auth
-extern NSString * const kepAuthStoryBlob;
-
-#pragma mark Discover
-extern NSString * const kepDiscoverChannels;
-extern NSString * const kepDiscoverIcons;
+NS_NAMESPACE(SKHeaders, {
+    NSNSString *timestamp;
+    NSNSString *userAgent;
+    NSNSString *contentType;
+    NSNSString *acceptLanguage;
+    NSNSString *acceptLocale;
+    NSNSString *clientAuth;
+    NSNSString *clientAuthToken;
+    struct {
+        NSNSString *language;
+        NSNSString *locale;
+    } values;
+});
 
 #pragma mark Feature settings
-extern NSString * const SKFeatureFrontFacingFlash;
-extern NSString * const SKFeatureReplaySnaps;
-extern NSString * const SKFeatureSmartFilters;
-extern NSString * const SKFeatureVisualFilters;
-extern NSString * const SKFeaturePowerSaveMode;
-extern NSString * const SKFeatureSpecialText;
-extern NSString * const SKFeatureSwipeCashMode;
-extern NSString * const SKFeatureTravelMode;
+NS_NAMESPACE(SKFeatureSettings, {
+    NSNSString *frontFacingFlash;
+    NSNSString *replaySnaps;
+    NSNSString *smartFilters;
+    NSNSString *visualFilters;
+    NSNSString *powerSaveMode;
+    NSNSString *specialText;
+    NSNSString *swipeCashMode;
+    NSNSString *travelMode;
+});
+
+
+#pragma mark Endpoints
+NS_NAMESPACE(SKEPMisc, {
+    NSNSString *ping;
+    NSNSString *locationData;
+    NSNSString *serverList;
+    NSNSString *doublePost;
+    NSNSString *reauth;
+    NSNSString *suggestFriend;
+});
+
+NS_NAMESPACE(SKEPUpdate, {
+    NSNSString *all;
+    NSNSString *snaps;
+    NSNSString *stories;
+    NSNSString *user;
+    NSNSString *featureSettings;
+});
+
+NS_NAMESPACE(SKEPAccount, {
+    NSNSString *login;
+    NSNSString *logout;
+    NSNSString *twoFAPhoneVerify;
+    NSNSString *twoFARecoveryCode;
+    NSNSString *setBestsCount;
+    NSNSString *settings;
+    NSNSString *snaptag;
+    struct {
+        NSNSString *start;
+        NSNSString *username;
+        NSNSString *getCaptcha;
+        NSNSString *solveCaptcha;
+        NSNSString *verifyPhone;
+        NSNSString *suggestUsername;
+    } registration;
+    struct {
+        NSNSString *set;
+        NSNSString *get;
+        NSNSString *remove;
+        NSNSString *getFriend;
+    } avatar;
+});
+
+NS_NAMESPACE(SKEPChat, {
+    NSNSString *sendMessage;
+    NSNSString *conversation;
+    NSNSString *conversations;
+    NSNSString *authToken;
+    NSNSString *clear;
+    NSNSString *clearFeed;
+    NSNSString *clearConvo;
+    NSNSString *typing;
+    NSNSString *media;
+    NSNSString *uploadMedia;
+    NSNSString *shareMedia;
+});
+
+NS_NAMESPACE(SKEPDevice, {
+    NSNSString *IPRouting;
+    NSNSString *IPRoutingError;
+    NSNSString *identifier;
+    NSNSString *device;
+});
+
+NS_NAMESPACE(SKEPDiscover, {
+    NSNSString *channels;
+    NSNSString *icons;
+    NSNSString *snaps;
+    NSNSString *intros;
+});
+
+NS_NAMESPACE(SKEPFriends, {
+    NSNSString *find;
+    NSNSString *findNearby;
+    NSNSString *bests;
+    NSNSString *friend;
+    NSNSString *hide;
+    NSNSString *search;
+    NSNSString *exists;
+});
+
+NS_NAMESPACE(SKEPSnaps, {
+    NSNSString *loadBlob;
+    NSNSString *upload;
+    NSNSString *send;
+    NSNSString *retry;
+});
+
+NS_NAMESPACE(SKEPStories, {
+    NSNSString *stories;
+    NSNSString *upload;
+    NSNSString *blob;
+    NSNSString *thumb;
+    NSNSString *authBlob;
+    NSNSString *authThumb;
+    NSNSString *remove;
+    NSNSString *post;
+    NSNSString *retryPost;
+});
+
+NS_NAMESPACE(SKEPCash, {
+    NSNSString *checkRecipientEligibility;
+    NSNSString *generateAccessToken;
+    NSNSString *generateSignature;
+    NSNSString *markViewed;
+    NSNSString *resetAccount;
+    NSNSString *transaction;
+    NSNSString *updateTransaction;
+    NSNSString *validateTransaction;
+});
+
+NS_NAMESPACE(SKEPAndroid, {
+    NSNSString *findNearbyFriends;
+    NSNSString *changeEmail;
+    NSNSString *changePass;
+    NSNSString *getPassStrength;
+    NSNSString *registerExp;
+});
+
+
+extern NSString * const kepSharedDescription;
