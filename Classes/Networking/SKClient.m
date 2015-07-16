@@ -280,20 +280,14 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             @"apk_digest": SKAttestation.digest9_12_2,
                             @"timestamp": ts};
     
-    
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    [manager POST:SKAttestation.URLCasper parameters:query success:^(AFHTTPRequestOperation *operation, id json) {
-        
+    [[AFHTTPRequestOperationManager manager] POST:SKAttestation.URLCasper parameters:query success:^(AFHTTPRequestOperation *operation, id json) {
         if ([json[@"code"] intValue] == 200)
             completion(json[@"signedAttestation"], nil);
         else
-            completion(nil, [SKRequest unknownError]);
+            completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:operation.response.statusCode]);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *errorOperation) {
-        // :: DEBUG :: NSLog(@"Error: %@", errorOperation);
-        completion(nil, [SKRequest unknownError]);
+        completion(nil, errorOperation);
     }];
 }
 
