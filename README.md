@@ -11,6 +11,11 @@ WIP [Snapchat API documentation](https://github.com/ThePantsThief/SnapchatKit/bl
 - In your project file under "Build Phases" link with `libz.dylib` (might appear as `libz.1.dylib` or something)
 - `#import "SnapchatKit.h"` wherever you need to use it!
 
+## To-do
+- Link to AFNetworking somehow instead of just copying the files, like RedditKit does (github is hard ok)
+- TLS chat support
+- Send Google account passwords encrypted instead of plaintext... code coming in ~2 weeks
+
 ## Third party resources
 
 - http://gibsonsec.org/snapchat/fulldisclosure/
