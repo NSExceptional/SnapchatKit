@@ -15,6 +15,8 @@ WIP [Snapchat API documentation](https://github.com/ThePantsThief/SnapchatKit/bl
 - Link to AFNetworking somehow instead of just copying the files, like RedditKit does (github is hard ok)
 - TLS chat support
 - Send Google account passwords encrypted instead of plaintext... code coming in ~2 weeks
+- Cocoapods support
+- MIT License
 
 ## Third party resources
 
