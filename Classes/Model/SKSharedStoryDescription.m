@@ -22,7 +22,7 @@
         _localViewTitle = json[@"LOCAL_VIEW_TITLE"];
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"FRIEND", @"LOCAL_POST_BODY", @"LOCAL_POST_TITLE", @"LOCAL_VIEW_BODY", @"LOCAL_VIEW_TITLE"]];
+    [[self class] addKnownJSONKeys:@[@"FRIEND", @"LOCAL_POST_BODY", @"LOCAL_POST_TITLE", @"LOCAL_VIEW_BODY", @"LOCAL_VIEW_TITLE"]];
     
     return self;
 }

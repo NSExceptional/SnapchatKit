@@ -17,7 +17,7 @@
     if (self) {
         _username        = json[@"username"];
         _matureContent   = [json[@"mature_content"] boolValue];
-        _adPlacementData = json[@"ad_placement_data"];
+        _adPlacementData = json[@"ad_placement_metadata"];
         
         if (thumbs) {
             _viewedThumbnail        = [NSURL URLWithString:thumbs[@"viewed"][@"url"]];
@@ -36,7 +36,7 @@
         _stories = stories;
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"username", @"mature_content", @"stories", @"thumnails", @"ad_placement_data"]];
+    [[self class] addKnownJSONKeys:@[@"username", @"mature_content", @"stories", @"thumbnails", @"ad_placement_metadata"]];
     
     return self;
 }

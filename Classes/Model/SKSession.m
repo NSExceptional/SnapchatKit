@@ -47,6 +47,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     NSDictionary *identity        = json[@"identity_check_response"];
     NSDictionary *features        = updatesResponse[@"feature_settings"];
     NSDictionary *discover        = json[@"discover"];
+    NSDictionary *messagingGate   = json[@"messaging_gateway_info"];
     
     NSArray *friendStories = storiesResponse[@"friend_stories"];
     NSArray *myStories     = storiesResponse[@"my_stories"];
@@ -67,6 +68,10 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _redGearDurationMilliseconds        = [identity[@"red_gear_duration_millis"] doubleValue];
         _suggestedFriendFetchThresholdHours = [identity[@"suggested_friend_fetch_threshold_hours"] integerValue];
         
+        _messagingGatewayAuth   = messagingGate[@"gateway_auth_token"];
+        _messagingGatewayServer = messagingGate[@"gateway_server"];
+        
+        // Discover
         _discoverSupported          = [discover[@"compatibility"] isEqualToString:@"supported"];// alternative is @"device_not_supported"
         _discoverSharingEnabled     = [discover[@"sharing_enabled"] boolValue];
         _discoverGetChannels        = discover[@"get_channels"];
@@ -179,7 +184,8 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _enableTravelMode       = [features[SKFeatureSettings.travelMode] boolValue];
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"stories_response", @"friends_response", @"updates_response", @"identity_check_response", @"background_fetch_secret_key", @"discover"]];
+    [[self class] addKnownJSONKeys:@[@"stories_response", @"friends_response", @"updates_response", @"identity_check_response", @"conversations_response",
+                                     @"background_fetch_secret_key", @"discover", @"messaging_gateway_info"]];
     
     return self;
 }

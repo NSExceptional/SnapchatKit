@@ -9,6 +9,7 @@
 #import "SKClient+Stories.h"
 #import "SKStoryCollection.h"
 #import "SKStory.h"
+#import "SKUser.h"
 #import "SKUserStory.h"
 #import "SKStoryUpdater.h"
 #import "SKStoryOptions.h"
@@ -203,10 +204,10 @@
     }];
 }
 
-- (void)getSharedDescriptionForStory:(SKStoryCollection *)sharedStory completion:(ResponseBlock)completion {
-    NSParameterAssert(sharedStory.username); NSParameterAssert(completion);
+- (void)getSharedDescriptionForStory:(SKUser *)sharedStory completion:(ResponseBlock)completion {
+    NSParameterAssert(sharedStory.sharedStoryIdentifier); NSParameterAssert(completion);
     
-    [self get:[NSString stringWithFormat:@"shared/description?ln=en&shared_id=%@", sharedStory.username] callback:^(NSData *data, NSError *error) {
+    [self get:[NSString stringWithFormat:@"shared/description?ln=en&shared_id=%@", sharedStory.sharedStoryIdentifier] callback:^(NSData *data, NSError *error) {
         if (!error) {
             NSError *jsonError = nil;
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];

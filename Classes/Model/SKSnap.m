@@ -25,10 +25,12 @@
         _screenshots            = [json[@"c"] integerValue];
         _timer                  = [json[@"t"] integerValue];
         _mediaTimer             = [json[@"timer"] floatValue];
-        _sentDate               = [NSDate dateWithTimeIntervalSince1970:[json[@"test"] doubleValue]/1000];
+        _sentDate               = [NSDate dateWithTimeIntervalSince1970:[json[@"sts"] doubleValue]/1000];
+        _sentDate               = [NSDate dateWithTimeIntervalSince1970:[json[@"ts"] doubleValue]/1000];
+        _zipped                 = [json[@"zipped"] boolValue];
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"sn", @"rp", @"id", @"c_id", @"m", @"st", @"c", @"t", @"timer"]];
+    [[self class] addKnownJSONKeys:@[@"sn", @"rp", @"id", @"c_id", @"m", @"st", @"c", @"t", @"sts", @"ts", @"timer", @"zipped"]];
     
     return self;
 }

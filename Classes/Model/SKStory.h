@@ -12,6 +12,9 @@
 
 @interface SKStory : SKThing
 
+/** The username of whoever posted this story. */
+@property (nonatomic, readonly) NSString *author;
+
 /** The length of the snap in seconds. */
 @property (nonatomic, readonly) NSUInteger duration;
 

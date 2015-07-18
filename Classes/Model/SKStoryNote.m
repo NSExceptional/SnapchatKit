@@ -19,7 +19,7 @@
         _storyPointer = json[@"storypointer"];
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"viewer", @"timestamp", @"screenshotted", @"storypointer"]];
+    [[self class] addKnownJSONKeys:@[@"viewer", @"timestamp", @"screenshotted", @"storypointer"]];
     
     return self;
 }

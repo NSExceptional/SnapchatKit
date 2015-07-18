@@ -13,11 +13,13 @@
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
     if (self) {
+        _addSource     = json[@"add_source"];
         _addSourceType = SKAddSourceFromString(json[@"add_source_type"]);
-        _timestamp = [NSDate dateWithTimeIntervalSince1970:[json[@"ts"] doubleValue]/1000];
+        _timestamp     = [NSDate dateWithTimeIntervalSince1970:[json[@"ts"] doubleValue]/1000];
+        _pendingSnaps  = [json[@"pending_snaps_count"] integerValue];
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"add_source_type", @"ts"]];
+    [[self class] addKnownJSONKeys:[@[@"add_source", @"add_source_type", @"ts", @"pending_snaps_count"] arrayByAddingObjectsFromArray:[self.superclass knownJSONKeys]]];
     
     return self;
 }

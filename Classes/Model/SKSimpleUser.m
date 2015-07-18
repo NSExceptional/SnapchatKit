@@ -15,14 +15,16 @@
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
     if (self) {
-        _username      = json[@"name"];
-        _displayName   = [json[@"display"] length] ? json[@"display"] : nil;
-        _addedIncoming = [json[@"direction"] isEqualToString:@"INCOMING"];
-        _privacy       = [json[@"type"] integerValue];
-        _expiration    = [NSDate dateWithTimeIntervalSince1970:[json[@"expiration"] doubleValue]/1000];
+        _username       = json[@"name"];
+        _displayName    = [json[@"display"] length] ? json[@"display"] : nil;
+        _userIdentifier = json[@"user_id"];
+        _addedIncoming  = [json[@"direction"] isEqualToString:@"INCOMING"];
+        _ignoredLink    = [json[@"ignored_link"] boolValue];
+        _privacy        = [json[@"type"] integerValue];
+        _expiration     = [NSDate dateWithTimeIntervalSince1970:[json[@"expiration"] doubleValue]/1000];
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"name", @"display", @"direction", @"type", @"expiration"]];
+    [[self class] addKnownJSONKeys:@[@"name", @"display", @"user_id", @"direction", @"type", @"expiration", @"ignored_link"]];
     
     return self;
 }

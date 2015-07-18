@@ -47,7 +47,7 @@
         _senderViewed         = [json[@"sender_viewed"] boolValue];
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"status", @"amount", @"currency_code", @"invisible",
+    [[self class] addKnownJSONKeys:@[@"status", @"amount", @"currency_code", @"invisible",
                                               @"last_updated_at", @"message", @"rain", @"transaction_id",
                                               @"conversation_id", @"created_at", @"recipient_username",
                                               @"recipient_id", @"recipient_save_version", @"recipient_saved",

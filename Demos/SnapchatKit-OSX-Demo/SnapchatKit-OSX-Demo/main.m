@@ -227,7 +227,9 @@ int main(int argc, const char * argv[]) {
                 // TODO: make the _JSON property of SKThing dependent on kDebugJSON.
                 NSData *data = [NSPropertyListSerialization dataWithPropertyList:[session valueForKey:@"_JSON"] format:NSPropertyListBinaryFormat_v1_0 options:0 error:nil];
                 SKLog(@"Bytes: %lu Kilobytes: %f", data.length, ((float)data.length/1024));
-
+                
+                NSLog(@"Unknown JSONKeys:%@", [SKThing allSubclassesUnknownJSONKeys]);
+                
                 ////////////////////////////
                 // I'm testing stuff here //
                 ////////////////////////////
@@ -235,10 +237,6 @@ int main(int argc, const char * argv[]) {
                 /// Notes ///
                 
                 // bq/loq_data needs to be looked into again, it's returning more stuff now
-                
-                [[SKClient sharedClient] getSharedDescriptionForStory:session.sharedStories.firstObject completion:^(SKSharedStoryDescription *description, NSError *error) {
-                    NSLog(@"%@", description ?: error.localizedDescription);
-                }];
                 
                 
                 // Get unread snaps

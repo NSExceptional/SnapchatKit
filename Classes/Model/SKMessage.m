@@ -65,6 +65,9 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
                 _mediaIV         = media[@"iv"];
                 _mediaKey        = media[@"key"];
                 _mediaType       = media[@"media_type"];
+                if (![self.mediaType isEqualToString:@"VIDEO"])
+                    NSLog(@"New media type: %@", self.mediaType);
+                
                 break;
             }
             default: {
@@ -86,9 +89,9 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
             SKLog(@"Unknown chat message type: %@", _type);
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"chat_message", @"body", @"header", @"id", @"chat_message_id", @"iter_token",
+    [[self class] addKnownJSONKeys:@[@"chat_message", @"body", @"header", @"id", @"chat_message_id", @"iter_token",
                                               @"timestamp", @"media_id", @"width", @"height", @"iv", @"key", @"conv_id",
-                                              @"to", @"from", @"seq_num", @"saved_state", @"type"]];
+                                              @"to", @"from", @"seq_num", @"saved_state", @"type", @"media_type"]];
     
     return self;
 }

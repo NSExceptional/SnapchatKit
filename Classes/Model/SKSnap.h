@@ -27,7 +27,11 @@
 /** Actual lenth of the video, or the same as _timer for images. 0.f is snap is "outgoing". */
 @property (nonatomic, readonly) CGFloat      mediaTimer;
 @property (nonatomic, readonly) NSDate       *sentDate;
+/** Undocumented. */
+@property (nonatomic, readonly) NSDate       *timestamp;
 
+/** Whether the snap is compressed or not. */
+@property (nonatomic, readonly) BOOL         zipped;
 /** \c nil until you call \c load: */
 @property (nonatomic, readonly) SKBlob       *blob;
 

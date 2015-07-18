@@ -20,8 +20,11 @@
 @property (nonatomic, readonly) BOOL canSeeCustomStories;
 @property (nonatomic, readonly) BOOL needsLove;
 @property (nonatomic, readonly) BOOL isSharedStory;
+@property (nonatomic, readonly) BOOL isLocalStory;
 @property (nonatomic, readonly) BOOL hasCustomDescription;
 /** Undocumented. */
 @property (nonatomic, readonly) BOOL decayThumbnail;
+/** Undocumented. */
+@property (nonatomic, readonly) NSDate *timestamp;
 
 @end

@@ -16,13 +16,19 @@
 
 /** 
  For API debugging purposes, each class adds it's known
- JSON keys to this array so we can find ones we aren't
+ JSON keys to this so we can find ones we aren't
  using or don't know about.
+ 
+ It is a dictionary of mutable sets, mapped by class names.
  */
-@property (nonatomic) NSMutableSet *knownJSONKeys;
++ (NSArray *)knownJSONKeys;
++ (void)addKnownJSONKeys:(NSArray *)keys;
++ (void)setAllJSONKeys:(NSArray *)keys;
 
 /** Calculated once when first accessed, using \c knownJSONKeys. */
-@property (nonatomic, readonly) NSArray *unknownJSONKeys;
++ (NSArray *)unknownJSONKeys;
+/** Calculated when called. */
++ (NSArray *)allSubclassesUnknownJSONKeys;
 
 @end
 

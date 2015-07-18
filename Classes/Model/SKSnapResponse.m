@@ -15,7 +15,7 @@
     if (self) {
         _sender     = sender;
         _identifier = json[@"id"];
-        _timestamp  = [NSDate dateWithTimeIntervalSince1970:[json[@"timestamp"] doubleValue]];
+        _timestamp  = [NSDate dateWithTimeIntervalSince1970:[json[@"timestamp"] doubleValue]/1000];
     }
     
     return self;

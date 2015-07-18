@@ -80,7 +80,7 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
         _pendingRecievedSnaps = tmp;
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"conversation_messages", @"last_chat_actions", @"pending_received_snaps", @"conversation_state", @"id",
+    [[self class] addKnownJSONKeys:@[@"conversation_messages", @"last_chat_actions", @"pending_received_snaps", @"conversation_state", @"id",
                                               @"iter_token", @"last_snap", @"last_cash_transaction", @"last_interaction_ts", @"participants", @"pending_chats_for"]];
     
     return self;

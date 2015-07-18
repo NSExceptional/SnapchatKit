@@ -32,9 +32,11 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) NSUInteger suggestedFriendFetchThresholdHours;
 
 @property (nonatomic, readonly) NSString *backgroundFetchSecret;
+/** Contains keys \c "mac" and \c "payload" */
+@property (nonatomic, readonly) NSDictionary *messagingGatewayAuth;
+@property (nonatomic, readonly) NSString     *messagingGatewayServer;
 
 #pragma mark User data
-
 /** Array of SKUser objects. */
 @property (nonatomic, readonly) NSMutableOrderedSet *friends;
 /** Array of SKAddedFriend objects who may or may not be your friend. */

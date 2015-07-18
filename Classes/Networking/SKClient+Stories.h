@@ -68,6 +68,6 @@
 /** Retrieves the description for a shared story.
  @param sharedStory A shared story.
  @param completion Takes an error, if any, and an \c SKSharedStoryDescription object. */
-- (void)getSharedDescriptionForStory:(SKStoryCollection *)sharedStory completion:(ResponseBlock)completion;
+- (void)getSharedDescriptionForStory:(SKUser *)sharedStory completion:(ResponseBlock)completion;
 
 @end

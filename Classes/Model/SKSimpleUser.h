@@ -13,10 +13,12 @@
 
 @interface SKSimpleUser : SKThing
 
-@property (nonatomic, readonly) NSString  *username;
-@property (nonatomic, readonly) NSString  *displayName;
-@property (nonatomic, readonly) BOOL      addedIncoming;
-@property (nonatomic, readonly) NSDate    *expiration;
+@property (nonatomic, readonly) NSString *username;
+@property (nonatomic, readonly) NSString *displayName;
+@property (nonatomic, readonly) NSString *userIdentifier;
+@property (nonatomic, readonly) BOOL     addedIncoming;
+@property (nonatomic, readonly) BOOL     ignoredLink;
+@property (nonatomic, readonly) NSDate   *expiration;
 /** Whether anyone or only friends can send snaps to this user. */
 @property (nonatomic, readonly) SKSnapPrivacy privacy;
 

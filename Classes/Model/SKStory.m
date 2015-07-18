@@ -24,6 +24,8 @@
     
     self = [super initWithDictionary:json];
     if (self) {
+        
+        _author           = story[@"username"];
         _viewed           = [json[@"viewed"] boolValue];
         _shared           = [story[@"is_shared"] boolValue];
         _zipped           = [story[@"zipped"] boolValue];
@@ -52,9 +54,10 @@
         _created          = [NSDate dateWithTimeIntervalSince1970:[story[@"timestamp"] doubleValue]/1000];
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"story", @"viewed", @"is_shared", @"zipped", @"mature_content", @"needs_auth", @"time",
-                                              @"id", @"caption_text_display", @"client_id", @"media_id", @"media_iv", @"media_type",
-                                              @"media_url", @"thumbnail_iv", @"thumbnail_url", @"time_left", @"timestamp", @"story_filter_id", @"ad_can_follow"]];
+    [[self class] addKnownJSONKeys:@[@"story", @"viewed", @"is_shared", @"zipped", @"mature_content", @"needs_auth", @"time",
+                                     @"id", @"caption_text_display", @"client_id", @"media_id", @"media_iv", @"media_type", @"media_key",
+                                     @"media_url", @"thumbnail_iv", @"thumbnail_url", @"time_left", @"timestamp", @"story_filter_id",
+                                     @"ad_can_follow", @"username"]];
     
     return self;
 }

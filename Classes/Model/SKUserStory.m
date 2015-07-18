@@ -36,7 +36,7 @@
         _notes = notes;
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"story_extras", @"story_notes", @"viewed"]];
+    [[self class] addKnownJSONKeys:@[@"story_extras", @"story_notes", @"viewed", @"screenshot_count", @"view_count"]];
     
     return self;
 }
