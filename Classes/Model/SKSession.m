@@ -158,7 +158,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _studySettings                 = updatesResponse[@"study_settings"];
         _targeting                     = updatesResponse[@"targeting"];
         _userIdentifier                = updatesResponse[@"user_id"];
-        _videoFiltersEnabled            = [updatesResponse[@"video_filters_enabled"] boolValue];
+        _videoFiltersEnabled           = [updatesResponse[@"video_filters_enabled"] boolValue];
         _QRPath                        = updatesResponse[@"qr_path"];
         
         // Preferences
@@ -214,5 +214,14 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     return [self.conversations filteredOrderedSetUsingPredicate:filter].firstObject;
 }
 
+@end
+
+
+@implementation SKSession (Stories)
+
+- (NSArray *)sharedStories {
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"isSharedStory", @YES];
+    return [self.stories filteredOrderedSetUsingPredicate:filter].array;
+}
 
 @end

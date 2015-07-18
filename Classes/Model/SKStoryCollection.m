@@ -13,9 +13,20 @@
 
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
+    NSDictionary *thumbs = json[@"thumbnails"];
     if (self) {
-        _username      = json[@"username"];
-        _matureContent = [json[@"mature_content"] boolValue];
+        _username        = json[@"username"];
+        _matureContent   = [json[@"mature_content"] boolValue];
+        _adPlacementData = json[@"ad_placement_data"];
+        
+        if (thumbs) {
+            _viewedThumbnail        = [NSURL URLWithString:thumbs[@"viewed"][@"url"]];
+            _unviewedThumbnail      = [NSURL URLWithString:thumbs[@"unviewed"][@"url"]];
+            _viewedThumbNeedsAuth   = [thumbs[@"viewed"][@"needs_auth"] boolValue];
+            _unviewedThumbNeedsAuth = [thumbs[@"unviewed"][@"needs_auth"] boolValue];
+        }
+        
+        
         
         NSMutableArray *stories = [NSMutableArray new];
         NSArray *storiesJSON    = json[@"stories"];
@@ -25,14 +36,14 @@
         _stories = stories;
     }
     
-    [self.knownJSONKeys addObjectsFromArray:@[@"username", @"mature_content", @"stories"]];
+    [self.knownJSONKeys addObjectsFromArray:@[@"username", @"mature_content", @"stories", @"thumnails", @"ad_placement_data"]];
     
     return self;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ username=%@, NSFW=%d, stories=\n%@\n>",
-            NSStringFromClass(self.class), self.username, self.matureContent, self.stories];
+    return [NSString stringWithFormat:@"<%@ username=%@, NSFW=%d count=%lu> stories=%@",
+            NSStringFromClass(self.class), self.username, self.matureContent, self.stories.count, self.stories];
 }
 
 - (BOOL)isEqual:(id)object {
@@ -48,6 +59,10 @@
 
 - (NSUInteger)hash {
     return self.username.hash;
+}
+
+- (BOOL)isSharedStory {
+    return [self.stories[0] shared];
 }
 
 @end

@@ -19,7 +19,7 @@
  JSON keys to this array so we can find ones we aren't
  using or don't know about.
  */
-@property (nonatomic) NSMutableArray *knownJSONKeys;
+@property (nonatomic) NSMutableSet *knownJSONKeys;
 
 /** Calculated once when first accessed, using \c knownJSONKeys. */
 @property (nonatomic, readonly) NSArray *unknownJSONKeys;

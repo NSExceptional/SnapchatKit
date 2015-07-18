@@ -33,6 +33,11 @@
 /** Not sure. */
 @property (nonatomic, readonly) NSString    *clientIdentifier;
 
+/** Unknown */
+@property (nonatomic, readonly) NSString    *storyFilterIdentifier;
+/** Unknown */
+@property (nonatomic, readonly) BOOL        adCanFollow;
+
 /** The story's media ID. */
 @property (nonatomic, readonly) NSString    *mediaIdentifier;
 /** The IV used to decrypt the media. */

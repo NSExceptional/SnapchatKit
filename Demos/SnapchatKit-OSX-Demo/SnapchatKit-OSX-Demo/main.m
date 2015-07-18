@@ -232,6 +232,15 @@ int main(int argc, const char * argv[]) {
                 // I'm testing stuff here //
                 ////////////////////////////
                 
+                /// Notes ///
+                
+                // bq/loq_data needs to be looked into again, it's returning more stuff now
+                
+                [[SKClient sharedClient] getSharedDescriptionForStory:session.sharedStories.firstObject completion:^(SKSharedStoryDescription *description, NSError *error) {
+                    NSLog(@"%@", description ?: error.localizedDescription);
+                }];
+                
+                
                 // Get unread snaps
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);

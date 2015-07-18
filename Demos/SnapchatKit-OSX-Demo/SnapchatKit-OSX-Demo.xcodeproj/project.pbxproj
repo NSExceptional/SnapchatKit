@@ -16,6 +16,7 @@
 		4A77F5C01B57ECC700D9741B /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A77F5B51B57ECC700D9741B /* AFURLRequestSerialization.m */; };
 		4A77F5C11B57ECC700D9741B /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A77F5B71B57ECC700D9741B /* AFURLResponseSerialization.m */; };
 		4A77F5C21B57ECC700D9741B /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A77F5B91B57ECC700D9741B /* AFURLSessionManager.m */; };
+		B402DA0F1B59D4C400A83E93 /* SKSharedStoryDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B402DA0E1B59D4C400A83E93 /* SKSharedStoryDescription.m */; };
 		B45441D71B4E245100B1A214 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B45441D61B4E245100B1A214 /* main.m */; };
 		B454423A1B4E246D00B1A214 /* NSArray+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B45441E01B4E246D00B1A214 /* NSArray+SnapchatKit.m */; };
 		B454423B1B4E246D00B1A214 /* NSData+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = B45441E21B4E246D00B1A214 /* NSData+SnapchatKit.m */; };
@@ -95,6 +96,8 @@
 		4A77F5B71B57ECC700D9741B /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		4A77F5B81B57ECC700D9741B /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		4A77F5B91B57ECC700D9741B /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		B402DA0D1B59D4C400A83E93 /* SKSharedStoryDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSharedStoryDescription.h; sourceTree = "<group>"; };
+		B402DA0E1B59D4C400A83E93 /* SKSharedStoryDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSharedStoryDescription.m; sourceTree = "<group>"; };
 		B45441D31B4E245100B1A214 /* SnapchatKit-OSX-Demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "SnapchatKit-OSX-Demo"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B45441D61B4E245100B1A214 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B45441DF1B4E246D00B1A214 /* NSArray+SnapchatKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SnapchatKit.h"; sourceTree = "<group>"; };
@@ -311,6 +314,8 @@
 				B45441FB1B4E246D00B1A214 /* SKRequest.m */,
 				B45441FC1B4E246D00B1A214 /* SKSession.h */,
 				B45441FD1B4E246D00B1A214 /* SKSession.m */,
+				B402DA0D1B59D4C400A83E93 /* SKSharedStoryDescription.h */,
+				B402DA0E1B59D4C400A83E93 /* SKSharedStoryDescription.m */,
 				B45441FE1B4E246D00B1A214 /* SKSimpleUser.h */,
 				B45441FF1B4E246D00B1A214 /* SKSimpleUser.m */,
 				B45442001B4E246D00B1A214 /* SKSnap.h */,
@@ -448,6 +453,25 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
+				cs,
+				de,
+				es,
+				eu,
+				fi,
+				fr,
+				it,
+				ja,
+				ko,
+				nl,
+				no,
+				pl,
+				pt,
+				ru,
+				sk,
+				sv,
+				vi,
+				zh_CN,
 			);
 			mainGroup = B45441CA1B4E245100B1A214;
 			productRefGroup = B45441D41B4E245100B1A214 /* Products */;
@@ -479,6 +503,7 @@
 				B454423C1B4E246D00B1A214 /* NSDictionary+SnapchatKit.m in Sources */,
 				4A77F5C01B57ECC700D9741B /* AFURLRequestSerialization.m in Sources */,
 				B45442471B4E246D00B1A214 /* SKRequest.m in Sources */,
+				B402DA0F1B59D4C400A83E93 /* SKSharedStoryDescription.m in Sources */,
 				B45442551B4E246D00B1A214 /* SKClient+Account.m in Sources */,
 				B48634B31B51033700854526 /* SKNewConversation.m in Sources */,
 				4A77F5BB1B57ECC700D9741B /* AFHTTPRequestOperationManager.m in Sources */,
@@ -603,6 +628,10 @@
 		B45441DB1B4E245100B1A214 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/tantan/Dropbox/Repos/Luna,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -610,6 +639,10 @@
 		B45441DC1B4E245100B1A214 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/tantan/Dropbox/Repos/Luna,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

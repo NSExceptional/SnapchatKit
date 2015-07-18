@@ -12,6 +12,7 @@
 #import "SKUserStory.h"
 #import "SKStoryUpdater.h"
 #import "SKStoryOptions.h"
+#import "SKSharedStoryDescription.h"
 
 #import "SKRequest.h"
 #import "NSString+SnapchatKit.h"
@@ -199,6 +200,23 @@
                             @"username": self.username};
     [self postTo:kepSharedDescription query:query callback:^(id object, NSError *error) {
         completion(error);
+    }];
+}
+
+- (void)getSharedDescriptionForStory:(SKStoryCollection *)sharedStory completion:(ResponseBlock)completion {
+    NSParameterAssert(sharedStory.username); NSParameterAssert(completion);
+    
+    [self get:[NSString stringWithFormat:@"shared/description?ln=en&shared_id=%@", sharedStory.username] callback:^(NSData *data, NSError *error) {
+        if (!error) {
+            NSError *jsonError = nil;
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            if (!jsonError)
+                completion([[SKSharedStoryDescription alloc] initWithDictionary:json], nil);
+            else
+                completion(nil, jsonError);
+        } else {
+            completion(nil, error);
+        }
     }];
 }
 

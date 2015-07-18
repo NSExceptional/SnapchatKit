@@ -362,7 +362,9 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                                    @"max_video_width":  @480,
                                                    @"max_video_height": @640,
                                                    @"application_id":   @"com.snapchat.android",
+                                                   @"is_two_fa":        @"false",
                                                    @"ptoken":           @"ie",
+                                                   @"pre_auth":         @"",
                                                    @"sflag":            @1,
                                                    @"dsig":             deviceSig,
                                                    @"dtoken1i":         self.deviceToken1i,
@@ -387,20 +389,6 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                 }];
                             }];
                             [dataTask resume];
-                            
-//                            [SKRequest postTo:kepLogin query:post gauth:gauth token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error4) {
-//                                [self handleError:error4 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
-//                                    dispatch_async(dispatch_get_main_queue(), ^{
-//                                        if (!jsonerror) {
-//                                            self.currentSession = [SKSession sessionWithJSONResponse:json];
-//                                            _authToken = self.currentSession.authToken;
-//                                            completion(json, nil);
-//                                        } else {
-//                                            completion(nil, jsonerror);
-//                                        }
-//                                    });
-//                                }];
-//                            }];
                         }
                     }];
                 }

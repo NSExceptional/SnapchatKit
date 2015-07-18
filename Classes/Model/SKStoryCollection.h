@@ -18,4 +18,17 @@
 /** An array of \c SKStory objects. */
 @property (nonatomic, readonly) NSArray *stories;
 
+/** The thumbnail for the viewed state of the story. */
+@property (nonatomic, readonly) NSURL *viewedThumbnail;
+/** The thumbnail for the unviewed state of the story. */
+@property (nonatomic, readonly) NSURL *unviewedThumbnail;
+@property (nonatomic, readonly) BOOL  viewedThumbNeedsAuth;
+@property (nonatomic, readonly) BOOL  unviewedThumbNeedsAuth;
+
+@property (nonatomic, readonly) NSDictionary *adPlacementData;
+
+/** @discussion The API doesn't tell you whether an entire story is shared,
+ so this method checks if the first object in it's \c stories property is \c shared. */
+@property (nonatomic, readonly) BOOL isSharedStory;
+
 @end

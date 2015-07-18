@@ -23,7 +23,7 @@
     self = [super init];
     if (self) {
         _JSON = json;
-        _knownJSONKeys = [NSMutableArray new];
+        _knownJSONKeys = [NSMutableSet new];
     }
     
     return self;
@@ -33,13 +33,9 @@
     if (_unknownJSONKeys)
         return _unknownJSONKeys;
     
-    NSMutableArray *temp = [NSMutableArray new];
-    NSArray *allKeys     = self.JSON.allKeys;
-    for (NSString *key in self.knownJSONKeys)
-        if (![allKeys containsObject:key])
-            [temp addObject:key];
-    
-    _unknownJSONKeys = temp;
+    NSMutableSet *unknown = [NSMutableSet setWithArray:self.JSON.allKeys];
+    [unknown minusSet:self.knownJSONKeys];
+    _unknownJSONKeys = unknown.allObjects;
     
     return _unknownJSONKeys;
 }

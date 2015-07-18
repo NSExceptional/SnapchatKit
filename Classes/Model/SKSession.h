@@ -152,7 +152,10 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @end
 
 
-
+@interface SKSession (Stories)
+/** @return All stories in \c stories that are shared. */
+- (NSArray *)sharedStories;
+@end
 
 
 

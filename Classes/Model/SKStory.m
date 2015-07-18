@@ -35,7 +35,10 @@
         _identifier       = story[@"id"];
         _text             = story[@"caption_text_display"];
         _clientIdentifier = story[@"client_id"];
-
+        
+        _storyFilterIdentifier = story[@"story_filter_id"];
+        _adCanFollow           = [story[@"ad_can_follow"] boolValue];
+        
         _mediaIdentifier  = story[@"media_id"];
         _mediaIV          = story[@"media_iv"];
         _mediaKey         = story[@"media_key"];
@@ -51,14 +54,14 @@
     
     [self.knownJSONKeys addObjectsFromArray:@[@"story", @"viewed", @"is_shared", @"zipped", @"mature_content", @"needs_auth", @"time",
                                               @"id", @"caption_text_display", @"client_id", @"media_id", @"media_iv", @"media_type",
-                                              @"media_url", @"thumbnail_iv", @"thumbnail_url", @"time_left", @"timestamp"]];
+                                              @"media_url", @"thumbnail_iv", @"thumbnail_url", @"time_left", @"timestamp", @"story_filter_id", @"ad_can_follow"]];
     
     return self;
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ id=%@, viewed=%d, duration=%lu, text=%@, time left=%lu>",
-            NSStringFromClass(self.class), self.identifier, self.viewed, (unsigned long)self.duration, self.text, (unsigned long)self.timeLeft];
+    return [NSString stringWithFormat:@"<%@ shared=%d, zipped=%d, auth=%d, viewed=%d, duration=%lu, text=%@, time left=%lu>",
+            NSStringFromClass(self.class), self.shared, self.zipped, self.needsAuth, self.viewed, (unsigned long)self.duration, self.text, (unsigned long)self.timeLeft];
 }
 
 - (BOOL)isEqual:(id)object {

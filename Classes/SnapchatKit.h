@@ -23,6 +23,7 @@
 #import "SKFoundFriend.h"
 #import "SKMessage.h"
 #import "SKSession.h"
+#import "SKSharedStoryDescription.h"
 #import "SKSimpleUser.h"
 #import "SKSnap.h"
 #import "SKSnapOptions.h"
