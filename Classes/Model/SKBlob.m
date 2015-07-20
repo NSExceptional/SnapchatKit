@@ -35,33 +35,38 @@
 }
 
 + (void)decompressBlob:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion {
+    NSParameterAssert(blobData); NSParameterAssert(story); NSParameterAssert(completion);
     NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", story.identifier]];
     NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", story.identifier]];
     [blobData writeToFile:path atomically:YES];
     
     [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
         if (succeeded) {
-            [self decryptBlob:[NSData dataWithContentsOfFile:unzip] forStory:story completion:completion];
+            completion([SKBlob blobWithContentsOfPath:unzip], nil);
         } else {
             completion(nil, error);
         }
+        
+        NSError *e = nil;
+        [[NSFileManager defaultManager] removeItemAtPath:path error:&e];
+        if (e && kVerboseLog) SKLog(@"Error deleting blob: %@", e); e = nil;
+        [[NSFileManager defaultManager] removeItemAtPath:unzip error:&e];
+        if (e && kVerboseLog) SKLog(@"Error deleting blob: %@", e); e = nil;
     }];
 }
 
 + (void)decryptBlob:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion {
-    NSData *decryptedBlob;
-    if (story.needsAuth) {
-        decryptedBlob = [blobData decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
-    } else {
-        decryptedBlob = blobData;
+    NSParameterAssert(blobData); NSParameterAssert(story); NSParameterAssert(completion);
+    if ((!blobData.isCompressed && !blobData.isMedia)) {
+        blobData = [blobData decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
     }
     
-    if (decryptedBlob.isCompressed) {
+    if (blobData.isCompressed) {
         [self decompressBlob:blobData forStory:story completion:completion];
     } else {
-        SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
+        SKBlob *blob = [SKBlob blobWithData:blobData];
         if (blob)
-            completion(blob, decryptedBlob.isMedia ? nil : [SKRequest errorWithMessage:@"Unknown blob format" code:1]);
+            completion(blob, blobData.isMedia ? nil : [SKRequest errorWithMessage:@"Unknown blob format" code:1]);
         else
             completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
     }
