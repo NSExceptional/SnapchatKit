@@ -25,59 +25,45 @@
     return [[self alloc] initWithData:data];
 }
 
-+ (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion {
-    NSParameterAssert(encryptedBlob);
++ (void)blobWithStoryData:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion {
+    NSParameterAssert(blobData); NSParameterAssert(story); NSParameterAssert(completion);
+    if (blobData.isCompressed) {
+        [self decompressBlob:blobData forStory:story completion:completion];
+    } else {
+        [self decryptBlob:blobData forStory:story completion:completion];
+    }
+}
+
++ (void)decompressBlob:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion {
+    NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", story.identifier]];
+    NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", story.identifier]];
+    [blobData writeToFile:path atomically:YES];
     
+    [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
+        if (succeeded) {
+            [self decryptBlob:[NSData dataWithContentsOfFile:unzip] forStory:story completion:completion];
+        } else {
+            completion(nil, error);
+        }
+    }];
+}
+
++ (void)decryptBlob:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion {
     NSData *decryptedBlob;
     if (story.needsAuth) {
-        decryptedBlob = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
+        decryptedBlob = [blobData decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
     } else {
-        decryptedBlob = encryptedBlob;
+        decryptedBlob = blobData;
     }
     
-    // Unzipped
-    if (decryptedBlob.isJPEG || decryptedBlob.isMPEG4) {
+    if (decryptedBlob.isCompressed) {
+        [self decompressBlob:blobData forStory:story completion:completion];
+    } else {
         SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
         if (blob)
-            completion(blob, nil);
+            completion(blob, decryptedBlob.isMedia ? nil : [SKRequest errorWithMessage:@"Unknown blob format" code:1]);
         else
             completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
-        
-        // Needs to be unzipped
-    } else if (decryptedBlob.isCompressed || story.zipped) {
-        NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", story.identifier]];
-        NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", story.identifier]];
-        [decryptedBlob writeToFile:path atomically:YES];
-        
-        [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                SKBlob *blob = [SKBlob blobWithContentsOfPath:unzip];
-                if (blob)
-                    completion(blob, nil);
-                else
-                    completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
-            } else {
-                NSData *thirdTimesTheCharm = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
-                if (thirdTimesTheCharm.isCompressed) {
-                    [self blobWithStoryData:thirdTimesTheCharm forStory:story completion:completion];
-                } else {
-                    SKLog(@"%@", error);
-                }
-            }
-        }];
-    } else {
-        NSData *thirdTimesTheCharm = [encryptedBlob decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
-        if (thirdTimesTheCharm.isCompressed) {
-            [self blobWithStoryData:thirdTimesTheCharm forStory:story completion:completion];
-        } else if (thirdTimesTheCharm.isJPEG || thirdTimesTheCharm.isPNG || thirdTimesTheCharm.isMPEG4) {
-            completion([SKBlob blobWithData:thirdTimesTheCharm], nil);
-        } else {
-            SKBlob *blob = [SKBlob blobWithData:decryptedBlob];
-            if (blob)
-                completion(blob, [SKRequest errorWithMessage:@"Unknown blob format" code:1]);
-            else
-                completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
-        }
     }
 }
 
@@ -190,7 +176,7 @@
 
 - (void)decompress:(ResponseBlock)completion {
     if (self.data.isCompressed) {
-        NSString *uuid = [NSUUID UUID].UUIDString;
+        NSString *uuid  = [NSUUID UUID].UUIDString;
         NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", uuid]];
         NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", uuid]];
         [self.data writeToFile:path atomically:YES];
@@ -198,10 +184,11 @@
         [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
             if (succeeded) {
                 SKBlob *blob = [SKBlob blobWithContentsOfPath:unzip];
-                if (blob)
+                if (blob) {
                     completion(blob, nil);
-                else
+                } else {
                     completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
+                }
             } else {
                 SKLog(@"%@", error);
             }

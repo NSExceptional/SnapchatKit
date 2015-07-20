@@ -97,11 +97,19 @@
     return a == 0x89 && b == 0x50 && c == 0x4E && d == 0x47;
 }
 
+- (BOOL)isImage {
+    return self.isJPEG || self.isPNG;
+}
+
 - (BOOL)isMPEG4 {
     uint8_t a, b, c, d;
     [self getHeader:&a b:&b c:&c d:&d];
     
     return a == 0x00 && b == 0x00 && c == 0x00 && (d == 0x14 || d == 0x18 || d == 0x1C);
+}
+
+- (BOOL)isMedia {
+    return self.isImage || self.isMPEG4;
 }
 
 - (BOOL)isCompressed {

@@ -25,7 +25,9 @@
 
 - (BOOL)isJPEG;
 - (BOOL)isPNG;
+- (BOOL)isImage;
 - (BOOL)isMPEG4;
+- (BOOL)isMedia;
 - (BOOL)isCompressed;
 - (NSString *)appropriateFileExtension;
 

@@ -23,10 +23,10 @@
 + (instancetype)blobWithData:(NSData *)data;
 /** Initializes a blob with story data and passes it to the completion block.
  @discussion This method is specifically for story blobs, because they \e used to be CBC encrypted and possibly zipped if it's a video. Yes: stories are no longer encrypted. Get it together, Snapchat...
- @param encryptedBlob The... unencrypted blob...
+ @param blobData Pretty self explanatory.
  @param story The story you wish to retrieve.
  @param completion Takes an error, if any, and an \c SKBlob object. */
-+ (void)blobWithStoryData:(NSData *)encryptedBlob forStory:(SKStory *)story completion:(ResponseBlock)completion;
++ (void)blobWithStoryData:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion;
 
 /** Used to unarchive blobs initialized with anonymous data.
 @param completion Takes an error, if any, and new \c SKBlob object. Returns immediately if the blob was not compressed. */
