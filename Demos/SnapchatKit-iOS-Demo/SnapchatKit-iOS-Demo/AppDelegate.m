@@ -27,7 +27,7 @@
 }
 
 - (SNTableViewController *)tableViewController {
-    return (SNTableViewController *)([(UINavigationController *)self.window.rootViewController viewControllers][0]);
+    return (SNTableViewController *)([(UINavigationController *)self.window.rootViewController viewControllers].firstObject);
 }
 
 - (void)trySignIn {

@@ -16,6 +16,7 @@
 		4A77F5A31B57EC8300D9741B /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A77F5981B57EC8300D9741B /* AFURLRequestSerialization.m */; };
 		4A77F5A41B57EC8300D9741B /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A77F59A1B57EC8300D9741B /* AFURLResponseSerialization.m */; };
 		4A77F5A51B57EC8300D9741B /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A77F59C1B57EC8300D9741B /* AFURLSessionManager.m */; };
+		B4101B621B5CB31D00C7C4F7 /* SKSharedStoryDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = B4101B611B5CB31D00C7C4F7 /* SKSharedStoryDescription.m */; };
 		B48633F71B50F13400854526 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B48633F61B50F13400854526 /* main.m */; };
 		B48633FA1B50F13400854526 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B48633F91B50F13400854526 /* AppDelegate.m */; };
 		B48634031B50F13400854526 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B48634011B50F13400854526 /* Main.storyboard */; };
@@ -100,6 +101,8 @@
 		4A77F59A1B57EC8300D9741B /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		4A77F59B1B57EC8300D9741B /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		4A77F59C1B57EC8300D9741B /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		B4101B601B5CB31D00C7C4F7 /* SKSharedStoryDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSharedStoryDescription.h; sourceTree = "<group>"; };
+		B4101B611B5CB31D00C7C4F7 /* SKSharedStoryDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSharedStoryDescription.m; sourceTree = "<group>"; };
 		B48633F11B50F13400854526 /* SnapchatKit-iOS-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SnapchatKit-iOS-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B48633F51B50F13400854526 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B48633F61B50F13400854526 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -386,6 +389,8 @@
 				B48634401B50F25A00854526 /* SKRequest.m */,
 				B48634411B50F25A00854526 /* SKSession.h */,
 				B48634421B50F25A00854526 /* SKSession.m */,
+				B4101B601B5CB31D00C7C4F7 /* SKSharedStoryDescription.h */,
+				B4101B611B5CB31D00C7C4F7 /* SKSharedStoryDescription.m */,
 				B48634431B50F25A00854526 /* SKSimpleUser.h */,
 				B48634441B50F25A00854526 /* SKSimpleUser.m */,
 				B48634451B50F25A00854526 /* SKSnap.h */,
@@ -607,6 +612,7 @@
 				B48634871B50F25A00854526 /* SKConversation.m in Sources */,
 				B486349E1B50F25A00854526 /* SKClient+Discover.m in Sources */,
 				B48634891B50F25A00854526 /* SKFoundFriend.m in Sources */,
+				B4101B621B5CB31D00C7C4F7 /* SKSharedStoryDescription.m in Sources */,
 				B48634941B50F25A00854526 /* SKStoryCollection.m in Sources */,
 				B48634821B50F25A00854526 /* NSDictionary+SnapchatKit.m in Sources */,
 				B486348C1B50F25A00854526 /* SKNearbyUser.m in Sources */,
