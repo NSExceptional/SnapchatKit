@@ -13,6 +13,7 @@
 #import "SKSnapOptions.h"
 #import "SKSnapResponse.h"
 
+#import "NSDictionary+SnapchatKit.h"
 #import "NSString+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
 #import "NSData+SnapchatKit.h"
@@ -116,7 +117,7 @@
     }
     
     NSDictionary *query = @{@"added_friends_timestamp": [NSString timestampFrom:self.currentSession.addedFriendsTimestamp],
-                            @"json": json, @"username": self.username};
+                            @"json": json.JSONString, @"username": self.username};
     [self postTo:SKEPUpdate.snaps query:query callback:^(id object, NSError *error) {
         completion(error);
     }];

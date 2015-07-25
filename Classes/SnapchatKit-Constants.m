@@ -169,9 +169,9 @@ NS_NAMESPACE_IMP(SKEPMisc) {
 
 NS_NAMESPACE_IMP(SKEPUpdate) {
     .all             = @"/loq/all_updates",
-    .snaps           = @"/loq/update_user",
-    .stories         = @"/bq/update_snaps",
-    .user            = @"/bq/update_stories", // just /update_stories?
+    .snaps           = @"/bq/update_snaps",
+    .stories         = @"/bq/update_stories",
+    .user            = @"/loq/update_user", // just /update_stories?
     .featureSettings = @"/bq/update_feature_settings"
 };
 

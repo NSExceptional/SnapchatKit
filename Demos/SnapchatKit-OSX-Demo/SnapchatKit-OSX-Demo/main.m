@@ -88,7 +88,7 @@ void registerAccount(NSString *email, NSString *password, NSString *birthday) {
 
 void markSnapsRead(NSArray *unread) {
     for (SKSnap *snap in unread)
-        [[SKClient sharedClient] markSnapViewed:snap for:1 completion:^(NSError *error) {
+        [[SKClient sharedClient] markSnapViewed:snap for:2 completion:^(NSError *error) {
             if (!error)
                 SKLog(@"Success: %@", snap.identifier);
             else
@@ -252,7 +252,7 @@ int main(int argc, const char * argv[]) {
 //                testFindFriendsNearby(40.713054, -74.007228);
                 
 //                SKLog(@"Sending snap...");
-//                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/snap.png", @"tannerbennett");
+//                testSendSnapFromFileAtPathToUser(@"/Users/tantan/Desktop/Photo on 7-25-15 at 4.44 AM.jpg", @"tannerbennett");
                 
                 // Some locations with cool filters.
                 // Waco       31.534173, -97.123863
@@ -281,10 +281,10 @@ int main(int argc, const char * argv[]) {
 //                testGetConversations();
                 
                 // Download and save unread snaps
-                saveUnreadSnapsToDirectory(unread, directory);
+//                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-                markSnapsRead(unread);
+//                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);
