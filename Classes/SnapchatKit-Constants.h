@@ -132,6 +132,8 @@ NS_NAMESPACE(SKConsts, {
     NSNSString *userAgent;
     /** An alternate base URL for sending certain POST requests. */
     NSNSString *eventsURL;
+    /** The base URL for sending analytics. */
+    NSNSString *analyticsURL;
     /** The API secret used to create access tokens. */
     NSNSString *secret;
     /** Used when no session is available. */

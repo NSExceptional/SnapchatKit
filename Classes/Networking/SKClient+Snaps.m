@@ -86,7 +86,7 @@
 
 // TODO: add random offset to secondsViewed
 
-- (void)markSnapViewed:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion {
+- (void)old_markSnapViewed:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion {
     NSDictionary *snapInfo = @{snap.identifier: @{@"t":@([[NSString timestamp] integerValue]),
                                                   @"sv": @(secondsViewed*1000)}};
     NSDictionary *viewed   = @{@"eventName": @"SNAP_VIEW",
@@ -97,6 +97,29 @@
                                @"ts":        @([[NSString timestamp] integerValue]/1000)};
     NSArray *events = @[viewed, expire];
     [self sendEvents:events data:snapInfo completion:completion];
+}
+
+- (void)markSnapViewed:(SKSnap *)snap for:(CGFloat)secondsViewed completion:(ErrorBlock)completion {
+    [self markSnapsViewed:@[snap] atTimes:@[[NSDate date]] for:@[@(secondsViewed)] completion:completion];
+}
+
+- (void)markSnapsViewed:(NSArray *)snaps atTimes:(NSArray *)timestamps for:(NSArray *)secondsViewed completion:(ErrorBlock)completion {
+    NSParameterAssert(snaps.count == timestamps.count && timestamps.count == secondsViewed.count);
+    
+    NSMutableDictionary *json = [NSMutableDictionary dictionary];
+    SKSnap *snap; NSString *ts; NSNumber *num;
+    for (NSUInteger i = 0; i < snaps.count; i++) {
+        snap = snaps[i];
+        ts   = [NSString timestampFrom:timestamps[i]];
+        num  = secondsViewed[i];
+        json[snap.identifier] = @{@"t": ts, @"sv": num};
+    }
+    
+    NSDictionary *query = @{@"added_friends_timestamp": [NSString timestampFrom:self.currentSession.addedFriendsTimestamp],
+                            @"json": json, @"username": self.username};
+    [self postTo:SKEPUpdate.snaps query:query callback:^(id object, NSError *error) {
+        completion(error);
+    }];
 }
 
 - (void)markSnapScreenshot:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion {

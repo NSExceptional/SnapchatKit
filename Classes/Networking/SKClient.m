@@ -610,7 +610,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             @"json": snapInfo.JSONString,
                             @"username": self.currentSession.username};
     
-    [SKRequest postTo:SKEPUpdate.all query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [SKRequest postTo:SKEPUpdate.snaps query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
         if (completion)
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (data.length == 0 && [(NSHTTPURLResponse *)response statusCode] == 200)

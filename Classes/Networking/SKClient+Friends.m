@@ -75,7 +75,8 @@
     NSDictionary *query = @{@"username": self.currentSession.username,
                             @"action": @"multiadddelete",
                             @"friend": @{@"friendsToAdd": toAdd,
-                                         @"friendsToDelete": toUnfriend}.JSONString};
+                                         @"friendsToDelete": toUnfriend}.JSONString,
+                            @"added_by": @"ADDED_BY_USERNAME"};
     [self postTo:SKEPFriends.friend query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
 //            BOOL success = [json[@"message"] isEqualToString:@"success"];

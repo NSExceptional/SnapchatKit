@@ -92,7 +92,7 @@ void markSnapsRead(NSArray *unread) {
             if (!error)
                 SKLog(@"Success: %@", snap.identifier);
             else
-                SKLog(@"Failure: %@", snap.identifier);
+                SKLog(@"Failure: %@, %@", snap.identifier, error.localizedDescription);
         }];
 }
 
@@ -237,11 +237,12 @@ int main(int argc, const char * argv[]) {
                 /// Notes ///
                 
                 // bq/loq_data needs to be looked into again, it's returning more stuff now
-                
+
                 
                 // Get unread snaps
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
+                
                 
 //                [[SKClient sharedClient] get:[NSString stringWithFormat:@"%@US", kepDiscoverChannels] callback:^(id object, NSError *error) {
 //                    NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:object options:0 error:NULL];
@@ -280,10 +281,10 @@ int main(int argc, const char * argv[]) {
 //                testGetConversations();
                 
                 // Download and save unread snaps
-//                saveUnreadSnapsToDirectory(unread, directory);
+                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-//                markSnapsRead(unread);
+                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
 //                markChatsRead(session);

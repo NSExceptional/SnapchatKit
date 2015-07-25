@@ -117,6 +117,7 @@ NS_NAMESPACE_IMP(SKConsts) {
     .baseURL           = @"https://feelinsonice-hrd.appspot.com",
     .userAgent         = @"Snapchat/9.12.2.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
     .eventsURL         = @"https://sc-analytics.appspot.com/post_events",
+    .analyticsURL      = @"https://sc-analytics.appspot.com/analytics/bz",
     .secret            = @"iEk21fuwZApXlz93750dmW22pw389dPwOk",
     .staticToken       = @"m198sOkJEn37DjqZ32lpRu76xmw288xSQ9",
     .blobEncryptionKey = @"M02cnQ51Ji97vwT4",

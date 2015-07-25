@@ -31,7 +31,12 @@
 /** Marks a snap as opened for \c secondsViewed seconds.
  @param secondsViewed The number of seconds the snap was viewed for.
  @param completion Takes an error, if any. */
-- (void)markSnapViewed:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion;
+- (void)markSnapViewed:(SKSnap *)snap for:(CGFloat)secondsViewed completion:(ErrorBlock)completion;
+/** Marks a set of snaps as opened for the specified length at the given times.
+ @param snaps An array of \c SKSnap objects.
+ @param times An array of \c NSDate objects.
+ @param secondsViewed An array of \c NSNumber objects. Try to use floating point nubmers. */
+- (void)markSnapsViewed:(NSArray *)snaps atTimes:(NSArray *)times for:(NSArray *)secondsViewed completion:(ErrorBlock)completion;
 /** Marks a snap as screenshotted and viewed for \c secondsViewed seconds.
  @param secondsViewed The number of seconds the snap was viewed for.
  @param completion Takes an error, if any. */
