@@ -109,7 +109,8 @@ NS_NAMESPACE_IMP(SKAttestation) {
     .digest9_11        = @"nNsTUhHYJ943NG6vAPNl+tRr1vktNb9HpvRxZuu/rrE=",
     .digest9_12_0_1    = @"W4snbl56it9XbT2lsL4gyHwMsElnmOPBDp+iIYqbGcI=",
     .digest9_12_1      = @"fGZExseKdFH1bltkKloaAGfGx0vnKDDymKiJAiLo3dU=",
-    .digest9_12_2      = @"LMQNajaQ4SO7vNaQS1FRokxCtQXeIHwKZiJYhMczDGk="
+    .digest9_12_2      = @"LMQNajaQ4SO7vNaQS1FRokxCtQXeIHwKZiJYhMczDGk=",
+    .digest9_13_1_b    = @"VMQYnGA3YgMF2dJsy4WPPtMw0zu2EZZ9Yl6k3p5N7Ps="
 };
 
 #pragma mark Misc

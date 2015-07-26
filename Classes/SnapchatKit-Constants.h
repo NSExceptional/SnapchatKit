@@ -122,6 +122,7 @@ NS_NAMESPACE(SKAttestation, {
     NSNSString *digest9_12_0_1;
     NSNSString *digest9_12_1;
     NSNSString *digest9_12_2;
+    NSNSString *digest9_13_1_b;
     
 });
 
