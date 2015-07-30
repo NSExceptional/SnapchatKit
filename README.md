@@ -20,6 +20,17 @@ pod 'SnapchatKit'
 
 Or add the source files in /Pods to your project, as well as AFNetworking and SSZipArchive.
 
+## Examples
+
+SnapchatKit revolves around the `SKClient` class as a singleton. An instance of `SKClient` manages a Snapchat account. Here, we sign in and get a list of unread snaps and chats:
+
+```objc
+[[SKClient sharedClient] signInWithUsername:@"donald-trump" password:@"for_president" gmail:@"niceHair@gmail.com" gpass:@"123abc" completion:^(NSDictionary *json) {
+    NSArray *unread = [SKClient sharedClient].currentSession.unread;
+    NSLog(@"%@", unread);
+}];
+```
+
 ## To-do
 - TLS chat support
 - Send Google account passwords encrypted instead of plaintext...
