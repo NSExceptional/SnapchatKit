@@ -22,5 +22,6 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.9'
 
   s.source_files = 'Pod/Classes/*', 'Pod/Classes/**/*'
-  s.dependency 'AFNetworking', '~> 2.5', 'SSZipArchive'
+  s.dependency 'AFNetworking', '~> 2.5'
+  s.dependency 'SSZipArchive'
 end
