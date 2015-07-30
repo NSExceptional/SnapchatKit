@@ -14,19 +14,19 @@
   "social_media_url": "https://twitter.com/ThePantsThief",
   "requires_arc": true,
   "platforms": {
-    "ios": "8.0",
-    "osx": "10.9"
+    "ios": "7.0",
+    "osx": "10.8"
   },
   "source_files": [
     "Pod/Classes/*",
-    "Pod/Classes/**/*"
+    "Pod/Classes/**/*",
+    "Pod/Dependencies/*",
+    "Pod/Dependencies/**/*"
   ],
   "dependencies": {
     "AFNetworking": [
       "~> 2.5"
-    ],
-    "SSZipArchive": [
-
     ]
-  }
+  },
+  "libraries": "z"
 }

@@ -9,10 +9,11 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://twitter.com/ThePantsThief'
 
   s.requires_arc = true
-  s.ios.deployment_target = '8.0'
-  s.osx.deployment_target = '10.9'
+  s.ios.deployment_target = '7.0'
+  s.osx.deployment_target = '10.8'
 
-  s.source_files = 'Pod/Classes/*', 'Pod/Classes/**/*'
+  s.source_files = 'Pod/Classes/*', 'Pod/Classes/**/*', 'Pod/Dependencies/*', 'Pod/Dependencies/**/*'
   s.dependency 'AFNetworking', '~> 2.5'
-  s.dependency 'SSZipArchive'
+  # s.dependency 'SSZipArchive'
+  s.library = 'z'
 end
