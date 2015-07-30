@@ -18,7 +18,7 @@ Add SnapchatKit to your podfile:
 pod 'SnapchatKit'
 ```
 
-Or add the source files in /Pods to your project, as well as AFNetworking and SSZipArchive.
+Or add the source files in /Pods to your project, as well as AFNetworking ~~and SSZipArchive~~. SnapchatKit does depend on SSZipArchive, but its Cocoapod version is a version behind it's actual version, which SnapchatKit uses. I have included the required source files in the meantime.
 
 ## Examples
 
