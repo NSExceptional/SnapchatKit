@@ -8,7 +8,7 @@
 
 ## Usage
 
-Documentation for MirrorKit is on [Cocoadocs](http://cocoadocs.org/docsets/MirrorKit/1.0.0/Classes/MKMirror.html). To run the example project, clone the repo, and run `pod install` from the Example directory first.
+Documentation for MirrorKit is on [Cocoadocs](http://cocoadocs.org/docsets/SnapchatKit/0.1.0/index.html). To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Installation
 
