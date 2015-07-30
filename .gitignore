@@ -44,6 +44,8 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-SnapchatKit/Login.h
+Example/Pods/**/*
+Example/SnapchatKit.xcworkspace
+Example/SnapchatKit.xcworkspace/contents.xcworkspacedata
 
 Login.h

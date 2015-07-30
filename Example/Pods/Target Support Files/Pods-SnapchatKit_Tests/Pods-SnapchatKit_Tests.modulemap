@@ -1,6 +1,0 @@
-framework module Pods_SnapchatKit_Tests {
-  umbrella header "Pods-SnapchatKit_Tests-umbrella.h"
-
-  export *
-  module * { export * }
-}
