@@ -1,0 +1,6 @@
+framework module SnapchatKit {
+  umbrella header "SnapchatKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

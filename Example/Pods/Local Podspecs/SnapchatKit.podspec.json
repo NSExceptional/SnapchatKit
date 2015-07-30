@@ -1,0 +1,25 @@
+{
+  "name": "SnapchatKit",
+  "version": "0.1.0",
+  "summary": "A short description of SnapchatKit.",
+  "description": "An optional longer description of SnapchatKit\n\n* Markdown format.\n* Don't worry about the indent, we strip it!",
+  "homepage": "https://github.com/<GITHUB_USERNAME>/SnapchatKit",
+  "license": "MIT",
+  "authors": {
+    "ThePantsThief": "tannerbennett@me.com"
+  },
+  "source": {
+    "git": "https://github.com/<GITHUB_USERNAME>/SnapchatKit.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "requires_arc": true,
+  "source_files": "Pod/Classes/**/*",
+  "resource_bundles": {
+    "SnapchatKit": [
+      "Pod/Assets/*.png"
+    ]
+  }
+}

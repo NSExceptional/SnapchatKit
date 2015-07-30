@@ -1,26 +1,33 @@
+# SnapchatKit
+
+[![Version](https://img.shields.io/cocoapods/v/SnapchatKit.svg?style=flat)](http://cocoapods.org/pods/SnapchatKit)
+[![License](https://img.shields.io/cocoapods/l/SnapchatKit.svg?style=flat)](http://cocoapods.org/pods/SnapchatKit)
+[![Platform](https://img.shields.io/cocoapods/p/SnapchatKit.svg?style=flat)](http://cocoapods.org/pods/SnapchatKit)
 [![Issues](https://img.shields.io/github/issues-raw/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/issues)
 [![Stars](https://img.shields.io/github/stars/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/stargazers)
 
-# SnapchatKit
-An Objective-C implementation of the unofficial Snapchat API. Inspired by [RedditKit](https://github.com/samsymons/RedditKit). Work in progress!
+## Usage
 
-WIP [Snapchat API documentation](https://github.com/ThePantsThief/SnapchatKit/blob/master/SK-API-Docs.md), with the help of everything below.
+Documentation for MirrorKit is on [Cocoadocs](http://cocoadocs.org/docsets/MirrorKit/1.0.0/Classes/MKMirror.html). To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
 ## Installation
-- Add the `Classes` and `External` folders to your project
-- In your project file under "Build Phases" link with `libz.dylib` (might appear as `libz.1.dylib` or something)
-- `#import "SnapchatKit.h"` wherever you need to use it!
+
+Add SnapchatKit to your podfile:
+
+```ruby
+pod 'SnapchatKit'
+```
+
+Or add the source files in /Pods to your project, as well as AFNetworking and SSZipArchive.
 
 ## To-do
-- Link to AFNetworking somehow instead of just copying the files, like RedditKit does (github is hard ok)
 - TLS chat support
-- Send Google account passwords encrypted instead of plaintext... code coming in ~2 weeks
-- Cocoapods support
-- MIT License
+- Send Google account passwords encrypted instead of plaintext...
+- Tests
 
 ## Third party resources
 
-- http://gibsonsec.org/snapchat/fulldisclosure/
+- https://gibsonsec.org/snapchat/fulldisclosure/
 - https://github.com/mgp25/SC-API/wiki/API-v2-Research/
 - https://github.com/mgp25/SC-API/
 
@@ -30,3 +37,11 @@ WIP [Snapchat API documentation](https://github.com/ThePantsThief/SnapchatKit/bl
 - Steve, who also worked on the PHP implementation.
 - Harry "The Man" Gulliford
 - Sam Symons, author of [RedditKit](https://github.com/samsymons/RedditKit).
+
+## Author
+
+ThePantsThief, tannerbennett@me.com
+
+## License
+
+SnapchatKit is available under the MIT license. See the LICENSE file for more info.
