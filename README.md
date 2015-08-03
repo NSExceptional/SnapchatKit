@@ -45,6 +45,7 @@ Gmail information is necessary to trick Snapchat into thinking we're using the f
 - https://gibsonsec.org/snapchat/fulldisclosure/
 - https://github.com/mgp25/SC-API/wiki/API-v2-Research/
 - https://github.com/mgp25/SC-API/
+- https://github.com/liamcottle/AttestationServlet
 
 ## Special thanks to
 
