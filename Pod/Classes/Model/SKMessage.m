@@ -65,7 +65,9 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
                 _mediaIV         = media[@"iv"];
                 _mediaKey        = media[@"key"];
                 _mediaType       = media[@"media_type"];
-                if (![self.mediaType isEqualToString:@"VIDEO"])
+                if (!self.mediaType)
+                    _mediaType = @"UNSPECIFIED";
+                else if (![self.mediaType isEqualToString:@"VIDEO"])
                     NSLog(@"New media type: %@", self.mediaType);
                 
                 break;

@@ -16,27 +16,36 @@
 
 #pragma mark Request overrides
 
-static NSDictionary *headerOverrides;
-static NSMutableDictionary *scopeKeyValueOverrides;
-static NSDictionary *globalKeyValueOverrides;
-static NSDictionary *endpointOverrides;
+static NSDictionary        *headerOverrides;
+static NSDictionary        *globalParamOverrides;
+static NSMutableDictionary *scopeParamOverrides;
+static NSMutableDictionary *scopeHeaderOverrides;
+static NSDictionary        *endpointOverrides;
 
-+ (void)overrideHeaderValues:(NSDictionary *)headers {
++ (void)overrideHeaderValuesGlobally:(NSDictionary *)headers {
     NSParameterAssert([headers isKindOfClass:[NSDictionary class]] || !headers);
     headerOverrides = headers;
 }
 
++ (void)overrideHeaderValues:(NSDictionary *)headers forEndpoint:(NSString *)endpoint {
+    NSParameterAssert([headers isKindOfClass:[NSDictionary class]] || !headers); NSParameterAssert(endpoint);
+    if (!scopeHeaderOverrides)
+        scopeHeaderOverrides = [NSMutableDictionary dictionary];
+    
+    scopeHeaderOverrides[endpoint] = headers;
+}
+
 + (void)overrideValuesForKeys:(NSDictionary *)queries forEndpoint:(NSString *)endpoint {
     NSParameterAssert([queries isKindOfClass:[NSDictionary class]] || !queries); NSParameterAssert(endpoint);
-    if (!scopeKeyValueOverrides)
-        scopeKeyValueOverrides = [NSMutableDictionary dictionary];
+    if (!scopeParamOverrides)
+        scopeParamOverrides = [NSMutableDictionary dictionary];
     
-    scopeKeyValueOverrides[endpoint] = queries;
+    scopeParamOverrides[endpoint] = queries;
 }
 
 + (void)overrideValuesForKeysGlobally:(NSDictionary *)queries {
     NSParameterAssert([queries isKindOfClass:[NSDictionary class]] || !queries);
-    globalKeyValueOverrides = queries;
+    globalParamOverrides = queries;
 }
 
 + (void)overrideEndpoints:(NSDictionary *)endpoints {
@@ -45,12 +54,19 @@ static NSDictionary *endpointOverrides;
 
 void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
     if (params != NULL) {
-        *params = [*params dictionaryByReplacingValuesForKeys:globalKeyValueOverrides];
-        *params = [*params dictionaryByReplacingValuesForKeys:scopeKeyValueOverrides[*endpoint]];
+        *params = [*params dictionaryByReplacingValuesForKeys:globalParamOverrides];
+        *params = [*params dictionaryByReplacingValuesForKeys:scopeParamOverrides[*endpoint]];
     }
     if (*endpoint) {
         *endpoint = endpointOverrides[*endpoint] ?: *endpoint;
     }
+}
+
+NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString *endpoint) {
+    if (!httpHeaders) return @{};
+    httpHeaders = [httpHeaders dictionaryByReplacingValuesForKeys:headerOverrides];
+    httpHeaders = [httpHeaders dictionaryByReplacingValuesForKeys:scopeHeaderOverrides[endpoint]];
+    return httpHeaders;
 }
 
 #pragma mark Convenience
@@ -126,6 +142,7 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
 
 - (id)initWithPOSTEndpoint:(NSString *)endpoint token:(NSString *)token query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders ts:(NSString *)timestamp {
     if (!token) token = SKConsts.staticToken;
+    httpHeaders = SKRequestApplyHeaderOverrides(httpHeaders, endpoint);
     
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
@@ -171,6 +188,8 @@ void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
 }
 
 - (id)initWithGETEndpoint:(NSString *)endpoint headers:(NSDictionary *)httpHeaders {
+    httpHeaders = SKRequestApplyHeaderOverrides(httpHeaders, endpoint);
+    
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
         SKRequestApplyOverrides(&endpoint, NULL);

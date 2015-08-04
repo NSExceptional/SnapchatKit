@@ -270,6 +270,44 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
         }];
 }
 
+/** ptoken value. */
+- (void)getGoogleCloudMessagingIdentifier:(StringBlock)callback {
+    NSDictionary *postFields = @{@"X-google.message_id": @"google.rpc1",
+                                 @"device":              @(4343470343591528399),
+                                 @"sender":              @(191410808405),
+                                 @"app_ver":             @(706),
+                                 @"gcm_ver":             @(7097038),
+                                 @"app":                 @"com.snapchat.android",
+                                 @"iat":                 @([[NSDate date] timeIntervalSince1970]),
+                                 @"cert":                @"49f6badb81d89a9e38d65de76f09355071bd67e7"};
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://android.clients.google.com/c2dm/register3"]];
+    
+    request.HTTPMethod = @"POST";
+    request.HTTPBody   = [[NSString queryStringWithParams:postFields] dataUsingEncoding:NSUTF8StringEncoding];
+    [request setValue:@"en" forHTTPHeaderField:@"Accept-Language"];
+    [request setValue:@"en_US" forHTTPHeaderField:@"Accept-Locale"];
+    [request setValue:@"Android-GCM/1.5 (A116 _Quad KOT49H)" forHTTPHeaderField:SKHeaders.userAgent];
+    [request setValue:@"com.snapchat.android" forHTTPHeaderField:@"app"];
+    [request setValue:@"AidLogin 4343470343591528399:5885638743641649694" forHTTPHeaderField:@"Authorization"];
+    [request setValue:@"7097038" forHTTPHeaderField:@"Gcm-ver"];
+    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (error) {
+            callback(nil, error);
+        } else if (data) {
+            NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            string = [string matchGroupAtIndex:1 forRegex:@"token=([\\w\\.-]+)"];
+            callback(string, nil);
+        } else {
+            callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+        }
+    }];
+    [dataTask resume];
+}
+
 /** Attestation, courtesy of \c casper.io. Using AFNetworking due to an unknown issue with NSURLRequest causing logins to fail 50% of the time */
 - (void)getAttestationUsingAFNetworkingWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
     NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, SKEPAccount.login];
@@ -341,54 +379,60 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 if (error2 || !attestation) {
                     completion(nil, [SKRequest errorWithMessage:@"Could not retrieve attestation." code:error2.code?:1]);
                 } else {
-                    [self getDeviceToken:^(NSDictionary *dict, NSError *error3) {
-                        if (error3 || !dict) {
-                            completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Snapchat device token." code:error3.code?:1]);
-                        } else {
-                            
-                            _googleAuthToken   = gauth;
-                            _googleAttestation = attestation;
-                            _deviceToken1i     = dict[SKConsts.deviceToken1i];
-                            _deviceToken1v     = dict[SKConsts.deviceToken1v];
-                            
-                            NSString *req_token = [NSString hashSCString:SKConsts.staticToken and:timestamp];
-                            NSString *string    = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, req_token];
-                            NSString *deviceSig = [[NSString hashHMac:string key:self.deviceToken1v] substringWithRange:NSMakeRange(0, 20)];
-                            
-                            NSDictionary *post = @{@"username": username,
-                                                   @"password": password,
-                                                   @"height":   @(kScreenHeight),
-                                                   @"width":    @(kScreenWidth),
-                                                   @"max_video_width":  @480,
-                                                   @"max_video_height": @640,
-                                                   @"application_id":   @"com.snapchat.android",
-                                                   @"is_two_fa":        @"false",
-                                                   @"ptoken":           @"ie",
-                                                   @"pre_auth":         @"",
-                                                   @"sflag":            @1,
-                                                   @"dsig":             deviceSig,
-                                                   @"dtoken1i":         self.deviceToken1i,
-                                                   @"attestation":      self.googleAttestation,
-                                                   @"timestamp":        timestamp};
-                            
-                            NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken]};
-                            SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login token:nil query:post headers:headers ts:timestamp];
-                            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-                            
-                            NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error4) {
-                                [self handleError:error4 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        if (!jsonerror) {
-                                            self.currentSession = [SKSession sessionWithJSONResponse:json];
-                                            _authToken = self.currentSession.authToken;
-                                            completion(json, nil);
-                                        } else {
-                                            completion(nil, jsonerror);
-                                        }
-                                    });
-                                }];
+                    [self getGoogleCloudMessagingIdentifier:^(NSString *ptoken, NSError *error3) {
+                        if (!error3) {
+                            [self getDeviceToken:^(NSDictionary *dict, NSError *error4) {
+                                if (error4 || !dict) {
+                                    completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Snapchat device token." code:error4.code?:1]);
+                                } else {
+                                    
+                                    _googleAuthToken   = gauth;
+                                    _googleAttestation = attestation;
+                                    _deviceToken1i     = dict[SKConsts.deviceToken1i];
+                                    _deviceToken1v     = dict[SKConsts.deviceToken1v];
+                                    
+                                    NSString *req_token = [NSString hashSCString:SKConsts.staticToken and:timestamp];
+                                    NSString *string    = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, req_token];
+                                    NSString *deviceSig = [[NSString hashHMac:string key:self.deviceToken1v] substringWithRange:NSMakeRange(0, 20)];
+                                    
+                                    NSDictionary *post = @{@"username": username,
+                                                           @"password": password,
+                                                           @"height":   @(kScreenHeight),
+                                                           @"width":    @(kScreenWidth),
+                                                           @"max_video_width":  @480,
+                                                           @"max_video_height": @640,
+                                                           @"application_id":   @"com.snapchat.android",
+                                                           @"is_two_fa":        @"false",
+                                                           @"ptoken":           ptoken ?: @"ie",
+                                                           @"pre_auth":         @"",
+                                                           @"sflag":            @1,
+                                                           @"dsig":             deviceSig,
+                                                           @"dtoken1i":         self.deviceToken1i,
+                                                           @"attestation":      self.googleAttestation,
+                                                           @"timestamp":        timestamp};
+                                    
+                                    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken]};
+                                    SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login token:nil query:post headers:headers ts:timestamp];
+                                    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+                                    
+                                    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error5) {
+                                        [self handleError:error5 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
+                                            dispatch_async(dispatch_get_main_queue(), ^{
+                                                if (!jsonerror) {
+                                                    self.currentSession = [SKSession sessionWithJSONResponse:json];
+                                                    _authToken = self.currentSession.authToken;
+                                                    completion(json, nil);
+                                                } else {
+                                                    completion(nil, jsonerror);
+                                                }
+                                            });
+                                        }];
+                                    }];
+                                    [dataTask resume];
+                                }
                             }];
-                            [dataTask resume];
+                        } else {
+                            completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Snapchat push token." code:error3.code?:1]);
                         }
                     }];
                 }

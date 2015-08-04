@@ -39,7 +39,7 @@
 }
 
 - (NSDictionary *)dictionaryByReplacingValuesForKeys:(NSDictionary *)dictionary {
-    if (!dictionary || !self) return self;
+    if (!dictionary || !dictionary.allKeys.count || !self) return self;
     
     NSMutableDictionary *m = self.mutableCopy;
     for (NSString *key in dictionary.allKeys)
@@ -49,7 +49,7 @@
 }
 
 - (NSDictionary *)dictionaryByReplacingKeysWithNewKeys:(NSDictionary *)oldKeysToNewKeys {
-    if (!oldKeysToNewKeys || !self) return self;
+    if (!oldKeysToNewKeys || !oldKeysToNewKeys.allKeys.count || !self) return self;
     
     NSMutableDictionary *m = self.mutableCopy;
     [oldKeysToNewKeys enumerateKeysAndObjectsUsingBlock:^(NSString *oldKey, NSString *newKey, BOOL *stop) {
