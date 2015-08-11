@@ -102,11 +102,6 @@ SK_NAMESPACE(SKAttestation, {
     /** Google Play Services version used to make the attestation request. */
     NSInteger  GMSVersion;
     /** Authentication token sent to verify requests with the server to prevent abuse. */
-    NSNSString *auth;
-    /** Casper™ attestation request URL. Special thanks to Liam! */
-    NSNSString *URLCasper;
-    /** SnapKeep™ attestation request URL. Special thanks to Harry! */
-    NSNSString *URLSnapKeep;
     NSNSString *droidGuard;
     NSNSString *digest9_8;
     NSNSString *digest9_9;
