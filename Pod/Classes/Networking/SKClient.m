@@ -20,7 +20,6 @@
 
 #import "SSZipArchive.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
-#import "AFHTTPRequestOperationManager.h"
 #import "Attestation.pb.h"
 
 BOOL SKHasActiveConnection() {

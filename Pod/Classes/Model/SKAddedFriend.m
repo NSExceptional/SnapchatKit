@@ -26,7 +26,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ add source=%lu, username=%@, displayn=%@>",
-            NSStringFromClass(self.class), self.addSourceType, self.username, self.displayName];
+            NSStringFromClass(self.class), (unsigned long)self.addSourceType, self.username, self.displayName];
 }
 
 @end
