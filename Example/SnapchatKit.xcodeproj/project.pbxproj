@@ -14,7 +14,6 @@
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
-		6003F59E195388D20070C39A /* SKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* SKAppDelegate.m */; };
 		6003F5A7195388D20070C39A /* SKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* SKViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
@@ -26,6 +25,7 @@
 		B49E0ED11B6A6F110086F8D0 /* SNTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B49E0ED01B6A6F110086F8D0 /* SNTableViewController.m */; };
 		B49E0ED31B6A6F470086F8D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B49E0ED21B6A6F470086F8D0 /* Main.storyboard */; };
 		B49E0ED51B6A6FE80086F8D0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B49E0ED41B6A6FE80086F8D0 /* LaunchScreen.xib */; };
+		B4F75D7C1B7A7C3A008E6FF8 /* SKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F75D7B1B7A7C3A008E6FF8 /* SKAppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,6 @@
 		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6003F59B195388D20070C39A /* SnapchatKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SnapchatKit-Prefix.pch"; sourceTree = "<group>"; };
 		6003F59C195388D20070C39A /* SKAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKAppDelegate.h; sourceTree = "<group>"; };
-		6003F59D195388D20070C39A /* SKAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKAppDelegate.m; sourceTree = "<group>"; };
 		6003F5A5195388D20070C39A /* SKViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SKViewController.h; sourceTree = "<group>"; };
 		6003F5A6195388D20070C39A /* SKViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -67,6 +66,7 @@
 		B49E0ED01B6A6F110086F8D0 /* SNTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTableViewController.m; sourceTree = "<group>"; };
 		B49E0ED21B6A6F470086F8D0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B49E0ED41B6A6FE80086F8D0 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		B4F75D7B1B7A7C3A008E6FF8 /* SKAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAppDelegate.m; sourceTree = "<group>"; };
 		C50B6337FD849C47AAA86405 /* Pods-SnapchatKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		CBB5C915BC5AC56D10244C95 /* SnapchatKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SnapchatKit.podspec; path = ../SnapchatKit.podspec; sourceTree = "<group>"; };
 		E47288D9F86E267809431017 /* Pods_SnapchatKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapchatKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -151,7 +151,7 @@
 				B49E0ED41B6A6FE80086F8D0 /* LaunchScreen.xib */,
 				B49E0ED21B6A6F470086F8D0 /* Main.storyboard */,
 				6003F59C195388D20070C39A /* SKAppDelegate.h */,
-				6003F59D195388D20070C39A /* SKAppDelegate.m */,
+				B4F75D7B1B7A7C3A008E6FF8 /* SKAppDelegate.m */,
 				6003F5A5195388D20070C39A /* SKViewController.h */,
 				6003F5A6195388D20070C39A /* SKViewController.m */,
 				B49E0ECF1B6A6F110086F8D0 /* SNTableViewController.h */,
@@ -401,7 +401,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F59E195388D20070C39A /* SKAppDelegate.m in Sources */,
+				B4F75D7C1B7A7C3A008E6FF8 /* SKAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* SKViewController.m in Sources */,
 				B49E0ED11B6A6F110086F8D0 /* SNTableViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,

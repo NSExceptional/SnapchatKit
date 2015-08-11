@@ -30,7 +30,7 @@
 }
 
 - (void)trySignIn {
-    [[SKClient sharedClient] signInWithUsername:@"yourusername" password:@"yourpassword" gmail:@"you@gmail.com" gpass:@"123abc" completion:^(NSDictionary *dict, NSError *error) {
+    [[SKClient sharedClient] signInWithUsername:@"tannerbennette" password:@"20132817t" gmail:@"itannerbennett@gmail.com" gpass:@"20132817" completion:^(NSDictionary *dict, NSError *error) {
         if (!error) {
             [self tableViewController].dataSource = [SKClient sharedClient].currentSession.conversations.array;
             [[self tableViewController].tableView reloadData];

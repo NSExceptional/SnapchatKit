@@ -13,14 +13,17 @@
 
 @implementation NSString (Encoding)
 
+- (NSData *)base64DecodedData {
+    return [[NSData alloc] initWithBase64EncodedString:self options:0];
+}
+
 - (NSString *)base64Encode {
     NSData *stringData = [self dataUsingEncoding:NSUTF8StringEncoding];
     return [stringData base64EncodedStringWithOptions:0];
 }
 
 - (NSString *)base64Decode {
-    NSData *decodedData = [[NSData alloc] initWithBase64EncodedString:self options:0];
-    return [[NSString alloc] initWithData:decodedData encoding:NSUTF8StringEncoding];
+    return [[NSString alloc] initWithData:self.base64DecodedData encoding:NSUTF8StringEncoding];
 }
 
 - (NSString *)sha256Hash {

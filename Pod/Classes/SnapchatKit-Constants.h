@@ -100,13 +100,14 @@ SK_NAMESPACE(SKAttestation, {
     /** The sha256 digest of the certificate used to sign the Snapchat APK, base 64 encoded. It should never change. */
     NSNSString *certificateDigest;
     /** Google Play Services version used to make the attestation request. */
-    NSNSString *GMSVersion;
+    NSInteger  GMSVersion;
     /** Authentication token sent to verify requests with the server to prevent abuse. */
     NSNSString *auth;
     /** Casper™ attestation request URL. Special thanks to Liam! */
     NSNSString *URLCasper;
     /** SnapKeep™ attestation request URL. Special thanks to Harry! */
     NSNSString *URLSnapKeep;
+    NSNSString *droidGuard;
     NSNSString *digest9_8;
     NSNSString *digest9_9;
     NSNSString *digest9_10;
@@ -114,7 +115,8 @@ SK_NAMESPACE(SKAttestation, {
     NSNSString *digest9_12_0_1;
     NSNSString *digest9_12_1;
     NSNSString *digest9_12_2;
-    NSNSString *digest9_13_1_b;
+    NSNSString *digest9_13;
+    NSNSString *digest9_14;
     
 });
 
