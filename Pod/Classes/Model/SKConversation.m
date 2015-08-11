@@ -90,7 +90,7 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     NSUInteger c = self.participants.count;
     NSString *participants = c == 0 ? @"{n/a}" : c == 1 ? self.participants[0] : [NSString stringWithFormat:@"%@ and %@", self.participants[0], self.participants[1]];
     return [NSString stringWithFormat:@"<%@ participants: %@, messages=%lu, unread=%lu>",
-            NSStringFromClass(self.class), participants, self.messages.count, self.pendingRecievedSnaps.count];
+            NSStringFromClass(self.class), participants, (unsigned long)self.messages.count, (unsigned long)self.pendingRecievedSnaps.count];
 }
 
 - (NSArray *)unreadChatsForParticipant:(NSString *)participant {

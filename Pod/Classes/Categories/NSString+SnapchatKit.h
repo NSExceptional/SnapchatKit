@@ -10,6 +10,7 @@
 
 @interface NSString (Encoding)
 
+- (NSData *)base64DecodedData;
 - (NSString *)base64Encode;
 - (NSString *)base64Decode;
 - (NSString *)sha256Hash;

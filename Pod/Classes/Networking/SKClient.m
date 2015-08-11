@@ -20,7 +20,7 @@
 
 #import "SSZipArchive.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
-#import "AFHTTPRequestOperationManager.h"
+#import "Attestation.pb.h"
 
 BOOL SKHasActiveConnection() {
     SCNetworkReachabilityFlags flags;
@@ -308,42 +308,37 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     [dataTask resume];
 }
 
-/** Attestation, courtesy of \c casper.io. Using AFNetworking due to an unknown issue with NSURLRequest causing logins to fail 50% of the time */
-- (void)getAttestationUsingAFNetworkingWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
-    NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, SKEPAccount.login];
-    NSString *nonce          = [hashString.sha256HashRaw base64EncodedStringWithOptions:0];
+/** Google attestation. */
+- (void)getAttestation:(NSString *)username password:(NSString *)password ts:(NSString *)timestamp callback:(StringBlock)completion {
+    NSString *hashString = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, SKEPAccount.login];
     
-    NSDictionary *query = @{@"nonce": nonce,
-                            @"authentication": SKAttestation.auth,
-                            @"apk_digest": SKAttestation.digest9_12_2,
-                            @"timestamp": ts};
+    AttestationBuilder *attestBuilder = [Attestation builder];
     
-    [[AFHTTPRequestOperationManager manager] POST:SKAttestation.URLCasper parameters:query success:^(AFHTTPRequestOperation *operation, id json) {
-        if ([json[@"code"] intValue] == 200)
-            completion(json[@"signedAttestation"], nil);
-        else
-            completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:operation.response.statusCode]);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *errorOperation) {
-        completion(nil, errorOperation);
-    }];
-}
-
-/** Attestation, courtesy of \c casper.io. Using NSURLRequest */
-- (void)getAttestationUsingNSURLRequestWithUsername:(NSString *)username password:(NSString *)password ts:(NSString *)ts callback:(StringBlock)completion {
-    NSString *hashString     = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, ts, SKEPAccount.login];
-    NSString *nonce          = [hashString.sha256HashRaw base64EncodedStringWithOptions:0];
+    UnknownDataBuilder *unknownDataBuilder = [UnknownData builder];
+    unknownDataBuilder.unknown1 = YES;
+    unknownDataBuilder.unknown2 = YES;
     
-    NSDictionary *query = @{@"nonce": nonce,
-                            @"authentication": SKAttestation.auth,
-                            @"apk_digest": SKAttestation.digest9_12_2,
-                            @"timestamp": ts};
-    NSData *queryData  = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
+    DataContainerBuilder *dataContainerBuilder      = [DataContainer builder];
+    dataContainerBuilder.nonce                      = hashString.sha256HashRaw;
+    dataContainerBuilder.apkPackageName             = @"com.snapchat.android";
+    dataContainerBuilder.apkDigestSha256            = SKAttestation.digest9_14.base64DecodedData;
+    dataContainerBuilder.apkCertificateDigestSha256 = SKAttestation.certificateDigest.base64DecodedData;
+    dataContainerBuilder.gmsVersion                 = (int)SKAttestation.GMSVersion;
+    dataContainerBuilder.timestamp                  = timestamp.integerValue;
+    dataContainerBuilder.unknowndata                = [unknownDataBuilder build];
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:SKAttestation.URLCasper]];
-    request.HTTPMethod  = @"POST";
-    request.HTTPBody    = queryData;
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
+    attestBuilder.datacontainer = [dataContainerBuilder build];
+    attestBuilder.droidGuard = SKAttestation.droidGuard;
+    
+    NSData *data = [attestBuilder build].data;
+    
+    NSURL *url = [NSURL URLWithString:@"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA"];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"POST";
+    request.HTTPBody   = data;
+    [request setValue:@(data.length).stringValue forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-protobuf" forHTTPHeaderField:SKHeaders.contentType];
+    [request setValue:SKAttestation.userAgent forHTTPHeaderField:SKHeaders.userAgent];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -355,7 +350,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
             
             if (jsonError)
                 completion(nil, jsonError);
-            else if ([json[@"code"] integerValue] == 200)
+            else if ([(NSHTTPURLResponse *)response statusCode] == 200)
                 completion(json[@"signedAttestation"], nil);
             else
                 completion(nil, [SKRequest unknownError]);
@@ -375,7 +370,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
             completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Google auth token." code:error1.code?:1]);
         } else {
             NSString *timestamp = [NSString timestamp];
-            [self getAttestationUsingAFNetworkingWithUsername:username password:password ts:timestamp callback:^(NSString *attestation, NSError *error2) {
+            [self getAttestation:username password:password ts:timestamp callback:^(NSString *attestation, NSError *error2) {
                 if (error2 || !attestation) {
                     completion(nil, [SKRequest errorWithMessage:@"Could not retrieve attestation." code:error2.code?:1]);
                 } else {
@@ -411,7 +406,8 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                                            @"attestation":      self.googleAttestation,
                                                            @"timestamp":        timestamp};
                                     
-                                    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken]};
+                                    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
+                                                              SKHeaders.clientAuth: @""};
                                     SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login token:nil query:post headers:headers ts:timestamp];
                                     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
                                     

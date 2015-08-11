@@ -10,6 +10,7 @@
 #import "SNTableViewController.h"
 
 #import "SnapchatKit.h"
+#import "Login.h"
 
 @implementation SKAppDelegate
 
@@ -30,7 +31,7 @@
 }
 
 - (void)trySignIn {
-    [[SKClient sharedClient] signInWithUsername:@"yourusername" password:@"yourpassword" gmail:@"you@gmail.com" gpass:@"123abc" completion:^(NSDictionary *dict, NSError *error) {
+    [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
         if (!error) {
             [self tableViewController].dataSource = [SKClient sharedClient].currentSession.conversations.array;
             [[self tableViewController].tableView reloadData];
