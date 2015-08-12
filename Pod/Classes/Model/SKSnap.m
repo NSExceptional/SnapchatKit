@@ -75,12 +75,13 @@
 - (NSString *)suggestedFilename {
     if (!self.blob)
         return nil;
-    if (self.blob.isImage)
-        return [NSString stringWithFormat:@"%@.jpg", self.identifier];
-    else if (self.blob.overlay)
-        return self.identifier;
-    else
-        return [NSString stringWithFormat:@"%@.mp4", self.identifier];
+    return [self.sender stringByAppendingString:self.identifier];
+//    if (self.blob.isImage)
+//        return [NSString stringWithFormat:@"%@.jpg", self.identifier];
+//    else if (self.blob.overlay)
+//        return self.identifier;
+//    else
+//        return [NSString stringWithFormat:@"%@.mp4", self.identifier];
 }
 
 @end

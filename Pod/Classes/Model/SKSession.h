@@ -66,6 +66,8 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) NSString *discoverResourceParamValue;
 /** Used internally to load Discover snaps. */
 @property (nonatomic, readonly) NSString *discoverVideoCatalog;
+/** Undocumented. */
+@property (nonatomic, readonly) NSDictionary *sponsored;
 
 #pragma mark Cash information
 @property (nonatomic, readonly) BOOL         canUseCash;

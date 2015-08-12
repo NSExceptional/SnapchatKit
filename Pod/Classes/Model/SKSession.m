@@ -78,6 +78,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _discoverResourceParamName  = discover[@"resource_parameter_name"];
         _discoverResourceParamValue = discover[@"resource_parameter_value"];
         _discoverVideoCatalog       = discover[@"video_catalog"];
+        _sponsored                  = json[@"sponsored"];
         
         // Friends
         NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];

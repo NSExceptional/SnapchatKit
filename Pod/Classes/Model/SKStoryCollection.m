@@ -19,6 +19,10 @@
         _matureContent   = [json[@"mature_content"] boolValue];
         _adPlacementData = json[@"ad_placement_metadata"];
         
+        _displayName      = json[@"display_name"];
+        _sharedIdentifier = json[@"shared_id"];
+        _isLocal          = [json[@"is_local"] boolValue];
+        
         if (thumbs) {
             _viewedThumbnail        = [NSURL URLWithString:thumbs[@"viewed"][@"url"]];
             _unviewedThumbnail      = [NSURL URLWithString:thumbs[@"unviewed"][@"url"]];
@@ -36,7 +40,7 @@
         _stories = stories;
     }
     
-    [[self class] addKnownJSONKeys:@[@"username", @"mature_content", @"stories", @"thumbnails", @"ad_placement_metadata"]];
+    [[self class] addKnownJSONKeys:@[@"username", @"mature_content", @"stories", @"thumbnails", @"ad_placement_metadata", @"display_name", @"is_local", @"shared_id"]];
     
     return self;
 }
