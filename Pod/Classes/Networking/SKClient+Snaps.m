@@ -164,7 +164,7 @@
                 
                 [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
                     if (succeeded) {
-                        SKBlob *blob = [SKBlob blobWithContentsOfPath:path];
+                        SKBlob *blob = [SKBlob blobWithContentsOfPath:unzip];
                         if (blob)
                             completion(blob, nil);
                         else

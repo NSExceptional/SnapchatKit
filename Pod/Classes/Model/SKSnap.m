@@ -75,7 +75,7 @@
 - (NSString *)suggestedFilename {
     if (!self.blob)
         return nil;
-    return [self.sender stringByAppendingString:self.identifier];
+    return [NSString stringWithFormat:@"%@~%@", self.sender, self.identifier];
 //    if (self.blob.isImage)
 //        return [NSString stringWithFormat:@"%@.jpg", self.identifier];
 //    else if (self.blob.overlay)

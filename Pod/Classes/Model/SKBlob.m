@@ -109,10 +109,10 @@
                 }
                 
                 // Load video blob and image blob
-                else if ([files[0] containsString:@"media~zip"]) {
+                else if ([files[0] containsString:@"media~"]) {
                     _data = [[NSData alloc] initWithContentsOfFile:[path stringByAppendingPathComponent:files[0]]];
                     _overlay = [[NSData alloc] initWithContentsOfFile:[path stringByAppendingPathComponent:files[1]]];
-                } else if ([files[1] containsString:@"media~zip"]) {
+                } else if ([files[1] containsString:@"media~"]) {
                     _data = [[NSData alloc] initWithContentsOfFile:[path stringByAppendingPathComponent:files[1]]];
                     _overlay = [[NSData alloc] initWithContentsOfFile:[path stringByAppendingPathComponent:files[0]]];
                 }
