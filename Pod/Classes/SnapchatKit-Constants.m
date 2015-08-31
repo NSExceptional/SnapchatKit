@@ -39,7 +39,7 @@ NSString * SKStringFromAddSource(SKAddSource addSource) {
             return @"ADDED_BY_ADDED_ME_BACK";
     }
     
-    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKAddSource string", addSource];
+    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKAddSource string", (long)addSource];
     return nil;
 }
 
@@ -61,7 +61,7 @@ NSString * SKStringFromMediaKind(SKMediaKind mediaKind) {
             return @"SKMediaKindStrangerSilentVideo";
     }
     
-    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKMediaKind string", mediaKind];
+    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKMediaKind string", (long)mediaKind];
     return nil;
 }
 
@@ -75,7 +75,7 @@ NSString * SKStringFromStoryPrivacy(SKStoryPrivacy storyPrivacy) {
             return @"CUSTOM";
     }
     
-    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKStoryPrivacy string", storyPrivacy];
+    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKStoryPrivacy string", (unsigned long)storyPrivacy];
     return nil;
 }
 
@@ -158,6 +158,7 @@ SK_NAMESPACE_IMP(SKFeatureSettings) {
 
 #pragma mark - Endpoints -
 
+#pragma mark SKEPMisc
 SK_NAMESPACE_IMP(SKEPMisc) {
     .ping          = @"/loq/ping",
     .locationData  = @"/loq/loc_data",
@@ -167,6 +168,7 @@ SK_NAMESPACE_IMP(SKEPMisc) {
     .suggestFriend = @"/bq/suggest_friend"
 };
 
+#pragma mark SKEPUpdate
 SK_NAMESPACE_IMP(SKEPUpdate) {
     .all             = @"/loq/all_updates",
     .snaps           = @"/bq/update_snaps",
@@ -175,6 +177,7 @@ SK_NAMESPACE_IMP(SKEPUpdate) {
     .featureSettings = @"/bq/update_feature_settings"
 };
 
+#pragma mark SKEPAccount
 SK_NAMESPACE_IMP(SKEPAccount) {
     .login             = @"/loq/login",
     .logout            = @"/ph/logout",
@@ -199,6 +202,7 @@ SK_NAMESPACE_IMP(SKEPAccount) {
     }
 };
 
+#pragma mark SKEPChat
 SK_NAMESPACE_IMP(SKEPChat) {
     .sendMessage   = @"/loq/conversation_post_messages",
     .conversation  = @"/loq/conversation",
@@ -213,6 +217,7 @@ SK_NAMESPACE_IMP(SKEPChat) {
     .shareMedia    = @"/loq/conversation_share_media"
 };
 
+#pragma mark SKEPDevice
 SK_NAMESPACE_IMP(SKEPDevice) {
     .IPRouting      = @"/bq/ip_routing",
     .IPRoutingError = @"/bq/ip_routing_error",
@@ -220,6 +225,7 @@ SK_NAMESPACE_IMP(SKEPDevice) {
     .device         = @"/ph/device"
 };
 
+#pragma mark SKEPDiscover
 SK_NAMESPACE_IMP(SKEPDiscover) {
     .channels = @"/discover/channel_list?region=",
     .icons    = @"/discover/icons?icon=",
@@ -227,6 +233,7 @@ SK_NAMESPACE_IMP(SKEPDiscover) {
     .intros   = @"/discover/intro_videos?publisher="  // &intro_video= &currentSession.resourceParamName=currentSession.resourceParamValue
 };
 
+#pragma mark SKEPFriends
 SK_NAMESPACE_IMP(SKEPFriends) {
     .find       = @"/ph/find_friends",
     .findNearby = @"/bq/find_nearby_friends",
@@ -237,6 +244,7 @@ SK_NAMESPACE_IMP(SKEPFriends) {
     .exists     = @"/bq/user_exists"
 };
 
+#pragma mark SKEPSnaps
 SK_NAMESPACE_IMP(SKEPSnaps) {
     .loadBlob = @"/bq/blob", // /ph/blob ?
     .upload   = @"/ph/upload",
@@ -244,6 +252,7 @@ SK_NAMESPACE_IMP(SKEPSnaps) {
     .retry    = @"/loq/send"
 };
 
+#pragma mark SKEPStories
 SK_NAMESPACE_IMP(SKEPStories) {
     .stories   = @"/bq/stories",
     .upload    = @"/ph/upload",
@@ -256,6 +265,7 @@ SK_NAMESPACE_IMP(SKEPStories) {
     .retryPost = @"/bq/retry_post_story",
 };
 
+#pragma mark SKEPCash
 SK_NAMESPACE_IMP(SKEPCash) {
     .checkRecipientEligibility = @"/cash/check_recipient_eligible",
     /** Takes only \c username, returns: @code
@@ -278,6 +288,7 @@ SK_NAMESPACE_IMP(SKEPCash) {
     .validateTransaction       = @"/cash/validate_transaction",
 };
 
+#pragma mark SKEPAndroid
 SK_NAMESPACE_IMP(SKEPAndroid) {
     .findNearbyFriends = @"/bq/and/find_nearby_friends",
     .changeEmail       = @"/loq/and/change_email",

@@ -81,7 +81,8 @@
     // I was using this, but... [NSString stringWithFormat:@"%@%@", kepGetStoryBlob, story.mediaIdentifier]
     if (story.needsAuth) {
         NSDictionary *query = @{@"story_id": story.mediaIdentifier, @"username": self.username};
-        [SKRequest postTo:SKEPStories.authBlob query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSString *url = [SKEPStories.authBlob stringByAppendingString:story.mediaIdentifier];
+        [SKRequest postTo:url query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (!error) {
                 NSInteger code = [(NSHTTPURLResponse *)response statusCode];
                 if (code == 200) {

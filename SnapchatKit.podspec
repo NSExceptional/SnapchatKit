@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SnapchatKit"
-  s.version          = "0.3.0"
+  s.version          = "0.3.1"
   s.summary          = "An Objective-C implementation of the unofficial Snapchat API."
   s.homepage         = "https://github.com/ThePantsThief/SnapchatKit"
   s.license          = 'MIT'
@@ -15,5 +15,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/*', 'Pod/Classes/**/*', 'Pod/Dependencies/*', 'Pod/Dependencies/**/*'
   # s.dependency 'AFNetworking', '~> 2.5'
   # s.dependency 'SSZipArchive'
+  # s.dependency 'Mantle'
   s.library = 'z'
 end

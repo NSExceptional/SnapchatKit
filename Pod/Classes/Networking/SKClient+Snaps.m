@@ -119,7 +119,7 @@
     NSDictionary *query = @{@"added_friends_timestamp": [NSString timestampFrom:self.currentSession.addedFriendsTimestamp],
                             @"json": json.JSONString, @"username": self.username};
     [self postTo:SKEPUpdate.snaps query:query callback:^(id object, NSError *error) {
-        completion(error);
+        if (completion) completion(error);
     }];
 }
 

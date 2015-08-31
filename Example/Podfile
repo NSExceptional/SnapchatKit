@@ -1,13 +1,25 @@
 source 'https://github.com/CocoaPods/Specs.git'
 use_frameworks!
 
+workspace 'SnapchatKit'
+xcodeproj 'SnapchatKit-OSX/SnapchatKit-OSX.xcodeproj'
+xcodeproj 'SnapchatKit.xcodeproj'
+
 target 'SnapchatKit_Example', :exclusive => true do
   # link_with 'SnapchatKit_Example', 'SnapchatKit_Tests'
   pod "SnapchatKit", :path => "../"
+  pod 'Mantle'
+end
+
+target 'SnapchatKit-OSX', :exclusive => true do
+  xcodeproj 'SnapchatKit-OSX/SnapchatKit-OSX.xcodeproj'
+  platform :osx, '10.8'
+  link_with 'SnapchatKit-OSX'
+  pod "SnapchatKit", :path => "../"
+  pod 'Mantle'
 end
 
 target 'SnapchatKit_Tests', :exclusive => true do
   pod "SnapchatKit", :path => "../"
-
-  
+  pod 'Mantle'
 end

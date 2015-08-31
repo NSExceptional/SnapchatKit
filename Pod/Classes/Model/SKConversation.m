@@ -37,6 +37,7 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     NSArray *messages             = convoMessages[@"messages"];
     NSDictionary *lastSnap        = json[@"last_snap"];
     CGFloat lastInteraction       = [json[@"last_interaction_ts"] doubleValue];
+    CGFloat lastNotified          = [json[@"last_notified"] doubleValue];
     
     if (self) {
         _messagingAuth = convoMessages[@"messaging_auth"];
@@ -48,6 +49,7 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
         _lastSnap        = lastSnap ? [[SKSnap alloc] initWithDictionary:lastSnap] : nil;
         _lastTransaction = lastTransaction ? [[SKCashTransaction alloc] initWithDictionary:lastTransaction] : nil;
         _lastInteraction = lastInteraction > 0 ? [NSDate dateWithTimeIntervalSince1970:lastInteraction/1000] : nil;
+        _lastNotified    = lastNotified > 0 ? [NSDate dateWithTimeIntervalSince1970:lastNotified/1000] : nil;
         if (lastChatActions) {
             _lastChatType    = SKChatTypeFromString(lastChatActions[@"last_write_type"]);
             _lastChatRead    = [NSDate dateWithTimeIntervalSince1970:[lastChatActions[@"last_read_timestamp"] doubleValue]/1000];
@@ -81,7 +83,8 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     }
     
     [[self class] addKnownJSONKeys:@[@"conversation_messages", @"last_chat_actions", @"pending_received_snaps", @"conversation_state", @"id",
-                                              @"iter_token", @"last_snap", @"last_cash_transaction", @"last_interaction_ts", @"participants", @"pending_chats_for"]];
+                                     @"iter_token", @"last_snap", @"last_cash_transaction", @"last_interaction_ts", @"participants", @"pending_chats_for",
+                                     @"last_notified"]];
     
     return self;
 }

@@ -54,6 +54,8 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 /** \c nil if not applicable. */
 @property (nonatomic, readonly) NSDate       *lastInteraction;
 /** \c nil if not applicable. */
+@property (nonatomic, readonly) NSDate       *lastNotified;
+/** \c nil if not applicable. */
 @property (nonatomic, readonly) NSDate       *lastChatRead;
 /** \c nil if not applicable. */
 @property (nonatomic, readonly) NSDate       *lastChatWrite;

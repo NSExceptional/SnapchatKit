@@ -30,7 +30,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
 @implementation SKSession
 
 - (id)init {
-    NSAssert(nil, false);
+    NSAssert(@"nil", false);
     return nil;
 }
 
@@ -123,7 +123,8 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _pendingRequests = temp;
         
         
-        // Cash info
+        // Cash info //
+        // Possible values may be "NO_VERIFIED_PHONE" or "1"
         _canUseCash             = [updatesResponse[@"allowed_to_use_cash"] boolValue];
         _isCashActive           = [updatesResponse[@"is_cash_active"] boolValue];
         _cashCustomerIdentifier = updatesResponse[@"cash_customer_id"];
@@ -186,15 +187,25 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     }
     
     [[self class] addKnownJSONKeys:@[@"stories_response", @"friends_response", @"updates_response", @"identity_check_response", @"conversations_response",
-                                     @"background_fetch_secret_key", @"discover", @"messaging_gateway_info"]];
+                                     @"background_fetch_secret_key", @"discover", @"messaging_gateway_info", @"sponsored"]];
+    
+    [[self class] addKnownJSONKeys:@[@"current_timestamp",@"logged",@"industries",@"story_privacy",@"snap_p",@"should_call_to_verify_number",
+                                     @"mobile_verification_key",@"score",@"added_friends_timestamp",@"auth_token",@"last_address_book_updated_date",
+                                     @"is_cash_active",@"image_caption",@"enable_lenses_android",@"temp",@"requests",@"feature_settings",@"email",
+                                     @"allowed_to_use_cash",@"searchable_by_phone_number",@"number_of_best_friends",@"is_two_fa_enabled",
+                                     @"birthday",@"seen_tooltips",@"gaussian_blur_level_android",@"device_token",@"cash_customer_id",@"client_properties",@"username",
+                                     @"snapchat_phone_number",@"verified_shared_publications",@"mobile",@"raw_thumbnail_upload_enabled",@"video_filters_enabled",@"sent",
+                                     @"recents",@"user_id",@"received",@"should_send_text_to_verify_number",@"notification_sound_setting",@"country_code",
+                                     @"require_refreshing_profile_media",@"can_view_mature_content",@"enable_video_transcoding_android",@"study_settings",@"cash_provider",
+                                     @"enable_save_story_to_gallery",@"targeting",@"contacts_resync_request",@"qr_path"]];
     
     return self;
 }
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ username=%@, mobile=%@, score=%lu, friends=%lu, added=%lu, stories=%lu, user stories=%lu>",
-            NSStringFromClass(self.class), self.username, self.mobileNumber, self.score, self.friends.count,
-            self.addedFriends.count, self.stories.count, self.userStories.count];
+            NSStringFromClass(self.class), self.username, self.mobileNumber, (unsigned long)self.score, (unsigned long)self.friends.count,
+            (unsigned long)self.addedFriends.count, (unsigned long)self.stories.count, (unsigned long)self.userStories.count];
 }
 
 - (NSArray *)unread {

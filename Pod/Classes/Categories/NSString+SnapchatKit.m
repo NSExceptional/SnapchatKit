@@ -164,7 +164,7 @@
     if (!self.length)
         return @"";
     
-    NSArray *strings = [self allMatchesForRegex:@"<[^>]*>(.*)<[^>]*>"];
+    NSArray *strings = [self allMatchesForRegex:@"<title>(.*)<[^>]*>"];
     NSMutableString *text = [NSMutableString string];
     
     for (NSString *s in strings)

@@ -103,9 +103,12 @@
 
 - (BOOL)isMPEG4 {
     uint8_t a, b, c, d;
-    [self getHeader:&a b:&b c:&c d:&d];
+    [self getBytes:&a range:NSMakeRange(4, 1)];
+    [self getBytes:&b range:NSMakeRange(5, 1)];
+    [self getBytes:&c range:NSMakeRange(6, 1)];
+    [self getBytes:&d range:NSMakeRange(7, 1)];
     
-    return a == 0x00 && b == 0x00 && c == 0x00 && (d == 0x14 || d == 0x18 || d == 0x1C);
+    return a == 0x66 && b == 0x74 && c == 0x79 && d == 0x70;
 }
 
 - (BOOL)isMedia {

@@ -1,6 +1,6 @@
 {
   "name": "SnapchatKit",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "summary": "An Objective-C implementation of the unofficial Snapchat API.",
   "homepage": "https://github.com/ThePantsThief/SnapchatKit",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/ThePantsThief/SnapchatKit.git",
-    "tag": "0.2.0"
+    "tag": "0.3.0"
   },
   "social_media_url": "https://twitter.com/ThePantsThief",
   "requires_arc": true,

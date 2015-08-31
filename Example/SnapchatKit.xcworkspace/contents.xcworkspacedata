@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SnapchatKit-OSX/SnapchatKit-OSX.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:SnapchatKit.xcodeproj">
    </FileRef>
    <FileRef
