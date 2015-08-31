@@ -100,7 +100,7 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ to/from=%@, text=%@, size={%f, %f}, index=%lu>",
-            NSStringFromClass(self.class), self.sender?:self.recipients[0], self.text, self.mediaSize.width, self.mediaSize.height, self.index];
+            NSStringFromClass(self.class), self.sender?:self.recipients[0], self.text, self.mediaSize.width, self.mediaSize.height, (unsigned long)self.index];
 }
 
 - (BOOL)isEqual:(id)object {

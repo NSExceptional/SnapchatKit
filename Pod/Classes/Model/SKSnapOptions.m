@@ -32,8 +32,8 @@
 - (void)setRecipients:(NSArray *)recipients {
     NSParameterAssert(recipients.count);
     _recipients = recipients;
-    for (NSString *r in recipients)
-        NSParameterAssert([r isKindOfClass:[NSString class]]);
+//    for (NSString *r in recipients)
+//        NSParameterAssert([r isKindOfClass:[NSString class]]);
 }
 
 - (void)setText:(NSString *)text {

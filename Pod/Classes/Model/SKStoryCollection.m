@@ -47,7 +47,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ username=%@, NSFW=%d count=%lu> stories=%@",
-            NSStringFromClass(self.class), self.username, self.matureContent, self.stories.count, self.stories];
+            NSStringFromClass(self.class), self.username, self.matureContent, (unsigned long)self.stories.count, self.stories];
 }
 
 - (BOOL)isEqual:(id)object {

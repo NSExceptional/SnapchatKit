@@ -37,7 +37,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ to/from=%@, kind=%lu, duration=%f, screenshots=%lu>",
-            NSStringFromClass(self.class), self.sender?:self.recipient, self.mediaKind, self.mediaTimer, self.screenshots];
+            NSStringFromClass(self.class), self.sender?:self.recipient, (long)self.mediaKind, self.mediaTimer, (unsigned long)self.screenshots];
 }
 
 - (BOOL)isEqual:(id)object {

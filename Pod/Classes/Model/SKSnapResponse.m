@@ -28,7 +28,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ sender=%@, id=%@, ts=%lu>",
-            NSStringFromClass(self.class), self.sender, self.identifier, (NSUInteger)self.timestamp.timeIntervalSince1970];
+            NSStringFromClass(self.class), self.sender, self.identifier, (unsigned long)self.timestamp.timeIntervalSince1970];
 }
 
 @end
