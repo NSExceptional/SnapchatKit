@@ -176,8 +176,7 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
             
             self.HTTPBody = body;
         } else {
-            NSData *queryData = [[NSString queryStringWithParams:json] dataUsingEncoding:NSUTF8StringEncoding];
-            self.HTTPBody     = queryData;
+            self.HTTPBody     = [[NSString queryStringWithParams:json] dataUsingEncoding:NSUTF8StringEncoding];
         }
 
         if ([endpoint isEqualToString:SKEPSnaps.loadBlob] || [endpoint isEqualToString:SKEPChat.media])

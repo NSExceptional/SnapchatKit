@@ -37,7 +37,7 @@ BOOL SKHasActiveConnection() {
 }
 
 NSDictionary *SKMakeSignInParams(NSString *gauth, NSString *attest, NSString *ptoken, NSString *clientAuthToken, NSDictionary *deviceTokens, NSString *timestamp) {
-    return @{@"googleAuthToken": gauth, @"attestation": attest, @"pushToken": ptoken, @"clientAuthToken": clientAuthToken, @"dt": deviceTokens, @"ts": timestamp};
+    return @{@"googleAuthToken": gauth, @"attestation": attest, @"pushToken": ptoken?:@"e", @"clientAuthToken": clientAuthToken, @"dt": deviceTokens, @"ts": timestamp};
 }
 
 NSString * const kAttestationURLString     = @"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA";
@@ -314,62 +314,82 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 /** Google attestation. */
 - (void)getAttestation:(NSString *)username password:(NSString *)password ts:(NSString *)timestamp callback:(StringBlock)callback {
-    NSString *hashString = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, SKEPAccount.login];
+    NSString *hashString = [[NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, SKEPAccount.login].sha256HashRaw base64EncodedStringWithOptions:0];
+    // Get binary data
+    NSData *binaryData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://api.casper.io/droidguard/create/binary"]];
+    __block NSError *jsonError = nil;
+    __block NSDictionary *json = [NSJSONSerialization JSONObjectWithData:binaryData options:0 error:&jsonError];
     
-    AttestationBuilder *attestBuilder = [Attestation builder];
-    
-    UnknownDataBuilder *unknownDataBuilder = [UnknownData builder];
-    unknownDataBuilder.unknown1 = YES;
-    unknownDataBuilder.unknown2 = YES;
-    
-    DataContainerBuilder *dataContainerBuilder      = [DataContainer builder];
-    dataContainerBuilder.nonce                      = hashString.sha256HashRaw;
-    dataContainerBuilder.apkPackageName             = @"com.snapchat.android";
-    dataContainerBuilder.apkDigestSha256            = SKAttestation.digest9_14.base64DecodedData;
-    dataContainerBuilder.apkCertificateDigestSha256 = SKAttestation.certificateDigest.base64DecodedData;
-    dataContainerBuilder.gmsVersion                 = (int)SKAttestation.GMSVersion;
-    dataContainerBuilder.timestamp                  = timestamp.integerValue;
-    dataContainerBuilder.unknowndata                = [unknownDataBuilder build];
-    
-    attestBuilder.datacontainer = [dataContainerBuilder build];
-    attestBuilder.droidGuard = SKAttestation.droidGuard;
-    
-    NSData *data = [attestBuilder build].data;
-    
-    NSURL *url = [NSURL URLWithString:@"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA"];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.HTTPMethod = @"POST";
-    request.HTTPBody   = data;
-    [request setValue:@(data.length).stringValue forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/x-protobuf" forHTTPHeaderField:SKHeaders.contentType];
-    [request setValue:SKAttestation.userAgent forHTTPHeaderField:SKHeaders.userAgent];
-    
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            callback(nil, error);
-        } else if (data) {
-            NSError *jsonError;
-            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-            
-            if (jsonError)
-                callback(nil, jsonError);
-            else if ([(NSHTTPURLResponse *)response statusCode] == 200)
-                callback(json[@"signedAttestation"], nil);
-            else
-                callback(nil, [SKRequest unknownError]);
-        } else {
-            callback(nil, [SKRequest unknownError]);
-        }
-    }] resume];
+    if (json) {
+        // Get bytecode from Google
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:SKAttestation.protobufBytecodeURL]];
+        request.HTTPMethod = @"POST";
+        request.HTTPBody = [[json[@"binary"] base64Decode] dataUsingEncoding:NSUTF8StringEncoding];
+        [request setValue:SKHeaders.values.protobuf forHTTPHeaderField:SKHeaders.contentType];
+        [request setValue:SKHeaders.values.droidGuardUA forHTTPHeaderField:SKHeaders.userAgent];
+        
+        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+            if (!error && [(NSHTTPURLResponse *)response statusCode] == 200) {
+                
+                // Send it to Casper.io to build the protobuf
+                NSString *bytecodeProtobuf = [data base64EncodedStringWithOptions:0];
+                NSDictionary *query = @{@"bytecode_proto": bytecodeProtobuf,
+                                        @"nonce": hashString,
+                                        @"apk_digest": SKAttestation.digest9_14_2};
+                
+                request.URL = [NSURL URLWithString:SKAttestation.protobufPOSTURL];
+                request.HTTPBody = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
+                [[session dataTaskWithRequest:request completionHandler:^(NSData *data2, NSURLResponse *response2, NSError *error2) {
+                    /////////////////////////////////
+                    // This is where I get the 400 //
+                    /////////////////////////////////
+                    if (!error2 && [(NSHTTPURLResponse *)response2 statusCode] == 200) {
+                        jsonError = nil;
+                        json = [NSJSONSerialization JSONObjectWithData:data2 options:0 error:&jsonError];
+                        
+                        if (json) {
+                            
+                            // Get the actual attestation from Google
+                            [request setValue:SKAttestation.userAgent forHTTPHeaderField:SKHeaders.userAgent];
+                            request.URL = [NSURL URLWithString:SKAttestation.attestationURL];
+                            request.HTTPBody = [json[@"binary"] base64DecodedData];
+                            [request setValue:SKAttestation.userAgent forHTTPHeaderField:SKHeaders.userAgent];
+                            [[session dataTaskWithRequest:request completionHandler:^(NSData *data3, NSURLResponse *response3, NSError *error3) {
+                                if (!error3 && [(NSHTTPURLResponse *)response3 statusCode] == 200) {
+                                    jsonError = nil;
+                                    json = [NSJSONSerialization JSONObjectWithData:data3 options:0 error:&jsonError];
+                                    callback(json[@"signedAttestation"], nil);
+                                } else {
+                                    callback(nil, error3);
+                                }
+                            }] resume];
+                            
+                        } else {
+                            callback(nil, jsonError);
+                        }
+                    } else {
+                        // Error: 400, bad request (missing parameter according to Liam)
+                        callback(nil, error2);
+                    }
+                }] resume];
+                
+            } else {
+                callback(nil, error);
+            }
+        }] resume];
+    } else {
+        callback(nil, jsonError);
+    }
 }
 
 - (void)getClientAuthToken:(NSString *)username password:(NSString *)password timestamp:(NSString *)ts callback:(StringBlock)callback {
     NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(ts);
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://client-auth.casper.io/?username=%@&password=%@&timestamp=%@", username, password, ts]];
+    NSURL *url = [NSURL URLWithString:@"https://api.casper.io/security/login/signrequest/"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
+    request.HTTPBody = [[NSString queryStringWithParams:@{@"username": username, @"password": password, @"timestamp": ts}] dataUsingEncoding:NSUTF8StringEncoding];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -377,7 +397,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
             NSError *jsonError = nil;
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
             
-            if ([json[@"status"] integerValue] == 200)
+            if ([json[@"code"] integerValue] == 200)
                 callback(json[@"signature"], nil);
             else
                 callback(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
@@ -411,20 +431,17 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                 completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Snapchat device token." code:error4.code?:1]);
                             } else {
                                 
-                                if (self.useInsecureLogin) {
-                                    // X-Snapchat-Client-Auth
-                                    [self getClientAuthToken:username password:password timestamp:timestamp callback:^(NSString *clientAuthToken, NSError *error5) {
-                                        if (!error5 || !clientAuthToken) {
-                                            
-                                            // Sign in
-                                            [self signInWithData:SKMakeSignInParams(gauth, attestation, ptoken, clientAuthToken, dict, timestamp) username:username password:password completion:completion];
-                                        } else {
-                                            completion(nil, error5 ?: [SKRequest errorWithMessage:@"Could not retrieve client auth token." code:1]);
-                                        }
-                                    }];
-                                } else {
-                                    [self signInWithData:SKMakeSignInParams(gauth, attestation, ptoken, @"", dict, timestamp) username:username password:password completion:completion];
-                                }
+                                // X-Snapchat-Client-Auth
+                                [self getClientAuthToken:username password:password timestamp:timestamp callback:^(NSString *clientAuthToken, NSError *error5) {
+                                    if (error5 || !clientAuthToken) {
+                                        completion(nil, error5 ?: [SKRequest errorWithMessage:@"Could not retrieve client auth token." code:1]);
+                                    } else {
+                                        
+                                        // Sign in
+                                        NSParameterAssert(gauth); NSParameterAssert(attestation); NSParameterAssert(clientAuthToken); NSParameterAssert(dict); NSParameterAssert(timestamp);
+                                        [self signInWithData:SKMakeSignInParams(gauth, attestation, ptoken, clientAuthToken, dict, timestamp) username:username password:password completion:completion];
+                                    }
+                                }];
                             }
                         }];
                     }];

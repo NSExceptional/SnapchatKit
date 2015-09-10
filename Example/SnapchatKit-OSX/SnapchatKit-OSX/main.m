@@ -248,7 +248,7 @@ int main(int argc, const char * argv[]) {
                 id foo = [dict[@"updates_response"] allKeys];
                 
                 SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
-                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"username", @"luke_"]].firstObject;
+                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"displayName", @""]].firstObject;
                 for (SKStory *s in friend.stories)
                     [s load:^(NSError *error1) {
                         if (!error1) {
@@ -297,7 +297,7 @@ int main(int argc, const char * argv[]) {
                 //                testGetConversations();
                 
                 // Download and save unread snaps
-                //                                saveUnreadSnapsToDirectory(unread, directory);
+                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
 //                markSnapsRead(unread);

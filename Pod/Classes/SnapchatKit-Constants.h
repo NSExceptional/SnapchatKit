@@ -22,6 +22,7 @@
 #define SKTempDirectory() [NSTemporaryDirectory() stringByAppendingPathComponent:@"SnapchatKit-tmp"]
 
 #define NSNSString __unsafe_unretained NSString
+#define NSNSURL __unsafe_unretained NSURL
 #define SK_NAMESPACE(name, vals) extern const struct name vals name
 #define SK_NAMESPACE_IMP(name) const struct name name =
 
@@ -101,8 +102,10 @@ SK_NAMESPACE(SKAttestation, {
     NSNSString *certificateDigest;
     /** Google Play Services version used to make the attestation request. */
     NSInteger  GMSVersion;
-    /** Authentication token sent to verify requests with the server to prevent abuse. */
-    NSNSString *droidGuard;
+    /** The URL used to get the bytecode needed to generate droidguard and attestation. */
+    NSNSString *protobufBytecodeURL;
+    NSNSString *protobufPOSTURL;
+    NSNSString *attestationURL;
     NSNSString *digest9_8;
     NSNSString *digest9_9;
     NSNSString *digest9_10;
@@ -112,6 +115,7 @@ SK_NAMESPACE(SKAttestation, {
     NSNSString *digest9_12_2;
     NSNSString *digest9_13;
     NSNSString *digest9_14;
+    NSNSString *digest9_14_2;
     
 });
 
@@ -150,6 +154,8 @@ SK_NAMESPACE(SKHeaders, {
     struct {
         NSNSString *language;
         NSNSString *locale;
+        NSNSString *droidGuardUA;
+        NSNSString *protobuf;
     } values;
 });
 

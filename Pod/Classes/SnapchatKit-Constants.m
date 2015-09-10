@@ -97,25 +97,28 @@ NSString * const SKTemporaryLoginFailure = @"Oh no! Your login temporarily faile
 
 #pragma mark Attestation
 SK_NAMESPACE_IMP(SKAttestation) {
-    .userAgent         = @"SafetyNet/7329000 (klte KOT49H); gzip",
-    .certificateDigest = @"Lxyq/KHtMNC044hj7vq+oOgVcR+kz3m4IlGaglnZWlg=",
-    .GMSVersion        = 7329038,
-    .digest9_8         = @"vXCcGhQ7RfL1LUiE3F6vcNORNo7IFSOvuDBunK87mEI=",
-    .digest9_9         = @"Yk9Wqmx7TrTatldWI+5PWbQjGA8Gi8ZoO8X9OUAw1hg=",
-    .digest9_10        = @"JJShKOLH4YYjWZlJQ71A2dPTcmxbaMboyfo0nsKYayE=",
-    .digest9_11        = @"nNsTUhHYJ943NG6vAPNl+tRr1vktNb9HpvRxZuu/rrE=",
-    .digest9_12_0_1    = @"W4snbl56it9XbT2lsL4gyHwMsElnmOPBDp+iIYqbGcI=",
-    .digest9_12_1      = @"fGZExseKdFH1bltkKloaAGfGx0vnKDDymKiJAiLo3dU=",
-    .digest9_12_2      = @"LMQNajaQ4SO7vNaQS1FRokxCtQXeIHwKZiJYhMczDGk=",
-    .digest9_13        = @"BWDe2a5b3I26Yw6z4Prvh2aEMRcf2B1FMs8136QIeCM=",
-    .digest9_14        = @"k6IftsTIpJeVhZDoHZv9zxDhE7HuN50PpO3O/zIXxsU=",
-    .droidGuard        = @"CgbMYHoVNWLYAQE4YRoMCMKa2IIDEKC349kCqgERCLikhu8CEKL-jf34_____wHoAfLYvrb7_____wHoAbjLt877_____wE4azhLEokMuKToh_JDOAH8CvNUrmmbUkT045BmT6P_KNQSwOPtKxfJzK43U0I8A3x9lhvIbj5rbW3EREoNXLsI4okM7eonVUPt_PNYSK-b3U-T_bCfQkhKZ6hQ2ByXyi81LMp9IbzCho9KzRi_3zn9ffewSW2UjaGj71_gm4iapZXcQCigaWJ28VW10g8aeVcXVnXMg7UfDfx7NXghb0ZtlNXu8QxSCTWzUrW5nQH_TcYVKKhO4uFkX_sPr9MVwchg5oUSfvAZ2X2ZnsrkszrUr_NtlLS3w56DnPJvcOnN7X0N70p5Hj8Uqlx-a39c6BO4zfd_TAsqiV02zLoVctaht332OHA8Ejh1tIs89d0xKryMBq3OUSKKfLuMcfohU9gLuYF5_yfh3LGt2A4KSlUF1_DKcgxhiBV-QlNJWOL45fXjPl1_h7KcxfegJy19tpZ8cZ_KAWd4W00NJb5AmSGnzIB0iAkh0iC6fwpxngWS9ew_1gQC68wHrxZ8oBsLjZyzWk1eV69Xt3FSsTRzhpaIgnveaEtRZt6KsZUy2sCgzU1BvBF-Cm9kW1taPLvhURVxljUABxyKSsEmCFkyJbKDqz6bnTmAEXoJVJ3OW0OW9bpLX7IsKSlnIKOAnET0aH0e7CLkpj2nke8h8nv5PoW-s60Cc_5SirP4hTZRJDvXJecYljQcTTX6MOKx-gRiLdvc0NWzow8yrGTuCqQ0rYBEUELh8U7dGYQk6WX92aJEWa6uZb3AN9WFGg0GxiY1Bpq9kO58mHSBqeJXCrQ4mq2GJJxhxUE13zzbqsWyPi66MbTH1-YRTrjVPj5nkZqomuCtWIyWnC573IyG37lt8eYLXLNTbwuVDmUfaXytgntNExITdf9iiN2zFEYAlKSEROMc3FEKwApy9zzeTC9ItHsXGm63vv9s_2zaKEk4kUP3ozNfIMYeImk2piUs5OhEzpdAx_xyHbQICac2IA5arJ0_kqZ42tcuIjnzw8IJuU4xTDfEK12Ju7HaK8KA2i8v5Wtv28EQdqUUXByM39t_u16yI2y_Me545HGO18r-GCH3XJPe1GqwMq_J8vJSx3ecZhEXWBOZsyW5OvZ4YjHULRBDphZpyOmVsW7pLUprr42cU1BtitQy0aJm-qzd1ud4FspjRf-bsuRvWruqdqPTG80NbB-WUPCDNTSZ49bwQ9_CW0VQbqzDRupyG-xl16DwCWvqeWVd-v2DYTKCESsKfJhUHmYyK_GbTgsEioZIKmgN6UERMYLxKRRibkT8r0vWpsqx53xB_MenVzfOmpsOCJt5ITalsMVINUnuYekYw1YG9b6HRLtR4dSZj36j6gMDwGpOEPtHeEt6Fjym0SjMNA6kL2qp8rqxSiKrc37RE7Y6f6d2RlarGZG5woPl59F4onBR3Z1SR5mc9Srzrsezn6petEl19w0GtPocw5mrbYphgmjqGKNKqgLCKQ5yhfA1FQMkaZQQSJRd_zg5DuKUr7Bi_fc0ag-iJ1YqCrSiR-AmZV2DUGcNuYe9BOKt70GpfYfyc2DIcSA6oNNnRyi5uqjA7FUvggsWh80s-1yHSl4klFmQN0X10X-FszbmP2PYOlipbG6lNe2qCdlT49XgO17625Spfu7ehpeP-wRjWxgG5A-l7HabM3BrJRvYiW4YXWmloH2C8qOiqnHtC_mDjWAChSK9unVfMLQOeHiBInGR3s44wZvgtVzn_uSHuIacbqCr8VW-efmRVJ5m3iNado9smCCn74xnkMFR4_nRTCz-uwTsQp6Vvk7A6B-avGIkSBWK26nn7p0wB-btIYVZhbHlvs7eRL4PF5sc7gDgS6fpTVOVTCUEUYDfOeyu2TD-JUv0tnNxyH8zdeMHYjtQKgHDNMoWHlA1ly_1BqbU2urn3N07I4BuoBWhSfzcsRmOXtBtylCrVRhC9MEOR-I8QGgFByZfixG4XwGQnbCx-LyAtn6ngcii79W0pA8AoG_-a0s-3aIebEpcz2_qPXqxZ1qk4ByA10VjIBTC73vY1_ChkHg6bvmOsgYcrOFmD9nrbBCgapBGOx_yWsPLLwAD-cGj"
+    .userAgent           = @"SafetyNet/7899000 (WIKO JZO54K); gzip",
+    .certificateDigest   = @"Lxyq/KHtMNC044hj7vq+oOgVcR+kz3m4IlGaglnZWlg=",
+    .GMSVersion          = 7329038,
+    .protobufBytecodeURL = @"https://www.googleapis.com/androidantiabuse/v1/x/create?alt=PROTO&key=AIzaSyBofcZsgLSS7BOnBjZPEkk4rYwzOIz-lTI",
+    .protobufPOSTURL     = @"https://api.casper.io/droidguard/attest/binary",
+    .attestationURL      = @"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA",
+    .digest9_8           = @"vXCcGhQ7RfL1LUiE3F6vcNORNo7IFSOvuDBunK87mEI=",
+    .digest9_9           = @"Yk9Wqmx7TrTatldWI+5PWbQjGA8Gi8ZoO8X9OUAw1hg=",
+    .digest9_10          = @"JJShKOLH4YYjWZlJQ71A2dPTcmxbaMboyfo0nsKYayE=",
+    .digest9_11          = @"nNsTUhHYJ943NG6vAPNl+tRr1vktNb9HpvRxZuu/rrE=",
+    .digest9_12_0_1      = @"W4snbl56it9XbT2lsL4gyHwMsElnmOPBDp+iIYqbGcI=",
+    .digest9_12_1        = @"fGZExseKdFH1bltkKloaAGfGx0vnKDDymKiJAiLo3dU=",
+    .digest9_12_2        = @"LMQNajaQ4SO7vNaQS1FRokxCtQXeIHwKZiJYhMczDGk=",
+    .digest9_13          = @"BWDe2a5b3I26Yw6z4Prvh2aEMRcf2B1FMs8136QIeCM=",
+    .digest9_14          = @"k6IftsTIpJeVhZDoHZv9zxDhE7HuN50PpO3O/zIXxsU=",
+    .digest9_14_2        = @"5O40Rllov9V8PpwD5zPmmp+GQi7UMIWz2A0LWZA7UX0="
 };
 
 #pragma mark Misc
 SK_NAMESPACE_IMP(SKConsts) {
     .baseURL           = @"https://feelinsonice-hrd.appspot.com",
-    .userAgent         = @"Snapchat/9.14.0.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
+    .userAgent         = @"Snapchat/9.14.2.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
     .eventsURL         = @"https://sc-analytics.appspot.com/post_events",
     .analyticsURL      = @"https://sc-analytics.appspot.com/analytics/bz",
     .secret            = @"iEk21fuwZApXlz93750dmW22pw389dPwOk",
@@ -137,8 +140,10 @@ SK_NAMESPACE_IMP(SKHeaders) {
     .clientAuth      = @"X-Snapchat-Client-Auth",
     .clientAuthToken = @"X-Snapchat-Client-Auth-Token",
     .values = {
-        .language    = @"en",
-        .locale      = @"en_US",
+        .language      = @"en",
+        .locale        = @"en_US",
+        .droidGuardUA  = @"DroidGuard/7329000 (A116 _Quad KOT49H); gzip",
+        .protobuf      = @"application/x-protobuf"
     }
 };
 

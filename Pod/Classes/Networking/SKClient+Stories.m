@@ -96,6 +96,8 @@
                 } else {
                     [self handleError:error data:data response:response completion:completion];
                 }
+            } else {
+                [self handleError:error data:data response:response completion:completion];
             }
         }];
     } else {

@@ -28,15 +28,6 @@
 /** The default Snapchat session manager. To use more than one account, simply create and manage your own instances of \c SKClient instead of using the singleton. */
 + (instancetype)sharedClient;
 
-/** You must explicitly set this property to YES in order to sign in with this library.
-    Leaving it set to NO will likely cause login to fail.
- 
-    As of 9.14.0.0, Snapchat's servers require a new header value to login. No one knows
-    how this value is generated, so we use their code to generate it on a remote server.
-    The way this server is set up, the data is sent unencrypted. DO NOT use this library
-    to publish an app without explicitly warning users just as I have warned you. */
-@property (nonatomic) BOOL useInsecureLogin;
-
 /** See the \c SKMiddleMan protocol. */
 @property (nonatomic) id<SKMiddleMan> middleMan;
 
