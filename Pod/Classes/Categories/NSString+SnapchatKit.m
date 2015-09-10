@@ -109,18 +109,47 @@
 }
 
 + (NSString *)queryStringWithParams:(NSDictionary *)params {
+    return [NSString queryStringWithParams:params URLEscapeValues:NO];
+}
+
++ (NSString *)queryStringWithParams:(NSDictionary *)params URLEscapeValues:(BOOL)escapeValues {
     if (params.allKeys.count == 0) return @"";
     
     NSMutableString *q = [NSMutableString string];
     [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
-        if ([value isKindOfClass:[NSString class]])
-            value = [(NSString *)value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+        if ([value isKindOfClass:[NSString class]]) {
+            if (escapeValues) {
+                value = [(NSString *)value urlencode];
+            } else {
+                value = [(NSString *)value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+            }
+        }
         [q appendFormat:@"%@=%@&", key, value];
     }];
     
     [q deleteCharactersInRange:NSMakeRange(q.length-1, 1)];
     
     return q;
+}
+
+- (NSString *)urlencode {
+    NSMutableString *output = [NSMutableString string];
+    const unsigned char *source = (const unsigned char *)[self UTF8String];
+    int sourceLen = (int)strlen((const char *)source);
+    for (int i = 0; i < sourceLen; ++i) {
+        const unsigned char thisChar = source[i];
+        if (thisChar == ' '){
+            [output appendString:@"+"];
+        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
+                   (thisChar >= 'a' && thisChar <= 'z') ||
+                   (thisChar >= 'A' && thisChar <= 'Z') ||
+                   (thisChar >= '0' && thisChar <= '9')) {
+            [output appendFormat:@"%c", thisChar];
+        } else {
+            [output appendFormat:@"%%%02X", thisChar];
+        }
+    }
+    return output;
 }
 
 @end
