@@ -32,6 +32,8 @@
 + (NSString *)timestamp;
 + (NSString *)timestampFrom:(NSDate *)date;
 + (NSString *)queryStringWithParams:(NSDictionary *)params;
++ (NSString *)queryStringWithParams:(NSDictionary *)params URLEscapeValues:(BOOL)escapeValues;
+
 @end
 
 

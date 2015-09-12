@@ -339,11 +339,11 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                         @"apk_digest": SKAttestation.digest9_14_2};
                 
                 request.URL = [NSURL URLWithString:SKAttestation.protobufPOSTURL];
-                request.HTTPBody = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
+                request.HTTPBody = [[NSString queryStringWithParamsForAttestion:query] dataUsingEncoding:NSUTF8StringEncoding];
+                [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+                
                 [[session dataTaskWithRequest:request completionHandler:^(NSData *data2, NSURLResponse *response2, NSError *error2) {
-                    /////////////////////////////////
-                    // This is where I get the 400 //
-                    /////////////////////////////////
+                    
                     if (!error2 && [(NSHTTPURLResponse *)response2 statusCode] == 200) {
                         jsonError = nil;
                         json = [NSJSONSerialization JSONObjectWithData:data2 options:0 error:&jsonError];
@@ -355,6 +355,8 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             request.URL = [NSURL URLWithString:SKAttestation.attestationURL];
                             request.HTTPBody = [json[@"binary"] base64DecodedData];
                             [request setValue:SKAttestation.userAgent forHTTPHeaderField:SKHeaders.userAgent];
+                            [request setValue:SKHeaders.values.protobuf forHTTPHeaderField:SKHeaders.contentType];
+                            
                             [[session dataTaskWithRequest:request completionHandler:^(NSData *data3, NSURLResponse *response3, NSError *error3) {
                                 if (!error3 && [(NSHTTPURLResponse *)response3 statusCode] == 200) {
                                     jsonError = nil;
