@@ -116,12 +116,12 @@
     if (params.allKeys.count == 0) return @"";
     
     NSMutableString *q = [NSMutableString string];
-    [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
+    [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop) {
         if ([value isKindOfClass:[NSString class]]) {
             if (escapeValues) {
-                value = [(NSString *)value urlencode];
+                value = [value URLEncodedString];
             } else {
-                value = [(NSString *)value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+                value = [value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
             }
         }
         [q appendFormat:@"%@=%@&", key, value];
@@ -132,24 +132,26 @@
     return q;
 }
 
-- (NSString *)urlencode {
-    NSMutableString *output = [NSMutableString string];
-    const unsigned char *source = (const unsigned char *)[self UTF8String];
-    int sourceLen = (int)strlen((const char *)source);
-    for (int i = 0; i < sourceLen; ++i) {
-        const unsigned char thisChar = source[i];
-        if (thisChar == ' '){
-            [output appendString:@"+"];
-        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
-                   (thisChar >= 'a' && thisChar <= 'z') ||
-                   (thisChar >= 'A' && thisChar <= 'Z') ||
-                   (thisChar >= '0' && thisChar <= '9')) {
-            [output appendFormat:@"%c", thisChar];
+- (NSString *)URLEncodedString {
+    NSMutableString *encoded    = [NSMutableString string];
+    const unsigned char *source = (const unsigned char *)self.UTF8String;
+    NSInteger sourceLen         = (NSInteger)strlen((const char *)source);
+    
+    for (NSInteger i = 0; i < sourceLen; i++) {
+        const unsigned char c = source[i];
+        if (c == ' '){
+            [encoded appendString:@"+"];
+        } else if (c == '.' || c == '-' || c == '_' || c == '~' ||
+                   (c >= 'a' && c <= 'z') ||
+                   (c >= 'A' && c <= 'Z') ||
+                   (c >= '0' && c <= '9')) {
+            [encoded appendFormat:@"%c", c];
         } else {
-            [output appendFormat:@"%%%02X", thisChar];
+            [encoded appendFormat:@"%%%02X", c];
         }
     }
-    return output;
+    
+    return encoded;
 }
 
 @end

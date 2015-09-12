@@ -337,13 +337,11 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 NSDictionary *query = @{@"bytecode_proto": bytecodeProtobuf,
                                         @"nonce": hashString,
                                         @"apk_digest": SKAttestation.digest9_14_2};
-                
                 request.URL = [NSURL URLWithString:SKAttestation.protobufPOSTURL];
-                request.HTTPBody = [[NSString queryStringWithParamsForAttestion:query] dataUsingEncoding:NSUTF8StringEncoding];
-                [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+                request.HTTPBody = [[NSString queryStringWithParams:query URLEscapeValues:YES] dataUsingEncoding:NSUTF8StringEncoding];
+                [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:SKHeaders.contentType];
                 
                 [[session dataTaskWithRequest:request completionHandler:^(NSData *data2, NSURLResponse *response2, NSError *error2) {
-                    
                     if (!error2 && [(NSHTTPURLResponse *)response2 statusCode] == 200) {
                         jsonError = nil;
                         json = [NSJSONSerialization JSONObjectWithData:data2 options:0 error:&jsonError];
@@ -361,7 +359,10 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                                 if (!error3 && [(NSHTTPURLResponse *)response3 statusCode] == 200) {
                                     jsonError = nil;
                                     json = [NSJSONSerialization JSONObjectWithData:data3 options:0 error:&jsonError];
-                                    callback(json[@"signedAttestation"], nil);
+                                    if (json)
+                                        callback(json[@"signedAttestation"], nil);
+                                    else
+                                        callback(nil, jsonError);
                                 } else {
                                     callback(nil, error3);
                                 }
@@ -371,7 +372,6 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                             callback(nil, jsonError);
                         }
                     } else {
-                        // Error: 400, bad request (missing parameter according to Liam)
                         callback(nil, error2);
                     }
                 }] resume];
