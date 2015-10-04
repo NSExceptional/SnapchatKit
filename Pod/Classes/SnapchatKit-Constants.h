@@ -140,6 +140,7 @@ SK_NAMESPACE(SKConsts, {
     NSNSString *boundary;
     NSNSString *deviceToken1i;
     NSNSString *deviceToken1v;
+    NSNSString *snapchatVersion;
 });
 
 #pragma mark Header fields / values
@@ -151,6 +152,8 @@ SK_NAMESPACE(SKHeaders, {
     NSNSString *acceptLocale;
     NSNSString *clientAuth;
     NSNSString *clientAuthToken;
+    NSNSString *casperAPIKey;
+    NSNSString *casperSignature;
     struct {
         NSNSString *language;
         NSNSString *locale;

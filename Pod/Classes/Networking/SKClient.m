@@ -40,8 +40,19 @@ NSDictionary *SKMakeSignInParams(NSString *gauth, NSString *attest, NSString *pt
     return @{@"googleAuthToken": gauth, @"attestation": attest, @"pushToken": ptoken?:@"e", @"clientAuthToken": clientAuthToken, @"dt": deviceTokens, @"ts": timestamp};
 }
 
-NSString * const kAttestationURLString     = @"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA";
-NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJvaWQaIC8cqvyh7TDQtOOIY+76vqDoFXEfpM95uCJRmoJZ2VpYIgAojKq/AzIECgASADoECAEQAUD4kP+pBRIA";
+NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
+    assert(params.allKeys.count); assert(secret);
+    NSArray *sortedKeys = [params.allKeys sortedArrayUsingSelector:@selector(compare:options:)];
+    NSMutableString *signature = [NSMutableString string];
+    
+    for (NSString *key in sortedKeys) {
+        [signature appendString:key];
+        [signature appendString:params[key]];
+    }
+    
+    return [@"v1:" stringByAppendingString:[NSString hashHMac:signature key:secret].hexadecimalString];
+}
+
 
 @implementation SKClient
 
@@ -314,9 +325,12 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 /** Google attestation. */
 - (void)getAttestation:(NSString *)username password:(NSString *)password ts:(NSString *)timestamp callback:(StringBlock)callback {
+    NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
+    NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
+    
     NSString *hashString = [[NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, SKEPAccount.login].sha256HashRaw base64EncodedStringWithOptions:0];
     // Get binary data
-    NSData *binaryData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://api.casper.io/droidguard/create/binary"]];
+    NSData *binaryData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://api.casper.io/snapchat/attestation/create"]];
     __block NSError *jsonError = nil;
     __block NSDictionary *json = [NSJSONSerialization JSONObjectWithData:binaryData options:0 error:&jsonError];
     
@@ -334,11 +348,15 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
                 
                 // Send it to Casper.io to build the protobuf
                 NSString *bytecodeProtobuf = [data base64EncodedStringWithOptions:0];
-                NSDictionary *query = @{@"bytecode_proto": bytecodeProtobuf,
+                NSDictionary *query = @{@"protobuf": bytecodeProtobuf,
                                         @"nonce": hashString,
-                                        @"apk_digest": SKAttestation.digest9_14_2};
+                                        @"snapchat_version": SKConsts.snapchatVersion};
                 request.URL = [NSURL URLWithString:SKAttestation.protobufPOSTURL];
                 request.HTTPBody = [[NSString queryStringWithParams:query URLEscapeValues:YES] dataUsingEncoding:NSUTF8StringEncoding];
+                
+                // Set headers
+                [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
+                [request setValue:SKMakeCapserSignature(query, self.casperAPISecret) forHTTPHeaderField:SKHeaders.casperSignature];
                 [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:SKHeaders.contentType];
                 
                 [[session dataTaskWithRequest:request completionHandler:^(NSData *data2, NSURLResponse *response2, NSError *error2) {
@@ -387,11 +405,21 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
 
 - (void)getClientAuthToken:(NSString *)username password:(NSString *)password timestamp:(NSString *)ts callback:(StringBlock)callback {
     NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(ts);
+    NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
+    NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
     
-    NSURL *url = [NSURL URLWithString:@"https://api.casper.io/security/login/signrequest/"];
+    // Params
+    NSDictionary *query = @{@"username": username, @"password": password, @"timestamp": ts, @"snapchat_version": SKConsts.snapchatVersion};
+    
+    // Build request
+    NSURL *url = [NSURL URLWithString:@"https://api.casper.io/snapchat/clientauth/signrequest"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
-    request.HTTPBody = [[NSString queryStringWithParams:@{@"username": username, @"password": password, @"timestamp": ts}] dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody   = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
+    
+    // Set headers
+    [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
+    [request setValue:SKMakeCapserSignature(query, self.casperAPISecret) forHTTPHeaderField:SKHeaders.casperSignature];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -468,7 +496,7 @@ NSString * const kAttestationBase64Request = @"ClMKABIUY29tLnNuYXBjaGF0LmFuZHJva
     
     NSString *req_token = [NSString hashSCString:SKConsts.staticToken and:timestamp];
     NSString *string    = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, req_token];
-    NSString *deviceSig = [[NSString hashHMac:string key:self.deviceToken1v] substringWithRange:NSMakeRange(0, 20)];
+    NSString *deviceSig = [[[NSString hashHMac:string key:self.deviceToken1v] base64EncodedStringWithOptions:0] substringWithRange:NSMakeRange(0, 20)];
     
     NSDictionary *post = @{@"username": username,
                            @"password": password,

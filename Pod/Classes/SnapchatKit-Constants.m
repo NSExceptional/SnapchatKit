@@ -101,7 +101,7 @@ SK_NAMESPACE_IMP(SKAttestation) {
     .certificateDigest   = @"Lxyq/KHtMNC044hj7vq+oOgVcR+kz3m4IlGaglnZWlg=",
     .GMSVersion          = 7329038,
     .protobufBytecodeURL = @"https://www.googleapis.com/androidantiabuse/v1/x/create?alt=PROTO&key=AIzaSyBofcZsgLSS7BOnBjZPEkk4rYwzOIz-lTI",
-    .protobufPOSTURL     = @"https://api.casper.io/droidguard/attest/binary",
+    .protobufPOSTURL     = @"https://api.casper.io/snapchat/attestation/attest",
     .attestationURL      = @"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA",
     .digest9_8           = @"vXCcGhQ7RfL1LUiE3F6vcNORNo7IFSOvuDBunK87mEI=",
     .digest9_9           = @"Yk9Wqmx7TrTatldWI+5PWbQjGA8Gi8ZoO8X9OUAw1hg=",
@@ -118,7 +118,7 @@ SK_NAMESPACE_IMP(SKAttestation) {
 #pragma mark Misc
 SK_NAMESPACE_IMP(SKConsts) {
     .baseURL           = @"https://feelinsonice-hrd.appspot.com",
-    .userAgent         = @"Snapchat/9.14.2.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.10.0.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
+    .userAgent         = @"Snapchat/9.16.1.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.16.1.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
     .eventsURL         = @"https://sc-analytics.appspot.com/post_events",
     .analyticsURL      = @"https://sc-analytics.appspot.com/analytics/bz",
     .secret            = @"iEk21fuwZApXlz93750dmW22pw389dPwOk",
@@ -128,6 +128,7 @@ SK_NAMESPACE_IMP(SKConsts) {
     .boundary          = @"Boundary+0xAbCdEfGbOuNdArY",
     .deviceToken1i     = @"dtoken1i",
     .deviceToken1v     = @"dtoken1v",
+    .snapchatVersion   = @"9.16.1.0"
 };
 
 #pragma mark Header fields / values
@@ -139,6 +140,8 @@ SK_NAMESPACE_IMP(SKHeaders) {
     .acceptLocale    = @"Accept-Locale",
     .clientAuth      = @"X-Snapchat-Client-Auth",
     .clientAuthToken = @"X-Snapchat-Client-Auth-Token",
+    .casperAPIKey    = @"X-Casper-API-Key",
+    .casperSignature = @"X-Casper-Signature",
     .values = {
         .language      = @"en",
         .locale        = @"en_US",

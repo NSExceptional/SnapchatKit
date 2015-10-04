@@ -217,6 +217,9 @@ int main(int argc, const char * argv[]) {
         // Cannot seem to "solve" a captcha.
         //        registerAccount(@"Tatem1984@jourrapide.com", @"12345678h", @"1995-08-01");
         
+        [SKClient sharedClient].casperAPIKey = kCasperAPIKey;
+        [SKClient sharedClient].casperAPISecret = kCasperAPISecret;
+        
         [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
@@ -245,19 +248,18 @@ int main(int argc, const char * argv[]) {
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
-                id foo = [dict[@"updates_response"] allKeys];
-                
-                SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
-                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"displayName", @""]].firstObject;
-                for (SKStory *s in friend.stories)
-                    [s load:^(NSError *error1) {
-                        if (!error1) {
-                            NSLog(@"Saving %@: %@", SKStringFromMediaKind(s.mediaKind), s.suggestedFilename);
-                            [s.blob writeToPath:[directory stringByAppendingString:@"/Test-download"] filename:s.suggestedFilename atomically:YES];
-                        } else {
-                            NSLog(@"Error loading %@: %@", SKStringFromMediaKind(s.mediaKind), error1.localizedDescription);
-                        }
-                    }];
+//                
+//                SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
+//                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"displayName", @""]].firstObject;
+//                for (SKStory *s in friend.stories)
+//                    [s load:^(NSError *error1) {
+//                        if (!error1) {
+//                            NSLog(@"Saving %@: %@", SKStringFromMediaKind(s.mediaKind), s.suggestedFilename);
+//                            [s.blob writeToPath:[directory stringByAppendingString:@"/Test-download"] filename:s.suggestedFilename atomically:YES];
+//                        } else {
+//                            NSLog(@"Error loading %@: %@", SKStringFromMediaKind(s.mediaKind), error1.localizedDescription);
+//                        }
+//                    }];
                 
                 
                 //                [[SKClient sharedClient] get:[NSString stringWithFormat:@"%@US", kepDiscoverChannels] callback:^(id object, NSError *error) {
@@ -297,7 +299,7 @@ int main(int argc, const char * argv[]) {
                 //                testGetConversations();
                 
                 // Download and save unread snaps
-                saveUnreadSnapsToDirectory(unread, directory);
+//                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
 //                markSnapsRead(unread);

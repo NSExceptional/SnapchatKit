@@ -21,7 +21,8 @@
 + (NSString *)hashSC:(NSData *)first and:(NSData *)second;
 + (NSString *)hashSCString:(NSString *)first and:(NSString *)second;
 
-+ (NSString *)hashHMac:(NSString *)data key:(NSString *)key;
++ (NSData *)hashHMac:(NSString *)data key:(NSString *)key;
++ (NSString *)hashHMacToString:(NSString *)data key:(NSString *)key;
 
 - (NSString *)MD5Hash;
 
