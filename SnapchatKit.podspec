@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SnapchatKit"
-  s.version          = "0.3.4"
+  s.version          = "0.3.5"
   s.summary          = "An Objective-C implementation of the unofficial Snapchat API."
   s.homepage         = "https://github.com/ThePantsThief/SnapchatKit"
   s.license          = 'MIT'
