@@ -162,13 +162,42 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     return [self.identifier isEqualToString:conversation.identifier];
 }
 
+- (NSString *)suggestedChatPreview {
+    for (id message in self.messages.reverseObjectEnumerator) {
+        Class cls = [message class];
+        if (cls == [SKSnap class]) break;
+        
+        if (cls == [SKMessage class]) {
+            SKMessage *mess = (id)message;
+            return mess.text ?: [mess.sender stringByAppendingString:@"sent a picture."];
+            
+        } else if (cls == [SKCashTransaction class]) {
+            SKCashTransaction *cash = (id)message;
+            return [NSString stringWithFormat:@"%@ sent %@", cash.sender, cash.message];
+        }
+        
+        [NSException raise:NSInternalInconsistencyException format:@"Unknown class in SKConversation.messages: %@", cls];
+        return nil;
+    }
+    
+    return @"";
+}
+
 @end
 
 @implementation SKConversation (SKClient)
 
-- (NSString *)recipient {
-    if (![SKClient sharedClient].username.length) return nil;
-    return [self.participants[0] isEqualToString:[SKClient sharedClient].username] ? self.participants[1] : self.participants[0];
+- (NSString *)recipientGivenUser:(NSString *)user {
+    if (user) return nil;
+    return [self.participants[0] isEqualToString:user] ? self.participants[1] : self.participants[0];
+}
+
+- (BOOL)userHasUnreadChats:(NSString *)user {
+    NSString *sender       = [self recipientGivenUser:user];
+    NSUInteger yourCount   = [self.state[@"user_chat_releases"][user][sender] integerValue];
+    NSUInteger senderCount = [self.state[@"user_chat_releases"][sender][user] integerValue];
+    
+    return yourCount < senderCount;
 }
 
 - (NSString *)conversationString {

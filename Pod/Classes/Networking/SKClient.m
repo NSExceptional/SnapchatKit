@@ -71,8 +71,33 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     return sharedSKClient;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
++ (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken gauth:(NSString *)googleAuthToken {
+    SKClient *client         = [self new];
+    client.username          = username;
+    client->_authToken       = authToken;
+    client->_googleAuthToken = googleAuthToken;
+    
+    return client;
+}
+
+- (id)init {
     self = [super init];
+    if (self) {
+        if (NSClassFromString(@"UIScreen")) {
+            id cls = NSClassFromString(@"UIScreen");
+            id screen = [cls performSelector:@selector(mainScreen)];
+            self.screenSize = [screen bounds].size;
+            self.maxVideoSize = self.screenSize;
+        } else {
+            [self setScreenIdiom:0];
+        }
+    }
+    
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [self init];
     if (self) {
         _googleAuthToken   = [aDecoder decodeObjectForKey:@"googleAuthToken"];
         _googleAttestation = [aDecoder decodeObjectForKey:@"googleAttestation"];
@@ -101,6 +126,27 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
 
 - (void)setUsername:(NSString *)username {
     _username = [username lowercaseString];
+}
+
+- (void)setScreenIdiom:(SKScreenIdiom)idiom {
+    switch (idiom) {
+        case SKScreenIdiomiPhone4: {
+            _screenSize = _maxVideoSize = CGSizeMake(640, 960);
+            break;
+        }
+        case SKScreenIdiomiPhone5: {
+            _screenSize = _maxVideoSize = CGSizeMake(640, 1136);
+            break;
+        }
+        case SKScreenIdiomiPhone6: {
+            _screenSize = _maxVideoSize = CGSizeMake(750, 1334);
+            break;
+        }
+        case SKScreenIdiomiPhone6Plus: {
+            _screenSize = _maxVideoSize = CGSizeMake(1080, 1920);
+            break;
+        }
+    }
 }
 
 #pragma mark Convenience
@@ -532,6 +578,23 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
             });
         }];
     }] resume];
+}
+
+- (void)signInWithUsername:(NSString *)username authToken:(NSString *)authToken gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion {
+    NSParameterAssert(username); NSParameterAssert(authToken); NSParameterAssert(gmailEmail); NSParameterAssert(gmailPassword);
+    
+    [self getAuthTokenForGmail:gmailEmail password:gmailPassword callback:^(NSString *gauth, NSError *error) {
+        if (!error) {
+            _googleAuthToken = gauth;
+            _authToken       = authToken;
+            self.username    = username;
+            [[SKClient sharedClient] updateSession:^(NSError *error2) {
+                completion([self.currentSession valueForKey:@"JSON"], error2);
+            }];
+        } else {
+            completion(nil, error);
+        }
+    }];
 }
 
 - (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken doGetUpdates:(ErrorBlock)completion {

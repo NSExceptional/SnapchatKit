@@ -63,6 +63,8 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 @property (nonatomic, readonly) NSString     *lastChatReader;
 /** \c nil if not applicable. */
 @property (nonatomic, readonly) NSString     *lastChatWriter;
+/** A string representing the last chat interaction (i.e. the last message, or a message describing a snap or cash transaction. */
+@property (nonatomic, readonly) NSString     *suggestedChatPreview;
 
 /** \c nil if not applicable. */
 @property (nonatomic, readonly) SKCashTransaction *lastTransaction;
@@ -83,8 +85,10 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 @end
 
 @interface SKConversation (SKClient)
-/** Returns the (first) participant that is not the current user. */
-@property (nonatomic, readonly) NSString *recipient;
+/** @return The (first) participant that is not the current (given) user. */
+- (NSString *)recipientGivenUser:(NSString *)user;
+/** Whether or not \c user has unread messages. */
+- (BOOL)userHasUnreadChats:(NSString *)user;
 /** All messages in a human-readable, newline separated format. */
 @property (nonatomic, readonly) NSString *conversationString;
 @end
