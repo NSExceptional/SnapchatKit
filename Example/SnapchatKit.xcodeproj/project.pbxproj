@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08AB17D438DEF4B786E0474C /* Pods_SnapchatKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A36D88C62F269BD5289F85AF /* Pods_SnapchatKit_Example.framework */; };
-		481CFCE04CDEBE40CCA566DD /* Pods_SnapchatKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47288D9F86E267809431017 /* Pods_SnapchatKit_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		58F83C522A8930FC9A05E41F /* Pods_SnapchatKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47288D9F86E267809431017 /* Pods_SnapchatKit_Tests.framework */; };
+		43A340B3E4D125055A02D880 /* Pods_SnapchatKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CD9903EBCF5FE2F879E8B5 /* Pods_SnapchatKit_Tests.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -17,17 +15,15 @@
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F5A7195388D20070C39A /* SKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5A6195388D20070C39A /* SKViewController.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
-		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		65FA6F8F0B30A1C2746540B8 /* Pods_SnapchatKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A36D88C62F269BD5289F85AF /* Pods_SnapchatKit_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		8AEB0AD1B633B108B71E7BA6 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBAC4DDE7F87C351DBA8578F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B49E0ED11B6A6F110086F8D0 /* SNTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B49E0ED01B6A6F110086F8D0 /* SNTableViewController.m */; };
 		B49E0ED31B6A6F470086F8D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B49E0ED21B6A6F470086F8D0 /* Main.storyboard */; };
 		B49E0ED51B6A6FE80086F8D0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B49E0ED41B6A6FE80086F8D0 /* LaunchScreen.xib */; };
 		B4F75D7C1B7A7C3A008E6FF8 /* SKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F75D7B1B7A7C3A008E6FF8 /* SKAppDelegate.m */; };
+		D6435FFDBBF28130CA56EC70 /* Pods_SnapchatKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6DF873F27DD61B983F9C4B /* Pods_SnapchatKit_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		58CD9903EBCF5FE2F879E8B5 /* Pods_SnapchatKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapchatKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58A195388D20070C39A /* SnapchatKit_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnapchatKit_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -54,15 +51,14 @@
 		6003F5A6195388D20070C39A /* SKViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SKViewController.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6003F5AE195388D20070C39A /* SnapchatKit_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnapchatKit_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6414BD2CF8860128C7DA40BF /* Pods-SnapchatKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		891C0C84E220E0487354B6C5 /* Pods-SnapchatKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Tests/Pods-SnapchatKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		8D6DF873F27DD61B983F9C4B /* Pods_SnapchatKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapchatKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B45BD6A6F5EF510EA64C1A4 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		A36D88C62F269BD5289F85AF /* Pods_SnapchatKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapchatKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A673B4230E4D3F614D99479C /* Pods-SnapchatKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Tests/Pods-SnapchatKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		B49E0ECF1B6A6F110086F8D0 /* SNTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNTableViewController.h; sourceTree = "<group>"; };
 		B49E0ED01B6A6F110086F8D0 /* SNTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTableViewController.m; sourceTree = "<group>"; };
@@ -72,9 +68,7 @@
 		B4F75D7B1B7A7C3A008E6FF8 /* SKAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAppDelegate.m; sourceTree = "<group>"; };
 		C50B6337FD849C47AAA86405 /* Pods-SnapchatKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		CBB5C915BC5AC56D10244C95 /* SnapchatKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SnapchatKit.podspec; path = ../SnapchatKit.podspec; sourceTree = "<group>"; };
-		E47288D9F86E267809431017 /* Pods_SnapchatKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapchatKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC5739F6BEA6CC88122E8C68 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		FBAC4DDE7F87C351DBA8578F /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,9 +79,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				08AB17D438DEF4B786E0474C /* Pods_SnapchatKit_Example.framework in Frameworks */,
-				8AEB0AD1B633B108B71E7BA6 /* Pods.framework in Frameworks */,
-				481CFCE04CDEBE40CCA566DD /* Pods_SnapchatKit_Tests.framework in Frameworks */,
+				D6435FFDBBF28130CA56EC70 /* Pods_SnapchatKit_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,11 +87,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				65FA6F8F0B30A1C2746540B8 /* Pods_SnapchatKit_Example.framework in Frameworks */,
-				58F83C522A8930FC9A05E41F /* Pods_SnapchatKit_Tests.framework in Frameworks */,
+				43A340B3E4D125055A02D880 /* Pods_SnapchatKit_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,10 +134,8 @@
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
-				6003F5AF195388D20070C39A /* XCTest.framework */,
-				A36D88C62F269BD5289F85AF /* Pods_SnapchatKit_Example.framework */,
-				E47288D9F86E267809431017 /* Pods_SnapchatKit_Tests.framework */,
-				FBAC4DDE7F87C351DBA8578F /* Pods.framework */,
+				8D6DF873F27DD61B983F9C4B /* Pods_SnapchatKit_Example.framework */,
+				58CD9903EBCF5FE2F879E8B5 /* Pods_SnapchatKit_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -262,7 +250,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SK;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = ThePantsThief;
 				TargetAttributes = {
 					6003F5AD195388D20070C39A = {
@@ -369,7 +357,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SnapchatKit_Tests/Pods-SnapchatKit_Tests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D54B0F88C0CDC1A389FC9322 /* Embed Pods Frameworks */ = {
@@ -472,6 +460,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -536,6 +525,7 @@
 				GCC_PREFIX_HEADER = "SnapchatKit/SnapchatKit-Prefix.pch";
 				INFOPLIST_FILE = "SnapchatKit/SnapchatKit-Info.plist";
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -551,6 +541,7 @@
 				GCC_PREFIX_HEADER = "SnapchatKit/SnapchatKit-Prefix.pch";
 				INFOPLIST_FILE = "SnapchatKit/SnapchatKit-Info.plist";
 				MODULE_NAME = ExampleApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -573,6 +564,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SnapchatKit_Example.app/SnapchatKit_Example";
 				WRAPPER_EXTENSION = xctest;
@@ -592,6 +584,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
 				INFOPLIST_FILE = "Tests/Tests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SnapchatKit_Example.app/SnapchatKit_Example";
 				WRAPPER_EXTENSION = xctest;

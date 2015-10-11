@@ -11,12 +11,14 @@
 		00E35003DE132CA79A526FCE89D77E16 /* RingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 31F648378E994908BE3DEFFBD2CEB0CB /* RingBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		00F6A1A5886C968EAEF709F025C629BD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46EF97B3320D5567B3CD996D681E6DB9 /* Foundation.framework */; };
 		0120362E8FDC4F1EBE0377D52527161F /* UnknownFieldSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FF2C7F1C9F03E9F9FFEEEB71828E5D /* UnknownFieldSet.m */; };
+		016DCC45D6DA2C1272C0E6B1ADE05A1C /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E0035C4D44DD28CDC29DBEE88C9580 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		019F98F946817BFC8036990FC4866029 /* SKSharedStoryDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 783EA1ECC5FDE5F2CB4C6E1B8B5B9896 /* SKSharedStoryDescription.m */; };
 		01F6E48CB9D03467B4E5E15A86E9E696 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46EF97B3320D5567B3CD996D681E6DB9 /* Foundation.framework */; };
 		023388DFA5754C45B0A6A5C0F26D3077 /* Pods-SnapchatKit-OSX-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DC3BE7BB86B644F4B88640AA93A535C /* Pods-SnapchatKit-OSX-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		024CB5A94F8C400B1D9BB8FECD524A98 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 79F59B49CE4DC99DF440AE4D85E72F6C /* crypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		02A7B6428992BB41A044CDFCF0F97B46 /* AbstractMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 07EAD9F6F9FA6CF821F00410E5793C55 /* AbstractMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		042DA1E4404BBD3A35D5275D4A29413A /* SKClient+Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F34E602ECE0E9952C0C9CC8D2E971A /* SKClient+Account.m */; };
+		052AE2FC96F5F2FA1BED86D111E0F4F0 /* NSDictionary+MTLMappingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DAF85FA8CA77FA6432DD4E4865FA28 /* NSDictionary+MTLMappingAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		05735D40AC69A1FBBDD5DF622B479835 /* AbstractMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 07EAD9F6F9FA6CF821F00410E5793C55 /* AbstractMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		065BB6D4330B794A98798E58C47C06E9 /* SKSnapOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 102BD1F037C4B0705E82FACAADBC648A /* SKSnapOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		06C96BD41A4B7F0388545998F3943C91 /* SKSnap.m in Sources */ = {isa = PBXBuildFile; fileRef = 802057E388A43AE12453D12948E1951C /* SKSnap.m */; };
@@ -27,14 +29,16 @@
 		09475913E1E8F8A5C967C95D101B5748 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7CCAAC157EB2E8A7F7A2290A48C89A /* Cocoa.framework */; };
 		0981354675608E7EBD38A6EEBF66B37C /* NSString+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 54460D90C5A5A625598F1A72569A13B5 /* NSString+SnapchatKit.m */; };
 		099696D740CF3C866F1CC938442BFB2D /* SKAddedFriend.h in Headers */ = {isa = PBXBuildFile; fileRef = 65C6A40590103EE3AACC40219CF10B19 /* SKAddedFriend.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0999E6A9C74BDA82BCD8B7CFB54AE488 /* MTLJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DA22E10B78E607B571F2A55C30EF9 /* MTLJSONAdapter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		09C58BC21A0FBF1C5429A24448572F2C /* SKClient+Friends.m in Sources */ = {isa = PBXBuildFile; fileRef = A80EB289DF56408DBC3088C043E15245 /* SKClient+Friends.m */; };
 		0B619861F6B430E30337F61DB3F4D4E6 /* ExtendableMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 151083D0F45656947CF1BAD22F86B9EE /* ExtendableMessageBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0BB90E81EBAD7A3CC465A757B8380910 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F2EFE545E38C869A6A2D1EABEFE6F /* EXTScope.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		0BCF2760E68800780670F754593FD6D8 /* WireFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E8F6A76DF1D61C5C7225F9DDCD74CA3 /* WireFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0C30C90656ECBECF298AD0160715EA48 /* NSDictionary+MTLJSONKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF9455276C69ACF288FDCEEB316B212 /* NSDictionary+MTLJSONKeyPath.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		0C76554583B90F6209F6C1C71908B250 /* MutableField.h in Headers */ = {isa = PBXBuildFile; fileRef = E6B8AC488192EFFE38ABFA7054D5FAE7 /* MutableField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CC5E979EB52B9966F2B4E18315DBDC0 /* SKRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = E723F5E599FCD85ABFD4F911E3DDDE5F /* SKRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0CF6E8F089E0B74DC3B3895890C8FB64 /* NSError+MTLModelException.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B3600563469E165A512779D2952B19 /* NSError+MTLModelException.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		0F2D519BD6C421E07B3026992381A769 /* PBArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A69F98F1A3DEA5E52B393E4CA8AEAF9 /* PBArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0FDD7201F16809B2433B7543FC6CC530 /* NSValueTransformer+MTLInversionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FDC119599936009F4BBDAE2B034A189 /* NSValueTransformer+MTLInversionAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		1031F9FEA1EDEE8A92E93180AE933A14 /* CodedInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 04365EC94A261DF5AA309962BFE4E7AA /* CodedInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10426A8D8C4853EB096DF09D705CA7BA /* ExtensionField.h in Headers */ = {isa = PBXBuildFile; fileRef = 01E0A94D80868EC6EA02AE1C229EAC5D /* ExtensionField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		10A7A4024E814E076590E646FFF0598B /* SKFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3168646A0D3D84DBEAC87C1C0BDA6 /* SKFilter.m */; };
@@ -50,9 +54,9 @@
 		1841924A876FF2571659ECFD3B1EE210 /* SKSnapOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 102BD1F037C4B0705E82FACAADBC648A /* SKSnapOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		185E6B9D1562C1D1E1A49B73FC1FF46F /* SKStoryNote.m in Sources */ = {isa = PBXBuildFile; fileRef = E7264B33B0A0713CE212280490FD1800 /* SKStoryNote.m */; };
 		185F49393199308807E43E7F2987BF93 /* SKBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = EC153DEC3715CFBB867734E4DCF5C9D6 /* SKBlob.m */; };
+		1A396CAA57FAFE6CB901C87A93904F21 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F2EFE545E38C869A6A2D1EABEFE6F /* EXTScope.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		1A5975CE8C5E0498D886DEB4452CEEFD /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E059AC38BADB0D1B36F1843E1BE50C2F /* Utilities.m */; };
 		1A704361620477DAB19E6EBD967D8F24 /* SKFoundFriend.h in Headers */ = {isa = PBXBuildFile; fileRef = 93D7F125345B7EE254042449068E0D63 /* SKFoundFriend.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1B076DF3B4692E545CA4410C3A0B9E70 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C994D8C3A0E2BD2F6A50788977A698B4 /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		1C3E25E616DC7ACDA6A71318B5B97A0B /* SKConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 979970EC473F3B7EC64A997D0DAB7410 /* SKConversation.m */; };
 		1CCCE7272B85A744EA4BBFF2A2B1A584 /* SKStory.h in Headers */ = {isa = PBXBuildFile; fileRef = B4B133121782FD34737B816B9476DBF9 /* SKStory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1EB2D4070BDBA437257948E9847CAD45 /* Pods-SnapchatKit_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = ED040AD1A09159B67F92E0C54034D46E /* Pods-SnapchatKit_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -65,17 +69,16 @@
 		2264E1B7537847FB1E24B6EEE74ED9E3 /* Pods-SnapchatKit_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A5B71C481C0DEFF98AA08BF9328DB8C /* Pods-SnapchatKit_Example-dummy.m */; };
 		2374F497E8C89CB6D8C49233C14F4DC9 /* NSError+MTLModelException.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A4992617DD257BF87C19BD4E5A7D2A9 /* NSError+MTLModelException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		237F5429A90C1C3874380DFCC7F50349 /* SKSimpleUser.h in Headers */ = {isa = PBXBuildFile; fileRef = E54E26EDFAA3F10A36830DE50A7A5B14 /* SKSimpleUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		23909EA74D814415AD25CAA0D3429E8A /* NSValueTransformer+MTLInversionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FDC119599936009F4BBDAE2B034A189 /* NSValueTransformer+MTLInversionAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		242F7528027487EBDCAB8DB71CDBB224 /* SKFoundFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E2210149C81E3944A0BE1276CAC3A1 /* SKFoundFriend.m */; };
 		243D3B86A9A67DEFD0BDCEE4D6C7D839 /* ObjectivecDescriptor.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = CDF8D63AD3F269AECF961EB562B4584D /* ObjectivecDescriptor.pb.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2505947A59E09D87EC189986798356C0 /* SKRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9412679689721ADFAAC7A895E02BA5AE /* SKRequest.m */; };
 		2585D6EA8E5FE203C3FC8CB2FEEDF40A /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = FB2D208BA9563060C0278C6D8F71C479 /* zip.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		25AE841809F8AB20D9F55F85861DA349 /* MessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = E3D463D60137F8318D301057A1ECFDB5 /* MessageBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		26011E3D61F619D4A9BCEC383FEAC05D /* MTLJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DA22E10B78E607B571F2A55C30EF9 /* MTLJSONAdapter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		267CF5C3C42266B456D26CCB8A6AF099 /* SnapchatKit-Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = CE4ABDF04FF8494E1C5D6E053D288B2A /* SnapchatKit-Constants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2681E46DD69A2B7004A58ADC8E080957 /* CodedOutputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = C166F11F874CC66F155035BD723C973A /* CodedOutputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		268F4A06D7E5CF71356647535F47A0F0 /* ExtensionRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 37186F3BDEF4361A87EE611FE929CFB9 /* ExtensionRegistry.m */; };
 		26A8FB84B0F7ACB0C5403E4A920A0881 /* SKClient+Device.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E8C22914F0D53BA79853BCCAE38D6A0 /* SKClient+Device.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		27D62862900D1134988F4606B032AA44 /* MTLValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 30966F6B3985DE33FEB91E8D08220629 /* MTLValueTransformer.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		282B53B2BA402322977754FB8714551A /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73839BEC40DA572D986E82BD377F57E7 /* Mantle.framework */; };
 		285286FE8C7219404AE1AA0A97E12410 /* MTLReflection.h in Headers */ = {isa = PBXBuildFile; fileRef = 14DA7638F179D4435E88DD761A6C54AF /* MTLReflection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		285A44F32981BF111E7B69389A567FBC /* UnknownFieldSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FDCF9C141D2B76551E065804EB72AF7 /* UnknownFieldSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -99,6 +102,7 @@
 		2E38B3A0594877C7393F558A96FF21EE /* NSDictionary+MTLManipulationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = DF085137EB0F35B5B37260EABF2BC4FF /* NSDictionary+MTLManipulationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2F2DBCB99EFB00EC2A9965B8FBB8E91A /* UnknownFieldSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 15787D58A018F7C163848E0EDEFFF2AB /* UnknownFieldSetBuilder.m */; };
 		305CEBA9E37E583C6CC9F26CED58F86D /* RingBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AD70060269B4629B407FE76BD9B976 /* RingBuffer.m */; };
+		3165B0D846A156E1ACBF659BAA4E9F12 /* NSDictionary+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9085E7485D99346EF2A43B26F8F498 /* NSDictionary+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		31A006C7D74D36E484C66524FB9B94E2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D7CCAAC157EB2E8A7F7A2290A48C89A /* Cocoa.framework */; };
 		31E7338BAEC9D179702663B3590EFBC2 /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 747032A30F0B0CFAE55E25EE38C28805 /* EXTRuntimeExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		31F9DB362566BA94B17E3D7ACB3D3E0C /* SKSnapResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4D2DD38DC19BF04525CD76056DF23B /* SKSnapResponse.m */; };
@@ -118,6 +122,7 @@
 		375918802120B79CE1A811521FF565C3 /* Descriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BA9EA15DD7130BEC47C5B99EC9384A /* Descriptor.pb.m */; };
 		377B4976BE7CFD109B545F252618C439 /* SKStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9269F78B7355A85A30F6036EEAAC51C9 /* SKStory.m */; };
 		383508FE12C8DCCB754440DC8687ED7A /* SKSession.h in Headers */ = {isa = PBXBuildFile; fileRef = AA054E5F64577F7C772D73102EF8F7C1 /* SKSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3850E499957400FD1BAC9A0109F5EE52 /* MTLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A864CDFDE11D41869495F647850956 /* MTLModel.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		39BA0E82CE3772CCB25D8794CB97340D /* SKClient+Account.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CBC1007B50FB6D8D8CCC49C9AA3A908 /* SKClient+Account.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		39EA28C03534E3CF349C04D02204C43F /* Bootstrap.h in Headers */ = {isa = PBXBuildFile; fileRef = 30F3816561C0672DD603262F36C61EB4 /* Bootstrap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3A3C6B40096B06D7E7A863D6B449807A /* MTLTransformerErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B3A02E4506C7059D914FEF250427E1 /* MTLTransformerErrorHandling.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -133,7 +138,6 @@
 		3CB7CF2F1075ADA90CB8E5C99602CC79 /* RingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 31F648378E994908BE3DEFFBD2CEB0CB /* RingBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3D3F06AB744A95368C463750E4B80D62 /* NSString+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 01D3D233D27189A14C4D48B64946BEDC /* NSString+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3D4B72F09A7D1AF5AC53C83EB21EC908 /* MutableField.m in Sources */ = {isa = PBXBuildFile; fileRef = 709485E58BF2FF0A4C686203BE95E8EB /* MutableField.m */; };
-		3D5C7C244711B6322687777E61E19A6C /* NSDictionary+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9085E7485D99346EF2A43B26F8F498 /* NSDictionary+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		3DAB7FA1643B395E29020DF3DB043FB4 /* SKStoryOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 2349A4CD323EDCB9F3445312B2F9489A /* SKStoryOptions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3DC3166DBA145A9B1A72D3D0E833404D /* MTLValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B61B312FEA02DCE16514E7C4A29FBA /* MTLValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3E29BB9178E4EDFADCF80C9CD5AD83DD /* NSArray+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 444ABAE227428925EDF5D132A91868E4 /* NSArray+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -148,19 +152,18 @@
 		445F6FE8D9561E076CAFD7F720282A17 /* RingBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AD70060269B4629B407FE76BD9B976 /* RingBuffer.m */; };
 		44F3B511C9F401D8C16800584A31E61B /* SKClient.h in Headers */ = {isa = PBXBuildFile; fileRef = DE3FD306D6487F5A6E0F63B0BA4493A1 /* SKClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		45D38CB575713150B3A90D9D38ABD156 /* SKStoryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D74C791C2358D9D5C3D0605B6C1FE5A /* SKStoryCollection.m */; };
-		46204E30E187CD54D9E99E2FAA750AE0 /* MTLModel+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 06373D743A4B8735559065DB34A4D3CF /* MTLModel+NSCoding.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		46250D8FE675647F879F57FA4B5C30A9 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E059AC38BADB0D1B36F1843E1BE50C2F /* Utilities.m */; };
 		471BC7DC8B0FABD32EAF770E8D686EB6 /* MTLJSONAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B78B5F838295F2C6CCA0316BE4A7C97 /* MTLJSONAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		473B0B374FDCED388C3F0E90450D56FA /* SKStory.h in Headers */ = {isa = PBXBuildFile; fileRef = B4B133121782FD34737B816B9476DBF9 /* SKStory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		478331EF4720256BB0BE0CC2A960105C /* MutableExtensionRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD538EFE6D0B801F385F20D93048AED /* MutableExtensionRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		479198E6D223F3F7172CE0402F5E2ED2 /* MTLModel+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 06373D743A4B8735559065DB34A4D3CF /* MTLModel+NSCoding.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		486F8E44328E05773A32FABF6363785A /* SKNearbyUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4825B54E2CDC5AA561EF544825F2A14F /* SKNearbyUser.m */; };
+		488F2949058090EC2188C8E5FA79D184 /* NSObject+MTLComparisonAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A825C1C9779653BE134C643213E98 /* NSObject+MTLComparisonAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		4895A72C93179952912E89C31138CEE7 /* WireFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4687F307C6DF4771125FACD4FEF41B6F /* WireFormat.m */; };
 		48D9F27D1DF186EEC82DC1323FBDC8BC /* NSValueTransformer+MTLPredefinedTransformerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FB0E1FAC0060ECAB08CEE29646BFE32A /* NSValueTransformer+MTLPredefinedTransformerAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		49158774B3216C2C8D3D59F20541A290 /* ProtocolBuffers.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ACEF1C64263788DDF0A871B5FD3415D /* ProtocolBuffers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4964637AC990C2E5B62511EA4E609D4D /* NSArray+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F20808D5847A1BE5576F1E97363F4126 /* NSArray+SnapchatKit.m */; };
 		49A4D5AABC8F459CEA366B311579E804 /* GeneratedMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6192CF7FB23184D714C51581F7A1A1BE /* GeneratedMessageBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		49F1F759E3211F99AE1EB258A0539A3E /* MTLTransformerErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B3A02E4506C7059D914FEF250427E1 /* MTLTransformerErrorHandling.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		4A4D4EC9627FE511EFBA1983DCA59BBD /* SKClient+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = 3483A1EC7B5CF9FAD309261F6519CDF3 /* SKClient+Discover.m */; };
 		4AAA0EB9ECD70B397C419509638498B7 /* SKMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5532B761F50A991D01D8E66810F650B5 /* SKMessage.m */; };
 		4AD59595C51B3FC7C7469B926AB0EED5 /* NSValueTransformer+MTLInversionAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 58BA9F3FC2DC449A0D601CAFBB661733 /* NSValueTransformer+MTLInversionAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -178,9 +181,7 @@
 		4E92A504E5A73DF5D5F8FECEFD6E6F9D /* Message.h in Headers */ = {isa = PBXBuildFile; fileRef = B7ABCBE17F86FB9BEECA8062A041C9AC /* Message.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EB68C418B69373E07B3B1E76E4361FD /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE550472E08ABD8D5B741D1077F61BA /* unzip.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4EC0C4AB25A9E263DDD76006DC34FE1A /* SKSimpleUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CC45708F858B3A21FA14F2C3AE0C49 /* SKSimpleUser.m */; };
-		500930FB6D697F545409818C0A93179B /* NSArray+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B29E8F6A2790D070998F9CF5CF7EE4D1 /* NSArray+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		50915B525DD3E78E926D1A1AC5F72B09 /* NSError+MTLModelException.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A4992617DD257BF87C19BD4E5A7D2A9 /* NSError+MTLModelException.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		516823A4FA02BBC792E37395AD1B85DB /* MTLModel+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 06373D743A4B8735559065DB34A4D3CF /* MTLModel+NSCoding.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		527E54842FB111C7860FFB9DF6FB9480 /* SKUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DA60CBC900C38B9E72F99E56E639C3E /* SKUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		53C8EBF58BACE87EA90FA1EA39E6ADBD /* SKThing.m in Sources */ = {isa = PBXBuildFile; fileRef = 9172B364044C193573346831B47E3C32 /* SKThing.m */; };
 		54F2E6E1B8A6294B557119AAC804BBA8 /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = FB2D208BA9563060C0278C6D8F71C479 /* zip.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -197,6 +198,7 @@
 		5A4FCB51BD6040760589B70D51EA7F6A /* UnknownFieldSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 15787D58A018F7C163848E0EDEFFF2AB /* UnknownFieldSetBuilder.m */; };
 		5AA3C1936A3820D8E9BC1D8FE05DE37A /* AbstractMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C1F491F9A8489CC37E4E1795E1924489 /* AbstractMessageBuilder.m */; };
 		5AE8A38561CDA0A9351FFAC780B75A01 /* ExtensionRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 06B966634B688674E5961D625443E7E4 /* ExtensionRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5B896FA68AEE9209B02BD5A1A58ED398 /* NSValueTransformer+MTLInversionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FDC119599936009F4BBDAE2B034A189 /* NSValueTransformer+MTLInversionAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		5BC30758F4D0C0F36B721AE29E3A8C1E /* SKNewConversation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2A537E793DA2330169541319E2AD1A2A /* SKNewConversation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BF56770C12DFAE89B57DA8727C62793 /* SKBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = EC153DEC3715CFBB867734E4DCF5C9D6 /* SKBlob.m */; };
 		5C29A130746FB6D5E84BDBBBF3959E8F /* AbstractMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 07EAD9F6F9FA6CF821F00410E5793C55 /* AbstractMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -210,24 +212,27 @@
 		5F84E4E611C94A8833A393198E0C439C /* MTLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A864CDFDE11D41869495F647850956 /* MTLModel.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		601840AF945E6DAD9409D9F4AC0F84D2 /* Bootstrap.h in Headers */ = {isa = PBXBuildFile; fileRef = 30F3816561C0672DD603262F36C61EB4 /* Bootstrap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		63912A16DF657113B7EDADE0FC3FA65B /* ExtendableMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 4D2C9634F9F032DDCBE25B9910E30A5A /* ExtendableMessageBuilder.m */; };
+		6408239CE05D0CBC8D45E28E3CCF95F3 /* NSArray+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B29E8F6A2790D070998F9CF5CF7EE4D1 /* NSArray+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		6563A9DA69FA273918AE1C64F500EACB /* SKSimpleUser.h in Headers */ = {isa = PBXBuildFile; fileRef = E54E26EDFAA3F10A36830DE50A7A5B14 /* SKSimpleUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		65B5A153711F61BF0D37FC0DD0C36E07 /* Descriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 55BA9EA15DD7130BEC47C5B99EC9384A /* Descriptor.pb.m */; };
 		65C3BB92487BB24C522222F5FA511BD8 /* NSValueTransformer+MTLPredefinedTransformerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FB0E1FAC0060ECAB08CEE29646BFE32A /* NSValueTransformer+MTLPredefinedTransformerAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		65DA0ECAF7EBF7CBD51756BC66566B9B /* MTLValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 30966F6B3985DE33FEB91E8D08220629 /* MTLValueTransformer.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		65FC258BEA145736F4CB9C917DCC5DFC /* SKSharedStoryDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 783EA1ECC5FDE5F2CB4C6E1B8B5B9896 /* SKSharedStoryDescription.m */; };
 		67406B8865F4919851BAC6BEA7A0B167 /* CodedOutputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = C166F11F874CC66F155035BD723C973A /* CodedOutputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		675B22E93193447D18446E3DE8E25257 /* AbstractMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3B442CA4C99021E31A08D4467D4203 /* AbstractMessage.m */; };
+		67850AD9F804B9C25549DBC296068694 /* NSDictionary+MTLMappingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DAF85FA8CA77FA6432DD4E4865FA28 /* NSDictionary+MTLMappingAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		67EDC13AA60ABBB65208A5082E762C7F /* TextFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 70A50AB4E7409F7A938AA8915CE5522B /* TextFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		686810271159BBFDCF6575E22E786E36 /* Pods-SnapchatKit-OSX-Mantle-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ADC019666AAF7D7A212B5577793A36B8 /* Pods-SnapchatKit-OSX-Mantle-dummy.m */; };
 		686FF1CB34E4F0795A39A5D74E18077E /* ObjectivecDescriptor.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 4149CC5EE78E849EAF5DEEFEE5B0AA66 /* ObjectivecDescriptor.pb.m */; };
+		68A2BB69EEF9DCFE5A66D45C2C3E5839 /* NSError+MTLModelException.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B3600563469E165A512779D2952B19 /* NSError+MTLModelException.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		6916DEC99C867F68C2420A0AD0DFA9FA /* SnapchatKit-Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = CE4ABDF04FF8494E1C5D6E053D288B2A /* SnapchatKit-Constants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6A46FDF31F2E0E67ED93E71F670DFDBA /* NSDictionary+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9085E7485D99346EF2A43B26F8F498 /* NSDictionary+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		6A575A24FA4ABF4977806083C259B579 /* SKSharedStoryDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = E6316AA0C110D87D7C0CEE4F992074FC /* SKSharedStoryDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6ABE31A4D998B09A454798764523FD90 /* ExtensionField.h in Headers */ = {isa = PBXBuildFile; fileRef = 01E0A94D80868EC6EA02AE1C229EAC5D /* ExtensionField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B06F02EAB08ABD063C624BC18BA5440 /* AbstractMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 978BF2612AD5B68A7A65BE361CCDD3DB /* AbstractMessageBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B2824B75691F9C3DE9D89565AD14BCB /* SKSimpleUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CC45708F858B3A21FA14F2C3AE0C49 /* SKSimpleUser.m */; };
 		6B5ADCF1533B10E43C05B60BC9C49316 /* NSDictionary+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 523519361513D98C2F08E815B11DEF1B /* NSDictionary+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6BA8B54DDCA21FFF73BD889120B17A56 /* MTLJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DA22E10B78E607B571F2A55C30EF9 /* MTLJSONAdapter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		6C12BAE728E410C79932652980B431FF /* SKLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 25B50FC7D431013529A4EDF7982F6C0A /* SKLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6CD5886E1C8F03E20962E8E3CBFFFD46 /* NSArray+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B29E8F6A2790D070998F9CF5CF7EE4D1 /* NSArray+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		6CFFFE8D066AC8A212E4332495A030E4 /* SKStoryOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C889F248D1DED2AFD880A16BC306586F /* SKStoryOptions.m */; };
 		6D0A5F989BECD7803E4C9FCA9E64E663 /* SKStoryUpdater.h in Headers */ = {isa = PBXBuildFile; fileRef = 774C527EA09A09E0D8CD014D643D2268 /* SKStoryUpdater.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6D1C5179324E2197B925BE33548A8E0B /* MTLModel+NSCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = D917EDD76808D4D21F22960E1DE309C8 /* MTLModel+NSCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -239,10 +244,8 @@
 		6E8A9BA92639A36DBC0DE93AE0DD78F0 /* NSArray+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = F20808D5847A1BE5576F1E97363F4126 /* NSArray+SnapchatKit.m */; };
 		6EEAE3619B32B34D36ED8AA78DB1A0CA /* MTLTransformerErrorHandling.h in Headers */ = {isa = PBXBuildFile; fileRef = C93DEA42EF984A92E5FFF4F5EA4C4576 /* MTLTransformerErrorHandling.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EF72229A34E368590361CD0ACD79418 /* SKClient+Friends.h in Headers */ = {isa = PBXBuildFile; fileRef = 833D0F7844FB6F9844FF13EF09871134 /* SKClient+Friends.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6FC9297284E6B97475C34E5F64955D1B /* MTLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A864CDFDE11D41869495F647850956 /* MTLModel.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		707CC0B1ABAEC59B775DCB7995E91EB1 /* SKSnapResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FBEB3B3FA6CC7990C60F15777A0090E /* SKSnapResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		70BCAD21362565B8B6FCE6B313D64E2A /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = E76B54A5B681A52C9BF1A48F75B3DE3F /* unzip.c */; };
-		713AE4F662C0ABD9A6AB9CCA7E789BC9 /* NSDictionary+MTLJSONKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF9455276C69ACF288FDCEEB316B212 /* NSDictionary+MTLJSONKeyPath.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		720495FE298D1E150AD5D7841C6CDABB /* Message.h in Headers */ = {isa = PBXBuildFile; fileRef = B7ABCBE17F86FB9BEECA8062A041C9AC /* Message.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		735EC43FFF3F2E70EFAB009963F395E0 /* NSValueTransformer+MTLInversionAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 58BA9F3FC2DC449A0D601CAFBB661733 /* NSValueTransformer+MTLInversionAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		73606C0786F1540F0BA82FBF2174115F /* SKSnap.h in Headers */ = {isa = PBXBuildFile; fileRef = 48D10AA8FB91C836871332883EEE8C79 /* SKSnap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -256,21 +259,17 @@
 		77750DA27BF7879D82B4EE3D52E43510 /* mztools.h in Headers */ = {isa = PBXBuildFile; fileRef = 1685FA7977E1A72A8CA039CF99A88D23 /* mztools.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7787D715B0932EC381A7A217503C81D3 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 79F59B49CE4DC99DF440AE4D85E72F6C /* crypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		77B17F032EAA511415272130D4FFE432 /* SKLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 25B50FC7D431013529A4EDF7982F6C0A /* SKLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		77EC3AD9A16F93D2A99FA7E24077B4C2 /* NSDictionary+MTLMappingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DAF85FA8CA77FA6432DD4E4865FA28 /* NSDictionary+MTLMappingAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		787F037EADA4F6E7F5441812EB9DB78B /* SKClient+Snaps.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FEA67B46E224685AD9C805D1A27E5D9 /* SKClient+Snaps.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		79969FA9CFC3C2C847770EF64F44D45F /* NSData+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AC6595E4B0F1881632644CBC0879775 /* NSData+SnapchatKit.m */; };
-		79A99170C7433CE688B43AC977697B2C /* NSError+MTLModelException.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B3600563469E165A512779D2952B19 /* NSError+MTLModelException.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		7A26BB491B363D1023D7446361049660 /* Pods-SnapchatKit-OSX-SnapchatKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C1655D290963794DB4DD8A91377BAC2E /* Pods-SnapchatKit-OSX-SnapchatKit-dummy.m */; };
 		7AEFF01882B6D07EA6C6575E714E7ECE /* SKLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 81A6A60094231EA88DCE60750AA13AE1 /* SKLocation.m */; };
 		7AF32F69DFF9CD3A4BDBB7538E278E17 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = E76B54A5B681A52C9BF1A48F75B3DE3F /* unzip.c */; };
 		7B985DA5AD90B39433D3D9A6861B640F /* Pods-SnapchatKit-OSX-Mantle-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 400621EB0B2F9F65897A439566594B63 /* Pods-SnapchatKit-OSX-Mantle-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BE6E040D3F1AC607295260C3C909DE4 /* Field.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC6C59C7DEA6461C564B1DA58829542 /* Field.m */; };
 		7C18CDA8B0EBA841F87ABB1611FF8B20 /* ProtocolBuffers.h in Headers */ = {isa = PBXBuildFile; fileRef = 5ACEF1C64263788DDF0A871B5FD3415D /* ProtocolBuffers.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7CDB177F22682CBFA481206CADF09D37 /* NSDictionary+MTLMappingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 53DAF85FA8CA77FA6432DD4E4865FA28 /* NSDictionary+MTLMappingAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		7CEC7865664510578601198B6481E6FA /* Pods-SnapchatKit_Tests-SnapchatKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D5738FF9A898F9686A3AE9C8BF64405A /* Pods-SnapchatKit_Tests-SnapchatKit-dummy.m */; };
 		7D375F95240E56B49AB9246BEBBAAF0A /* SKSnapOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EFE9CDCA52EC0CCBD1DF32DA061F4 /* SKSnapOptions.m */; };
 		7D4EE1042363324DF6F26740E061D54E /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 884007D97EAC905D528F2D798D498CA3 /* mztools.c */; };
-		7D91CF1B01A4BE4B453227A680729D21 /* MTLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A864CDFDE11D41869495F647850956 /* MTLModel.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		7D99ECA077EFE880E6E2A0663B9773AD /* NSArray+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 444ABAE227428925EDF5D132A91868E4 /* NSArray+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7DB4E5D0DDEABF686A3A81C9120774AB /* NSArray+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 444ABAE227428925EDF5D132A91868E4 /* NSArray+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7DB7BEADB3E60310D8E4EA2166130CFB /* SKStoryCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = 45A8B9B178D3D50255BED3D0FCB98A78 /* SKStoryCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -282,7 +281,6 @@
 		800B2ECD46D46FC159315AF31AF610B8 /* SKSnapResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FBEB3B3FA6CC7990C60F15777A0090E /* SKSnapResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		803F89A1C505A07F75F3306D28C3A5C7 /* MutableField.m in Sources */ = {isa = PBXBuildFile; fileRef = 709485E58BF2FF0A4C686203BE95E8EB /* MutableField.m */; };
 		80AE9C745A522B06E97A31691EBC686D /* SKClient+Discover.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B6CEADD2D0C33311B5DF1F367E954A5 /* SKClient+Discover.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		80C63601371D20829F892DC9CA8CC421 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E0035C4D44DD28CDC29DBEE88C9580 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		80D3C4F20263F275FA6E5D497B2C2978 /* PBArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 80833A66B09D6D42B65135FA200C959A /* PBArray.m */; };
 		80E3A5718419A00654103E2D76C40DC7 /* AbstractMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = C1F491F9A8489CC37E4E1795E1924489 /* AbstractMessageBuilder.m */; };
 		81153517E47875ECCC70490FB290980A /* Message.h in Headers */ = {isa = PBXBuildFile; fileRef = B7ABCBE17F86FB9BEECA8062A041C9AC /* Message.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -290,9 +288,9 @@
 		818A50C74A4222067AE1AB8D86B9A24A /* SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E8E9BC41A16B11C168D078CD7578264 /* SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		82230F3D2FDC4B015A8164933ABE29EC /* TextFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = D7120C8C40EF2A6454683D2023AA4521 /* TextFormat.m */; };
 		82322A79FF610A7A075BE4404714E3C4 /* MTLModel+NSCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = D917EDD76808D4D21F22960E1DE309C8 /* MTLModel+NSCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		828CDEC7DFB75BD78C84DB785597E016 /* NSObject+MTLComparisonAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A825C1C9779653BE134C643213E98 /* NSObject+MTLComparisonAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		82946214B08EC20BF2FB024EFBF99340 /* NSString+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 01D3D233D27189A14C4D48B64946BEDC /* NSString+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		82C521B31AAC7DFD5D18E618BFBF06CF /* SKClient+Chat.h in Headers */ = {isa = PBXBuildFile; fileRef = 97ABC90E3828E9031BC4F158D4F3EEE2 /* SKClient+Chat.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		82D808B2D325BA2A254E565C8F6CC555 /* NSValueTransformer+MTLInversionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FDC119599936009F4BBDAE2B034A189 /* NSValueTransformer+MTLInversionAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		8329E0046C4D88212E52F57626494008 /* NSObject+MTLComparisonAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A825C1C9779653BE134C643213E98 /* NSObject+MTLComparisonAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		8369D6BE3B24E83F01D6B117792A1C68 /* NSObject+MTLComparisonAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 90E3A46DADAE808ABCF8DA093A1F0A37 /* NSObject+MTLComparisonAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		83B2581466924E92C1A63FA109400294 /* MTLJSONAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B78B5F838295F2C6CCA0316BE4A7C97 /* MTLJSONAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -302,7 +300,6 @@
 		853344F944576EF29BF0925C878D23D8 /* UnknownFieldSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FDCF9C141D2B76551E065804EB72AF7 /* UnknownFieldSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		85DB71B674B21FC4069B3172E010757F /* SKLocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 25B50FC7D431013529A4EDF7982F6C0A /* SKLocation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86319C7A3EED59A06A3A15D78B09693B /* ExtensionRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = 06B966634B688674E5961D625443E7E4 /* ExtensionRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8658349B9E14201EDFD7D4697801AB42 /* NSDictionary+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9085E7485D99346EF2A43B26F8F498 /* NSDictionary+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		8693A017630AD73BE9AE77857D0BB232 /* WireFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E8F6A76DF1D61C5C7225F9DDCD74CA3 /* WireFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		86A7957E1DB85234A4BBA94F8CE796A4 /* SKSession.h in Headers */ = {isa = PBXBuildFile; fileRef = AA054E5F64577F7C772D73102EF8F7C1 /* SKSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8745E60DE9438702B88C9FA9D8DA0DCC /* NSObject+MTLComparisonAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 90E3A46DADAE808ABCF8DA093A1F0A37 /* NSObject+MTLComparisonAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -322,6 +319,7 @@
 		8B56ECEF3192D42F101031F657E5A880 /* ForwardDeclarations.h in Headers */ = {isa = PBXBuildFile; fileRef = 67B7031A1CFE11F0B693963D8F04BA39 /* ForwardDeclarations.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8B65A25E3DB1397009D9C6CCB10A9C1C /* SKSimpleUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C2CC45708F858B3A21FA14F2C3AE0C49 /* SKSimpleUser.m */; };
 		8B75EDAFEAD28F8D92FE8216A16888FC /* SKThing.h in Headers */ = {isa = PBXBuildFile; fileRef = E9AF192BD8DD526AEB6FD5A02EEB2A56 /* SKThing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8C256964C1A9CAB8514584772DD9A9EB /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C994D8C3A0E2BD2F6A50788977A698B4 /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		8C2B5C50D6D72F51C6240F7F9750A892 /* NSValueTransformer+MTLInversionAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1FDC119599936009F4BBDAE2B034A189 /* NSValueTransformer+MTLInversionAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		8C4E7CA7C2ECD97C9848176090E0F4D6 /* GeneratedMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 463D5934C525845DDF6D4108DF174801 /* GeneratedMessageBuilder.m */; };
 		8CD58B6E46D98F6B469F0D53E56F3142 /* AbstractMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E3B442CA4C99021E31A08D4467D4203 /* AbstractMessage.m */; };
@@ -330,8 +328,11 @@
 		8DB774211405DA6D9DC3AC9B4BF3AB59 /* MTLJSONAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B78B5F838295F2C6CCA0316BE4A7C97 /* MTLJSONAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8E02D789287764E4CDF11A66546B5030 /* CodedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D64A94D4DFB38E5653DD76D20218BE09 /* CodedInputStream.m */; };
 		8ED0BD420D3AB8E37C06CFBADABBC5CC /* ConcreteExtensionField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6826B1CCA448E90716D8C1B6E74BC68B /* ConcreteExtensionField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9013316F80ACF1D91D90B340AB16D7EA /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C994D8C3A0E2BD2F6A50788977A698B4 /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		906785162BA8A0D06C02C4EEF497F3AB /* MTLModel+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 06373D743A4B8735559065DB34A4D3CF /* MTLModel+NSCoding.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		90890CCD9FAFA3E17B7F50715A030987 /* SKConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 979970EC473F3B7EC64A997D0DAB7410 /* SKConversation.m */; };
 		908A58094D68486876A366AFC5589582 /* MTLTransformerErrorHandling.h in Headers */ = {isa = PBXBuildFile; fileRef = C93DEA42EF984A92E5FFF4F5EA4C4576 /* MTLTransformerErrorHandling.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		90B289988B70AE68D7A33F72FF79E7D4 /* NSArray+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B29E8F6A2790D070998F9CF5CF7EE4D1 /* NSArray+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		9121F000E62DE87B8CF8DA11EA769789 /* ConcreteExtensionField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6826B1CCA448E90716D8C1B6E74BC68B /* ConcreteExtensionField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9132D10211BE3A8EF9BD2A643A5980D6 /* NSValueTransformer+MTLPredefinedTransformerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FB0E1FAC0060ECAB08CEE29646BFE32A /* NSValueTransformer+MTLPredefinedTransformerAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		915FB623F1795824405471A9F6BA53F1 /* SKConversation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBB2E828CE404D19FE3169CB4CE45B6 /* SKConversation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -359,7 +360,6 @@
 		996AA48FF48E0EF26C5E5317AD160D65 /* SKRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = E723F5E599FCD85ABFD4F911E3DDDE5F /* SKRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		997674D7B460BEF3BB195BEB8327B01E /* GeneratedMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 463D5934C525845DDF6D4108DF174801 /* GeneratedMessageBuilder.m */; };
 		9A3EBC3748D4F4F48DA2A0133A438B36 /* Pods-SnapchatKit_Example-Mantle-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BA7F4D5E4C8595A3D1AE0EB307C2CB8E /* Pods-SnapchatKit_Example-Mantle-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		9A99F08C293A16C31870858C276DFD94 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E0035C4D44DD28CDC29DBEE88C9580 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		9B97BEF2E3CBC1E97617A003F1B98E0A /* SKClient+Stories.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AAF0F4CF61FEBE5F27F076EE43534B6 /* SKClient+Stories.m */; };
 		9BD5C2540AB3E6938E65AF75410E336F /* SKUserStory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF31098D1B73D4027EF54C1B7EC55E7 /* SKUserStory.m */; };
 		9BD952A5A55EBB202F43317F9835BD07 /* Field.h in Headers */ = {isa = PBXBuildFile; fileRef = AEA4DB5D58231D27AC6CDE90D7240533 /* Field.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -390,6 +390,7 @@
 		A69CF9AB373B5BF54933D4BCBDD24B8A /* MutableField.h in Headers */ = {isa = PBXBuildFile; fileRef = E6B8AC488192EFFE38ABFA7054D5FAE7 /* MutableField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A6CD5AF026F0476BFA019BA291B70CA1 /* Pods-SnapchatKit_Tests-Mantle-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A362FEDA412E6EA8B1971C25C70FDA47 /* Pods-SnapchatKit_Tests-Mantle-dummy.m */; };
 		A6DB9B2A5EBA640EC7ABDE1CDF72CFCC /* UnknownFieldSetBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B5E1A7AAE7E607AC9E54D4FA333BAB /* UnknownFieldSetBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A7579F506B62E5A6FC1AD11F61843AB5 /* NSDictionary+MTLJSONKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF9455276C69ACF288FDCEEB316B212 /* NSDictionary+MTLJSONKeyPath.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		A75E694DA35CE46237D3311DDAF8E8E9 /* SKThing.m in Sources */ = {isa = PBXBuildFile; fileRef = 9172B364044C193573346831B47E3C32 /* SKThing.m */; };
 		A95A1AE1DE0E8B75BF1A203BFFAC2595 /* NSArray+MTLManipulationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 06531AAEF120FF70E927F40F0A61C49D /* NSArray+MTLManipulationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AA0BD7F44E7BEB9A8E6D5B83E7CBA2C0 /* SKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5515DC27DAB5541F75B0AA3425061AAE /* SKUser.m */; };
@@ -405,6 +406,7 @@
 		AF2B8C4FFD7B9FDFBFB1F27C0054ED5C /* AbstractMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 978BF2612AD5B68A7A65BE361CCDD3DB /* AbstractMessageBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AF454BAAC58CB4B904C62B393C392345 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 884007D97EAC905D528F2D798D498CA3 /* mztools.c */; };
 		AF603D752936B17358AB6FF4246D6C09 /* Attestation.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = 606FE432D85DF39B09C3DE7E82B31AD7 /* Attestation.pb.m */; };
+		AF6C8CFE2A8CC031E4F875E0D65B0505 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A7E0035C4D44DD28CDC29DBEE88C9580 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		B0C4CE31D4BA47F6DF5A10AC79DC3A6A /* SKCashTransaction.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A0F9C65CF3106FAC238CDC512FF51E2 /* SKCashTransaction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B0C615AECE49899C2361FDFBBD35CAB7 /* SKBlob.m in Sources */ = {isa = PBXBuildFile; fileRef = EC153DEC3715CFBB867734E4DCF5C9D6 /* SKBlob.m */; };
 		B0D9197026A81388B71196FFF4D5BB06 /* crypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 79F59B49CE4DC99DF440AE4D85E72F6C /* crypt.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -412,7 +414,6 @@
 		B15127483D4E7BEB3DD36CCED6617C8C /* Field.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC6C59C7DEA6461C564B1DA58829542 /* Field.m */; };
 		B1B806F787A2841D03ADB6E235DB5756 /* Mantle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73839BEC40DA572D986E82BD377F57E7 /* Mantle.framework */; };
 		B27523C2DE3F1E3134712528C0F750A4 /* Field.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DC6C59C7DEA6461C564B1DA58829542 /* Field.m */; };
-		B28D218A54569D6D4E6242C19557860F /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = C994D8C3A0E2BD2F6A50788977A698B4 /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		B300232873C207599BBB51BE2CDA97B6 /* SKClient+Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF462ACA7D6BE321BE504088CFC8EC9 /* SKClient+Device.m */; };
 		B34DA3C60AFDAAAEA2C27A5D5C45763D /* SKRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = E723F5E599FCD85ABFD4F911E3DDDE5F /* SKRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B3AD53F71382D3CCDFFBF55DFAA15121 /* SKStoryNote.m in Sources */ = {isa = PBXBuildFile; fileRef = E7264B33B0A0713CE212280490FD1800 /* SKStoryNote.m */; };
@@ -426,9 +427,9 @@
 		B9FB2048F4E99A5867CC972C0CDCD527 /* SKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5515DC27DAB5541F75B0AA3425061AAE /* SKUser.m */; };
 		BAED1E04C71874842555DB3B7C492E26 /* SKCashTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = F33789AB1CD889C76EE417221D59C3D9 /* SKCashTransaction.m */; };
 		BBD51C8B83ED3761DD5A40F120427D25 /* SKNearbyUser.h in Headers */ = {isa = PBXBuildFile; fileRef = AF2BABB30D0A63B528450704A8CC4831 /* SKNearbyUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BD4E59EDF409CBFD9D9728ACF6AA5881 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F2EFE545E38C869A6A2D1EABEFE6F /* EXTScope.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		BE331BBE584C5DDA5061F18B0DBD43F7 /* RingBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = D7AD70060269B4629B407FE76BD9B976 /* RingBuffer.m */; };
 		BF596A9358398FD70766E2748274387F /* Pods-SnapchatKit_Example-Mantle-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = CBA1FDCD70D710D40E0FEE2504BB4C9B /* Pods-SnapchatKit_Example-Mantle-dummy.m */; };
+		BFB50EB3EDD355B13E36D6DFAAABFC07 /* MTLModel+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 06373D743A4B8735559065DB34A4D3CF /* MTLModel+NSCoding.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		BFEF6C043A14EAA70813835B40CD4868 /* SKFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3168646A0D3D84DBEAC87C1C0BDA6 /* SKFilter.m */; };
 		C0890754A06E690B5CF7779383382159 /* SKFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C3168646A0D3D84DBEAC87C1C0BDA6 /* SKFilter.m */; };
 		C0C929E4ACF3F3B5708EED5A60383238 /* WireFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 5E8F6A76DF1D61C5C7225F9DDCD74CA3 /* WireFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -438,6 +439,7 @@
 		C253F506F8C862B9018A0587DB20A7E0 /* SnapchatKit-Constants.h in Headers */ = {isa = PBXBuildFile; fileRef = CE4ABDF04FF8494E1C5D6E053D288B2A /* SnapchatKit-Constants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C36799F94CDBC5D09A98A0A547AD3509 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 884007D97EAC905D528F2D798D498CA3 /* mztools.c */; };
 		C439369054238B8A0E00645EDEAF398F /* SKClient+Account.h in Headers */ = {isa = PBXBuildFile; fileRef = 4CBC1007B50FB6D8D8CCC49C9AA3A908 /* SKClient+Account.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C48D966383CB72397DFCE90FC2169A44 /* MTLReflection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6549D674C4BBFC4AE9F553D4ABED4F95 /* MTLReflection.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		C5162F5ED425FB21237997AE5CC4898A /* SKCashTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = F33789AB1CD889C76EE417221D59C3D9 /* SKCashTransaction.m */; };
 		C5FAD05BFDDA22A0AB15ECCB8629965A /* SKClient+Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF462ACA7D6BE321BE504088CFC8EC9 /* SKClient+Device.m */; };
 		C645928E34D41BA10A71023575AF62E7 /* SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E8E9BC41A16B11C168D078CD7578264 /* SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -455,8 +457,9 @@
 		CCDC21DA0FAB1837A8D4D94E3051457E /* ExtendableMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 00655651C6BA81463B1F1AC19D408EFB /* ExtendableMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CDDDA9F0CAA7C9B3D08CFBD9B9ABCDB4 /* MTLValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B61B312FEA02DCE16514E7C4A29FBA /* MTLValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CDFE542F4E6B55DB53B4C16C500C328A /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE550472E08ABD8D5B741D1077F61BA /* unzip.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE05F613D4B6C6F6F13C5237ED8DD23F /* NSDictionary+MTLJSONKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF9455276C69ACF288FDCEEB316B212 /* NSDictionary+MTLJSONKeyPath.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		CF2FDC3BE87FF50F5030F93491656E0E /* MTLModel+NSCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = D917EDD76808D4D21F22960E1DE309C8 /* MTLModel+NSCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CFCED157CD10D394DB19A3A73845D397 /* MTLTransformerErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B3A02E4506C7059D914FEF250427E1 /* MTLTransformerErrorHandling.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		CFDC763E5EEB85D70D2ECF4145F5193E /* MTLModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A864CDFDE11D41869495F647850956 /* MTLModel.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		CFE6FA04E3BA20BAAA7D29D16E21DFB7 /* SSZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = 864E8CC81A76CA838F6299352A05BC9D /* SSZipArchive.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0E98E6916C59A771CE7C86D511FD055 /* CodedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = D64A94D4DFB38E5653DD76D20218BE09 /* CodedInputStream.m */; };
 		D1465806DEA963CAA3584333FA6D75A7 /* PBArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A69F98F1A3DEA5E52B393E4CA8AEAF9 /* PBArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -464,7 +467,6 @@
 		D1AB726477E70D4EC3B9A717E4D2433F /* UnknownFieldSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 2FDCF9C141D2B76551E065804EB72AF7 /* UnknownFieldSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D1C5FB6E0C236942AFE5AAA5AAFF5655 /* CodedInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 04365EC94A261DF5AA309962BFE4E7AA /* CodedInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D1E0716F92E6511E55B5B96ED4AEC4C8 /* Bootstrap.h in Headers */ = {isa = PBXBuildFile; fileRef = 30F3816561C0672DD603262F36C61EB4 /* Bootstrap.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D209D6CC69F6B7EBEDBB9B94FC2B1553 /* MTLValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 30966F6B3985DE33FEB91E8D08220629 /* MTLValueTransformer.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		D23DDBDFBAE8C4C9A5716B13D3FAA378 /* MTLModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 35985918E56AD9E0C441B57EF60B263E /* MTLModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D282D374F9873392A05853818A6D5B0E /* Attestation.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = C90F6DCB8E6D5E5AD3B2C839EDF984C8 /* Attestation.pb.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D2F78FAE5B3A0C938FB4B80EBF1923B3 /* Pods-SnapchatKit_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FAFA003B01F71668975B806F52809BB /* Pods-SnapchatKit_Tests-dummy.m */; };
@@ -491,7 +493,6 @@
 		D9AE24C66EC8F86F6C6794256914021E /* NSDictionary+MTLJSONKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF9455276C69ACF288FDCEEB316B212 /* NSDictionary+MTLJSONKeyPath.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		DA14ED2CE15397202863A58835616AE0 /* SKClient+Snaps.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FEA67B46E224685AD9C805D1A27E5D9 /* SKClient+Snaps.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DA15C7DBB4AF9459D0BF6660F61E11AD /* SKLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 81A6A60094231EA88DCE60750AA13AE1 /* SKLocation.m */; };
-		DA2AB6464AEFC1DBE969E84F5836188F /* NSObject+MTLComparisonAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A825C1C9779653BE134C643213E98 /* NSObject+MTLComparisonAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		DAF7AF94D28CAFD1ED64657BAFF890D4 /* GeneratedMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6192CF7FB23184D714C51581F7A1A1BE /* GeneratedMessageBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB1EA51D93B03B1F6996245180D5781A /* UnknownFieldSetBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 15787D58A018F7C163848E0EDEFFF2AB /* UnknownFieldSetBuilder.m */; };
 		DBD779589C0EEF217F9BD85A4488DF71 /* ObjectivecDescriptor.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = CDF8D63AD3F269AECF961EB562B4584D /* ObjectivecDescriptor.pb.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -500,20 +501,19 @@
 		DC2BD42E5AE0E113899FE3A995FB94B9 /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 747032A30F0B0CFAE55E25EE38C28805 /* EXTRuntimeExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		DCBC7AE273C3D00ED094C5FA527956CA /* SKClient+Stories.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB772F1CD2E64A93211D413F991E158 /* SKClient+Stories.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD262F615BA14F4CF16F59966D429D03 /* CodedOutputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = AA7B9832442745B728000CCF09AD59A2 /* CodedOutputStream.m */; };
-		DEA5708CAC1F0A0CB8A7F6BD2F04CC7C /* MTLReflection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6549D674C4BBFC4AE9F553D4ABED4F95 /* MTLReflection.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
-		DEB5BA4CC6D4E8B4A618206E8081F9CD /* NSError+MTLModelException.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B3600563469E165A512779D2952B19 /* NSError+MTLModelException.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		DF26D63341C55884A5ECB643D272B330 /* Pods-SnapchatKit_Tests-Mantle-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC4C213ED5CC2EB2BD905D67424B9CE /* Pods-SnapchatKit_Tests-Mantle-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DF398EF5859B9F5086C1BE51410C5700 /* SKClient+Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 20F34E602ECE0E9952C0C9CC8D2E971A /* SKClient+Account.m */; };
 		DF81798C84C2D3E1DF580686635F9669 /* SKUserStory.h in Headers */ = {isa = PBXBuildFile; fileRef = C24C62067E53B9DD2EB633790E6EECEA /* SKUserStory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DFEB980E4F4E57C5FEB401FB969406FC /* SKNewConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6543108894562824171DF82C827C732 /* SKNewConversation.m */; };
-		E000175AD5BB793F4139692885D2E352 /* MTLTransformerErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B3A02E4506C7059D914FEF250427E1 /* MTLTransformerErrorHandling.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		E0101E016B646965B82683EE89D7A669 /* metamacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 184E597AA48D3822ECF8AEB2135DD087 /* metamacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		E05AECFEBB7267D2C971F2A83797EE85 /* NSString+SnapchatKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 54460D90C5A5A625598F1A72569A13B5 /* NSString+SnapchatKit.m */; };
 		E0EDEDBD0C23C8846BE28771D2A09854 /* NSDictionary+MTLJSONKeyPath.h in Headers */ = {isa = PBXBuildFile; fileRef = A3A065B43F6F4A3AB98235E4C41E9E6A /* NSDictionary+MTLJSONKeyPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E1AD65F6F30698D685A8D32632029724 /* NSError+MTLModelException.m in Sources */ = {isa = PBXBuildFile; fileRef = A3B3600563469E165A512779D2952B19 /* NSError+MTLModelException.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		E23D57BFB4769ABEF5C651093A1B5D64 /* UnknownFieldSet.m in Sources */ = {isa = PBXBuildFile; fileRef = E7FF2C7F1C9F03E9F9FFEEEB71828E5D /* UnknownFieldSet.m */; };
 		E24816B991E55EE80A0B76199812A802 /* mztools.h in Headers */ = {isa = PBXBuildFile; fileRef = 1685FA7977E1A72A8CA039CF99A88D23 /* mztools.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E430B9441FFAAB0E2B802FC6BFFAA438 /* SKFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = 7548F1AD067B99B153C9CFDB0BC160DC /* SKFilter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4B95563FE886803F236930DF455AC2F /* NSDictionary+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 523519361513D98C2F08E815B11DEF1B /* NSDictionary+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5B04ED2F260F274813B97D4FC99E40C /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D5F2EFE545E38C869A6A2D1EABEFE6F /* EXTScope.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		E5E105928FA9936BAE93F7876C13C6C5 /* Attestation.pb.h in Headers */ = {isa = PBXBuildFile; fileRef = C90F6DCB8E6D5E5AD3B2C839EDF984C8 /* Attestation.pb.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E6999BDF965B57D4A038B9CFFD76FA89 /* SKClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0A9E84EC29594B57D6036A4B137EB0 /* SKClient.m */; };
 		E73B87CE570187A97236785B79B51AA9 /* SKClient+Chat.m in Sources */ = {isa = PBXBuildFile; fileRef = 23C622E56337996E2A8713254F5BD246 /* SKClient+Chat.m */; };
@@ -525,6 +525,7 @@
 		E94DA6BC5D83F8BF9762B3F908DFDB28 /* NSArray+MTLManipulationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 06531AAEF120FF70E927F40F0A61C49D /* NSArray+MTLManipulationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EA421C49ED5CB42A1E100FFE23A6F128 /* SKNewConversation.m in Sources */ = {isa = PBXBuildFile; fileRef = E6543108894562824171DF82C827C732 /* SKNewConversation.m */; };
 		EA882E0938950C8981FDC2CD09D2E905 /* NSString+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 01D3D233D27189A14C4D48B64946BEDC /* NSString+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EAACDA51DE4D3529766B31AAC757B2CE /* MTLReflection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6549D674C4BBFC4AE9F553D4ABED4F95 /* MTLReflection.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		EB65D934E0D62C636CE934DA5C9A7D04 /* SKClient+Friends.h in Headers */ = {isa = PBXBuildFile; fileRef = 833D0F7844FB6F9844FF13EF09871134 /* SKClient+Friends.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EBA05579591C2B62DABA4CEE0F877FD7 /* GeneratedMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = B3547AAE494746F0CF2277659F9390E4 /* GeneratedMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EC6E285E97BC2568438B6ECEA648AD17 /* SKSnap.m in Sources */ = {isa = PBXBuildFile; fileRef = 802057E388A43AE12453D12948E1951C /* SKSnap.m */; };
@@ -532,6 +533,7 @@
 		ED5C837809483B9C9AAA74610D4D4487 /* SKUserStory.m in Sources */ = {isa = PBXBuildFile; fileRef = EBF31098D1B73D4027EF54C1B7EC55E7 /* SKUserStory.m */; };
 		EEB188DDA5FA84A3833B10075DF8CD60 /* UnknownFieldSetBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = F4B5E1A7AAE7E607AC9E54D4FA333BAB /* UnknownFieldSetBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EEFD1F92F6CCEEA2C2C5803EAC2FF640 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46EF97B3320D5567B3CD996D681E6DB9 /* Foundation.framework */; };
+		EF6C74F413763743006A11A4D36961E0 /* MTLTransformerErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = B0B3A02E4506C7059D914FEF250427E1 /* MTLTransformerErrorHandling.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		EF806F7116EEA807CA2999CE29687C93 /* SKStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 9269F78B7355A85A30F6036EEAAC51C9 /* SKStory.m */; };
 		F02AD884511F86B6072F31F21E65FD92 /* SKStoryNote.m in Sources */ = {isa = PBXBuildFile; fileRef = E7264B33B0A0713CE212280490FD1800 /* SKStoryNote.m */; };
 		F1001B8C74D414F6CDC31054A42C1111 /* Field.h in Headers */ = {isa = PBXBuildFile; fileRef = AEA4DB5D58231D27AC6CDE90D7240533 /* Field.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -539,10 +541,9 @@
 		F18511E4DF971F9AF0462EF1164F88E9 /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = B99D5FA99A6C1A06B1CC07FF55B44986 /* ioapi.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F1D71D1C89028248B09C70E609D53ECE /* SKSnapOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F8EFE9CDCA52EC0CCBD1DF32DA061F4 /* SKSnapOptions.m */; };
 		F2A1C19B2F3B275D87FCA549545ED92E /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = E76B54A5B681A52C9BF1A48F75B3DE3F /* unzip.c */; };
-		F3306B4D0AD2368F1784A8B01FD7D161 /* MTLValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 30966F6B3985DE33FEB91E8D08220629 /* MTLValueTransformer.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		F3A05D289FC621F6A6C9F3E6CF1DBE8D /* SKAddedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 168FBDE79E6B224781B59DDED990CC1D /* SKAddedFriend.m */; };
+		F3BD13063764DC2261DD490106AB7774 /* MTLJSONAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DA22E10B78E607B571F2A55C30EF9 /* MTLJSONAdapter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		F560CF8AE9C997FB694C90CFF64E5D14 /* SKSimpleUser.h in Headers */ = {isa = PBXBuildFile; fileRef = E54E26EDFAA3F10A36830DE50A7A5B14 /* SKSimpleUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F6C050F56A15ED6FCE70398A104B445D /* NSObject+MTLComparisonAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 452A825C1C9779653BE134C643213E98 /* NSObject+MTLComparisonAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		F79573CC859A0680C237044ADF482B40 /* GeneratedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 7141EAD9F0391CA0B89AA690FD467035 /* GeneratedMessage.m */; };
 		F7B21C00A641625866299AE0F557B18C /* SKClient+Snaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B86B77A0AE12A3715630EF1051CE196 /* SKClient+Snaps.m */; };
 		F8FDA8D22AC9594294EB4F2E6FBC001A /* SKClient+Discover.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B6CEADD2D0C33311B5DF1F367E954A5 /* SKClient+Discover.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -561,7 +562,6 @@
 		FDEA050FD7978641030E57BEFE8FA338 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = E059AC38BADB0D1B36F1843E1BE50C2F /* Utilities.m */; };
 		FED1C4AF2195F2A79F78E6A21E51C79B /* SKClient+Discover.m in Sources */ = {isa = PBXBuildFile; fileRef = 3483A1EC7B5CF9FAD309261F6519CDF3 /* SKClient+Discover.m */; };
 		FEDC22E4B5A3BF58B772CEA1463515FB /* Pods-SnapchatKit_Example-SnapchatKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CD685B05060FD7B7E01EF0D9851D1E /* Pods-SnapchatKit_Example-SnapchatKit-dummy.m */; };
-		FF789B5916DAE6C0D30932C9F259E3B8 /* MTLReflection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6549D674C4BBFC4AE9F553D4ABED4F95 /* MTLReflection.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0 -DOS_OBJECT_USE_OBJC=0"; }; };
 		FFE4568A31AC84530AFAE54120EE6EE9 /* SSZipArchive.h in Headers */ = {isa = PBXBuildFile; fileRef = 864E8CC81A76CA838F6299352A05BC9D /* SSZipArchive.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -2060,22 +2060,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B076DF3B4692E545CA4410C3A0B9E70 /* EXTRuntimeExtensions.m in Sources */,
-				BD4E59EDF409CBFD9D9728ACF6AA5881 /* EXTScope.m in Sources */,
-				6BA8B54DDCA21FFF73BD889120B17A56 /* MTLJSONAdapter.m in Sources */,
-				46204E30E187CD54D9E99E2FAA750AE0 /* MTLModel+NSCoding.m in Sources */,
-				6FC9297284E6B97475C34E5F64955D1B /* MTLModel.m in Sources */,
-				FF789B5916DAE6C0D30932C9F259E3B8 /* MTLReflection.m in Sources */,
-				49F1F759E3211F99AE1EB258A0539A3E /* MTLTransformerErrorHandling.m in Sources */,
-				D209D6CC69F6B7EBEDBB9B94FC2B1553 /* MTLValueTransformer.m in Sources */,
-				6CD5886E1C8F03E20962E8E3CBFFFD46 /* NSArray+MTLManipulationAdditions.m in Sources */,
-				CE05F613D4B6C6F6F13C5237ED8DD23F /* NSDictionary+MTLJSONKeyPath.m in Sources */,
-				8658349B9E14201EDFD7D4697801AB42 /* NSDictionary+MTLManipulationAdditions.m in Sources */,
-				7CDB177F22682CBFA481206CADF09D37 /* NSDictionary+MTLMappingAdditions.m in Sources */,
-				79A99170C7433CE688B43AC977697B2C /* NSError+MTLModelException.m in Sources */,
-				F6C050F56A15ED6FCE70398A104B445D /* NSObject+MTLComparisonAdditions.m in Sources */,
-				23909EA74D814415AD25CAA0D3429E8A /* NSValueTransformer+MTLInversionAdditions.m in Sources */,
-				9A99F08C293A16C31870858C276DFD94 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */,
+				9013316F80ACF1D91D90B340AB16D7EA /* EXTRuntimeExtensions.m in Sources */,
+				1A396CAA57FAFE6CB901C87A93904F21 /* EXTScope.m in Sources */,
+				F3BD13063764DC2261DD490106AB7774 /* MTLJSONAdapter.m in Sources */,
+				906785162BA8A0D06C02C4EEF497F3AB /* MTLModel+NSCoding.m in Sources */,
+				CFDC763E5EEB85D70D2ECF4145F5193E /* MTLModel.m in Sources */,
+				C48D966383CB72397DFCE90FC2169A44 /* MTLReflection.m in Sources */,
+				EF6C74F413763743006A11A4D36961E0 /* MTLTransformerErrorHandling.m in Sources */,
+				65DA0ECAF7EBF7CBD51756BC66566B9B /* MTLValueTransformer.m in Sources */,
+				6408239CE05D0CBC8D45E28E3CCF95F3 /* NSArray+MTLManipulationAdditions.m in Sources */,
+				0C30C90656ECBECF298AD0160715EA48 /* NSDictionary+MTLJSONKeyPath.m in Sources */,
+				6A46FDF31F2E0E67ED93E71F670DFDBA /* NSDictionary+MTLManipulationAdditions.m in Sources */,
+				052AE2FC96F5F2FA1BED86D111E0F4F0 /* NSDictionary+MTLMappingAdditions.m in Sources */,
+				68A2BB69EEF9DCFE5A66D45C2C3E5839 /* NSError+MTLModelException.m in Sources */,
+				488F2949058090EC2188C8E5FA79D184 /* NSObject+MTLComparisonAdditions.m in Sources */,
+				0FDD7201F16809B2433B7543FC6CC530 /* NSValueTransformer+MTLInversionAdditions.m in Sources */,
+				AF6C8CFE2A8CC031E4F875E0D65B0505 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */,
 				A6CD5AF026F0476BFA019BA291B70CA1 /* Pods-SnapchatKit_Tests-Mantle-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2092,22 +2092,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B28D218A54569D6D4E6242C19557860F /* EXTRuntimeExtensions.m in Sources */,
-				0BB90E81EBAD7A3CC465A757B8380910 /* EXTScope.m in Sources */,
-				26011E3D61F619D4A9BCEC383FEAC05D /* MTLJSONAdapter.m in Sources */,
-				516823A4FA02BBC792E37395AD1B85DB /* MTLModel+NSCoding.m in Sources */,
-				7D91CF1B01A4BE4B453227A680729D21 /* MTLModel.m in Sources */,
-				DEA5708CAC1F0A0CB8A7F6BD2F04CC7C /* MTLReflection.m in Sources */,
-				E000175AD5BB793F4139692885D2E352 /* MTLTransformerErrorHandling.m in Sources */,
-				F3306B4D0AD2368F1784A8B01FD7D161 /* MTLValueTransformer.m in Sources */,
-				500930FB6D697F545409818C0A93179B /* NSArray+MTLManipulationAdditions.m in Sources */,
-				713AE4F662C0ABD9A6AB9CCA7E789BC9 /* NSDictionary+MTLJSONKeyPath.m in Sources */,
-				3D5C7C244711B6322687777E61E19A6C /* NSDictionary+MTLManipulationAdditions.m in Sources */,
-				77EC3AD9A16F93D2A99FA7E24077B4C2 /* NSDictionary+MTLMappingAdditions.m in Sources */,
-				DEB5BA4CC6D4E8B4A618206E8081F9CD /* NSError+MTLModelException.m in Sources */,
-				DA2AB6464AEFC1DBE969E84F5836188F /* NSObject+MTLComparisonAdditions.m in Sources */,
-				82D808B2D325BA2A254E565C8F6CC555 /* NSValueTransformer+MTLInversionAdditions.m in Sources */,
-				80C63601371D20829F892DC9CA8CC421 /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */,
+				8C256964C1A9CAB8514584772DD9A9EB /* EXTRuntimeExtensions.m in Sources */,
+				E5B04ED2F260F274813B97D4FC99E40C /* EXTScope.m in Sources */,
+				0999E6A9C74BDA82BCD8B7CFB54AE488 /* MTLJSONAdapter.m in Sources */,
+				BFB50EB3EDD355B13E36D6DFAAABFC07 /* MTLModel+NSCoding.m in Sources */,
+				3850E499957400FD1BAC9A0109F5EE52 /* MTLModel.m in Sources */,
+				EAACDA51DE4D3529766B31AAC757B2CE /* MTLReflection.m in Sources */,
+				CFCED157CD10D394DB19A3A73845D397 /* MTLTransformerErrorHandling.m in Sources */,
+				27D62862900D1134988F4606B032AA44 /* MTLValueTransformer.m in Sources */,
+				90B289988B70AE68D7A33F72FF79E7D4 /* NSArray+MTLManipulationAdditions.m in Sources */,
+				A7579F506B62E5A6FC1AD11F61843AB5 /* NSDictionary+MTLJSONKeyPath.m in Sources */,
+				3165B0D846A156E1ACBF659BAA4E9F12 /* NSDictionary+MTLManipulationAdditions.m in Sources */,
+				67850AD9F804B9C25549DBC296068694 /* NSDictionary+MTLMappingAdditions.m in Sources */,
+				E1AD65F6F30698D685A8D32632029724 /* NSError+MTLModelException.m in Sources */,
+				828CDEC7DFB75BD78C84DB785597E016 /* NSObject+MTLComparisonAdditions.m in Sources */,
+				5B896FA68AEE9209B02BD5A1A58ED398 /* NSValueTransformer+MTLInversionAdditions.m in Sources */,
+				016DCC45D6DA2C1272C0E6B1ADE05A1C /* NSValueTransformer+MTLPredefinedTransformerAdditions.m in Sources */,
 				BF596A9358398FD70766E2748274387F /* Pods-SnapchatKit_Example-Mantle-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2455,6 +2455,36 @@
 			};
 			name = Debug;
 		};
+		3295EB533A495C6354F23EF22CDD50A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 71A8832A82F9F7AA9EB8BFCDD2C5BEB7 /* Pods-SnapchatKit_Example.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = Pods_SnapchatKit_Example;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		485BAD33A8498D558CAE6C895C23B045 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 33BC1AF5B43B9D9D4E7129B4BC704208 /* Pods-SnapchatKit-OSX-Mantle.xcconfig */;
@@ -2483,7 +2513,34 @@
 			};
 			name = Release;
 		};
-		567B8A20A3F29EC90776453F36F1FB1E /* Release */ = {
+		5A99A64785A8E35F4E7329EA752D545C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B93970AA91389B580BA81FA9119ABEB4 /* Pods-SnapchatKit_Example-Mantle.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Pods-SnapchatKit_Example-Mantle-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Pods-SnapchatKit_Example-Mantle.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = Mantle;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6CC51F32A70AD31BF8DA3E076A601537 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B313D16EBCED2CE282F1548F5502B190 /* Pods-SnapchatKit_Example.release.xcconfig */;
 			buildSettings = {
@@ -2496,7 +2553,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example.modulemap";
@@ -2505,33 +2562,6 @@
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
 				PRODUCT_NAME = Pods_SnapchatKit_Example;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		5EDBD32C39E404A44393E1D1F29485D0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72F3609C47429493997503C14DD74194 /* Pods-SnapchatKit_Example-SnapchatKit.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Pods-SnapchatKit_Example-SnapchatKit-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Pods-SnapchatKit_Example-SnapchatKit.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = SnapchatKit;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2575,36 +2605,6 @@
 			};
 			name = Release;
 		};
-		727BB0F812E2A5908B2BCD3187F03C42 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 71A8832A82F9F7AA9EB8BFCDD2C5BEB7 /* Pods-SnapchatKit_Example.debug.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = Pods_SnapchatKit_Example;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		80C632F58EE202C42BB47E91FB960338 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2644,33 +2644,6 @@
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Debug;
-		};
-		837EDE2EF65FBA86E21FC93A612EE69B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B93970AA91389B580BA81FA9119ABEB4 /* Pods-SnapchatKit_Example-Mantle.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Pods-SnapchatKit_Example-Mantle-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Pods-SnapchatKit_Example-Mantle.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = Mantle;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
 		};
 		859232D9EAAF07288BE565F406937B5C /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -2784,6 +2757,60 @@
 			};
 			name = Debug;
 		};
+		9F8B2951D57975E1CF41EB362104EFEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 72F3609C47429493997503C14DD74194 /* Pods-SnapchatKit_Example-SnapchatKit.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Pods-SnapchatKit_Example-SnapchatKit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Pods-SnapchatKit_Example-SnapchatKit.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = SnapchatKit;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B3CF75ED9659B1EBB253C0A58A31B287 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B93970AA91389B580BA81FA9119ABEB4 /* Pods-SnapchatKit_Example-Mantle.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Pods-SnapchatKit_Example-Mantle-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Pods-SnapchatKit_Example-Mantle.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Mantle;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		B6B77653AE6B7EF5ABD9DEF9E301354F /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CDEAC9BF0BF4585523A58300F58B3CDD /* Pods-SnapchatKit-OSX.release.xcconfig */;
@@ -2810,6 +2837,33 @@
 				PRODUCT_NAME = Pods_SnapchatKit_OSX;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BED5AD0BB5F9829B064CDDD3B17F7615 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 72F3609C47429493997503C14DD74194 /* Pods-SnapchatKit_Example-SnapchatKit.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Pods-SnapchatKit_Example-SnapchatKit-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Pods-SnapchatKit_Example-SnapchatKit.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = SnapchatKit;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2872,60 +2926,6 @@
 			};
 			name = Debug;
 		};
-		F869333BC6956F9C2386276A29C883EA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72F3609C47429493997503C14DD74194 /* Pods-SnapchatKit_Example-SnapchatKit.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Pods-SnapchatKit_Example-SnapchatKit-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example-SnapchatKit/Pods-SnapchatKit_Example-SnapchatKit.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = SnapchatKit;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		FFECA6D0622709252CD61CF518DC205E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B93970AA91389B580BA81FA9119ABEB4 /* Pods-SnapchatKit_Example-Mantle.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Pods-SnapchatKit_Example-Mantle-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/Pods-SnapchatKit_Example-Mantle/Pods-SnapchatKit_Example-Mantle.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = Mantle;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2968,8 +2968,8 @@
 		BA976E4281AA96A08B4D886E8071851E /* Build configuration list for PBXNativeTarget "Pods-SnapchatKit_Example-Mantle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FFECA6D0622709252CD61CF518DC205E /* Debug */,
-				837EDE2EF65FBA86E21FC93A612EE69B /* Release */,
+				5A99A64785A8E35F4E7329EA752D545C /* Debug */,
+				B3CF75ED9659B1EBB253C0A58A31B287 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2986,8 +2986,8 @@
 		C803C9F374D309829EB1D032F4E421EF /* Build configuration list for PBXNativeTarget "Pods-SnapchatKit_Example-SnapchatKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				F869333BC6956F9C2386276A29C883EA /* Debug */,
-				5EDBD32C39E404A44393E1D1F29485D0 /* Release */,
+				9F8B2951D57975E1CF41EB362104EFEE /* Debug */,
+				BED5AD0BB5F9829B064CDDD3B17F7615 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3013,8 +3013,8 @@
 		F5B8BA0FAB64774C83EE04CA36042ACF /* Build configuration list for PBXNativeTarget "Pods-SnapchatKit_Example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				727BB0F812E2A5908B2BCD3187F03C42 /* Debug */,
-				567B8A20A3F29EC90776453F36F1FB1E /* Release */,
+				3295EB533A495C6354F23EF22CDD50A6 /* Debug */,
+				6CC51F32A70AD31BF8DA3E076A601537 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

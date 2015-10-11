@@ -6,7 +6,9 @@ xcodeproj 'SnapchatKit-OSX/SnapchatKit-OSX.xcodeproj'
 xcodeproj 'SnapchatKit.xcodeproj'
 
 target 'SnapchatKit_Example', :exclusive => true do
-  # link_with 'SnapchatKit_Example', 'SnapchatKit_Tests'
+  platform :ios, '9.0'
+  link_with 'SnapchatKit_Example'
+
   pod "SnapchatKit", :path => "../"
 end
 
