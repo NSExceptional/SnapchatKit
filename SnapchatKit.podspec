@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/*', 'Pod/Classes/**/*', 'Pod/Dependencies/*', 'Pod/Dependencies/**/*'
   # s.dependency 'AFNetworking', '~> 2.5'
   # s.dependency 'SSZipArchive'
-  # s.dependency 'Mantle'
+  s.dependency 'Mantle', '~> 2.0'
   s.library = 'z'
 end

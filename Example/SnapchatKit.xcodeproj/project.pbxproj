@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08AB17D438DEF4B786E0474C /* Pods_SnapchatKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A36D88C62F269BD5289F85AF /* Pods_SnapchatKit_Example.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		08AB17D438DEF4B786E0474C /* Pods_SnapchatKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A36D88C62F269BD5289F85AF /* Pods_SnapchatKit_Example.framework */; };
 		481CFCE04CDEBE40CCA566DD /* Pods_SnapchatKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47288D9F86E267809431017 /* Pods_SnapchatKit_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		58F83C522A8930FC9A05E41F /* Pods_SnapchatKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47288D9F86E267809431017 /* Pods_SnapchatKit_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		58F83C522A8930FC9A05E41F /* Pods_SnapchatKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E47288D9F86E267809431017 /* Pods_SnapchatKit_Tests.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
