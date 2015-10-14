@@ -85,6 +85,7 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 @end
 
 @interface SKConversation (SKClient)
+@property (nonatomic, readonly) NSString *recipient;
 /** @return The (first) participant that is not the current (given) user. */
 - (NSString *)recipientGivenUser:(NSString *)user;
 /** Whether or not \c user has unread messages. */

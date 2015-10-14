@@ -31,6 +31,13 @@
 }
 
 - (void)trySignIn {
+    static uint16_t authenticationCount = 0;
+    authenticationCount++;
+
+    if (authenticationCount > 3) {
+        return;
+    }
+    
     [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
         if (!error) {
             [self tableViewController].dataSource = [SKClient sharedClient].currentSession.conversations.array;

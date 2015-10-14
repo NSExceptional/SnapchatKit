@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AD42B37BDA17EA94CF99DED6 /* Pods_SnapchatKit_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E32E7687F7915C045BD510 /* Pods_SnapchatKit_OSX.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AD42B37BDA17EA94CF99DED6 /* Pods_SnapchatKit_OSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F1E32E7687F7915C045BD510 /* Pods_SnapchatKit_OSX.framework */; };
 		B4D11BA91B90E3850012116A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D11BA81B90E3850012116A /* main.m */; };
 		B4D11BB11B90E3B60012116A /* TBTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D11BB01B90E3B60012116A /* TBTimer.m */; };
 /* End PBXBuildFile section */
@@ -26,7 +26,7 @@
 
 /* Begin PBXFileReference section */
 		A3FE50062F493EF242FAFB51 /* Pods-SnapchatKit-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit-OSX.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SnapchatKit-OSX/Pods-SnapchatKit-OSX.release.xcconfig"; sourceTree = "<group>"; };
-		B4CF268F1BC48BF100AAF1D0 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = ../../../../../../Login.h; sourceTree = "<group>"; };
+		B4CF268F1BC48BF100AAF1D0 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = ../../../../../Login.h; sourceTree = "<group>"; };
 		B4D11BA51B90E3850012116A /* SnapchatKit-OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "SnapchatKit-OSX"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4D11BA81B90E3850012116A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B4D11BAF1B90E3B60012116A /* TBTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBTimer.h; sourceTree = "<group>"; };
@@ -105,7 +105,6 @@
 				B4D11BA21B90E3850012116A /* Frameworks */,
 				B4D11BA31B90E3850012116A /* CopyFiles */,
 				A0C0DCCB6E4CF45EB5D4467B /* Copy Pods Resources */,
-				B4D11BB31B90FE370012116A /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,20 +176,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SnapchatKit-OSX/Pods-SnapchatKit-OSX-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		B4D11BB31B90FE370012116A /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SnapchatKit-OSX/Pods-SnapchatKit-OSX-frameworks.sh\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -289,7 +274,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C9C926AEFC7982E0D5A16B5B /* Pods-SnapchatKit-OSX.debug.xcconfig */;
 			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) '@loader_path/Frameworks' '@executable_path/../Frameworks'";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) '@loader_path/Frameworks' '@executable_path/../Frameworks' '@executable_path/Pods-SnapchatKit-OSX'";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -299,7 +284,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A3FE50062F493EF242FAFB51 /* Pods-SnapchatKit-OSX.release.xcconfig */;
 			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) '@loader_path/Frameworks' '@executable_path/../Frameworks'";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) '@loader_path/Frameworks' '@executable_path/../Frameworks' '@executable_path/Pods-SnapchatKit-OSX'";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

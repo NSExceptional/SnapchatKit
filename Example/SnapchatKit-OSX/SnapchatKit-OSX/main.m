@@ -302,7 +302,7 @@ int main(int argc, const char * argv[]) {
 //                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-                markSnapsRead(unread);
+//                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
                 //                markChatsRead(session);
