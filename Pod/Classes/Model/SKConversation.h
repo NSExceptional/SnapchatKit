@@ -69,6 +69,8 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 /** \c nil if not applicable. */
 @property (nonatomic, readonly) SKCashTransaction *lastTransaction;
 
+/** The current signed in user. */
+@property (nonatomic, readonly) NSString     *recipient;
 /** Array of username strings. */
 @property (nonatomic, readonly) NSArray      *participants;
 /** Array of username strings. */
@@ -85,9 +87,6 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 @end
 
 @interface SKConversation (SKClient)
-@property (nonatomic, readonly) NSString *recipient;
-/** @return The (first) participant that is not the current (given) user. */
-- (NSString *)recipientGivenUser:(NSString *)user;
 /** Whether or not \c user has unread messages. */
 - (BOOL)userHasUnreadChats:(NSString *)user;
 /** All messages in a human-readable, newline separated format. */

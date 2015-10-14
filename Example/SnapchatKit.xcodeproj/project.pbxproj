@@ -64,7 +64,7 @@
 		B49E0ED01B6A6F110086F8D0 /* SNTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNTableViewController.m; sourceTree = "<group>"; };
 		B49E0ED21B6A6F470086F8D0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		B49E0ED41B6A6FE80086F8D0 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
-		B4F60B8F1B7A8EBB00044420 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = ../../../../Login.h; sourceTree = "<group>"; };
+		B4F60B8F1B7A8EBB00044420 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = /Users/tantan/Login.h; sourceTree = "<absolute>"; };
 		B4F75D7B1B7A7C3A008E6FF8 /* SKAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKAppDelegate.m; sourceTree = "<group>"; };
 		C50B6337FD849C47AAA86405 /* Pods-SnapchatKit_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example.release.xcconfig"; sourceTree = "<group>"; };
 		CBB5C915BC5AC56D10244C95 /* SnapchatKit.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SnapchatKit.podspec; path = ../SnapchatKit.podspec; sourceTree = "<group>"; };

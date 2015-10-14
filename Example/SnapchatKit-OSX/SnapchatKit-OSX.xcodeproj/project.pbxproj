@@ -26,7 +26,7 @@
 
 /* Begin PBXFileReference section */
 		A3FE50062F493EF242FAFB51 /* Pods-SnapchatKit-OSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit-OSX.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SnapchatKit-OSX/Pods-SnapchatKit-OSX.release.xcconfig"; sourceTree = "<group>"; };
-		B4CF268F1BC48BF100AAF1D0 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = ../../../../../Login.h; sourceTree = "<group>"; };
+		B4CF268F1BC48BF100AAF1D0 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Login.h; path = /Users/tantan/Login.h; sourceTree = "<absolute>"; };
 		B4D11BA51B90E3850012116A /* SnapchatKit-OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "SnapchatKit-OSX"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4D11BA81B90E3850012116A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B4D11BAF1B90E3B60012116A /* TBTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBTimer.h; sourceTree = "<group>"; };

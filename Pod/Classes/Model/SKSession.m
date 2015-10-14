@@ -98,6 +98,9 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
             [temp addObject:[[SKConversation alloc] initWithDictionary:convo]];
         _conversations = temp;
         
+        #pragma clang diagnostic ignored "-Wundeclared-selector"
+        [_conversations.array makeObjectsPerformSelector:@selector(setRecipient:) withObject:self.username];
+        
         // Story collections
         temp = [NSMutableOrderedSet orderedSet];
         for (NSDictionary *collection in friendStories)

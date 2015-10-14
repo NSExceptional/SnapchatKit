@@ -183,6 +183,11 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     return @"";
 }
 
+- (void)setRecipient:(NSString *)recipient {
+    NSParameterAssert(recipient);
+    _recipient = recipient;
+}
+
 @end
 
 @implementation SKConversation (SKClient)
