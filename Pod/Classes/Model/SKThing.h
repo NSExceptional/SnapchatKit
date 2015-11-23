@@ -8,11 +8,29 @@
 
 #import <Foundation/Foundation.h>
 #import "SnapchatKit-Constants.h"
+#import "Mantle.h"
+
+// Mantle macros //
+
+// string to URL transform
+#define MTLTransformPropertyURL(property) + (NSValueTransformer *) property##JSONTransformer { \
+return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName]; }
+
+// class transform
+#define MTLTransformPropertyClass(property, cls) + (NSValueTransformer *) property##JSONTransformer { \
+return [MTLJSONAdapter dictionaryTransformerWithModelClass:[ cls class]]; }
+
+// dictionary transform
+#define MTLTransformPropertyMap(property, dictionary) + (NSValueTransformer *) property##JSONTransformer { \
+return [NSValueTransformer mtl_valueMappingTransformerWithDictionary: dictionary ]; }
+
 
 /** The root class of most classes in this framework. */
-@interface SKThing : NSObject <NSCoding>
+@interface SKThing : MTLModel <MTLJSONSerializing>
 
 - (id)initWithDictionary:(NSDictionary *)json;
+
++ (NSValueTransformer *)sk_dateTransformer;
 
 /** 
  For API debugging purposes, each class adds it's known
@@ -34,8 +52,8 @@
 
 
 @protocol SKPagination <NSObject>
-@property (nonatomic, readonly) NSString *pagination;
+@property (nonatomic, copy, readonly) NSString *pagination;
 @optional
-@property (nonatomic, readonly) NSDate   *created;
-@property (nonatomic, readonly) NSString *conversationIdentifier;
+@property (nonatomic, copy, readonly) NSDate   *created;
+@property (nonatomic, copy, readonly) NSString *conversationIdentifier;
 @end

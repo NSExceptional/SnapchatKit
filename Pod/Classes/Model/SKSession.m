@@ -58,6 +58,8 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     NSArray *conversations = json[@"conversations_response"];
     
     if (self) {
+        _username = updatesResponse[@"username"];
+        
         _backgroundFetchSecret = json[@"background_fetch_secret_key"];
         _bestFriendUsernames   = [NSMutableOrderedSet orderedSetWithArray:friendsResponse[@"bests"]];
         
@@ -135,7 +137,6 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _cashProvider           = updatesResponse[@"cash_provider"];
         
         // Basic user info
-        _username     = updatesResponse[@"username"];
         _email        = updatesResponse[@"email"];
         _mobileNumber = updatesResponse[@"mobile"];
         _recieved     = [updatesResponse[@"recieved"] integerValue];
@@ -149,7 +150,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         _authToken                     = updatesResponse[@"auth_token"];
         _canSeeMatureContent           = [updatesResponse[@"can_view_mature_content"] boolValue];
         _countryCode                   = updatesResponse[@"country_code"] ?: @"US";
-        _lastTimestamp                 = [NSDate dateWithTimeIntervalSince1970:[updatesResponse[@"cash_provider"] doubleValue]/1000];
+//        _lastTimestamp                 = [NSDate dateWithTimeIntervalSince1970:[updatesResponse[@"cash_provider"] doubleValue]/1000];
         _devicetoken                   = updatesResponse[@"device_token"];
         _canSaveStoryToGallery         = [updatesResponse[@"enable_save_story_to_gallery"] boolValue];
         _canVideoTranscodingAndroid    = [updatesResponse[@"enable_video_transcoding_android"] boolValue];
@@ -217,6 +218,116 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         [unread addObjectsFromArray:convo.pendingRecievedSnaps];
     
     return unread;
+}
+
+#pragma mark - Mantle -
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"username": @"updates_response.username",
+             @"backgroundFetchSecret": @"background_fetch_secret_key",
+             @"bestFriendUsernames": @"friends_response.bests", //
+             @"storiesDelta": @"stories_response.friend_stories_delta",
+             @"emailVerified": @"identity_check_response.is_email_verified",
+             @"highAccuracyRequiredForNearby": @"identity_check_response.is_high_accuracy_required_for_nearby",
+             @"requirePhonePasswordConfirmed": @"identity_check_response.require_phone_password_confirmed",
+             @"redGearDurationMilliseconds": @"identity_check_response.red_gear_duration_millis",
+             @"suggestedFriendFetchThresholdHours": @"identity_check_response.suggested_friend_fetch_threshold_hours",
+             @"messagingGatewayAuth": @"messaging_gateway_info.gateway_auth_token",
+             @"messagingGatewayServer": @"messaging_gateway_info.gateway_server",
+             @"discoverSupported": @"discover.compatibility", //
+             @"discoverSharingEnabled": @"discover.sharing_enabled",
+             @"discoverGetChannels": @"discover.get_channels",
+             @"discoverResourceParamName": @"discover.resource_parameter_name",
+             @"discoverResourceParamValue": @"discover.resource_parameter_value",
+             @"discoverVideoCatalog": @"discover.video_catalog",
+             @"sponsored": @"sponsored",
+             @"friends": @"friends_response.friends",
+             @"addedFriends": @"friends_response.added_friends",
+             @"conversations": @"conversations_response",
+             @"stories": @"stories_response.friend_stories",
+             @"userStories": @"stories_response.my_stories",
+             @"groupStories": @"stories_response.my_group_stories", // other stories, pending requests
+             @"canUseCash": @"updates_response.allowed_to_use_cash",
+             @"isCashActive": @"udpates_response.is_cash_active",
+             @"cashCustomerIdentifier": @"updates_response.cash_consumer_id",
+             @"cashClientProperties": @"updates_response.client_properties",
+             @"cashProvider": @"updates_response.cash_provider",
+             @"email": @"updates_response.email",
+             @"mobileNumber": @"updates_response.mobile",
+             @"recieved": @"updates_response.recieved",
+             @"sent": @"updates_response.sent",
+             @"score": @"updates_response.score",
+             @"recents": @"updates_response.recents",
+             @"requests": @"updates_response.requests",
+             @"addedFriendsTimestamp": @"updates_response.added_friends_timestamp",
+             @"auth_token": @"updates_response.auth_token",
+             @"canSeeMatureContent": @"updates_response.can_view_mature_content",
+             @"countryCode": @"updates_response.countryCode",
+             @"devicetoken": @"updates_response.device_token",
+             @"canSaveStoryToGallery": @"updates_response.enable_save_story_to_gallery",
+             @"canVideoTranscodingAndroid": @"updates_response.enable_video_transcoding_android",
+             @"imageCaption": @"updates_response.image_caption",
+             @"requireRefreshingProfileMedia": @"updates_response.require_refreshing_profile_media",
+             @"isTwoFAEnabled": @"updates_response.is_two_fa_enabled",
+             @"lastAddressBookUpdateDate": @"updates_response.last_address_book_updated_date",
+             @"lastReplayedSnapDate": @"updates_response.last_replayed_snap_timestamp",
+             @"logged": @"updates_response.logged",
+             @"mobileVerificationKey": @"updates_response.mobile_verification_key",
+             @"canUploadRawThumbnail": @"updates_response.raw_thumbnail_upload_enabled",
+             @"seenTooltips": @"updates_response.seen_tooltips",
+             @"shouldCallToVerifyNumber": @"updates_response.should_call_to_verify_number",
+             @"shouldTextToVerifyNumber": @"updates_response.should_send_text_to_verify_number",
+             @"snapchatPhoneNumber": @"updates_response.snapchat_phone_number",
+             @"studySettings": @"updates_response.study_settings",
+             @"targeting": @"updates_response.targeting",
+             @"userIdentifier": @"updates_response.user_id",
+             @"videoFiltersEnabled": @"updates_response.video_filters_enabled",
+             @"QRPath": @"updates_response.qr_path",
+             @"enableNotificationSounds": @"updates_response.notification_sound_setting",
+             @"numberOfBestFriends": @"updates_response.number_of_best_friends",
+             @"privacyEveryone": @"updates_response.snap_p",
+             @"isSearchableByPhoneNumber": @"updates_response.searchable_by_phone_number",
+             @"storyPrivacy": @"updates_response.story_privacy",
+             @"enableFrontFacingFlash": @"updates_response.feature_settings.front_facing_flash",
+             @"enablePowerSaveMode": @"updates_response.feature_settings.power_save_mode",
+             @"enableReplaySnaps": @"updates_response.feature_settings.replay_snaps",
+             @"enableSmartFilters": @"updates_response.feature_settings.smart_filters",
+             @"enableSpecialText": @"updates_response.feature_settings.special_text",
+             @"enableSwipeCashMode": @"updates_response.feature_settings.swipe_cash_mode",
+             @"enableVisualFilters": @"updates_response.feature_settings.visual_filters",
+             @"enableTravelMode": @"updates_response.feature_settings.travel_mode"};
+}
+
++ (NSValueTransformer *)bestFriendUsernamesTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *bests, BOOL *success, NSError *__autoreleasing *error) {
+        return [NSMutableOrderedSet orderedSetWithArray:bests];
+    } reverseBlock:^id(NSMutableOrderedSet *bests, BOOL *success, NSError *__autoreleasing *error) {
+        return bests.array;
+    }];
+}
+
++ (NSValueTransformer *)discoverSupportedTransformer {
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"supported": @YES, @"device_not_supported": @NO} defaultValue:@NO reverseDefaultValue:@"device_not_supported"];
+}
+
++ (NSValueTransformer *)addedFriendsTimestampTransformer { return [self sk_dateTransformer]; }
++ (NSValueTransformer *)lastAddressBookUpdateDateTransformer { return [self sk_dateTransformer]; }
++ (NSValueTransformer *)lastReplayedSnapDateTransformer { return [self sk_dateTransformer]; }
+
++ (NSValueTransformer *)storyPrivacyTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *p, BOOL *success, NSError *__autoreleasing *error) {
+        return @(SKStoryPrivacyFromString(p));
+    } reverseBlock:^id(NSNumber *p, BOOL *success, NSError *__autoreleasing *error) {
+        return SKStringFromStoryPrivacy(p.integerValue);
+    }];
+}
+
++ (NSValueTransformer *)privacyEveryoneTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSNumber *val, BOOL *success, NSError *__autoreleasing *error) {
+        return  @(!val.boolValue);
+    } reverseBlock:^id(NSNumber *val, BOOL *success, NSError *__autoreleasing *error) {
+        return  @(!val.boolValue);
+    }];
 }
 
 

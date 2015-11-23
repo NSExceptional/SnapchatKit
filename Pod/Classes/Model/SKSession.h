@@ -98,7 +98,7 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL         canSeeMatureContent;
 /** i.e. "US" */
 @property (nonatomic, readonly) NSString     *countryCode;
-@property (nonatomic, readonly) NSDate       *lastTimestamp;
+//@property (nonatomic, readonly) NSDate       *lastTimestamp;
 @property (nonatomic, readonly) NSString     *devicetoken;
 @property (nonatomic, readonly) BOOL         canSaveStoryToGallery;
 /** Unknown. */

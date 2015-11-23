@@ -36,7 +36,7 @@ static NSMutableDictionary *_allJSONKeys;
     
     NSParameterAssert(json.allKeys.count > 0);
     
-    self = [super init];
+    self = [super initWithDictionary:json error:nil];
     if (self) {
         _JSON = json;
     }
@@ -129,6 +129,20 @@ static NSMutableDictionary *_allJSONKeys;
     
     free(buffer);
     return array;
+}
+
+#pragma mark - Mantle -
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{};
+}
+
++ (NSValueTransformer *)sk_dateTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *ts, BOOL *success, NSError *__autoreleasing *error) {
+        return [NSDate dateWithTimeIntervalSince1970:ts.doubleValue/1000.f];
+    } reverseBlock:^id(NSDate *ts, BOOL *success, NSError *__autoreleasing *error) {
+        return @([ts timeIntervalSince1970] * 1000.f).stringValue;
+    }];
 }
 
 

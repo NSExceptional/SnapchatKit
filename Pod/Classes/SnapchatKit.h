@@ -34,20 +34,3 @@
 #import "SKStoryNote.h"
 #import "SKUser.h"
 #import "SKUserStory.h"
-//#import "SKTestSession.h"
-
-
-
-// Mantle macros //
-
-// string to URL transform
-#define MTLTransformPropertyURL(property) + (NSValueTransformer *) property##JSONTransformer { \
-return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName]; }
-
-// class transform
-#define MTLTransformPropertyClass(property, cls) + (NSValueTransformer *) property##JSONTransformer { \
-return [MTLJSONAdapter dictionaryTransformerWithModelClass:[ cls class]]; }
-
-// dictionary transform
-#define MTLTransformPropertyMap(property, dictionary) + (NSValueTransformer *) property##JSONTransformer { \
-return [NSValueTransformer mtl_valueMappingTransformerWithDictionary: dictionary ]; }
