@@ -172,10 +172,7 @@ The first step in creating a new Snapchat account. Registers an email, password,
 @end
 
 /** Used to assert that we are signed in before making certain requests. */
-NS_INLINE void SKAssertIsSignedIn() {
-    if (![SKClient sharedClient].isSignedIn)
-        [NSException raise:NSInternalInconsistencyException format:@"You must be signed in to call this method."];
-}
+#define SKAssertIsSignedIn(client) if (!client.isSignedIn) [NSException raise:NSInternalInconsistencyException format:@"You must be signed in to call this method."];
 
 /** Used to determine if the current device has an active connection. */
 extern BOOL SKHasActiveConnection();

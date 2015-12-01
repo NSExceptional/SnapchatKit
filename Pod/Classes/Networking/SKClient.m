@@ -22,6 +22,8 @@
 #import <SystemConfiguration/SCNetworkReachability.h>
 #import "Attestation.pb.h"
 
+#define SKDispatchToMain(block) dispatch_async(dispatch_get_main_queue(), ^{ block; })
+
 BOOL SKHasActiveConnection() {
     SCNetworkReachabilityFlags flags;
     SCNetworkReachabilityRef address;
@@ -179,10 +181,10 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
             NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             if ([html containsString:@"<html><head>"]) {
                 // Invalid request
-                callback(nil, [SKRequest errorWithMessage:html.textFromHTML code:code], response);
+                SKDispatchToMain(callback(nil, [SKRequest errorWithMessage:html.textFromHTML code:code], response));
             } else {
                 // ???
-                callback(nil, jsonError, response);
+                SKDispatchToMain(callback(nil, jsonError, response));
             }
         }
         
@@ -192,35 +194,33 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
                 NSNumber *logged = json[@"logged"] ?: json[@"updates_response"][@"logged"];
                 if (logged) {
                     if (logged.integerValue == 1)
-                        callback(json, nil, response);
+                        SKDispatchToMain(callback(json, nil, response));
                     else
-                        callback(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]], response);
+                        SKDispatchToMain(callback(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]], response));
                 } else {
-                    callback(json, nil, response);
+                    SKDispatchToMain(callback(json, nil, response));
                 }
             } else {
                 // Failed with a message
                 error = [SKRequest errorWithMessage:json[@"message"] code:code];
-                callback(nil, error, response);
+                SKDispatchToMain(callback(nil, error, response));
             }
         }
         else {
-            callback(nil, [SKRequest unknownError], response);
+            SKDispatchToMain(callback(nil, [SKRequest unknownError], response));
         }
     } else if (code > 199 && code < 300) {
         // Succeeded with no response
-        callback(nil, nil, response);
+        SKDispatchToMain(callback(nil, nil, response));
     } else {
-        callback(nil, [SKRequest unknownError], response);
+        SKDispatchToMain(callback(nil, [SKRequest unknownError], response));
     }
 }
 
 - (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(query);
     [SKRequest postTo:endpoint query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self handleError:error data:data response:response completion:callback];
-        });
+        SKDispatchToMain([self handleError:error data:data response:response completion:callback]);
     }];
 }
 
@@ -286,16 +286,21 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            callback(nil, error);
-        } else if (data) {
-            NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            string = [string matchGroupAtIndex:1 forRegex:@"Auth=([\\w\\.-]+)"];
-            callback(string, nil);
-        } else {
-            callback(nil, [SKRequest unknownError]);
-        }
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error) {
+                callback(nil, error);
+            } else if (data) {
+                NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                if ([string isEqualToString:@"Error=BadAuthentication"]) {
+                    callback(nil, [SKRequest errorWithMessage:@"Invalid Google credentials" code:1]);
+                } else {
+                    string = [string matchGroupAtIndex:1 forRegex:@"Auth=([\\w\\.-]+)"];
+                    callback(string, nil);
+                }
+            } else {
+                callback(nil, [SKRequest unknownError]);
+            }
+        });
     }];
     
     [dataTask resume];
@@ -310,24 +315,26 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
         completion(@{SKConsts.deviceToken1i: dt1i, SKConsts.deviceToken1v: dt1v}, nil);
     else
         [SKRequest postTo:SKEPDevice.identifier query:@{} headers:@{SKHeaders.clientAuthToken: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (error) {
-                completion(nil, error);
-            } else if (data) {
-                NSError *jsonError;
-                NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-                
-                if (jsonError ) {
-                    completion(nil, jsonError);
-                } else if (json) {
-                    [[NSUserDefaults standardUserDefaults] setObject:json[SKConsts.deviceToken1i] forKey:SKConsts.deviceToken1i];
-                    [[NSUserDefaults standardUserDefaults] setObject:json[SKConsts.deviceToken1v] forKey:SKConsts.deviceToken1v];
-                    completion(json, nil);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (error) {
+                    completion(nil, error);
+                } else if (data) {
+                    NSError *jsonError;
+                    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+                    
+                    if (jsonError ) {
+                        completion(nil, jsonError);
+                    } else if (json) {
+                        [[NSUserDefaults standardUserDefaults] setObject:json[SKConsts.deviceToken1i] forKey:SKConsts.deviceToken1i];
+                        [[NSUserDefaults standardUserDefaults] setObject:json[SKConsts.deviceToken1v] forKey:SKConsts.deviceToken1v];
+                        completion(json, nil);
+                    } else {
+                        completion(nil, [SKRequest unknownError]);
+                    }
                 } else {
                     completion(nil, [SKRequest unknownError]);
                 }
-            } else {
-                completion(nil, [SKRequest unknownError]);
-            }
+            });
         }];
 }
 
@@ -355,18 +362,19 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (error) {
-            callback(nil, error);
-        } else if (data) {
-            NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            string = [string matchGroupAtIndex:1 forRegex:@"token=([\\w\\.-]+)"];
-            callback(string, nil);
-        } else {
-            callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
-        }
-    }];
-    [dataTask resume];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (error) {
+                callback(nil, error);
+            } else if (data) {
+                NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                string = [string matchGroupAtIndex:1 forRegex:@"token=([\\w\\.-]+)"];
+                callback(string, nil);
+            } else {
+                callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+            }
+        });
+    }] resume];
 }
 
 /** Google attestation. */
@@ -588,7 +596,7 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
             _googleAuthToken = gauth;
             _authToken       = authToken;
             self.username    = username;
-            [[SKClient sharedClient] updateSession:^(NSError *error2) {
+            [self updateSession:^(NSError *error2) {
                 completion([self.currentSession valueForKey:@"JSON"], error2);
             }];
         } else {
@@ -629,7 +637,7 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
 #pragma mark Misc
 
 - (void)updateSession:(ErrorBlock)completion {
-    SKAssertIsSignedIn();
+    SKAssertIsSignedIn(self);
     
     NSDictionary *query = @{@"username": self.username,
                             @"height": @(self.screenSize.height),

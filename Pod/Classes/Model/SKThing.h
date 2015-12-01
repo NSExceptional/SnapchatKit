@@ -52,8 +52,8 @@ return [NSValueTransformer mtl_valueMappingTransformerWithDictionary: dictionary
 
 
 @protocol SKPagination <NSObject>
-@property (nonatomic, copy, readonly) NSString *pagination;
+@property (nonatomic, readonly) NSString *pagination;
 @optional
-@property (nonatomic, copy, readonly) NSDate   *created;
-@property (nonatomic, copy, readonly) NSString *conversationIdentifier;
+@property (nonatomic, readonly) NSDate   *created;
+@property (nonatomic, readonly) NSString *conversationIdentifier;
 @end

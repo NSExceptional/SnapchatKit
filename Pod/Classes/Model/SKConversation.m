@@ -163,9 +163,9 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
 }
 
 - (NSString *)suggestedChatPreview {
-    for (id message in self.messages.reverseObjectEnumerator) {
+    for (id message in self.messages) {
         Class cls = [message class];
-        if (cls == [SKSnap class]) break;
+        if (cls == [SKSnap class]) continue;
         
         if (cls == [SKMessage class]) {
             SKMessage *mess = (id)message;

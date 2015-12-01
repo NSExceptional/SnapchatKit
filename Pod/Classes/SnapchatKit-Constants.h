@@ -26,7 +26,6 @@
 #define SK_NAMESPACE(name, vals) extern const struct name vals name
 #define SK_NAMESPACE_IMP(name) const struct name name =
 
-
 typedef void (^RequestBlock)(NSData *data, NSURLResponse *response, NSError *error);
 typedef void (^BooleanBlock)(BOOL success, NSError *error);
 typedef void (^DataBlock)(NSData *data, NSError *error);
