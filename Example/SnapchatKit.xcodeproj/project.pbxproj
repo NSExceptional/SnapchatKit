@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		43A340B3E4D125055A02D880 /* Pods_SnapchatKit_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CD9903EBCF5FE2F879E8B5 /* Pods_SnapchatKit_Tests.framework */; };
+		2BF7EF4C953EFCB0C24EB544 /* libPods-SnapchatKit_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B19FEB598B426D0D32B230D /* libPods-SnapchatKit_Example.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -23,7 +23,7 @@
 		B49E0ED31B6A6F470086F8D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B49E0ED21B6A6F470086F8D0 /* Main.storyboard */; };
 		B49E0ED51B6A6FE80086F8D0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B49E0ED41B6A6FE80086F8D0 /* LaunchScreen.xib */; };
 		B4F75D7C1B7A7C3A008E6FF8 /* SKAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B4F75D7B1B7A7C3A008E6FF8 /* SKAppDelegate.m */; };
-		D6435FFDBBF28130CA56EC70 /* Pods_SnapchatKit_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D6DF873F27DD61B983F9C4B /* Pods_SnapchatKit_Example.framework */; };
+		CD3B271FAD1EF063E0B213DC /* libPods-SnapchatKit_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EABC5E91FCBBF389A62BD1A /* libPods-SnapchatKit_Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +37,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		58CD9903EBCF5FE2F879E8B5 /* Pods_SnapchatKit_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapchatKit_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58A195388D20070C39A /* SnapchatKit_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnapchatKit_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -56,8 +55,9 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6414BD2CF8860128C7DA40BF /* Pods-SnapchatKit_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		6EABC5E91FCBBF389A62BD1A /* libPods-SnapchatKit_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapchatKit_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B19FEB598B426D0D32B230D /* libPods-SnapchatKit_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapchatKit_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		891C0C84E220E0487354B6C5 /* Pods-SnapchatKit_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Tests/Pods-SnapchatKit_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		8D6DF873F27DD61B983F9C4B /* Pods_SnapchatKit_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SnapchatKit_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B45BD6A6F5EF510EA64C1A4 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		A673B4230E4D3F614D99479C /* Pods-SnapchatKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-SnapchatKit_Tests/Pods-SnapchatKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		B49E0ECF1B6A6F110086F8D0 /* SNTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNTableViewController.h; sourceTree = "<group>"; };
@@ -79,7 +79,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				D6435FFDBBF28130CA56EC70 /* Pods_SnapchatKit_Example.framework in Frameworks */,
+				2BF7EF4C953EFCB0C24EB544 /* libPods-SnapchatKit_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +89,7 @@
 			files = (
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				43A340B3E4D125055A02D880 /* Pods_SnapchatKit_Tests.framework in Frameworks */,
+				CD3B271FAD1EF063E0B213DC /* libPods-SnapchatKit_Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,8 +134,8 @@
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
-				8D6DF873F27DD61B983F9C4B /* Pods_SnapchatKit_Example.framework */,
-				58CD9903EBCF5FE2F879E8B5 /* Pods_SnapchatKit_Tests.framework */,
+				7B19FEB598B426D0D32B230D /* libPods-SnapchatKit_Example.a */,
+				6EABC5E91FCBBF389A62BD1A /* libPods-SnapchatKit_Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
