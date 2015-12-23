@@ -2,7 +2,7 @@
 //  SKSharedStoryDescription.h
 //  SnapchatKit-OSX-Demo
 //
-//  Created by Tanner on 7/17/15.
+//  Created by Tanner Bennett on 7/17/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 

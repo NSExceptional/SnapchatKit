@@ -11,7 +11,7 @@
 #import "NSDictionary+SnapchatKit.h"
 #import <objc/runtime.h>
 
-#define CLASS_KEY NSStringFromClass([self class])
+#define CLASS_KEY NSStringFromClass(self.class)
 
 
 @interface SKThing ()
@@ -37,8 +37,8 @@ static NSMutableDictionary *_allJSONKeys;
     });
     if (self) {
         _JSON = json;
-        [[self class] setAllJSONKeys:json.allKeyPaths];
-        [[self class] addKnownJSONKeys:[[self class] JSONKeyPathsByPropertyKey].allValues];
+        [self.class setAllJSONKeys:json.allKeyPaths];
+        [self.class addKnownJSONKeys:[self.class JSONKeyPathsByPropertyKey].allValues];
     }
 #endif
     

@@ -2,7 +2,7 @@
 //  SKSnapResponse.h
 //  SnapchatKit
 //
-//  Created by Tanner on 6/29/15.
+//  Created by Tanner Bennett on 6/29/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 

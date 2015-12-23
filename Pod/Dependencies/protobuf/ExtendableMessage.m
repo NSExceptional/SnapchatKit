@@ -59,7 +59,7 @@
 
 
 - (void) ensureExtensionIsRegistered:(id<PBExtensionField>) extension {
-  if ([extension extendedClass] != [self class]) {
+  if ([extension extendedClass] != self.class) {
     @throw [NSException exceptionWithName:@"IllegalArgument" reason:@"Trying to use an extension for another type" userInfo:nil];
   }
 

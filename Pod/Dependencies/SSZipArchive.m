@@ -210,7 +210,7 @@
 
 			NSString *fullPath = [destination stringByAppendingPathComponent:strPath];
 			NSError *err = nil;
-	        NSDate *modDate = [[self class] _dateWithMSDOSFormat:(UInt32)fileInfo.dosDate];
+	        NSDate *modDate = [self.class _dateWithMSDOSFormat:(UInt32)fileInfo.dosDate];
 	        NSDictionary *directoryAttr = [NSDictionary dictionaryWithObjectsAndKeys:modDate, NSFileCreationDate, modDate, NSFileModificationDate, nil];
 
 			if (isDirectory) {
@@ -255,7 +255,7 @@
 
 	                // Set the original datetime property
 	                if (fileInfo.dosDate != 0) {
-	                    NSDate *orgDate = [[self class] _dateWithMSDOSFormat:(UInt32)fileInfo.dosDate];
+	                    NSDate *orgDate = [self.class _dateWithMSDOSFormat:(UInt32)fileInfo.dosDate];
 	                    NSDictionary *attr = [NSDictionary dictionaryWithObject:orgDate forKey:NSFileModificationDate];
 
 	                    if (attr) {

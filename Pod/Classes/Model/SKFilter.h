@@ -2,7 +2,7 @@
 //  SKFilter.h
 //  SnapchatKit
 //
-//  Created by Tanner on 6/14/15.
+//  Created by Tanner Bennett on 6/14/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 

@@ -140,7 +140,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 
 - (instancetype)copyWithZone:(NSZone *)zone
 {
-	PBArray *copy = [[[self class] allocWithZone:zone] initWithCount:_count valueType:_valueType];
+	PBArray *copy = [[self.class allocWithZone:zone] initWithCount:_count valueType:_valueType];
 	if (copy)
 	{
 		memcpy(copy->_data, _data, _count * PBArrayValueTypeSize(_valueType));
@@ -160,7 +160,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@ %p>{valueType = %d, count = %ld, capacity = %ld, data = %p}",
-			[self class], self, _valueType, (long)_count, (long)_capacity, _data];
+			self.class, self, _valueType, (long)_count, (long)_capacity, _data];
 }
 
 - (NSUInteger)count
@@ -392,7 +392,7 @@ static PBArrayValueTypeInfo PBValueTypes[] =
 {
 	PBArrayValueTypeAssert(array.valueType);
 
-	PBArray *result = [[[self class] alloc] initWithCount:_count + array.count valueType:_valueType];
+	PBArray *result = [[self.class alloc] initWithCount:_count + array.count valueType:_valueType];
 	if (result)
 	{
 		const size_t elementSize = PBArrayValueTypeSize(_valueType);

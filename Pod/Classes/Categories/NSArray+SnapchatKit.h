@@ -10,9 +10,10 @@
 
 @interface NSArray (JSON)
 
-/** Will never return nil. */
+/// Will never return nil.
 - (NSString *)JSONString;
 
+/** Will never return nil. */
 - (NSArray *)dictionaryValues;
 
 @end
