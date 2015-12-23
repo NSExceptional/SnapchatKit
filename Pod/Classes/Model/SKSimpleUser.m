@@ -2,7 +2,7 @@
 //  SKSimpleUser.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/18/15.
+//  Created by Tanner Bennett on 5/18/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -14,17 +14,10 @@
 
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
-    if (self) {
-        _username       = json[@"name"];
-        _displayName    = [json[@"display"] length] ? json[@"display"] : nil;
-        _userIdentifier = json[@"user_id"];
-        _addedIncoming  = [json[@"direction"] isEqualToString:@"INCOMING"];
-        _ignoredLink    = [json[@"ignored_link"] boolValue];
-        _privacy        = [json[@"type"] integerValue];
-        _expiration     = [NSDate dateWithTimeIntervalSince1970:[json[@"expiration"] doubleValue]/1000];
-    }
     
-    [[self class] addKnownJSONKeys:@[@"name", @"display", @"user_id", @"direction", @"type", @"expiration", @"ignored_link"]];
+    // API debugging
+    if (![json[@"direction"] isEqualToString:@"OUTGOING"] && ![json[@"direction"] isEqualToString:@"INCOMING"])
+        SKLog(@"SKSimpleUser new 'direction': %@", json[@"direction"]);
     
     return self;
 }
@@ -33,6 +26,26 @@
     return [NSString stringWithFormat:@"<%@ username=%@, displayn=%@, incoming=%d>",
             NSStringFromClass(self.class), self.username, self.displayName, self.addedIncoming];
 }
+
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"username": @"name",
+             @"displayName": @"display",
+             @"userIdentifier": @"user_id",
+             @"addedIncoming": @"direction",
+             @"ignoredLink": @"ignored_link",
+             @"privacy": @"type",
+             @"expiration": @"expiration"};
+}
+
++ (NSValueTransformer *)addedIncomingJSONTransformer {
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"INCOMING": @YES, @"OUTGOING": @NO} defaultValue:@NO reverseDefaultValue:@"__unspecified"];
+}
+
+MTLTransformPropertyDate(expiration)
+
+#pragma mark - Equality
 
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SKSimpleUser class]])

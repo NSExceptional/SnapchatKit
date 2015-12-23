@@ -2,17 +2,26 @@
 //  NSArray+SnapchatKit.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/22/15.
+//  Created by Tanner Bennett on 5/22/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
 #import "NSArray+SnapchatKit.h"
+#import "Mantle.h"
 
 @implementation NSArray (JSON)
 
 - (NSString *)JSONString {
     NSData *data = [NSJSONSerialization dataWithJSONObject:self options:0 error:nil];
     return data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : @"[]";
+}
+
+- (NSArray *)dictionaryValues {
+    NSMutableArray *jsons = [NSMutableArray array];
+    for (id<MTLJSONSerializing>foo in self)
+        [jsons addObject:[MTLJSONAdapter JSONDictionaryFromModel:foo error:nil]];
+    
+    return jsons.copy;
 }
 
 @end

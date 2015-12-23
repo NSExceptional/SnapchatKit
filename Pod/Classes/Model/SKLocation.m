@@ -2,7 +2,7 @@
 //  SKLocation.m
 //  SnapchatKit
 //
-//  Created by Tanner on 6/14/15.
+//  Created by Tanner Bennett on 6/14/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -11,30 +11,23 @@
 
 @implementation SKLocation
 
-- (id)initWithDictionary:(NSDictionary *)json {
-    NSParameterAssert(json);
-    
-    NSArray *filters = json[@"filters"];
-    
-    self = [super init];
-    if (self) {
-        NSMutableArray *tmp = [NSMutableArray array];
-        for (NSDictionary *f in filters)
-            [tmp addObject:[[SKFilter alloc] initWithDictionary:f]];
-        _filters = tmp;
-        
-        _weather            = json[@"weather"];
-        _ourStoryAuths      = json[@"our_story_auths"];
-        _preCacheGeofilters = json[@"pre_cache_geofilters"];
-    }
-    
-    return self;
-}
-
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ num filters=%lu>\n%@",
             NSStringFromClass(self.class), (unsigned long)self.filters.count, self.filters];
 }
+
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"filters": @"filters",
+             @"weather": @"weather",
+             @"ourStoryAuths": @"our_story_auths",
+             @"preCacheGeofilters": @"pre_cache_geofilters"};
+}
+
++ (NSValueTransformer *)weatherJSONTransformer { return [self sk_modelArrayTransformerForClass:[SKFilter class]]; }
+
+#pragma mark - Equality
 
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SKLocation class]])

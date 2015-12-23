@@ -2,7 +2,7 @@
 //  SKUser.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/18/15.
+//  Created by Tanner Bennett on 5/18/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -26,9 +26,6 @@
             _timestamp         = [NSDate dateWithTimeIntervalSince1970:[json[@"ts"] doubleValue]/1000];
     }
     
-    [[self class] addKnownJSONKeys:@[@"friendmoji_string", @"venue", @"shared_story_id", @"can_see_custom_stories",
-                                     @"needs_love", @"is_shared_story", @"has_custom_description", @"dont_decay_thumbnail", @"ts"]];
-    
     return self;
 }
 
@@ -36,6 +33,25 @@
     return [NSString stringWithFormat:@"<%@ username=%@, emoji=%@, needs love=%d, sees your stories=%d, is shared=%d, is local=%d>",
             NSStringFromClass(self.class), self.username, self.friendmoji, self.needsLove, self.canSeeCustomStories, self.isSharedStory, self.isLocalStory];
 }
+
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return [@{@"friendmoji": @"friendmoji_string",
+              @"venue": @"venue",
+              @"sharedStoryIdentifier": @"shared_story_id",
+              @"canSeeCustomStories": @"can_see_custom_stories",
+              @"needsLove": @"needs_love",
+              @"isSharedStory": @"is_shared_story",
+              @"isLocalStory": @"local_story",
+              @"hasCustomDescription": @"has_custom_description",
+              @"decayThumbnail": @"dont_decay_thumbnail",
+              @"timestamp": @"ts"} mtl_dictionaryByAddingEntriesFromDictionary:[super JSONKeyPathsByPropertyKey]];
+}
+
+MTLTransformPropertyDate(timestamp)
+
+#pragma mark - Equality
 
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SKUser class]])

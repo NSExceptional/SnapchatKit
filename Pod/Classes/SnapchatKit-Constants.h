@@ -16,8 +16,8 @@
 #define kScreenHeight (1280)
 #endif
 
-#define kDebugJSON YES
-#define kVerboseLog YES
+#define kDebugJSON 1
+#define kVerboseLog 1
 
 #define SKTempDirectory() [NSTemporaryDirectory() stringByAppendingPathComponent:@"SnapchatKit-tmp"]
 

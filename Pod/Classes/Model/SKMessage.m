@@ -2,7 +2,7 @@
 //  SKMessage.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/19/15.
+//  Created by Tanner Bennett on 5/19/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -19,89 +19,109 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
     return 0;
 }
 
+NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
+    switch (messageKind) {
+        case SKMessageKindText: {
+            return @"text";
+        }
+        case SKMessageKindMedia: {
+            return @"media";
+        }
+        case SKMessageKindDiscoverShared: {
+            return @"discover_share_v2";
+        }
+    }
+    
+    [NSException raise:NSInternalInconsistencyException format:@"Invalid message kind: %@", @(messageKind).stringValue];
+    return nil;
+}
+
 @implementation SKMessage
 
 - (id)initWithDictionary:(NSDictionary *)json {
-    NSDictionary *message = json[@"chat_message"];
-    NSDictionary *media   = message[@"body"][@"media"];
-    NSDictionary *header  = message[@"header"];
-    NSString *type        = message[@"body"][@"type"];
-    
-    // I merge these dictionaries with the rest of
-    // the JSON so that unknownJSONKeys is more thorough.
-    if (kDebugJSON) {
-        NSMutableDictionary *fullJSON = json.mutableCopy;
-        [fullJSON addEntriesFromDictionary:message];
-        [fullJSON addEntriesFromDictionary:media];
-        [fullJSON addEntriesFromDictionary:header];
-        
-        message = message.mutableCopy;
-        [(NSMutableDictionary *)message setValue:[message[@"body"] mutableCopy] forKey:@"body"];
-        
-        fullJSON[@"chat_message"] = message;
-        fullJSON[@"chat_message"][@"body"][@"media"] = @{};
-        fullJSON[@"chat_message"][@"header"] = @{};
-        json = fullJSON;
-    }
-    
     self = [super initWithDictionary:json];
     
-    if (self) {
-        _identifier        = message[@"id"];
-        _messageIdentifier = message[@"chat_message_id"];
-        _pagination        = json[@"iter_token"];
-        _messageKind       = SKMessageKindFromString(type);
-        _created           = [NSDate dateWithTimeIntervalSince1970:[message[@"timestamp"] doubleValue]/1000];
-        
-        switch (self.messageKind) {
-            case SKMessageKindText: {
-                _text = message[@"body"][@"text"];
-                break;
-            }
-            case SKMessageKindDiscoverShared:
-            case SKMessageKindMedia: {
-                _mediaIdentifier = media[@"media_id"];
-                _mediaSize       = CGSizeMake([media[@"width"] integerValue], [media[@"height"] integerValue]);
-                _mediaIV         = media[@"iv"];
-                _mediaKey        = media[@"key"];
-                _mediaType       = media[@"media_type"];
-                if (!self.mediaType)
-                    _mediaType = @"UNSPECIFIED";
-                else if (![self.mediaType isEqualToString:@"VIDEO"])
-                    NSLog(@"New media type: %@", self.mediaType);
-                
-                break;
-            }
-            default: {
-                SKLog(@"Unknown message kind: %@", type);
-            }
-        }
-        
-        _conversationIdentifier = header[@"conv_id"];
-        
-        _recipients = header[@"to"];
-        _sender     = header[@"from"];
-
-        _index      = [message[@"seq_num"] integerValue];
-        _savedState = message[@"saved_state"];
-        _type       = message[@"type"];
-        
-        // Debugging
-        if (![_type isEqualToString:@"chat_message"])
-            SKLog(@"Unknown chat message type: %@", _type);
-    }
+    // Debugging //
+    if (!self.messageKind)
+        SKLog(@"Unknown message kind: %@", json[@"chat_message"][@"body"][@"type"]);
     
-    [[self class] addKnownJSONKeys:@[@"chat_message", @"body", @"header", @"id", @"chat_message_id", @"iter_token",
-                                              @"timestamp", @"media_id", @"width", @"height", @"iv", @"key", @"conv_id",
-                                              @"to", @"from", @"seq_num", @"saved_state", @"type", @"media_type"]];
+    if (!self.mediaType)
+        _mediaType = @"UNSPECIFIED";
+    else if (![self.mediaType isEqualToString:@"VIDEO"])
+        NSLog(@"New media type: %@", self.mediaType);
+    
+    if (![_type isEqualToString:@"chat_message"])
+        SKLog(@"Unknown chat message type: %@", _type);
     
     return self;
 }
 
 - (NSString *)description {
+    CGFloat width, height;
+#if (TARGET_OS_MAC)
+    width = self.mediaWidth;
+    height = self.mediaHeight;
+#else
+    width = self.mediaSize.width;
+    height = self.mediaSize.height;
+#endif
     return [NSString stringWithFormat:@"<%@ to/from=%@, text=%@, size={%f, %f}, index=%lu>",
-            NSStringFromClass(self.class), self.sender?:self.recipients[0], self.text, self.mediaSize.width, self.mediaSize.height, (unsigned long)self.index];
+            NSStringFromClass(self.class), self.sender?:self.recipients[0], self.text, width, height, (unsigned long)self.index];
 }
+
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"identifier": @"chat_message.id",
+             @"messageIdentifier": @"chat_message.chat_message_id",
+             @"pagination": @"iter_token",
+             @"messageKind": @"chat_message.body.type",
+             @"created": @"chat_message.timestamp",
+             
+             // SKMessageKindMedia
+             @"text": @"chat_message.body.text",
+             @"mediaIdentifier": @"chat_message.body.media.media_id",
+             @"mediaIV": @"chat_message.body.media.iv",
+             @"mediaKey": @"chat_message.body.media.key",
+             @"mediaType": @"chat_message.body.media.media_type",
+#if (TARGET_OS_MAC)
+             @"mediaWidth": @"chat_message.body.media.width",
+             @"mediaHeight": @"chat_message.body.media.height",
+#else
+             @"mediaSize": @"chat_message.body.media",
+#endif
+             @"conversationIdentifier": @"chat_message.header.conv_id",
+             @"recipients": @"chat_message.header.to",
+             @"sender": @"chat_message.header.from",
+             @"index": @"chat_message.seq_num",
+             @"savedState": @"chat_message.saved_state",
+             @"type": @"chat_message.type"};
+}
+
++ (NSValueTransformer *)messageKindJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *type, BOOL *success, NSError *__autoreleasing *error) {
+        return @(SKMessageKindFromString(type));
+    } reverseBlock:^id(NSNumber *type, BOOL *success, NSError *__autoreleasing *error) {
+        return SKStringFromMessageKind(type.integerValue);
+    }];
+}
+
+#if (!TARGET_OS_MAC)
++ (NSValueTransformer *)messageSizeJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSDictionary *media, BOOL *success, NSError *__autoreleasing *error) {
+        if (!media) return nil;
+        return [NSValue valueWithCGSize:CGSizeMake([media[@"width"] integerValue], [media[@"height"] integerValue])];
+    } reverseBlock:^id(NSValue *size, BOOL *success, NSError *__autoreleasing *error) {
+        if (size.CGSizeValue.width == 0 && size.CGSizeValue.height == 0) return nil;
+        CGSize s = size.CGSizeValue;
+        return @{@"width": @(s.width), @"height": @(s.height)};
+    }];
+}
+#endif
+
+MTLTransformPropertyDate(created)
+
+#pragma mark - Equality
 
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SKMessage class]])

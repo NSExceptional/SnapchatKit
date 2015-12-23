@@ -2,65 +2,86 @@
 //  SKCashTransaction.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/19/15.
+//  Created by Tanner Bennett on 5/19/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
 #import "SKCashTransaction.h"
 
+@interface SKCashTransaction ()
+/// Used internally to properly restructure \c dictionaryValue
+@property (nonatomic) BOOL isaRegularTransaction;
+@end
+
 @implementation SKCashTransaction
 
 - (id)initWithDictionary:(NSDictionary *)json {
-    self = [super initWithDictionary:json];
+    if (!json.allKeys.count) return nil;
     
-    if (self) {
-        _pagination = json[@"iter_token"];
-        
-        // "last_transaction" begins with this, but normal transactions
-        // contain "iter_token" and "cash_transaction", so this is the
-        // case for normal transactions.
-        if (json[@"cash_transaction"])
-            json = json[@"cash_transaction"];
-        
-        _status       = [json[@"status"] integerValue];
-        _amount       = [json[@"amount"] integerValue];
-        _currencyCode = json[@"currency_code"];
-        _invisible    = [json[@"invisible"] boolValue];
-        _lastUpdated  = [NSDate dateWithTimeIntervalSince1970:[json[@"last_updated_at"] doubleValue]/1000];
-        _message      = json[@"message"];
-        _rain         = [json[@"rain"] boolValue];
-        
-        _identifier             = json[@"transaction_id"];
-        _conversationIdentifier = json[@"conversation_id"];
-        _created                = [NSDate dateWithTimeIntervalSince1970:[json[@"created_at"] doubleValue]/1000];
-        
-        _recipient            = json[@"recipient_username"];
-        _recipientIdentifier  = json[@"recipient_id"];
-        _recipientSaveVersion = [json[@"recipient_save_version"] integerValue];
-        _recipientSaved       = [json[@"recipient_saved"] boolValue];
-        _recipientViewed      = [json[@"recipient_viewed"] boolValue];
-
-        _sender               = json[@"sender_username"];
-        _senderIdentifier     = json[@"sender_id"];
-        _senderSaveVersion    = [json[@"sender_save_version"] integerValue];
-        _senderSaved          = [json[@"sender_saved"] boolValue];
-        _senderViewed         = [json[@"sender_viewed"] boolValue];
-    }
+    // "last_transaction" is flat, but normal transactions
+    // contain "iter_token" and "cash_transaction", so this is the
+    // case for normal transactions; we are flattening the JSON
+    // to make it easier to deal with in Mantle.
+    if (json[@"cash_transaction"])
+        json = ({
+            _isaRegularTransaction = YES;
+            NSMutableDictionary *mjson = @{@"iter_token": json[@"iter_token"]}.mutableCopy;
+            [mjson addEntriesFromDictionary:json[@"cash_transaction"]];
+            mjson[@"cash_transaction"] = nil;
+            mjson;
+        });
     
-    [[self class] addKnownJSONKeys:@[@"status", @"amount", @"currency_code", @"invisible",
-                                              @"last_updated_at", @"message", @"rain", @"transaction_id",
-                                              @"conversation_id", @"created_at", @"recipient_username",
-                                              @"recipient_id", @"recipient_save_version", @"recipient_saved",
-                                              @"recipient_viewed", @"sender_username", @"sender_id",
-                                              @"sender_save_version", @"sender_saved", @"sender_viewed"]];
-    
-    return self;
+    return [super initWithDictionary:json];
 }
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ sender=%@, recipient=%@, message=%@>",
             NSStringFromClass(self.class), self.sender, self.recipient, self.message];
 }
+
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"patination": @"iter_token",
+             @"status": @"status",
+             @"amount": @"amount",
+             @"currencyCode": @"currency_code",
+             @"invisible": @"invisible",
+             @"lastUpdated": @"last_updated_at",
+             @"message": @"message",
+             @"rain": @"rain",
+             @"identifier": @"transaction_id",
+             @"conversationIdentifier": @"conversation_id",
+             @"created": @"created_at",
+             @"recipient": @"recipient_username",
+             @"recipientIdentifier": @"recipient_identifier",
+             @"recipientSaveVersion": @"recipient_save_version",
+             @"recipientSaved": @"recipient_saved",
+             @"recipientViewed": @"recipient_viewed",
+             @"sender": @"sender_username",
+             @"senderIdentifier": @"sender_id",
+             @"senderSaveVersion": @"sender_save_version",
+             @"senderSaved": @"sender_saved",
+             @"senderViewed": @"sender_viewed"};
+}
+
+- (NSDictionary *)dictionaryValue {
+    // "last_transaction" is flat and can be used normally
+    if (!_isaRegularTransaction) return [super dictionaryValue];
+    
+    // Regular transactions contain 2 kv pairs:
+    // "iter_token" and "cash_transaction"
+    NSMutableDictionary *cash_transaction = [super dictionaryValue].mutableCopy;
+    NSMutableDictionary *root = @{@"iter_token": cash_transaction[@"iter_token"]}.mutableCopy;
+    cash_transaction[@"iter_token"] = nil;
+    root[@"cash_transaction"] = cash_transaction.copy;
+    return root.copy;
+}
+
+MTLTransformPropertyDate(lastUpdated)
+MTLTransformPropertyDate(created)
+
+#pragma mark - Equality
 
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SKCashTransaction class]])

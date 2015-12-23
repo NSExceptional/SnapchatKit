@@ -2,7 +2,7 @@
 //  SKSession.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/18/15.
+//  Created by Tanner Bennett on 5/18/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -40,168 +40,21 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
 
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
-    
-    NSDictionary *storiesResponse = json[@"stories_response"];
-    NSDictionary *friendsResponse = json[@"friends_response"];
-    NSDictionary *updatesResponse = json[@"updates_response"];
-    NSDictionary *identity        = json[@"identity_check_response"];
-    NSDictionary *features        = updatesResponse[@"feature_settings"];
-    NSDictionary *discover        = json[@"discover"];
-    NSDictionary *messagingGate   = json[@"messaging_gateway_info"];
-    
-    NSArray *friendStories = storiesResponse[@"friend_stories"];
-    NSArray *myStories     = storiesResponse[@"my_stories"];
-    //NSArray *groupStories  = storiesResponse[@"my_group_stories"];
-    
-    NSArray *friends       = friendsResponse[@"friends"];
-    NSArray *added         = friendsResponse[@"added_friends"];
-    NSArray *conversations = json[@"conversations_response"];
-    
     if (self) {
-        _username = updatesResponse[@"username"];
-        
-        _backgroundFetchSecret = json[@"background_fetch_secret_key"];
-        _bestFriendUsernames   = [NSMutableOrderedSet orderedSetWithArray:friendsResponse[@"bests"]];
-        
-        _storiesDelta      = [storiesResponse[@"friend_stories_delta"] boolValue];
-        _emailVerified     = [identity[@"is_email_verified"] boolValue];
-        _highAccuracyRequiredForNearby      = [identity[@"is_high_accuracy_required_for_nearby"] boolValue];
-        _requirePhonePasswordConfirmed      = [identity[@"require_phone_password_confirmed"] boolValue];
-        _redGearDurationMilliseconds        = [identity[@"red_gear_duration_millis"] doubleValue];
-        _suggestedFriendFetchThresholdHours = [identity[@"suggested_friend_fetch_threshold_hours"] integerValue];
-        
-        _messagingGatewayAuth   = messagingGate[@"gateway_auth_token"];
-        _messagingGatewayServer = messagingGate[@"gateway_server"];
-        
-        // Discover
-        _discoverSupported          = [discover[@"compatibility"] isEqualToString:@"supported"];// alternative is @"device_not_supported"
-        _discoverSharingEnabled     = [discover[@"sharing_enabled"] boolValue];
-        _discoverGetChannels        = discover[@"get_channels"];
-        _discoverResourceParamName  = discover[@"resource_parameter_name"];
-        _discoverResourceParamValue = discover[@"resource_parameter_value"];
-        _discoverVideoCatalog       = discover[@"video_catalog"];
-        _sponsored                  = json[@"sponsored"];
-        
-        // Friends
-        NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];
-        for (NSDictionary *friend in friends)
-            [temp addObject:[[SKUser alloc] initWithDictionary:friend]];
-        _friends = temp;
-        
-        // Added friends
-        temp = [NSMutableOrderedSet orderedSet];
-        for (NSDictionary *addedFriend in added)
-            [temp addObject:[[SKAddedFriend alloc] initWithDictionary:addedFriend]];
-        _addedFriends = temp;
-        
-        // Conversations
-        temp = [NSMutableOrderedSet orderedSet];
-        for (NSDictionary *convo in conversations)
-            [temp addObject:[[SKConversation alloc] initWithDictionary:convo]];
-        _conversations = temp;
-        
         #pragma clang diagnostic ignored "-Wundeclared-selector"
         [_conversations.array makeObjectsPerformSelector:@selector(setRecipient:) withObject:self.username];
-        
-        // Story collections
-        temp = [NSMutableOrderedSet orderedSet];
-        for (NSDictionary *collection in friendStories)
-            [temp addObject:[[SKStoryCollection alloc] initWithDictionary:collection]];
-        _stories = temp;
-        
-        // User stories
-        temp = [NSMutableOrderedSet orderedSet];
-        for (NSDictionary *story in myStories)
-            [temp addObject:[[SKUserStory alloc] initWithDictionary:story]];
-        _userStories = temp;
         
         // Group stories?
         _groupStories = [NSMutableOrderedSet new];
         
         // Added me but not added back
-        
-        temp = [NSMutableOrderedSet orderedSet];
+        NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];
         for (SKSimpleUser *user in self.addedFriends)
             if (![self.friends containsObject:user])
                 [temp addObject:user];
         // Reverse so that most recent requests are at the front
         _pendingRequests = temp;
-        
-        
-        // Cash info //
-        // Possible values may be "NO_VERIFIED_PHONE" or "1"
-        _canUseCash             = [updatesResponse[@"allowed_to_use_cash"] boolValue];
-        _isCashActive           = [updatesResponse[@"is_cash_active"] boolValue];
-        _cashCustomerIdentifier = updatesResponse[@"cash_customer_id"];
-        _cashClientProperties   = updatesResponse[@"client_properties"];
-        _cashProvider           = updatesResponse[@"cash_provider"];
-        
-        // Basic user info
-        _email        = updatesResponse[@"email"];
-        _mobileNumber = updatesResponse[@"mobile"];
-        _recieved     = [updatesResponse[@"recieved"] integerValue];
-        _sent         = [updatesResponse[@"sent"] integerValue];
-        _score        = [updatesResponse[@"score"] integerValue];
-        _recents      = updatesResponse[@"recents"];
-        _requests     = updatesResponse[@"requests"];
-        
-        // Account information
-        _addedFriendsTimestamp         = [NSDate dateWithTimeIntervalSince1970:[updatesResponse[@"added_friends_timestamp"] doubleValue]/1000];
-        _authToken                     = updatesResponse[@"auth_token"];
-        _canSeeMatureContent           = [updatesResponse[@"can_view_mature_content"] boolValue];
-        _countryCode                   = updatesResponse[@"country_code"] ?: @"US";
-//        _lastTimestamp                 = [NSDate dateWithTimeIntervalSince1970:[updatesResponse[@"cash_provider"] doubleValue]/1000];
-        _devicetoken                   = updatesResponse[@"device_token"];
-        _canSaveStoryToGallery         = [updatesResponse[@"enable_save_story_to_gallery"] boolValue];
-        _canVideoTranscodingAndroid    = [updatesResponse[@"enable_video_transcoding_android"] boolValue];
-        _imageCaption                  = [updatesResponse[@"image_caption"] boolValue];
-        _requireRefreshingProfileMedia = [updatesResponse[@"require_refreshing_profile_media"] boolValue];
-        _isTwoFAEnabled                = [updatesResponse[@"is_two_fa_enabled"] boolValue];
-        _lastAddressBookUpdateDate     = [NSDate dateWithTimeIntervalSince1970:[updatesResponse[@"last_address_book_updated_date"] doubleValue]/1000];
-        _lastReplayedSnapDate          = [NSDate dateWithTimeIntervalSince1970:[updatesResponse[@"last_replayed_snap_timestamp"] doubleValue]/1000];
-        _logged                        = [updatesResponse[@"logged"] boolValue];
-        _mobileVerificationKey         = updatesResponse[@"mobile_verification_key"];
-        _canUploadRawThumbnail         = [updatesResponse[@"raw_thumbnail_upload_enabled"] boolValue];
-        _seenTooltips                  = updatesResponse[@"seen_tooltips"];
-        _shouldCallToVerifyNumber      = [updatesResponse[@"should_call_to_verify_number"] boolValue];
-        _shouldTextToVerifyNumber      = [updatesResponse[@"should_send_text_to_verify_number"] boolValue];
-        _snapchatPhoneNumber           = updatesResponse[@"snapchat_phone_number"];
-        _studySettings                 = updatesResponse[@"study_settings"];
-        _targeting                     = updatesResponse[@"targeting"];
-        _userIdentifier                = updatesResponse[@"user_id"];
-        _videoFiltersEnabled           = [updatesResponse[@"video_filters_enabled"] boolValue];
-        _QRPath                        = updatesResponse[@"qr_path"];
-        
-        // Preferences
-        _enableNotificationSounds  = [updatesResponse[@"notification_sound_setting"] boolValue];
-        _numberOfBestFriends       = [updatesResponse[@"number_of_best_friends"] integerValue];
-        _privacyEveryone           = ![updatesResponse[@"snap_p"] boolValue];
-        _isSearchableByPhoneNumber = [updatesResponse[@"searchable_by_phone_number"] boolValue];
-        _storyPrivacy              = SKStoryPrivacyFromString(updatesResponse[@"story_privacy"]);
-        
-        // Features
-        _enableFrontFacingFlash = [features[SKFeatureSettings.frontFacingFlash] boolValue];
-        _enablePowerSaveMode    = [features[SKFeatureSettings.powerSaveMode] boolValue];
-        _enableReplaySnaps      = [features[SKFeatureSettings.replaySnaps] boolValue];
-        _enableSmartFilters     = [features[SKFeatureSettings.smartFilters] boolValue];
-        _enableSpecialText      = [features[SKFeatureSettings.specialText] boolValue];
-        _enableSwipeCashMode    = [features[SKFeatureSettings.swipeCashMode] boolValue];
-        _enableVisualFilters    = [features[SKFeatureSettings.visualFilters] boolValue];
-        _enableTravelMode       = [features[SKFeatureSettings.travelMode] boolValue];
     }
-    
-    [[self class] addKnownJSONKeys:@[@"stories_response", @"friends_response", @"updates_response", @"identity_check_response", @"conversations_response",
-                                     @"background_fetch_secret_key", @"discover", @"messaging_gateway_info", @"sponsored"]];
-    
-    [[self class] addKnownJSONKeys:@[@"current_timestamp",@"logged",@"industries",@"story_privacy",@"snap_p",@"should_call_to_verify_number",
-                                     @"mobile_verification_key",@"score",@"added_friends_timestamp",@"auth_token",@"last_address_book_updated_date",
-                                     @"is_cash_active",@"image_caption",@"enable_lenses_android",@"temp",@"requests",@"feature_settings",@"email",
-                                     @"allowed_to_use_cash",@"searchable_by_phone_number",@"number_of_best_friends",@"is_two_fa_enabled",
-                                     @"birthday",@"seen_tooltips",@"gaussian_blur_level_android",@"device_token",@"cash_customer_id",@"client_properties",@"username",
-                                     @"snapchat_phone_number",@"verified_shared_publications",@"mobile",@"raw_thumbnail_upload_enabled",@"video_filters_enabled",@"sent",
-                                     @"recents",@"user_id",@"received",@"should_send_text_to_verify_number",@"notification_sound_setting",@"country_code",
-                                     @"require_refreshing_profile_media",@"can_view_mature_content",@"enable_video_transcoding_android",@"study_settings",@"cash_provider",
-                                     @"enable_save_story_to_gallery",@"targeting",@"contacts_resync_request",@"qr_path"]];
     
     return self;
 }
@@ -220,7 +73,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     return unread;
 }
 
-#pragma mark - Mantle -
+#pragma mark - Mantle
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{@"username": @"updates_response.username",
@@ -298,7 +151,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"enableTravelMode": @"updates_response.feature_settings.travel_mode"};
 }
 
-+ (NSValueTransformer *)bestFriendUsernamesTransformer {
++ (NSValueTransformer *)bestFriendUsernamesJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *bests, BOOL *success, NSError *__autoreleasing *error) {
         return [NSMutableOrderedSet orderedSetWithArray:bests];
     } reverseBlock:^id(NSMutableOrderedSet *bests, BOOL *success, NSError *__autoreleasing *error) {
@@ -306,15 +159,21 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     }];
 }
 
-+ (NSValueTransformer *)discoverSupportedTransformer {
++ (NSValueTransformer *)discoverSupportedJSONTransformer {
     return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"supported": @YES, @"device_not_supported": @NO} defaultValue:@NO reverseDefaultValue:@"device_not_supported"];
 }
 
-+ (NSValueTransformer *)addedFriendsTimestampTransformer { return [self sk_dateTransformer]; }
-+ (NSValueTransformer *)lastAddressBookUpdateDateTransformer { return [self sk_dateTransformer]; }
-+ (NSValueTransformer *)lastReplayedSnapDateTransformer { return [self sk_dateTransformer]; }
+MTLTransformPropertyDate(addedFriendsTimestamp)
+MTLTransformPropertyDate(lastAddressBookUpdateDate)
+MTLTransformPropertyDate(lastReplayedSnapDate)
 
-+ (NSValueTransformer *)storyPrivacyTransformer {
++ (NSValueTransformer *)friendsJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKUser class]]; }
++ (NSValueTransformer *)addedFriendsJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKAddedFriend class]]; }
++ (NSValueTransformer *)conversationsJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKConversation class]]; }
++ (NSValueTransformer *)storiesJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKStoryCollection class]]; }
++ (NSValueTransformer *)userStoriesJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKUserStory class]]; }
+
++ (NSValueTransformer *)storyPrivacyJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *p, BOOL *success, NSError *__autoreleasing *error) {
         return @(SKStoryPrivacyFromString(p));
     } reverseBlock:^id(NSNumber *p, BOOL *success, NSError *__autoreleasing *error) {
@@ -322,7 +181,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     }];
 }
 
-+ (NSValueTransformer *)privacyEveryoneTransformer {
++ (NSValueTransformer *)privacyEveryoneJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSNumber *val, BOOL *success, NSError *__autoreleasing *error) {
         return  @(!val.boolValue);
     } reverseBlock:^id(NSNumber *val, BOOL *success, NSError *__autoreleasing *error) {

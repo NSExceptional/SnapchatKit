@@ -2,7 +2,7 @@
 //  SKNearbyUser.m
 //  SnapchatKit
 //
-//  Created by Tanner on 7/3/15.
+//  Created by Tanner Bennett on 7/3/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -10,21 +10,19 @@
 
 @implementation SKNearbyUser
 
-+ (instancetype)username:(NSString *)username identifier:(NSString *)identifier {
-    return [[self alloc] initWithUsername:username identifier:identifier];
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ username=%@, id=%@>",
+            NSStringFromClass(self.class), _username, _identifier];
 }
 
-- (id)initWithUsername:(NSString *)username identifier:(NSString *)identifier {
-    NSParameterAssert(username); NSParameterAssert(identifier);
-    
-    self = [super init];
-    if (self) {
-        _username = username;
-        _identifier = identifier;
-    }
-    
-    return self;
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"username": @"username",
+             @"identifier": @"user_id"};
 }
+
+#pragma mark - Equality
 
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SKNearbyUser class]])
@@ -34,16 +32,11 @@
 }
 
 - (BOOL)isEqualToNearbyUser:(SKNearbyUser *)user {
-    return [user.identifier isEqualToString:self.identifier] && [user.username isEqualToString:self.username];
+    return [user.identifier isEqualToString:_identifier] && [user.username isEqualToString:_username];
 }
 
 - (NSUInteger)hash {
     return self.identifier.hash ^ self.username.hash;
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ username=%@, id=%@>",
-            NSStringFromClass(self.class), self.username, self.identifier];
 }
 
 @end

@@ -2,7 +2,7 @@
 //  SKAddedFriend.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/18/15.
+//  Created by Tanner Bennett on 5/18/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -10,23 +10,28 @@
 
 @implementation SKAddedFriend
 
-- (id)initWithDictionary:(NSDictionary *)json {
-    self = [super initWithDictionary:json];
-    if (self) {
-        _addSource     = json[@"add_source"];
-        _addSourceType = SKAddSourceFromString(json[@"add_source_type"]);
-        _timestamp     = [NSDate dateWithTimeIntervalSince1970:[json[@"ts"] doubleValue]/1000];
-        _pendingSnaps  = [json[@"pending_snaps_count"] integerValue];
-    }
-    
-    [[self class] addKnownJSONKeys:[@[@"add_source", @"add_source_type", @"ts", @"pending_snaps_count"] arrayByAddingObjectsFromArray:[self.superclass knownJSONKeys]]];
-    
-    return self;
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ add source=%@, username=%@, displayn=%@>",
+            NSStringFromClass(self.class), SKStringFromAddSource(self.addSourceType), self.username, self.displayName];
 }
 
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ add source=%lu, username=%@, displayn=%@>",
-            NSStringFromClass(self.class), (unsigned long)self.addSourceType, self.username, self.displayName];
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return [@{@"addSource": @"add_source",
+              @"addSourceType": @"add_source_type",
+              @"timestamp": @"ts",
+              @"pendingSnaps": @"pending_snaps_count"} mtl_dictionaryByAddingEntriesFromDictionary:[super JSONKeyPathsByPropertyKey]];
 }
+
++ (NSValueTransformer *)addSourceTypeJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *type, BOOL *success, NSError *__autoreleasing *error) {
+        return @(SKAddSourceFromString(type));
+    } reverseBlock:^id(NSNumber *type, BOOL *success, NSError *__autoreleasing *error) {
+        return SKStringFromAddSource(type.integerValue);
+    }];
+}
+
+MTLTransformPropertyDate(timestamp)
 
 @end

@@ -2,7 +2,7 @@
 //  SKSnap.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/19/15.
+//  Created by Tanner Bennett on 5/19/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -13,32 +13,36 @@
 @implementation SKSnap
 
 - (id)initWithDictionary:(NSDictionary *)json {
-    self = [super initWithDictionary:json];
-    
-    if (self) {
-        _sender                 = json[@"sn"];
-        _recipient              = json[@"rp"];
-        _identifier             = json[@"id"];
-        _conversationIdentifier = json[@"c_id"];
-        _mediaKind              = [json[@"m"] integerValue];
-        _status                 = [json[@"st"] integerValue];
-        _screenshots            = [json[@"c"] integerValue];
-        _timer                  = [json[@"t"] integerValue];
-        _mediaTimer             = [json[@"timer"] floatValue];
-        _sentDate               = [NSDate dateWithTimeIntervalSince1970:[json[@"sts"] doubleValue]/1000];
-        _sentDate               = [NSDate dateWithTimeIntervalSince1970:[json[@"ts"] doubleValue]/1000];
-        _zipped                 = [json[@"zipped"] boolValue];
-    }
-    
-    [[self class] addKnownJSONKeys:@[@"sn", @"rp", @"id", @"c_id", @"m", @"st", @"c", @"t", @"sts", @"ts", @"timer", @"zipped"]];
-    
-    return self;
+    if (!json.allKeys.count) return nil;
+    return [super initWithDictionary:json];
 }
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ to/from=%@, kind=%lu, duration=%f, screenshots=%lu>",
             NSStringFromClass(self.class), self.sender?:self.recipient, (long)self.mediaKind, self.mediaTimer, (unsigned long)self.screenshots];
 }
+
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"sender": @"sn",
+             @"recipient": @"rp",
+             @"identifier": @"id",
+             @"conversationIdentifier": @"c_id",
+             @"mediaKind": @"m",
+             @"status": @"st",
+             @"screenshots": @"c",
+             @"timer": @"t",
+             @"mediaTimer": @"timer",
+             @"sentDate": @"sts",
+             @"timestamp": @"ts",
+             @"zipped": @"zipped"};
+}
+
+MTLTransformPropertyDate(sentDate)
+MTLTransformPropertyDate(timestamp)
+
+#pragma mark - Equality
 
 - (BOOL)isEqual:(id)object {
     if ([object isKindOfClass:[SKSnap class]])

@@ -137,7 +137,7 @@
         if (!error) {
             NSMutableArray *nearby = [NSMutableArray array];
             for (NSDictionary *user in json[@"nearby_snapchatters"])
-                [nearby addObject:[SKNearbyUser username:user[@"username"] identifier:user[@"user_id"]]];
+                [nearby addObject:[[SKNearbyUser alloc] initWithDictionary:user]];
             completion(nearby.copy, nil);
         } else {
             completion(nil, error);

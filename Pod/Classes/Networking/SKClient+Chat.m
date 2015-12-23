@@ -2,7 +2,7 @@
 //  SKClient+Chat.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/26/15.
+//  Created by Tanner Bennett on 5/26/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -116,7 +116,7 @@
             // Finally make call when all converstaion info has been retrieved
             if (messages.count/2 + failed.count == users.count) {
                 NSDictionary *query = @{@"auth_token": self.authToken,
-                                        @"messages": [messages JSONString],
+                                        @"messages": messages.JSONString,
                                         @"username": self.username};
                 [self postTo:SKEPChat.sendMessage query:query callback:^(NSDictionary *json, NSError *error2) {
                     if (!error2) {
@@ -127,9 +127,11 @@
                             for (NSDictionary *convo in jsonConvos)
                                 [conversations addObject:[[SKConversation alloc] initWithDictionary:convo]];
                         } else {
-                            // Tricky because if no conversations were returned and we're trying to send to multiple users,
-                            // I feat this last POST might only return the auth data for one user... idk what else to do here
-                            [conversations addObject:[SKNewConversation newConvoWithAuth:auth withOtherUser:failed.firstObject ?: users[0]]];
+                            // Tricky because if no conversations were returned
+                            // and we're trying to send to multiple users, I
+                            // fear this last POST might only return the auth
+                            // data for one user... idk what else to do here
+                            [conversations addObject:[SKNewConversation newConvoWithAuth:auth withSender:self.username otherUser:failed.firstObject ?: users[0]]];
                         }
                         
                         

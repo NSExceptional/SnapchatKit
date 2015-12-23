@@ -2,12 +2,13 @@
 //  SKThing.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/18/15.
+//  Created by Tanner Bennett on 5/18/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
 #import "SKThing.h"
 #import "NSArray+SnapchatKit.h"
+#import "NSDictionary+SnapchatKit.h"
 #import <objc/runtime.h>
 
 #define CLASS_KEY NSStringFromClass([self class])
@@ -18,8 +19,6 @@
 @end
 
 /** Dictionary of \c NSMutableSets. */
-static NSMutableDictionary *_unknownJSONKeys;
-/** Dictionary of \c NSMutableSets. */
 static NSMutableDictionary *_knownJSONKeys;
 /** Dictionary of \c NSMutableSets. */
 static NSMutableDictionary *_allJSONKeys;
@@ -27,33 +26,23 @@ static NSMutableDictionary *_allJSONKeys;
 @implementation SKThing
 
 - (id)initWithDictionary:(NSDictionary *)json {
+    NSParameterAssert(json.allKeys.count > 0);
+    self = [super initWithDictionary:json error:nil];
+    
+#if kDebugJSON
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _knownJSONKeys   = [NSMutableDictionary new];
-        _unknownJSONKeys = [NSMutableDictionary new];
         _allJSONKeys     = [NSMutableDictionary new];
     });
-    
-    NSParameterAssert(json.allKeys.count > 0);
-    
-    self = [super initWithDictionary:json error:nil];
     if (self) {
         _JSON = json;
+        [[self class] setAllJSONKeys:json.allKeyPaths];
+        [[self class] addKnownJSONKeys:[[self class] JSONKeyPathsByPropertyKey].allValues];
     }
-    
-    [[self class] setAllJSONKeys:self.JSON.allKeys];
+#endif
     
     return self;
-}
-
-#pragma mark NSCoding protocol
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    return [[self.class alloc] initWithDictionary:[aDecoder decodeObjectForKey:@"json"]];
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.JSON forKey:@"json"];
 }
 
 #pragma mark Debugging
@@ -62,12 +51,11 @@ static NSMutableDictionary *_allJSONKeys;
     return [_knownJSONKeys[CLASS_KEY] allObjects] ?: @[];
 }
 
-+ (void)addKnownJSONKeys:(NSArray *)keys {
-    NSMutableSet *known = _knownJSONKeys[CLASS_KEY];
-    if (known)
-        [known addObjectsFromArray:keys];
-    else
-        _knownJSONKeys[CLASS_KEY] = [NSMutableSet setWithArray:keys];
++ (NSArray *)unknownJSONKeys {
+    NSMutableSet *unknown = [NSMutableSet setWithArray:[_allJSONKeys[CLASS_KEY] allObjects]];
+    [unknown minusSet:_knownJSONKeys[CLASS_KEY] ?: [NSSet set]];
+    
+    return unknown.allObjects;
 }
 
 + (void)setAllJSONKeys:(NSArray *)keys {
@@ -78,16 +66,16 @@ static NSMutableDictionary *_allJSONKeys;
         _allJSONKeys[CLASS_KEY] = [NSMutableSet setWithArray:keys];
 }
 
-+ (NSArray *)unknownJSONKeys {
-    NSMutableSet *unknown = _unknownJSONKeys[CLASS_KEY];
-    if (unknown)
-        return unknown.allObjects;
-    
-    unknown = [NSMutableSet setWithArray:[_allJSONKeys[CLASS_KEY] allObjects]];
-    [unknown minusSet:_knownJSONKeys[CLASS_KEY] ?: [NSSet set]];
-    _unknownJSONKeys[CLASS_KEY] = unknown;
-    
-    return unknown.allObjects;
++ (void)addKnownJSONKeys:(NSArray *)keys {
+    NSMutableSet *known = _knownJSONKeys[CLASS_KEY];
+    if (known)
+        [known addObjectsFromArray:keys];
+    else
+        _knownJSONKeys[CLASS_KEY] = [NSMutableSet setWithArray:keys];
+}
+
+- (NSDictionary *)JSONDictionary {
+    return [MTLJSONAdapter JSONDictionaryFromModel:self error:nil];
 }
 
 + (NSArray *)allSubclassesUnknownJSONKeys {
@@ -131,7 +119,7 @@ static NSMutableDictionary *_allJSONKeys;
     return array;
 }
 
-#pragma mark - Mantle -
+#pragma mark - Mantle
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{};
@@ -139,9 +127,39 @@ static NSMutableDictionary *_allJSONKeys;
 
 + (NSValueTransformer *)sk_dateTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *ts, BOOL *success, NSError *__autoreleasing *error) {
-        return [NSDate dateWithTimeIntervalSince1970:ts.doubleValue/1000.f];
+        return ts.doubleValue > 0 ? [NSDate dateWithTimeIntervalSince1970:ts.doubleValue/1000.f] : nil;
     } reverseBlock:^id(NSDate *ts, BOOL *success, NSError *__autoreleasing *error) {
-        return @([ts timeIntervalSince1970] * 1000.f).stringValue;
+        return ts ? @([ts timeIntervalSince1970] * 1000.f).stringValue : nil;
+    }];
+}
+
++ (NSValueTransformer *)sk_urlTransformer {
+    return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
+}
+
++ (NSValueTransformer *)sk_modelArrayTransformerForClass:(Class)cls {
+    NSParameterAssert([(id)[cls class] isKindOfClass:[SKThing class]]);
+    
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *dictionaries, BOOL *success, NSError *__autoreleasing *error) {
+        NSMutableArray *models = [NSMutableArray new];
+        for (NSDictionary *dict in dictionaries)
+            [models addObject:[[cls alloc] initWithDictionary:dict]];
+        return models.copy;
+    } reverseBlock:^id(NSArray *models, BOOL *success, NSError *__autoreleasing *error) {
+        return models.dictionaryValues;
+    }];
+}
+
++ (NSValueTransformer *)sk_modelMutableOrderedSetTransformerForClass:(Class)cls {
+    NSParameterAssert([(id)[cls class] isKindOfClass:[SKThing class]]);
+    
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *dictionaries, BOOL *success, NSError *__autoreleasing *error) {
+        NSMutableOrderedSet *models = [NSMutableOrderedSet orderedSet];
+        for (NSDictionary *dict in dictionaries)
+            [models addObject:[[cls alloc] initWithDictionary:dict]];
+        return models;
+    } reverseBlock:^id(NSMutableOrderedSet *models, BOOL *success, NSError *__autoreleasing *error) {
+        return models.array.dictionaryValues;
     }];
 }
 

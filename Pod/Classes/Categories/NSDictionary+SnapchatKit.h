@@ -22,4 +22,6 @@
 - (NSDictionary *)dictionaryByReplacingValuesForKeys:(NSDictionary *)dictionary;
 - (NSDictionary *)dictionaryByReplacingKeysWithNewKeys:(NSDictionary *)oldKeysToNewKeys;
 
+- (NSArray *)allKeyPaths;
+
 @end

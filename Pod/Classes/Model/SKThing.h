@@ -2,7 +2,7 @@
 //  SKThing.h
 //  SnapchatKit
 //
-//  Created by Tanner on 5/18/15.
+//  Created by Tanner Bennett on 5/18/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -14,39 +14,34 @@
 
 // string to URL transform
 #define MTLTransformPropertyURL(property) + (NSValueTransformer *) property##JSONTransformer { \
-return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName]; }
+return [self sk_urlTransformer]; }
 
-// class transform
-#define MTLTransformPropertyClass(property, cls) + (NSValueTransformer *) property##JSONTransformer { \
-return [MTLJSONAdapter dictionaryTransformerWithModelClass:[ cls class]]; }
+// ts to NSDate transform
+#define MTLTransformPropertyDate(property) + (NSValueTransformer *) property##JSONTransformer { \
+return [self sk_dateTransformer]; }
 
-// dictionary transform
-#define MTLTransformPropertyMap(property, dictionary) + (NSValueTransformer *) property##JSONTransformer { \
-return [NSValueTransformer mtl_valueMappingTransformerWithDictionary: dictionary ]; }
-
-
-/** The root class of most classes in this framework. */
+/// The root class of most classes in this framework.
 @interface SKThing : MTLModel <MTLJSONSerializing>
 
 - (id)initWithDictionary:(NSDictionary *)json;
 
+/// Transforms Snapchat's UTC timestamp floats into \c NSDate.
 + (NSValueTransformer *)sk_dateTransformer;
+/// Transforms strings into NSURL objects.
++ (NSValueTransformer *)sk_urlTransformer;
+/// Transforms an array of dictionaries into an array of model objects of class \c cls.
++ (NSValueTransformer *)sk_modelArrayTransformerForClass:(Class)cls;
+/// Transforms an array of dictionaries into an ordered set of model objects of class \c cls.
++ (NSValueTransformer *)sk_modelMutableOrderedSetTransformerForClass:(Class)cls;
 
-/** 
- For API debugging purposes, each class adds it's known
- JSON keys to this so we can find ones we aren't
- using or don't know about.
- 
- It is a dictionary of mutable sets, mapped by class names.
- */
+/// For API debugging purposes.
 + (NSArray *)knownJSONKeys;
-+ (void)addKnownJSONKeys:(NSArray *)keys;
-+ (void)setAllJSONKeys:(NSArray *)keys;
 
-/** Calculated once when first accessed, using \c knownJSONKeys. */
+/// Calculated once when first accessed, using \c knownJSONKeys.
 + (NSArray *)unknownJSONKeys;
-/** Calculated when called. */
-+ (NSArray *)allSubclassesUnknownJSONKeys;
+
+/// Calls into [MTLJSONAdapter JSONDictionaryFromModel:foo error:nil]
+@property (readonly) NSDictionary *JSONDictionary;
 
 @end
 

@@ -7,7 +7,6 @@
 //
 
 #import "SKThing.h"
-#import <CoreGraphics/CGGeometry.h>
 
 typedef NS_ENUM(NSUInteger, SKMessageKind)
 {
@@ -35,8 +34,17 @@ extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 
 /** \c nil if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) NSString      *mediaIdentifier;
+
+#if (TARGET_OS_MAC)
+/** \c 0 if \c messageKind is \c SKMessageKindText. */
+@property (nonatomic, readonly) NSInteger     mediaWidth;
+/** \c 0 if \c messageKind is \c SKMessageKindText. */
+@property (nonatomic, readonly) NSInteger     mediaHeight;
+#else
 /** \c {0,0} if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) CGSize        mediaSize;
+#endif
+
 /** \c nil if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) NSString      *mediaIV;
 /** \c nil if \c messageKind is \c SKMessageKindText. */

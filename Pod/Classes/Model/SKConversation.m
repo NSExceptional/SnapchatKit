@@ -2,7 +2,7 @@
 //  SKConversation.m
 //  SnapchatKit
 //
-//  Created by Tanner on 5/19/15.
+//  Created by Tanner Bennett on 5/19/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
@@ -13,6 +13,8 @@
 
 #import "SKClient.h"
 
+#import "NSArray+SnapchatKit.h"
+
 SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     if ([chatTypeString isEqualToString:@"text"])
         return SKChatTypeText;
@@ -20,6 +22,23 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
         return SKChatTypeMedia;
     
     return SKChatTypeNever;
+}
+
+NSString * SKStringFromChatType(SKChatType chatType) {
+    switch (chatType) {
+        case SKChatTypeNever: {
+            return nil;
+        }
+        case SKChatTypeText: {
+            return @"text";
+        }
+        case SKChatTypeMedia: {
+            return @"media";
+        }
+    }
+    
+    [NSException raise:NSInternalInconsistencyException format:@"Invalid chat type: %@", @(chatType).stringValue];
+    return nil;
 }
 
 @implementation SKConversation
@@ -30,61 +49,12 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     
     self = [super initWithDictionary:json];
     
-    NSDictionary *convoMessages   = json[@"conversation_messages"];
-    NSDictionary *lastChatActions = json[@"last_chat_actions"];
-    NSDictionary *lastTransaction = json[@"last_cash_transaction"];
-    NSArray *pendingRecievedSnaps = json[@"pending_received_snaps"];
-    NSArray *messages             = convoMessages[@"messages"];
-    NSDictionary *lastSnap        = json[@"last_snap"];
-    CGFloat lastInteraction       = [json[@"last_interaction_ts"] doubleValue];
-    CGFloat lastNotified          = [json[@"last_notified"] doubleValue];
-    
     if (self) {
-        _messagingAuth = convoMessages[@"messaging_auth"];
-        
-        _state      = json[@"conversation_state"];
-        _identifier = json[@"id"];
-        _pagination = json[@"iter_token"];
-        
-        _lastSnap        = lastSnap ? [[SKSnap alloc] initWithDictionary:lastSnap] : nil;
-        _lastTransaction = lastTransaction ? [[SKCashTransaction alloc] initWithDictionary:lastTransaction] : nil;
-        _lastInteraction = lastInteraction > 0 ? [NSDate dateWithTimeIntervalSince1970:lastInteraction/1000] : nil;
-        _lastNotified    = lastNotified > 0 ? [NSDate dateWithTimeIntervalSince1970:lastNotified/1000] : nil;
-        if (lastChatActions) {
-            _lastChatType    = SKChatTypeFromString(lastChatActions[@"last_write_type"]);
-            _lastChatRead    = [NSDate dateWithTimeIntervalSince1970:[lastChatActions[@"last_read_timestamp"] doubleValue]/1000];
-            _lastChatWrite   = [NSDate dateWithTimeIntervalSince1970:[lastChatActions[@"last_write_timestamp"] doubleValue]/1000];
-            _lastChatReader  = lastChatActions[@"last_reader"];
-            _lastChatWriter  = lastChatActions[@"last_writer"];
-        }
-        
-        _participants = json[@"participants"] ?: [_identifier componentsSeparatedByString:@"~"];
-        _usersWithPendingChats = json[@"pending_chats_for"] ?: @[];
-        
-        // Messages
-        NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];
-        for (NSDictionary *message in messages) {
-            if (message[@"snap"])
-                [temp addObject:[[SKSnap alloc] initWithDictionary:message[@"snap"]]];
-            else if (message[@"chat_message"])
-                [temp addObject:[[SKMessage alloc] initWithDictionary:message]];
-            else if (message[@"cash_transaction"])
-                [temp addObject:[[SKCashTransaction alloc] initWithDictionary:message]];
-            else
-                SKLog(@"Unhandled conversation message type:\n%@", message);
-        }
-        _messages = temp;
-        
-        // Pending recieved snaps
-        NSMutableArray *tmp = [NSMutableArray new];
-        for (NSDictionary *snap in pendingRecievedSnaps)
-            [tmp addObject:[[SKSnap alloc] initWithDictionary:snap]];
-        _pendingRecievedSnaps = tmp;
+        if (!_participants.count)
+            _participants = [_identifier componentsSeparatedByString:@"~"];
+        if (!_usersWithPendingChats)
+            _usersWithPendingChats = @[];
     }
-    
-    [[self class] addKnownJSONKeys:@[@"conversation_messages", @"last_chat_actions", @"pending_received_snaps", @"conversation_state", @"id",
-                                     @"iter_token", @"last_snap", @"last_cash_transaction", @"last_interaction_ts", @"participants", @"pending_chats_for",
-                                     @"last_notified"]];
     
     return self;
 }
@@ -95,6 +65,76 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     return [NSString stringWithFormat:@"<%@ participants: %@, messages=%lu, unread=%lu>",
             NSStringFromClass(self.class), participants, (unsigned long)self.messages.count, (unsigned long)self.pendingRecievedSnaps.count];
 }
+
+#pragma mark - Mantle
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    return @{@"messagingAuth": @"conversation_messages.messaging_auth",
+             @"state": @"conversation_state",
+             @"identifier": @"id",
+             @"pagination": @"iter_token",
+             @"lastSnap": @"last_snap",
+             @"lastTransaction": @"last_cash_transaction",
+             @"lastInteraction": @"last_interaction_ts",
+             @"lastNotified": @"last_notified",
+             @"lastChatType": @"last_chat_actions.last_write_type",
+             @"lastChatRead": @"last_chat_actions.last_read_timestamp",
+             @"lastChatWrite": @"last_chat_actions.last_write_timestamp",
+             @"lastChatReader": @"last_chat_actions.last_reader",
+             @"lastChatWriter": @"last_chat_actions.last_writer",
+             @"participants": @"participants",
+             @"usersWithPendingChats": @"pending_chats_for",
+             @"messages": @"conversation_messages.messages",
+             @"pendingRecievedSnaps": @"pending_received_snaps"};
+}
+
+MTLTransformPropertyDate(lastInteraction)
+MTLTransformPropertyDate(lastNotified)
+MTLTransformPropertyDate(lastChatRead)
+MTLTransformPropertyDate(lastChatWrite)
++ (NSValueTransformer *)pendingRecievedSnapsJSONTransformer { return [self sk_modelArrayTransformerForClass:[SKSnap class]]; }
+
++ (NSValueTransformer *)lastChatTypeJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *type, BOOL *success, NSError *__autoreleasing *error) {
+        return @(SKChatTypeFromString(type));
+    } reverseBlock:^id(NSNumber *type, BOOL *success, NSError *__autoreleasing *error) {
+        return SKStringFromChatType(type.integerValue);
+    }];
+}
+
++ (NSValueTransformer *)messagesJSONTransformer {
+    return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *messages, BOOL *success, NSError *__autoreleasing *error) {
+        NSMutableArray *temp = [NSMutableArray new];
+        for (NSDictionary *message in messages) {
+            if (message[@"snap"])
+                [temp addObject:[[SKSnap alloc] initWithDictionary:message[@"snap"]]];
+            else if (message[@"chat_message"])
+                [temp addObject:[[SKMessage alloc] initWithDictionary:message]];
+            else if (message[@"cash_transaction"])
+                [temp addObject:[[SKCashTransaction alloc] initWithDictionary:message]];
+            else
+                SKLog(@"Unhandled conversation message type:\n%@", message);
+        };
+        return temp;
+    } reverseBlock:^id(NSArray *messages, BOOL *success, NSError *__autoreleasing *error) {
+        return messages.dictionaryValues;
+    }];
+}
+
+#pragma mark - Equality
+
+- (BOOL)isEqual:(id)object {
+    if ([object isKindOfClass:[SKConversation class]])
+        return [self isEqualToConversation:object];
+    
+    return [super isEqual:object];
+}
+
+- (BOOL)isEqualToConversation:(SKConversation *)conversation {
+    return [self.identifier isEqualToString:conversation.identifier];
+}
+
+#pragma mark - Convenience
 
 - (NSArray *)unreadChatsForParticipant:(NSString *)participant {
     NSParameterAssert([self.participants containsObject:participant]);
@@ -149,17 +189,6 @@ SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     // Internally, this set is mutable.
     NSMutableOrderedSet *mutableMessages = (NSMutableOrderedSet *)self.messages;
     [mutableMessages addObjectsFromArray:conversation.messages.array];
-}
-
-- (BOOL)isEqual:(id)object {
-    if ([object isKindOfClass:[SKConversation class]])
-        return [self isEqualToConversation:object];
-    
-    return [super isEqual:object];
-}
-
-- (BOOL)isEqualToConversation:(SKConversation *)conversation {
-    return [self.identifier isEqualToString:conversation.identifier];
 }
 
 - (NSString *)suggestedChatPreview {

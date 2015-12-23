@@ -1,17 +1,17 @@
 //
 //  SKNewConversation.h
-//  SnapchatKit-iOS-Demo
+//  SnapchatKit
 //
-//  Created by Tanner on 7/11/15.
+//  Created by Tanner Bennett on 7/11/15.
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
 #import "SKThing.h"
 
 /** Used internally. */
-@interface SKNewConversation : SKThing
+@interface SKNewConversation : NSObject
 
-+ (instancetype)newConvoWithAuth:(NSDictionary *)macAndPayload withOtherUser:(NSString *)recipient;
++ (instancetype)newConvoWithAuth:(NSDictionary *)macAndPayload withSender:(NSString *)sender otherUser:(NSString *)recipient;
 
 @property (nonatomic, readonly) NSString *identifier;
 @property (nonatomic, readonly) NSString *recipient;

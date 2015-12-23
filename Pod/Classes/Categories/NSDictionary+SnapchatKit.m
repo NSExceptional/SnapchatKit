@@ -61,4 +61,19 @@
     return m;
 }
 
+- (NSArray *)allKeyPaths {
+    NSMutableArray *keyPaths = [NSMutableArray array];
+    
+    [self enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
+        [keyPaths addObject:key];
+       
+        if ([obj isKindOfClass:[NSDictionary class]]) {
+            for (NSString *kp in [obj allKeyPaths])
+                [keyPaths addObject:[NSString stringWithFormat:@"%@.%@", key, kp]];
+        }
+    }];
+    
+    return keyPaths.copy;
+}
+
 @end
