@@ -139,6 +139,7 @@ SK_NAMESPACE_IMP(SKHeaders) {
     .acceptLanguage  = @"Accept-Language",
     .acceptLocale    = @"Accept-Locale",
     .clientAuth      = @"X-Snapchat-Client-Auth",
+    .clientToken     = @"X-Snapchat-Client-Token",
     .clientAuthToken = @"X-Snapchat-Client-Auth-Token",
     .casperAPIKey    = @"X-Casper-API-Key",
     .casperSignature = @"X-Casper-Signature",

@@ -12,6 +12,7 @@
 
 #import "NSArray+SnapchatKit.h"
 #import "NSDictionary+SnapchatKit.h"
+#import "NSString+SnapchatKit.h"
 #import "SKClient+Friends.h"
 
 @implementation SKClient (Account)
@@ -166,6 +167,18 @@
                 completion(nil, error);
             }
         });
+    }];
+}
+
+- (void)removeYourAvatar:(ErrorBlock)completion {
+    NSParameterAssert(completion);
+    
+    NSDictionary *query = @{@"username": self.username,
+                            @"last_updated": [NSString timestamp]};
+    [SKRequest postTo:SKEPAccount.avatar.get query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self handleError:error data:data response:response completion:^(id object, NSError *error) {
+            completion(error);
+        }];
     }];
 }
 

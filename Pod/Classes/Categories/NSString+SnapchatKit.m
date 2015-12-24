@@ -120,13 +120,19 @@
     NSMutableString *q = [NSMutableString string];
     [params enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *value, BOOL *stop) {
         if ([value isKindOfClass:[NSString class]]) {
-            if (escapeValues) {
-                value = [value URLEncodedString];
-            } else {
-                value = [value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+            if (value.length) {
+                if (escapeValues) {
+                    value = [value URLEncodedString];
+                } else {
+                    value = [value stringByReplacingOccurrencesOfString:@" " withString:@"+"];
+                }
+                // Only append if len > 1
+                [q appendFormat:@"%@=%@&", key, value];
             }
+        } else {
+            // Append if NSNumber or something
+            [q appendFormat:@"%@=%@&", key, value];
         }
-        [q appendFormat:@"%@=%@&", key, value];
     }];
     
     [q deleteCharactersInRange:NSMakeRange(q.length-1, 1)];

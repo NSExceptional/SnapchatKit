@@ -36,9 +36,11 @@ return [self sk_dateTransformer]; }
 
 /// For API debugging purposes.
 + (NSArray *)knownJSONKeys;
-
 /// Calculated once when first accessed, using \c knownJSONKeys.
 + (NSArray *)unknownJSONKeys;
+
+/// Transforms \c jsons to an array of model objects of class \c cls.
++ (NSArray *)transformJSONArray:(NSArray *)jsons toModelsOfClass:(Class)cls;
 
 /// Calls into [MTLJSONAdapter JSONDictionaryFromModel:foo error:nil]
 @property (readonly) NSDictionary *JSONDictionary;

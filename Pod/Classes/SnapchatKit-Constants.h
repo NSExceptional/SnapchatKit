@@ -150,6 +150,7 @@ SK_NAMESPACE(SKHeaders, {
     NSNSString *acceptLanguage;
     NSNSString *acceptLocale;
     NSNSString *clientAuth;
+    NSNSString *clientToken;
     NSNSString *clientAuthToken;
     NSNSString *casperAPIKey;
     NSNSString *casperSignature;

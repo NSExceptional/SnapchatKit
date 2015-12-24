@@ -63,10 +63,10 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 @property (nonatomic, readonly) NSString *authToken;
 /** Used internally to sign in. Passed as the \c googleAuthToken: parameter to \c -restoreSessionWithUsername:snapchatAuthToken:googleAuthToken: method. */
 @property (nonatomic, readonly) NSString *googleAuthToken;
-/** Used internally. */
-@property (nonatomic, readonly) NSString *deviceToken1i;
-/** Used internally. */
-@property (nonatomic, readonly) NSString *deviceToken1v;
+/** Used to sign in to an authenticated device using 2 factor authentication. This should be stored somewhere and reused as needed per device. */
+@property (nonatomic          ) NSString *deviceToken1i;
+/** Used to sign in to an authenticated device using 2 factor authentication. This should be stored somewhere and reused as needed per device. */
+@property (nonatomic          ) NSString *deviceToken1v;
 /** Used internally to sign in and trick Snapchat into thinking we're using the first party client. */
 @property (nonatomic, readonly) NSString *googleAttestation;
 
@@ -74,6 +74,8 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 @property (nonatomic) NSString *casperAPIKey;
 /** Required to sign in properly. See https://clients.casper.io to get your own. */
 @property (nonatomic) NSString *casperAPISecret;
+/** The user agent of your app. Please use this when you sign in. */
+@property (nonatomic) NSString *casperUserAgent;
 
 
 #pragma mark Signing in

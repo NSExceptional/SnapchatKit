@@ -254,219 +254,16 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     return self.googleAuthToken && self.authToken && self.username;
 }
 
-/** Gauth. */
-- (void)getAuthTokenForGmail:(NSString *)gmailAddress password:(NSString *)password callback:(StringBlock)callback {
-    NSDictionary *postFields = @{@"google_play_services_version": @"7097038",
-                                 @"device_country":  @"us",
-                                 @"operatorCountry": @"us",
-                                 @"lang":            @"en_US",
-                                 @"sdk_version":     @"19",
-                                 @"accountType":     @"HOSTED_OR_GOOGLE",
-                                 @"Email":           gmailAddress,
-                                 @"Passwd":          password,
-                                 @"service":         @"audience:server:client_id:694893979329-l59f3phl42et9clpoo296d8raqoljl6p.apps.googleusercontent.com",
-                                 @"source":          @"android",
-                                 @"androidId":       @"378c184c6070c26c",
-                                 @"app":             @"com.snapchat.android",
-                                 @"client_sig":      @"49f6badb81d89a9e38d65de76f09355071bd67e7",
-                                 @"callerPkg":       @"com.snapchat.android",
-                                 @"callerSig":       @"49f6badb81d89a9e38d65de76f09355071bd67e7"};
-    
-    NSString *postFieldString = [NSString queryStringWithParams:postFields];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://android.clients.google.com/auth"]];
-    
-    request.HTTPMethod = @"POST";
-    request.HTTPBody   = [postFieldString dataUsingEncoding:NSUTF8StringEncoding];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:SKHeaders.contentType];
-    [request setValue:@"378c184c6070c26c" forHTTPHeaderField:@"device"];
-    [request setValue:@"com.snapchat.android" forHTTPHeaderField:@"app"];
-    [request setValue:@"GoogleAuth/1.4 (mako JDQ39)" forHTTPHeaderField:SKHeaders.userAgent];
-    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error) {
-                callback(nil, error);
-            } else if (data) {
-                NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                if ([string isEqualToString:@"Error=BadAuthentication"]) {
-                    callback(nil, [SKRequest errorWithMessage:@"Invalid Google credentials" code:1]);
-                } else {
-                    string = [string matchGroupAtIndex:1 forRegex:@"Auth=([\\w\\.-]+)"];
-                    callback(string, nil);
-                }
-            } else {
-                callback(nil, [SKRequest unknownError]);
-            }
-        });
-    }];
-    
-    [dataTask resume];
-}
-
-/** Snapchat device token. */
-- (void)getDeviceToken:(DictionaryBlock)completion {
-    NSString *dt1i = [[NSUserDefaults standardUserDefaults] stringForKey:SKConsts.deviceToken1i];
-    NSString *dt1v = [[NSUserDefaults standardUserDefaults] stringForKey:SKConsts.deviceToken1v];
-    
-    if (dt1i && dt1v)
-        completion(@{SKConsts.deviceToken1i: dt1i, SKConsts.deviceToken1v: dt1v}, nil);
-    else
-        [SKRequest postTo:SKEPDevice.identifier query:@{} headers:@{SKHeaders.clientAuthToken: @"Bearer "} token:nil callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (error) {
-                    completion(nil, error);
-                } else if (data) {
-                    NSError *jsonError;
-                    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-                    
-                    if (jsonError ) {
-                        completion(nil, jsonError);
-                    } else if (json) {
-                        [[NSUserDefaults standardUserDefaults] setObject:json[SKConsts.deviceToken1i] forKey:SKConsts.deviceToken1i];
-                        [[NSUserDefaults standardUserDefaults] setObject:json[SKConsts.deviceToken1v] forKey:SKConsts.deviceToken1v];
-                        completion(json, nil);
-                    } else {
-                        completion(nil, [SKRequest unknownError]);
-                    }
-                } else {
-                    completion(nil, [SKRequest unknownError]);
-                }
-            });
-        }];
-}
-
-/** ptoken value. */
-- (void)getGoogleCloudMessagingIdentifier:(StringBlock)callback {
-    NSDictionary *postFields = @{@"X-google.message_id": @"google.rpc1",
-                                 @"device":              @(4343470343591528399),
-                                 @"sender":              @(191410808405),
-                                 @"app_ver":             @(706),
-                                 @"gcm_ver":             @(7097038),
-                                 @"app":                 @"com.snapchat.android",
-                                 @"iat":                 @([[NSDate date] timeIntervalSince1970]),
-                                 @"cert":                @"49f6badb81d89a9e38d65de76f09355071bd67e7"};
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://android.clients.google.com/c2dm/register3"]];
-    
-    request.HTTPMethod = @"POST";
-    request.HTTPBody   = [[NSString queryStringWithParams:postFields] dataUsingEncoding:NSUTF8StringEncoding];
-    [request setValue:@"en" forHTTPHeaderField:@"Accept-Language"];
-    [request setValue:@"en_US" forHTTPHeaderField:@"Accept-Locale"];
-    [request setValue:@"Android-GCM/1.5 (A116 _Quad KOT49H)" forHTTPHeaderField:SKHeaders.userAgent];
-    [request setValue:@"com.snapchat.android" forHTTPHeaderField:@"app"];
-    [request setValue:@"AidLogin 4343470343591528399:5885638743641649694" forHTTPHeaderField:@"Authorization"];
-    [request setValue:@"7097038" forHTTPHeaderField:@"Gcm-ver"];
-    [request setValue:@"gzip" forHTTPHeaderField:@"Accept-Encoding"];
-    
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error) {
-                callback(nil, error);
-            } else if (data) {
-                NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                string = [string matchGroupAtIndex:1 forRegex:@"token=([\\w\\.-]+)"];
-                callback(string, nil);
-            } else {
-                callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
-            }
-        });
-    }] resume];
-}
-
-/** Google attestation. */
-- (void)getAttestation:(NSString *)username password:(NSString *)password ts:(NSString *)timestamp callback:(StringBlock)callback {
-    NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
-    NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
-    
-    NSString *hashString = [[NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, SKEPAccount.login].sha256HashRaw base64EncodedStringWithOptions:0];
-    // Get binary data
-    NSData *binaryData = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"https://api.casper.io/snapchat/attestation/create"]];
-    __block NSError *jsonError = nil;
-    __block NSDictionary *json = [NSJSONSerialization JSONObjectWithData:binaryData options:0 error:&jsonError];
-    
-    if (json) {
-        // Get bytecode from Google
-        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:SKAttestation.protobufBytecodeURL]];
-        request.HTTPMethod = @"POST";
-        request.HTTPBody = [[json[@"binary"] base64Decode] dataUsingEncoding:NSUTF8StringEncoding];
-        [request setValue:SKHeaders.values.protobuf forHTTPHeaderField:SKHeaders.contentType];
-        [request setValue:SKHeaders.values.droidGuardUA forHTTPHeaderField:SKHeaders.userAgent];
-        
-        NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-        [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-            if (!error && [(NSHTTPURLResponse *)response statusCode] == 200) {
-                
-                // Send it to Casper.io to build the protobuf
-                NSString *bytecodeProtobuf = [data base64EncodedStringWithOptions:0];
-                NSDictionary *query = @{@"protobuf": bytecodeProtobuf,
-                                        @"nonce": hashString,
-                                        @"snapchat_version": SKConsts.snapchatVersion};
-                request.URL = [NSURL URLWithString:SKAttestation.protobufPOSTURL];
-                request.HTTPBody = [[NSString queryStringWithParams:query URLEscapeValues:YES] dataUsingEncoding:NSUTF8StringEncoding];
-                
-                // Set headers
-                [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
-                [request setValue:SKMakeCapserSignature(query, self.casperAPISecret) forHTTPHeaderField:SKHeaders.casperSignature];
-                [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:SKHeaders.contentType];
-                
-                [[session dataTaskWithRequest:request completionHandler:^(NSData *data2, NSURLResponse *response2, NSError *error2) {
-                    if (!error2 && [(NSHTTPURLResponse *)response2 statusCode] == 200) {
-                        jsonError = nil;
-                        json = [NSJSONSerialization JSONObjectWithData:data2 options:0 error:&jsonError];
-                        
-                        if (json) {
-                            
-                            // Get the actual attestation from Google
-                            [request setValue:SKAttestation.userAgent forHTTPHeaderField:SKHeaders.userAgent];
-                            request.URL = [NSURL URLWithString:SKAttestation.attestationURL];
-                            request.HTTPBody = [json[@"binary"] base64DecodedData];
-                            [request setValue:SKAttestation.userAgent forHTTPHeaderField:SKHeaders.userAgent];
-                            [request setValue:SKHeaders.values.protobuf forHTTPHeaderField:SKHeaders.contentType];
-                            
-                            [[session dataTaskWithRequest:request completionHandler:^(NSData *data3, NSURLResponse *response3, NSError *error3) {
-                                if (!error3 && [(NSHTTPURLResponse *)response3 statusCode] == 200) {
-                                    jsonError = nil;
-                                    json = [NSJSONSerialization JSONObjectWithData:data3 options:0 error:&jsonError];
-                                    if (json)
-                                        callback(json[@"signedAttestation"], nil);
-                                    else
-                                        callback(nil, jsonError);
-                                } else {
-                                    callback(nil, error3);
-                                }
-                            }] resume];
-                            
-                        } else {
-                            callback(nil, jsonError);
-                        }
-                    } else {
-                        callback(nil, error2);
-                    }
-                }] resume];
-                
-            } else {
-                callback(nil, error);
-            }
-        }] resume];
-    } else {
-        callback(nil, jsonError);
-    }
-}
-
-- (void)getClientAuthToken:(NSString *)username password:(NSString *)password timestamp:(NSString *)ts callback:(StringBlock)callback {
+- (void)getClientLoginData:(NSString *)username password:(NSString *)password timestamp:(NSString *)ts callback:(DictionaryBlock)callback {
     NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(ts);
     NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
-    NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
+    //NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
     
     // Params
-    NSDictionary *query = @{@"username": username, @"password": password, @"timestamp": ts, @"snapchat_version": SKConsts.snapchatVersion};
+    NSDictionary *query = @{@"username": username, @"password": password, @"timestamp": ts};
     
     // Build request
-    NSURL *url = [NSURL URLWithString:@"https://api.casper.io/snapchat/clientauth/signrequest"];
+    NSURL *url = [NSURL URLWithString:@"http://api.casper.io/snapchat/auth"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
     request.HTTPBody   = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
@@ -474,6 +271,7 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     // Set headers
     [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
     [request setValue:SKMakeCapserSignature(query, self.casperAPISecret) forHTTPHeaderField:SKHeaders.casperSignature];
+    if (self.casperUserAgent) [request setValue:self.casperUserAgent forHTTPHeaderField:SKHeaders.userAgent];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -482,7 +280,7 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
             
             if ([json[@"code"] integerValue] == 200)
-                callback(json[@"signature"], nil);
+                callback(json, nil);
             else
                 callback(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
         } else {
@@ -491,114 +289,27 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     }] resume];
 }
 
-- (void)signInWithUsername:(NSString *)username password:(NSString *)password gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion {
-    NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(gmailEmail); NSParameterAssert(gmailPassword); NSParameterAssert(completion);
+- (void)signInWithUsername:(NSString *)username password:(NSString *)password completion:(DictionaryBlock)completion {
+    NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(completion);
     
-    NSString *timestamp = [NSString timestamp];
-    
-    // Google auth token
-    [self getAuthTokenForGmail:gmailEmail password:gmailPassword callback:^(NSString *gauth, NSError *error1) {
-        if (error1 || !gauth) {
-            completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Google auth token." code:error1.code?:1]);
-        } else {
-            
-            // Attestation
-            [self getAttestation:username password:password ts:timestamp callback:^(NSString *attestation, NSError *error2) {
-                if (error2 || !attestation) {
-                    completion(nil, [SKRequest errorWithMessage:@"Could not retrieve attestation." code:error2.code?:1]);
-                } else {
-                    
-                    // Push token is optional
-                    [self getGoogleCloudMessagingIdentifier:^(NSString *ptoken, NSError *error3) {
-                        [self getDeviceToken:^(NSDictionary *dict, NSError *error4) {
-                            if (error4 || !dict) {
-                                completion(nil, [SKRequest errorWithMessage:@"Could not retrieve Snapchat device token." code:error4.code?:1]);
-                            } else {
-                                
-                                // X-Snapchat-Client-Auth
-                                [self getClientAuthToken:username password:password timestamp:timestamp callback:^(NSString *clientAuthToken, NSError *error5) {
-                                    if (error5 || !clientAuthToken) {
-                                        completion(nil, error5 ?: [SKRequest errorWithMessage:@"Could not retrieve client auth token." code:1]);
-                                    } else {
-                                        
-                                        // Sign in
-                                        NSParameterAssert(gauth); NSParameterAssert(attestation); NSParameterAssert(clientAuthToken); NSParameterAssert(dict); NSParameterAssert(timestamp);
-                                        [self signInWithData:SKMakeSignInParams(gauth, attestation, ptoken, clientAuthToken, dict, timestamp) username:username password:password completion:completion];
-                                    }
-                                }];
-                            }
-                        }];
-                    }];
-                }
-            }];
-        }
-    }];
-}
-
-- (void)signInWithData:(NSDictionary *)loginData username:(NSString *)username password:(NSString *)password completion:(DictionaryBlock)completion {
-    NSString *googleAuth        = loginData[@"googleAuthToken"];
-    NSString *attestation       = loginData[@"attestation"];
-    NSString *ptoken            = loginData[@"pushToken"];
-    NSString *clientAuthToken   = loginData[@"clientAuthToken"];
-    NSDictionary *devicetTokens = loginData[@"dt"];
-    NSString *timestamp         = loginData[@"ts"];
-    
-    _googleAuthToken   = googleAuth;
-    _googleAttestation = attestation;
-    _deviceToken1i     = devicetTokens[SKConsts.deviceToken1i];
-    _deviceToken1v     = devicetTokens[SKConsts.deviceToken1v];
-    
-    NSString *req_token = [NSString hashSCString:SKConsts.staticToken and:timestamp];
-    NSString *string    = [NSString stringWithFormat:@"%@|%@|%@|%@", username, password, timestamp, req_token];
-    NSString *deviceSig = [[[NSString hashHMac:string key:self.deviceToken1v] base64EncodedStringWithOptions:0] substringWithRange:NSMakeRange(0, 20)];
-    
-    NSDictionary *post = @{@"username": username,
-                           @"password": password,
-                           @"height":   @(kScreenHeight),
-                           @"width":    @(kScreenWidth),
-                           @"max_video_width":  @480,
-                           @"max_video_height": @640,
-                           @"application_id":   @"com.snapchat.android",
-                           @"is_two_fa":        @"false",
-                           @"ptoken":           ptoken ?: @"ie",
-                           @"pre_auth":         @"",
-                           @"sflag":            @1,
-                           @"dsig":             deviceSig,
-                           @"dtoken1i":         self.deviceToken1i,
-                           @"attestation":      self.googleAttestation,
-                           @"timestamp":        timestamp};
-    
-    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
-                              SKHeaders.clientAuth: clientAuthToken};
-    SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login token:nil query:post headers:headers ts:timestamp];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error6) {
-        [self handleError:error6 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (!jsonerror) {
-                    self.currentSession = [SKSession sessionWithJSONResponse:json];
-                    _authToken = self.currentSession.authToken;
-                    completion(json, nil);
-                } else {
-                    completion(nil, jsonerror);
-                }
-            });
-        }];
-    }] resume];
-}
-
-- (void)signInWithUsername:(NSString *)username authToken:(NSString *)authToken gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion {
-    NSParameterAssert(username); NSParameterAssert(authToken); NSParameterAssert(gmailEmail); NSParameterAssert(gmailPassword);
-    
-    [self getAuthTokenForGmail:gmailEmail password:gmailPassword callback:^(NSString *gauth, NSError *error) {
+    [self getClientLoginData:username password:password timestamp:[NSString timestamp] callback:^(NSDictionary *stuff, NSError *error) {
         if (!error) {
-            _googleAuthToken = gauth;
-            _authToken       = authToken;
-            self.username    = username;
-            [self updateSession:^(NSError *error2) {
-                completion([self.currentSession valueForKey:@"JSON"], error2);
-            }];
+            SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login token:nil query:stuff[@"params"] headers:stuff[@"headers"] ts:stuff[@"params"][@"timestamp"]];
+            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+            
+            [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error2) {
+                [self handleError:error2 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (!jsonerror) {
+                            self.currentSession = [SKSession sessionWithJSONResponse:json];
+                            _authToken = self.currentSession.authToken;
+                            completion(json, nil);
+                        } else {
+                            completion(nil, jsonerror);
+                        }
+                    });
+                }];
+            }] resume];
         } else {
             completion(nil, error);
         }

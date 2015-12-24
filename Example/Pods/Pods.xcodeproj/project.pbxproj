@@ -387,6 +387,8 @@
 		B2CD5ADF6CEE2FCD37484CE291AB3310 /* GeneratedMessageBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = AC0FE5576205C9CC8BA31B3E979F7CA6 /* GeneratedMessageBuilder.m */; };
 		B2FFE7E00CAB96916762DC8F72084B45 /* SKStoryCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B611174BFE11CAC2C611EA1BD5FE144 /* SKStoryCollection.m */; };
 		B3B2E50B03683CEE27C38CFCAB09CF5B /* MutableField.m in Sources */ = {isa = PBXBuildFile; fileRef = A385A3E82271A015EDCAFAAA9A8609D3 /* MutableField.m */; };
+		B40304CD1C2B9D9800762131 /* SKSuggestedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = B40304CC1C2B9D9800762131 /* SKSuggestedFriend.m */; };
+		B40304D01C2BB91200762131 /* SKTrophy.m in Sources */ = {isa = PBXBuildFile; fileRef = B40304CF1C2BB91200762131 /* SKTrophy.m */; };
 		B4E7B9CC9C3DE5647DEAFF2D9008F64C /* ExtendableMessageBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CB56951E3C9AECEE8169A64FC1B6BEC /* ExtendableMessageBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B549C42BF31B66C9A6302A5DB540665A /* MutableField.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F7C1F782D4395CBB43146206D75EF4F /* MutableField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B551C3259A67B771ACCAC824FA66EC82 /* MTLJSONAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 05522E4AF270E636FB674319373A51D0 /* MTLJSONAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -779,6 +781,10 @@
 		B00FAF8EADD51C4129A85BBE2F35AA80 /* libPods-SnapchatKit_Tests-SnapchatKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SnapchatKit_Tests-SnapchatKit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B17C5593E270B9350D17F747A722682A /* NSDictionary+SnapchatKit.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+SnapchatKit.m"; sourceTree = "<group>"; };
 		B2E57A08CD9616B5076F72A51F367F0A /* MTLTransformerErrorHandling.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MTLTransformerErrorHandling.m; path = Mantle/MTLTransformerErrorHandling.m; sourceTree = "<group>"; };
+		B40304CB1C2B9D9800762131 /* SKSuggestedFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSuggestedFriend.h; sourceTree = "<group>"; };
+		B40304CC1C2B9D9800762131 /* SKSuggestedFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSuggestedFriend.m; sourceTree = "<group>"; };
+		B40304CE1C2BB91200762131 /* SKTrophy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTrophy.h; sourceTree = "<group>"; };
+		B40304CF1C2BB91200762131 /* SKTrophy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTrophy.m; sourceTree = "<group>"; };
 		B4B78292CD742D0A52D1F90129D02A56 /* SKClient+Snaps.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Snaps.m"; sourceTree = "<group>"; };
 		B666A17A27A6F5A02D81E21B2B216469 /* SKConversation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SKConversation.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		B9656AA180250C881B4C878F0AA83CBB /* ExtendableMessageBuilder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ExtendableMessageBuilder.m; sourceTree = "<group>"; };
@@ -1169,6 +1175,10 @@
 				6508D8CABE440B0AB3D9F6B7CA82C1E6 /* SKUser.m */,
 				EA1400B531464022A8573E52D3135EB0 /* SKUserStory.h */,
 				CE994558AB0F2D787B844807ED90BCD2 /* SKUserStory.m */,
+				B40304CB1C2B9D9800762131 /* SKSuggestedFriend.h */,
+				B40304CC1C2B9D9800762131 /* SKSuggestedFriend.m */,
+				B40304CE1C2BB91200762131 /* SKTrophy.h */,
+				B40304CF1C2BB91200762131 /* SKTrophy.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2137,6 +2147,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B39D8A0B4188A01E8B61AB877A54781 /* Pods-SnapchatKit-OSX-dummy.m in Sources */,
+				B40304CD1C2B9D9800762131 /* SKSuggestedFriend.m in Sources */,
+				B40304D01C2BB91200762131 /* SKTrophy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,6 +14,7 @@
 #import "SKConversation.h"
 #import "SKSnap.h"
 #import "SKMessage.h"
+#import "SKTrophy.h"
 
 SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     if ([storyPrivacyString isEqualToString:@"EVERYONE"])
@@ -28,11 +29,6 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
 }
 
 @implementation SKSession
-
-- (id)init {
-    NSAssert(@"nil", false);
-    return nil;
-}
 
 + (instancetype)sessionWithJSONResponse:(NSDictionary *)json {
     return [[SKSession alloc] initWithDictionary:json];
@@ -50,7 +46,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         // Added me but not added back
         NSMutableOrderedSet *temp = [NSMutableOrderedSet orderedSet];
         for (SKSimpleUser *user in self.addedFriends)
-            if (![self.friends containsObject:user])
+            if (![self.friends containsObject:(SKUser *)user])
                 [temp addObject:user];
         // Reverse so that most recent requests are at the front
         _pendingRequests = temp;
@@ -94,6 +90,8 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"discoverResourceParamValue": @"discover.resource_parameter_value",
              @"discoverVideoCatalog": @"discover.video_catalog",
              @"sponsored": @"sponsored",
+             @"friendsSyncToken": @"friends_response.friends_sync_token",
+             @"friendsSyncType": @"friends_response.friends_sync_type",
              @"friends": @"friends_response.friends",
              @"addedFriends": @"friends_response.added_friends",
              @"conversations": @"conversations_response",
@@ -102,7 +100,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"groupStories": @"stories_response.my_group_stories", // other stories, pending requests
              @"canUseCash": @"updates_response.allowed_to_use_cash",
              @"isCashActive": @"udpates_response.is_cash_active",
-             @"cashCustomerIdentifier": @"updates_response.cash_consumer_id",
+             @"cashCustomerIdentifier": @"updates_response.cash_customer_id",
              @"cashClientProperties": @"updates_response.client_properties",
              @"cashProvider": @"updates_response.cash_provider",
              @"email": @"updates_response.email",
@@ -148,7 +146,17 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"enableSpecialText": @"updates_response.feature_settings.special_text",
              @"enableSwipeCashMode": @"updates_response.feature_settings.swipe_cash_mode",
              @"enableVisualFilters": @"updates_response.feature_settings.visual_filters",
-             @"enableTravelMode": @"updates_response.feature_settings.travel_mode"};
+             @"enableTravelMode": @"updates_response.feature_settings.travel_mode",
+             @"lastCheckedTrophies": @"identity_check_response.last_checked_trophies_timestamp",
+             @"trophyCase": @"identity_check_response.trophy_case.response",
+             @"serverInfo": @"server_info",
+             @"ringerSoundOn": @"updates_response.ringing_sound_setting",
+             @"IAPEnabledCurrencies": @"updates_response.enabled_iap_currencies",
+             @"enabledLensStoreCurrencies": @"updates_response.enabled_lens_store_currencies",
+             @"friendmojis": @"updates_response.friendmoji_dict",
+             @"friendmojisReadOnly": @"updates_response.friendmoji_read_only_dict",
+             @"friendmojisMutable": @"updates_response.friendmoji_mutable_dict",
+             @"industries": @"updates_response.industries"};
 }
 
 + (NSValueTransformer *)bestFriendUsernamesJSONTransformer {
@@ -166,12 +174,14 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
 MTLTransformPropertyDate(addedFriendsTimestamp)
 MTLTransformPropertyDate(lastAddressBookUpdateDate)
 MTLTransformPropertyDate(lastReplayedSnapDate)
+MTLTransformPropertyDate(lastCheckedTrophies)
 
 + (NSValueTransformer *)friendsJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKUser class]]; }
 + (NSValueTransformer *)addedFriendsJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKAddedFriend class]]; }
 + (NSValueTransformer *)conversationsJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKConversation class]]; }
 + (NSValueTransformer *)storiesJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKStoryCollection class]]; }
 + (NSValueTransformer *)userStoriesJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKUserStory class]]; }
++ (NSValueTransformer *)trophyCaseJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKTrophy class]]; }
 
 + (NSValueTransformer *)storyPrivacyJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *p, BOOL *success, NSError *__autoreleasing *error) {

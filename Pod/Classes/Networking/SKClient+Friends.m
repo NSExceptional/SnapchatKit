@@ -185,6 +185,18 @@
     [self setUserBlocked:YES user:username completion:completion];
 }
 
+- (void)getSuggestedFriends:(ArrayBlock)completion {
+    NSDictionary *query = @{@"action": @"list",
+                            @"username": self.username};
+    [self postTo:SKEPMisc.suggestFriend query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            completion([SKThing transformJSONArray:json[@"suggested_friend_results"] toModelsOfClass:nil], nil);
+        } else {
+            completion(nil, error);
+        }
+    }];
+}
+
 - (void)seenSuggestedFriends:(NSArray *)usernames seen:(BOOL)seen completion:(ErrorBlock)completion {
     if (!usernames.count) usernames = @[];
     
@@ -199,6 +211,8 @@
                 completion(nil);
             else
                 completion([SKRequest errorWithMessage:json[@"message"] code:1]);
+        } else {
+            completion(error);
         }
     }];
 }

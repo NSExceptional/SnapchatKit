@@ -11,7 +11,7 @@
 
 #import "SKThing.h"
 
-@class SKMessage, SKConversation, SKUser;
+@class SKMessage, SKConversation, SKUser, SKAddedFriend, SKStoryCollection, SKUserStory, SKStory, SKTrophy;
 
 extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
@@ -36,25 +36,36 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) NSDictionary *messagingGatewayAuth;
 @property (nonatomic, readonly) NSString     *messagingGatewayServer;
 
+@property (nonatomic, readonly) NSDictionary *serverInfo;
+@property (nonatomic, readonly) NSArray<NSString *> *IAPEnabledCurrencies;
+@property (nonatomic, readonly) NSArray<NSString *> *enabledLensStoreCurrencies;
+
+/** Undocumented. */
+@property (nonatomic, readonly) NSArray<NSString *> *industries;
+
 #pragma mark User data
-/** Array of SKUser objects. */
-@property (nonatomic, readonly) NSMutableOrderedSet *friends;
-/** Array of SKAddedFriend objects who may or may not be your friend. */
-@property (nonatomic, readonly) NSMutableOrderedSet *addedFriends;
-/** Array of username strings. */
-@property (nonatomic, readonly) NSMutableOrderedSet *bestFriendUsernames;
+@property (nonatomic, readonly) NSString *friendsSyncToken;
+@property (nonatomic, readonly) NSString *friendsSyncType;
+@property (nonatomic, readonly) NSMutableOrderedSet<SKUser *>        *friends;
+@property (nonatomic, readonly) NSMutableOrderedSet<SKAddedFriend *> *addedFriends;
+@property (nonatomic, readonly) NSMutableOrderedSet<NSString *>      *bestFriendUsernames;
 
 /** Array of username strings of users who have added you but not been added back by you. */
-@property (nonatomic, readonly) NSMutableOrderedSet *pendingRequests;
+@property (nonatomic, readonly) NSMutableOrderedSet<NSString *>          *pendingRequests;
 
-/** Array of SKConversation objects. */
-@property (nonatomic, readonly) NSMutableOrderedSet *conversations;
-/** Array of SKStoryCollection objects of friends' stories. */
-@property (nonatomic, readonly) NSMutableOrderedSet *stories;
-/** Array of SKUserStory objects of the user's stories. */
-@property (nonatomic, readonly) NSMutableOrderedSet *userStories;
-/** Array of SKStory objects of the user's group stories. Empty so far. */
-@property (nonatomic, readonly) NSMutableOrderedSet *groupStories;
+@property (nonatomic, readonly) NSMutableOrderedSet<SKConversation *>    *conversations;
+@property (nonatomic, readonly) NSMutableOrderedSet<SKStoryCollection *> *stories;
+@property (nonatomic, readonly) NSMutableOrderedSet<SKUserStory *>       *userStories;
+@property (nonatomic, readonly) NSMutableOrderedSet<SKStory *>           *groupStories;
+
+@property (nonatomic, readonly) NSArray<SKTrophy *> *trophyCase;
+/** The date trophies were last checked for. */
+@property (nonatomic, readonly) NSDate *lastCheckedTrophies;
+
+/** A dictionary of the friendmoji settings. */
+@property (nonatomic, readonly) NSDictionary *friendmojis;
+@property (nonatomic, readonly) NSDictionary *friendmojisReadOnly;
+@property (nonatomic, readonly) NSDictionary *friendmojisMutable;
 
 #pragma mark Discover
 @property (nonatomic, readonly) BOOL discoverSupported;
@@ -76,8 +87,8 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) NSString     *cashCustomerIdentifier;
 /** i.e. "SQUARE" */
 @property (nonatomic, readonly) NSString     *cashProvider;
-/** Keys: "snapcash_new_tos_accepted", "snapcash_tos_v2_accepted", "square_tos_accepted" */
-@property (nonatomic, readonly) NSDictionary *cashClientProperties;
+/** Keys: "snapcash_new_tos_accepted", "snapcash_tos_v2_accepted", "square_tos_accepted", "tou_9_14_accepted" */
+@property (nonatomic, readonly) NSDictionary *clientProperties;
 
 #pragma mark Basic user information
 @property (nonatomic, readonly) NSString     *username;
@@ -113,7 +124,12 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL         logged;
 @property (nonatomic, readonly) NSString     *mobileVerificationKey;
 @property (nonatomic, readonly) BOOL         canUploadRawThumbnail;
-/** Array of strings. */
+/** Array of strings. Known values:
+ swipe_filters, my_story, profile_pictures, snap, caption,
+ swipe_down_to_dismiss_tapping_quickly, discover_onboarding,
+ trophy_case, tap_to_skip, new_friend_request,
+ swipe_down_to_dismiss, first_location, profile
+ */
 @property (nonatomic, readonly) NSArray      *seenTooltips;
 @property (nonatomic, readonly) BOOL         shouldCallToVerifyNumber;
 @property (nonatomic, readonly) BOOL         shouldTextToVerifyNumber;
@@ -134,6 +150,7 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) SKStoryPrivacy storyPrivacy;
 @property (nonatomic, readonly) BOOL           isSearchableByPhoneNumber;
 @property (nonatomic, readonly) BOOL           privacyEveryone;
+@property (nonatomic, readonly) BOOL           ringerSoundOn;
 
 #pragma mark Features
 @property (nonatomic, readonly) BOOL enableFrontFacingFlash;
@@ -144,6 +161,13 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL enableSwipeCashMode;
 @property (nonatomic, readonly) BOOL enableVisualFilters;
 @property (nonatomic, readonly) BOOL enableTravelMode;
+@property (nonatomic, readonly) BOOL enableGuggenheim;
+
+@property (nonatomic, readonly) BOOL lensStoreEnabled;
+@property (nonatomic, readonly) BOOL prefetchStoreLensesEnabled;
+@property (nonatomic, readonly) BOOL payReplaySnaps;
+
+@property (nonatomic, readonly) NSDictionary *featuresNotUserConfigurable;
 
 @end
 

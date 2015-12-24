@@ -63,6 +63,8 @@
  @param username The username tied to the avatar to download.
  @param completion Takes an error, if any, and ideally an array of 5 \c SKBlob objects or \c nil if the user does not have an avatar, but as of now takes one possibly encrypted \c SKBlob object. */
 - (void)downloadAvatar:(NSString *)username completion:(ResponseBlock)completion;
+/** Removes your current avatar. */
+- (void)removeYourAvatar:(ErrorBlock)completion;
 /** Updates your TOS agreement status for each of the three Terms of Service's.
  @param completion Takes an error, if any. */
 - (void)updateTOSAgreementStatus:(BOOL)snapcash snapcashV2:(BOOL)snapcashV2 square:(BOOL)square completion:(ErrorBlock)completion;

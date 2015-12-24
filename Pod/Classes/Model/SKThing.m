@@ -163,5 +163,14 @@ static NSMutableDictionary *_allJSONKeys;
     }];
 }
 
++ (NSArray *)transformJSONArray:(NSArray *)jsons toModelsOfClass:(Class)cls {
+    NSParameterAssert(jsons.count); NSParameterAssert(cls);
+    NSMutableArray *temp = [NSMutableArray array];
+    for (NSDictionary *json in jsons)
+        [temp addObject:[[cls alloc] initWithDictionary:json]];
+    
+    return temp.copy;
+}
+
 
 @end

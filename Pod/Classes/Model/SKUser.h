@@ -11,7 +11,9 @@
 @interface SKUser : SKSimpleUser
 
 /** See http://i.imgur.com/PfFbw59.jpg */
-@property (nonatomic, readonly) NSString *friendmoji;
+@property (nonatomic, readonly) NSString *friendmojiString;
+/** An array of strings representing which friendmojis to use. See http://i.imgur.com/PfFbw59.jpg */
+@property (nonatomic, readonly) NSArray *friendmojiTypes;
 @property (nonatomic, readonly) NSString *venue;
 /** \c nil if the user is not a shared story. */
 @property (nonatomic, readonly) NSString *sharedStoryIdentifier;
