@@ -27,9 +27,19 @@
              @"isLocal": @"is_local",
              @"viewedThumbnail": @"thumbnails.viewed.url",
              @"unviewedThumbnail": @"thumbnails.unviewed.url",
-             @"viewedThumbnailNeedsAuth": @"thumbnails.viewed.needs_auth",
-             @"unviewedThumbnailNeedsAuth": @"thumbnails.unviewed.needs_auth",
+             @"viewedThumbNeedsAuth": @"thumbnails.viewed.needs_auth",
+             @"unviewedThumbNeedsAuth": @"thumbnails.unviewed.needs_auth",
              @"stories": @"stories"};
+}
+
++ (NSArray *)ignoredJSONKeyPathPrefixes {
+    static NSArray *ignored = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ignored = @[@"ad_placement_metadata"];
+    });
+    
+    return ignored;
 }
 
 MTLTransformPropertyURL(viewedThumbnail)

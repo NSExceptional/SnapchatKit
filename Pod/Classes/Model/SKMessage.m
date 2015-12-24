@@ -98,6 +98,16 @@ NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
              @"type": @"chat_message.type"};
 }
 
++ (NSArray *)ignoredJSONKeyPathPrefixes {
+    static NSArray *ignored = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ignored = @[@"chat_message.saved_state", @"chat_message.preservations"];
+    });
+    
+    return ignored;
+}
+
 + (NSValueTransformer *)messageKindJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *type, BOOL *success, NSError *__autoreleasing *error) {
         return @(SKMessageKindFromString(type));

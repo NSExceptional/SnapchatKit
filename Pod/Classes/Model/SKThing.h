@@ -29,6 +29,8 @@ return [self sk_dateTransformer]; }
 + (NSValueTransformer *)sk_dateTransformer;
 /// Transforms strings into NSURL objects.
 + (NSValueTransformer *)sk_urlTransformer;
+/// Transforms strings from "ON" and "OFF" to YES and NO.
++ (NSValueTransformer *)sk_onOffTransformer;
 /// Transforms an array of dictionaries into an array of model objects of class \c cls.
 + (NSValueTransformer *)sk_modelArrayTransformerForClass:(Class)cls;
 /// Transforms an array of dictionaries into an ordered set of model objects of class \c cls.
@@ -38,6 +40,9 @@ return [self sk_dateTransformer]; }
 + (NSArray *)knownJSONKeys;
 /// Calculated once when first accessed, using \c knownJSONKeys.
 + (NSArray *)unknownJSONKeys;
++ (NSDictionary *)allSubclassesUnknownJSONKeys;
+/// Used to filter out unused JSON keys I don't want to use.
++ (NSArray *)ignoredJSONKeyPathPrefixes;
 
 /// Transforms \c jsons to an array of model objects of class \c cls.
 + (NSArray *)transformJSONArray:(NSArray *)jsons toModelsOfClass:(Class)cls;

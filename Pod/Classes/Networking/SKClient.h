@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 + (instancetype)sharedClient;
 
 /** Initializes an \c SKClient instance with the minimum data required to resume an existing session. \c currentSession needs to be updated afterwards. */
-+ (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken gauth:(NSString *)googleAuthToken;
++ (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken;
 
 /** See the \c SKMiddleMan protocol. */
 @property (nonatomic) id<SKMiddleMan> middleMan;
@@ -61,14 +61,10 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 
 /** Used internally to sign in. Passed in either of the \c -restoreSessionWithUsername:snapchatAuthToken: methods as the \c snapchatAuthToken: parameter. */
 @property (nonatomic, readonly) NSString *authToken;
-/** Used internally to sign in. Passed as the \c googleAuthToken: parameter to \c -restoreSessionWithUsername:snapchatAuthToken:googleAuthToken: method. */
-@property (nonatomic, readonly) NSString *googleAuthToken;
 /** Used to sign in to an authenticated device using 2 factor authentication. This should be stored somewhere and reused as needed per device. */
 @property (nonatomic          ) NSString *deviceToken1i;
 /** Used to sign in to an authenticated device using 2 factor authentication. This should be stored somewhere and reused as needed per device. */
 @property (nonatomic          ) NSString *deviceToken1v;
-/** Used internally to sign in and trick Snapchat into thinking we're using the first party client. */
-@property (nonatomic, readonly) NSString *googleAttestation;
 
 /** Required to sign in properly. See https://clients.casper.io to get your own. */
 @property (nonatomic) NSString *casperAPIKey;
@@ -83,24 +79,14 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
  @discussion A valid GMail account is necessary to trick Snapchat into thinking we're using the first party client. Your data is only ever sent to Google, Scout's honor.
  @param username The Snapchat username to sign in with.
  @param password The password to the Snapchat account to sign in with.
- @param gmailEmail A vaild GMail address.
- @param gmailPassword The password associated with \c gmailEmail.
  @param completion Takes an error, if any, and the JSON response from signing in as a dictionary. */
-- (void)signInWithUsername:(NSString *)username password:(NSString *)password gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion;
-/** Signs into Snapchat without signing out an existing session by using that session's Snapchat auth token.
- @param username The Snapchat username to sign in with.
- @param authToken The auth token of an active Snapchat session.
- @param gmailEmail A vaild GMail address.
- @param gmailPassword The password associated with \c gmailEmail.
- @param completion Takes an error, if any, and the JSON response from signing in as a dictionary. */
-- (void)signInWithUsername:(NSString *)username authToken:(NSString *)authToken gmail:(NSString *)gmailEmail gpass:(NSString *)gmailPassword completion:(DictionaryBlock)completion;
+- (void)signInWithUsername:(NSString *)username password:(NSString *)password completion:(DictionaryBlock)completion;
 /** Use this to restore a session that ended within the last hour. The google auth token must be re-generated every hour.
  @discussion If you have a stale Google auth token, consider using \c -restoreSessionWithUsername:snapchatAuthToken:doGetUpdates:.
  @param username Your Snapchat username.
  @param authToken Your Snapchat auth token. Can be retrieved from the \c authToken property.
- @param gogoleAuthToken Your Google auth token. Can be retrieved from the \c googleAuthToken property.
  @param completion Takes an error, if any. */
-- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken doGetUpdates:(ErrorBlock)completion;
+- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken doGetUpdates:(ErrorBlock)completion;
 /**  Signs out.
  @param completion Takes an error, if any. */
 - (void)signOut:(ErrorBlock)completion;
@@ -166,6 +152,7 @@ The first step in creating a new Snapchat account. Registers an email, password,
 
 #pragma mark Internal
 - (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback;
+- (void)postTo:(NSString *)endpoint query:(NSDictionary *)query response:(void(^)(NSData *data, NSURLResponse *response, NSError *error))callback;
 - (void)get:(NSString *)endpoint callback:(ResponseBlock)callback;
 - (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(ErrorBlock)completion;
 /** Completion is GUARANTEED to have one and only one non-nil parameter. */

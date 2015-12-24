@@ -217,10 +217,13 @@ int main(int argc, const char * argv[]) {
         // Cannot seem to "solve" a captcha.
         //        registerAccount(@"Tatem1984@jourrapide.com", @"12345678h", @"1995-08-01");
         
-        [SKClient sharedClient].casperAPIKey = kCasperAPIKey;
+#ifdef TB_LOGIN
+        [SKClient sharedClient].casperAPIKey    = kCasperAPIKey;
         [SKClient sharedClient].casperAPISecret = kCasperAPISecret;
+        [SKClient sharedClient].casperUserAgent = kCasperUserAgent;
+#endif
         
-        [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
+        [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword completion:^(NSDictionary *dict, NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
                 [dict writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];

@@ -27,7 +27,7 @@ static NSMutableDictionary *_allJSONKeys;
 
 - (id)initWithDictionary:(NSDictionary *)json {
     NSParameterAssert(json.allKeys.count > 0);
-    self = [super initWithDictionary:json error:nil];
+    self = [MTLJSONAdapter modelOfClass:[self class] fromJSONDictionary:json error:nil];
     
 #if kDebugJSON
     static dispatch_once_t onceToken;
@@ -53,10 +53,27 @@ static NSMutableDictionary *_allJSONKeys;
 
 + (NSArray *)unknownJSONKeys {
     NSMutableSet *unknown = [NSMutableSet setWithArray:[_allJSONKeys[CLASS_KEY] allObjects]];
+    NSArray *ignored = [self ignoredJSONKeyPathPrefixes];
     [unknown minusSet:_knownJSONKeys[CLASS_KEY] ?: [NSSet set]];
     
-    return unknown.allObjects;
+    NSMutableSet *unknownWithoutIgnored = unknown.mutableCopy;
+    
+    for (NSString *prefix in ignored)
+        for (NSString *key in unknown)
+            if ([key hasPrefix:prefix])
+                [unknownWithoutIgnored removeObject:key];
+    
+    unknown = unknownWithoutIgnored.mutableCopy;
+    
+    for (NSString *prefix in unknown)
+        for (NSString *fullKey in [self knownJSONKeys])
+            if ([fullKey hasPrefix:prefix])
+                [unknownWithoutIgnored removeObject:prefix];
+    
+    return unknownWithoutIgnored.allObjects;
 }
+
++ (NSArray *)ignoredJSONKeyPathPrefixes { return @[]; }
 
 + (void)setAllJSONKeys:(NSArray *)keys {
     NSMutableSet *all = _allJSONKeys[CLASS_KEY];
@@ -78,15 +95,15 @@ static NSMutableDictionary *_allJSONKeys;
     return [MTLJSONAdapter JSONDictionaryFromModel:self error:nil];
 }
 
-+ (NSArray *)allSubclassesUnknownJSONKeys {
++ (NSDictionary *)allSubclassesUnknownJSONKeys {
     NSArray *subclasses = [self allSubclasses];
     
-    NSMutableArray *allUnknownKeys = [NSMutableArray array];
+    NSMutableDictionary *allUnknownKeys = [NSMutableDictionary dictionary];
     
     for (Class c in subclasses) {
         NSArray *unknown = [c unknownJSONKeys];
         if (unknown.count)
-            [allUnknownKeys addObject:[NSString stringWithFormat:@"%@: %@", NSStringFromClass(c), unknown.JSONString]];
+            allUnknownKeys[NSStringFromClass(c)] = [unknown sortedArrayUsingSelector:@selector(compare:)];
     }
     
     return allUnknownKeys;
@@ -137,8 +154,12 @@ static NSMutableDictionary *_allJSONKeys;
     return [NSValueTransformer valueTransformerForName:MTLURLValueTransformerName];
 }
 
++ (NSValueTransformer *)sk_onOffTransformer {
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"ON": @YES, @"OFF": @NO} defaultValue:@NO reverseDefaultValue:@"OFF"];
+}
+
 + (NSValueTransformer *)sk_modelArrayTransformerForClass:(Class)cls {
-    NSParameterAssert([(id)[cls class] isKindOfClass:[SKThing class]]);
+    NSParameterAssert([(id)[cls class] isSubclassOfClass:[SKThing class]]);
     
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *dictionaries, BOOL *success, NSError *__autoreleasing *error) {
         NSMutableArray *models = [NSMutableArray new];
@@ -151,7 +172,7 @@ static NSMutableDictionary *_allJSONKeys;
 }
 
 + (NSValueTransformer *)sk_modelMutableOrderedSetTransformerForClass:(Class)cls {
-    NSParameterAssert([(id)[cls class] isKindOfClass:[SKThing class]]);
+    NSParameterAssert([(id)[cls class] isSubclassOfClass:[SKThing class]]);
     
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *dictionaries, BOOL *success, NSError *__autoreleasing *error) {
         NSMutableOrderedSet *models = [NSMutableOrderedSet orderedSet];

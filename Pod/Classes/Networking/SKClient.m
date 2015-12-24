@@ -55,6 +55,18 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     return [@"v1:" stringByAppendingString:[NSString hashHMac:signature key:secret].hexadecimalString];
 }
 
+BOOL SKShouldUseStaticToken(NSString *endpiont) {
+    static NSSet *staticTokenEndpoints = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        staticTokenEndpoints = [NSSet setWithArray:@[SKEPAccount.registration.start, SKEPAccount.registration.solveCaptcha,
+                                                     SKEPAccount.registration.suggestUsername, SKEPAccount.registration.username,
+                                                     SKEPAccount.registration.verifyPhone]];
+    });
+    
+    return [staticTokenEndpoints containsObject:endpiont];
+}
+
 
 @implementation SKClient
 
@@ -73,11 +85,10 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     return sharedSKClient;
 }
 
-+ (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken gauth:(NSString *)googleAuthToken {
++ (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken {
     SKClient *client         = [self new];
     client.username          = username;
     client->_authToken       = authToken;
-    client->_googleAuthToken = googleAuthToken;
     
     return client;
 }
@@ -101,20 +112,18 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [self init];
     if (self) {
-        _googleAuthToken   = [aDecoder decodeObjectForKey:@"googleAuthToken"];
-        _googleAttestation = [aDecoder decodeObjectForKey:@"googleAttestation"];
-        _deviceToken1i     = [aDecoder decodeObjectForKey:@"deviceToken1i"];
-        _deviceToken1v     = [aDecoder decodeObjectForKey:@"deviceToken1v"];
+        _authToken     = [aDecoder decodeObjectForKey:@"authToken"];
+        _deviceToken1i = [aDecoder decodeObjectForKey:@"deviceToken1i"];
+        _deviceToken1v = [aDecoder decodeObjectForKey:@"deviceToken1v"];
     }
     
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:self.googleAuthToken   forKey:@"googleAuthToken"];
-    [aCoder encodeObject:self.googleAttestation forKey:@"googleAttestation"];
-    [aCoder encodeObject:self.deviceToken1i     forKey:@"deviceToken1i"];
-    [aCoder encodeObject:self.deviceToken1v     forKey:@"deviceToken1v"];
+    [aCoder encodeObject:_authToken     forKey:@"authToken"];
+    [aCoder encodeObject:_deviceToken1i forKey:@"deviceToken1i"];
+    [aCoder encodeObject:_deviceToken1v forKey:@"deviceToken1v"];
 }
 
 - (void)setCurrentSession:(SKSession *)currentSession {
@@ -219,39 +228,109 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
 
 - (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(query);
-    [SKRequest postTo:endpoint query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        SKDispatchToMain([self handleError:error data:data response:response completion:callback]);
+    
+    [self getInformationForEndpoint:endpoint callback:^(NSDictionary *params, NSDictionary *headers, NSError *error) {
+        if (!error) {
+            [SKRequest postTo:endpoint query:SKMergeDictionaries(query, params) headers:headers callback:^(NSData *data, NSURLResponse *response, NSError *error2) {
+                SKDispatchToMain([self handleError:error2 data:data response:response completion:callback]);
+            }];
+        } else {
+            SKDispatchToMain(callback(nil, error));
+        }
     }];
+}
+
+- (void)postTo:(NSString *)endpoint query:(NSDictionary *)query response:(void(^)(NSData *data, NSURLResponse *response, NSError *error))callback {
+    NSParameterAssert(endpoint); NSParameterAssert(query);
+    
+    [self getInformationForEndpoint:endpoint callback:^(NSDictionary *params, NSDictionary *headers, NSError *error) {
+        if (!error) {
+            [SKRequest postTo:endpoint query:SKMergeDictionaries(query, params) headers:headers callback:callback];
+        } else {
+            SKDispatchToMain(callback(nil, nil, error));
+        }
+    }];
+}
+
+- (void)getInformationForEndpoint:(NSString *)endpoint callback:(void (^)(NSDictionary *params, NSDictionary *headers, NSError *error))callback {
+    NSParameterAssert(endpoint); NSParameterAssert(callback);
+    NSAssert(self.username, @"Cannot make this request without a username.");
+    NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
+    //NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
+    
+    // Do we need to use the static token?
+    NSString *token = SKShouldUseStaticToken(endpoint) ? SKConsts.staticToken : _authToken;
+    
+    // Params
+    NSDictionary *query = @{@"username": self.username, @"auth_token": token, @"endpoint": endpoint, @"timestamp": [NSString timestamp]};
+    
+    // Build request
+    NSURL *url = [NSURL URLWithString:@"http://zelta.casper.io/snapchat/ios/endpointauth"];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"POST";
+    request.HTTPBody   = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
+    
+    // Set headers
+    [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
+    [request setValue:SKMakeCapserSignature(query, self.casperAPISecret) forHTTPHeaderField:SKHeaders.casperSignature];
+    if (self.casperUserAgent) [request setValue:self.casperUserAgent forHTTPHeaderField:SKHeaders.userAgent];
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!error) {
+            NSError *jsonError = nil;
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            // Content-Type header for specific endpoints
+            NSDictionary *headers = json[@"headers"];
+            if (headers && ([endpoint isEqualToString:SKEPStories.upload] || [endpoint isEqualToString:SKEPSnaps.upload]))
+                headers = SKMergeDictionaries(headers, @{SKHeaders.contentType: ([NSString stringWithFormat:@"multipart/form-data; boundary=%@", SKConsts.boundary])});
+            
+            if ([json[@"code"] integerValue] == 200)
+                callback(json[@"params"], headers, nil);
+            else
+                callback(nil, nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+        } else {
+            callback(nil, nil, error);
+        }
+    }] resume];
 }
 
 - (void)get:(NSString *)endpoint callback:(ResponseBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(callback);
-    [SKRequest get:endpoint callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!error) {
-                NSInteger code = [(NSHTTPURLResponse *)response statusCode];
-                if (code == 200)
-                    callback(data, nil);
-                else {
-                    NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                    if ([html containsString:@"<html><head>"]) {
-                        // Invalid request
-                        callback(nil, [SKRequest errorWithMessage:html.textFromHTML code:code]);
+    
+    [self getInformationForEndpoint:endpoint callback:^(NSDictionary *params, NSDictionary *headers, NSError *error) {
+        if (!error) {
+            
+            [SKRequest get:endpoint headers:headers callback:^(NSData *data, NSURLResponse *response, NSError *error2) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!error2) {
+                        NSInteger code = [(NSHTTPURLResponse *)response statusCode];
+                        if (code == 200)
+                            callback(data, nil);
+                        else {
+                            NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                            if ([html containsString:@"<html><head>"]) {
+                                // Invalid request
+                                callback(nil, [SKRequest errorWithMessage:html.textFromHTML code:code]);
+                            } else {
+                                callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+                            }
+                        }
                     } else {
-                        callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+                        callback(nil, error2);
                     }
-                }
-            } else {
-                callback(nil, error);
-            }
-        });
+                });
+            }];
+        } else {
+            callback(nil, error);
+        }
     }];
 }
 
 #pragma mark Signing in
 
 - (BOOL)isSignedIn {
-    return self.googleAuthToken && self.authToken && self.username;
+    return self.authToken && self.username;
 }
 
 - (void)getClientLoginData:(NSString *)username password:(NSString *)password timestamp:(NSString *)ts callback:(DictionaryBlock)callback {
@@ -275,6 +354,7 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        SKLog(@"Recieved casper response...");
         if (!error) {
             NSError *jsonError = nil;
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
@@ -294,12 +374,13 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     
     [self getClientLoginData:username password:password timestamp:[NSString timestamp] callback:^(NSDictionary *stuff, NSError *error) {
         if (!error) {
-            SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login token:nil query:stuff[@"params"] headers:stuff[@"headers"] ts:stuff[@"params"][@"timestamp"]];
+            SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login query:stuff[@"params"] headers:stuff[@"headers"]];
             NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
             
             [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error2) {
                 [self handleError:error2 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        SKLog(@"Recieved Snapchat login response...");
                         if (!jsonerror) {
                             self.currentSession = [SKSession sessionWithJSONResponse:json];
                             _authToken = self.currentSession.authToken;
@@ -316,31 +397,25 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     }];
 }
 
-- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken googleAuthToken:(NSString *)googleAuthToken doGetUpdates:(ErrorBlock)completion {
-    NSParameterAssert(username); NSParameterAssert(authToken); NSParameterAssert(googleAuthToken);
+- (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken doGetUpdates:(ErrorBlock)completion {
+    NSParameterAssert(username); NSParameterAssert(authToken);
     _username        = username;
     _authToken       = authToken;
-    _googleAuthToken = googleAuthToken;
     if (completion)
         [self updateSession:completion];
 }
 
 - (void)signOut:(ErrorBlock)completion {
-    [SKRequest postTo:SKEPAccount.login query:@{@"username": self.currentSession.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (kVerboseLog) {
-            NSString *result = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            if (result.length == 0) {
-                _currentSession    = nil;
-                _username          = nil;
-                _authToken         = nil;
-                _googleAuthToken   = nil;
-                _googleAttestation = nil;
-                _deviceToken1i     = nil;
-                _deviceToken1v     = nil;
-                completion(nil);
-            } else {
-                completion([SKRequest errorWithMessage:result code:1]);
-            }
+    [self postTo:SKEPAccount.login query:@{@"username": self.currentSession.username} callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            _currentSession    = nil;
+            _username          = nil;
+            _authToken         = nil;
+            _deviceToken1i     = nil;
+            _deviceToken1v     = nil;
+            completion(nil);
+        } else {
+            completion(error);
         }
     }];
 }
@@ -408,31 +483,28 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     NSDictionary *query = @{@"username": registeredEmail,
                             @"selected_username": username};
     
-    [self getAuthTokenForGmail:gmail password:gpass callback:^(NSString *gauth, NSError *error) {
-        _googleAuthToken = gauth;
-        [self postTo:SKEPAccount.registration.username query:query callback:^(NSDictionary *json, NSError *error) {
-            if (!error) {
-                
-                // Continue registration
-                self.currentSession = [[SKSession alloc] initWithDictionary:json];
-                if (kDebugJSON && !self.currentSession) {
-                    completion([SKRequest unknownError]);
-                    SKLog(@"Unknown error: %@", json);
-                } else {
-                    _username = self.currentSession.username;
-                    completion(nil);
-                }
+    [self postTo:SKEPAccount.registration.username query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            
+            // Continue registration
+            self.currentSession = [[SKSession alloc] initWithDictionary:json];
+            if (kDebugJSON && !self.currentSession) {
+                completion([SKRequest unknownError]);
+                SKLog(@"Unknown error: %@", json);
+            } else {
+                _username = self.currentSession.username;
+                completion(nil);
             }
-            // Failed for some reason
-            else {
-                completion([SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
-            }
-        }];
+        }
+        // Failed for some reason
+        else {
+            completion([SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+        }
     }];
 }
 
 - (void)getCaptcha:(ArrayBlock)completion {
-    [SKRequest postTo:SKEPAccount.registration.getCaptcha query:@{@"username": self.username} gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [self postTo:SKEPAccount.registration.getCaptcha query:@{@"username": self.username} response:^(NSData *data, NSURLResponse *response, NSError *error) {
         // Did get captcha ZIP
         if ([(NSHTTPURLResponse *)response statusCode] == 200) {
             NSString *dataPath   = [NSString stringWithFormat:@"%@sck-captcha.tmp", NSTemporaryDirectory()];
@@ -512,10 +584,8 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
                             @"username": self.username,
                             @"code": code};
     // Hash timestamp with static token before passing as token?
-    [SKRequest postTo:SKEPAccount.registration.verifyPhone query:query gauth:self.googleAuthToken token:SKConsts.staticToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        [self handleError:error data:data response:response completion:^(NSDictionary *json, NSError *error) {
-            SKLog(@"%@", json);
-        }];
+    [self postTo:SKEPAccount.registration.verifyPhone query:query callback:^(NSDictionary *json, NSError *error) {
+        SKLog(@"%@", json);
     }];
 }
 
@@ -529,17 +599,8 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
                             @"json": snapInfo.JSONString,
                             @"username": self.currentSession.username};
     
-    [SKRequest postTo:SKEPUpdate.snaps query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (completion)
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (data.length == 0 && [(NSHTTPURLResponse *)response statusCode] == 200)
-                    completion(nil);
-                else if (error) {
-                    completion(error);
-                } else {
-                    completion([SKRequest unknownError]);
-                }
-            });
+    [self postTo:SKEPUpdate.snaps query:query callback:^(NSDictionary *json, NSError *error) {
+        if (completion) SKDispatchToMain(completion(error));
     }];
 }
 

@@ -125,7 +125,7 @@
     NSDictionary *query = @{@"image": self.currentSession.QRPath,
                             @"type": @"SVG",
                             @"username": self.username};
-    [SKRequest postTo:SKEPAccount.snaptag query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [self postTo:SKEPAccount.snaptag query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 if ([(NSHTTPURLResponse *)response statusCode] == 200) {
@@ -152,7 +152,7 @@
     NSDictionary *query = @{@"username": self.username,
                             @"size": @"MEDIUM",
                             @"username_image": username};
-    [SKRequest postTo:SKEPAccount.avatar.get query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [self postTo:SKEPAccount.avatar.get query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 if ([(NSHTTPURLResponse *)response statusCode] == 200) {
@@ -175,10 +175,8 @@
     
     NSDictionary *query = @{@"username": self.username,
                             @"last_updated": [NSString timestamp]};
-    [SKRequest postTo:SKEPAccount.avatar.get query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        [self handleError:error data:data response:response completion:^(id object, NSError *error) {
-            completion(error);
-        }];
+    [self postTo:SKEPAccount.avatar.get query:query callback:^(NSDictionary *json, NSError *error) {
+        completion(error);
     }];
 }
 

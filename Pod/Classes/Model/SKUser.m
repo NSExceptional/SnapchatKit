@@ -21,6 +21,7 @@
     return [@{@"friendmojiString": @"friendmoji_string",
               @"friendmojiTypes": @"friendmoji_symbols",
               @"venue": @"venue",
+              @"snapStreakCount": @"snap_streak_count",
               @"sharedStoryIdentifier": @"shared_story_id",
               @"canSeeCustomStories": @"can_see_custom_stories",
               @"needsLove": @"needs_love",
@@ -33,6 +34,7 @@
 
 MTLTransformPropertyDate(timestamp)
 MTLTransformPropertyDate(expiration)
+
 #pragma mark - Equality
 
 - (BOOL)isEqual:(id)object {

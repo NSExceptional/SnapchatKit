@@ -25,3 +25,5 @@
 - (NSArray *)allKeyPaths;
 
 @end
+
+#define SKMergeDictionaries(a, b) [a dictionaryByReplacingValuesForKeys: b]

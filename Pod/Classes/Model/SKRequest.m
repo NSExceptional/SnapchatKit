@@ -87,24 +87,19 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
 
 #pragma mark POST / GET
 
-+ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json gauth:(NSString *)gauth token:(NSString *)token callback:(RequestBlock)callback {
-    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", gauth]};
-    [self postTo:endpoint query:json headers:headers token:token callback:callback];
-}
-
-+ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders token:(NSString *)token callback:(RequestBlock)callback {
++ (void)postTo:(NSString *)endpoint query:(NSDictionary *)json headers:(NSDictionary *)httpHeaders callback:(RequestBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(callback);
     
-    SKRequest *request = [[SKRequest alloc] initWithPOSTEndpoint:endpoint token:token query:json headers:httpHeaders ts:nil];
+    SKRequest *request = [[SKRequest alloc] initWithPOSTEndpoint:endpoint query:json headers:httpHeaders];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:callback];
     [dataTask resume];
 }
 
-+ (void)get:(NSString *)endpoint callback:(RequestBlock)callback {
++ (void)get:(NSString *)endpoint headers:(NSDictionary *)httpHeaders callback:(RequestBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(callback);
-    SKRequest *request = [[SKRequest alloc] initWithGETEndpoint:endpoint headers:nil];
+    SKRequest *request = [[SKRequest alloc] initWithGETEndpoint:endpoint headers:httpHeaders];
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:callback];
@@ -140,8 +135,8 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
     return self;
 }
 
-- (id)initWithPOSTEndpoint:(NSString *)endpoint token:(NSString *)token query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders ts:(NSString *)timestamp {
-    if (!token) token = SKConsts.staticToken;
+- (id)initWithPOSTEndpoint:(NSString *)endpoint query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders {
+    NSParameterAssert(params[@"timestamp"]);
     httpHeaders = SKRequestApplyHeaderOverrides(httpHeaders, endpoint);
     
     self = [self initWithHeaderFields:httpHeaders];
@@ -152,11 +147,7 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
         self.HTTPMethod = @"POST";
         
         NSMutableDictionary *json = [params mutableCopy];
-        if (!timestamp) timestamp = [NSString timestamp];
-        
-        // HTTP body
-        if (!json[@"req_token"]) json[@"req_token"] = [NSString hashSCString:token and:timestamp];
-        if (!json[@"timestamp"]) json[@"timestamp"] = @([timestamp longLongValue]);
+        NSString *timestamp = params[@"timestamp"];
         
         // Set HTTPBody
         // Only for uploading snaps here
@@ -176,7 +167,7 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
             
             self.HTTPBody = body;
         } else {
-            self.HTTPBody     = [[NSString queryStringWithParams:json] dataUsingEncoding:NSUTF8StringEncoding];
+            self.HTTPBody = [[NSString queryStringWithParams:json] dataUsingEncoding:NSUTF8StringEncoding];
         }
 
         if ([endpoint isEqualToString:SKEPSnaps.loadBlob] || [endpoint isEqualToString:SKEPChat.media])

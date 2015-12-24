@@ -88,6 +88,16 @@ NSString * SKStringFromChatType(SKChatType chatType) {
              @"pendingRecievedSnaps": @"pending_received_snaps"};
 }
 
++ (NSArray *)ignoredJSONKeyPathPrefixes {
+    static NSArray *ignored = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ignored = @[@"conversation_state", @"last_snap", @"conversation_messages.messaging_auth"];
+    });
+    
+    return ignored;
+}
+
 MTLTransformPropertyDate(lastInteraction)
 MTLTransformPropertyDate(lastNotified)
 MTLTransformPropertyDate(lastChatRead)

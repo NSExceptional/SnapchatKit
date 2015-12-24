@@ -60,19 +60,9 @@
                             @"zipped": @0,
                             @"features_map": @"{}",
                             @"username": self.username};
-    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
-                              SKHeaders.contentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", SKConsts.boundary]};
     
-    [SKRequest postTo:SKEPStories.upload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self handleError:error data:data response:response completion:^(id object, NSError *error) {
-                if (!error) {
-                    completion(uuid, nil);
-                } else {
-                    completion(nil, error);
-                }
-            }];
-        });
+    [self postTo:SKEPStories.upload query:query callback:^(id object, NSError *error) {
+        completion(error ? nil : uuid, error);
     }];
 }
 
@@ -82,7 +72,7 @@
     if (story.needsAuth) {
         NSDictionary *query = @{@"story_id": story.mediaIdentifier, @"username": self.username};
         NSString *url = [SKEPStories.authBlob stringByAppendingString:story.mediaIdentifier];
-        [SKRequest postTo:url query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self postTo:url query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (!error) {
                 NSInteger code = [(NSHTTPURLResponse *)response statusCode];
                 if (code == 200) {

@@ -42,10 +42,8 @@
     if (!dictionary || !dictionary.allKeys.count || !self) return self;
     
     NSMutableDictionary *m = self.mutableCopy;
-    for (NSString *key in dictionary.allKeys)
-        m[key] = dictionary[key];
-    
-    return m;
+    [m setValuesForKeysWithDictionary:dictionary];
+    return m.copy;
 }
 
 - (NSDictionary *)dictionaryByReplacingKeysWithNewKeys:(NSDictionary *)oldKeysToNewKeys {

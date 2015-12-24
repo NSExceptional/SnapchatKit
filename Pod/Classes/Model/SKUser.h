@@ -18,6 +18,9 @@
 /** \c nil if the user is not a shared story. */
 @property (nonatomic, readonly) NSString *sharedStoryIdentifier;
 
+/** Number of days the snap streak has gone on for, if at all. */
+@property (nonatomic, readonly) NSInteger snapStreakCount;
+
 /** NO if your stories are hidden from this user in "who can see my stories?". */
 @property (nonatomic, readonly) BOOL canSeeCustomStories;
 @property (nonatomic, readonly) BOOL needsLove;

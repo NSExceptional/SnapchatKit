@@ -22,11 +22,9 @@
     NSDictionary *query = @{@"recipient_usernames": recipientString,
                             @"username": self.currentSession.username};
     
-    [SKRequest postTo:SKEPChat.typing query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        [self handleError:error data:data response:response completion:^(id object, NSError *error) {
-            if (kVerboseLog && error)
-                SKLog(@"Failed to send typing notification(s): %@", recipientString);
-        }];
+    [self postTo:SKEPChat.typing query:query callback:^(id object, NSError *error) {
+        if (kVerboseLog && error)
+            SKLog(@"Failed to send typing notification(s): %@", recipientString);
     }];
 }
 

@@ -69,19 +69,9 @@
                             @"zipped": @0,
                             @"features_map": @"{}",
                             @"username": self.username};
-    NSDictionary *headers = @{SKHeaders.clientAuthToken: [NSString stringWithFormat:@"Bearer %@", self.googleAuthToken],
-                              SKHeaders.contentType: [NSString stringWithFormat:@"multipart/form-data; boundary=%@", SKConsts.boundary]};
 
-    [SKRequest postTo:SKEPSnaps.upload query:query headers:headers token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self handleError:error data:data response:response completion:^(id object, NSError *error) {
-                if (!error) {
-                    completion(uuid, nil);
-                } else {
-                    completion(nil, error);
-                }
-            }];
-        });
+    [self postTo:SKEPSnaps.upload query:query callback:^(id object, NSError *error) {
+        completion(error ? nil : uuid, error);
     }];
 }
 
@@ -145,7 +135,7 @@
     NSParameterAssert(identifier); NSParameterAssert(completion);
     
     NSDictionary *query = @{@"id": identifier, @"username": self.username};
-    [SKRequest postTo:SKEPSnaps.loadBlob query:query gauth:self.googleAuthToken token:self.authToken callback:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [self postTo:SKEPSnaps.loadBlob query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
         // Did get snap
         if ([(NSHTTPURLResponse *)response statusCode] == 200) {
             // Unzipped

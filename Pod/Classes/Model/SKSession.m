@@ -101,7 +101,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"canUseCash": @"updates_response.allowed_to_use_cash",
              @"isCashActive": @"udpates_response.is_cash_active",
              @"cashCustomerIdentifier": @"updates_response.cash_customer_id",
-             @"cashClientProperties": @"updates_response.client_properties",
+             @"clientProperties": @"updates_response.client_properties",
              @"cashProvider": @"updates_response.cash_provider",
              @"email": @"updates_response.email",
              @"mobileNumber": @"updates_response.mobile",
@@ -111,7 +111,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"recents": @"updates_response.recents",
              @"requests": @"updates_response.requests",
              @"addedFriendsTimestamp": @"updates_response.added_friends_timestamp",
-             @"auth_token": @"updates_response.auth_token",
+             @"authToken": @"updates_response.auth_token",
              @"canSeeMatureContent": @"updates_response.can_view_mature_content",
              @"countryCode": @"updates_response.countryCode",
              @"devicetoken": @"updates_response.device_token",
@@ -151,12 +151,27 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"trophyCase": @"identity_check_response.trophy_case.response",
              @"serverInfo": @"server_info",
              @"ringerSoundOn": @"updates_response.ringing_sound_setting",
+             @"payReplaySnaps": @"updates_response.feature_settings.pay_replay_snaps",
              @"IAPEnabledCurrencies": @"updates_response.enabled_iap_currencies",
              @"enabledLensStoreCurrencies": @"updates_response.enabled_lens_store_currencies",
              @"friendmojis": @"updates_response.friendmoji_dict",
              @"friendmojisReadOnly": @"updates_response.friendmoji_read_only_dict",
              @"friendmojisMutable": @"updates_response.friendmoji_mutable_dict",
-             @"industries": @"updates_response.industries"};
+             @"industries": @"updates_response.industries",
+             @"enableGuggenheim": @"updates_response.feature_settings.guggenheim_enabled"};
+}
+
++ (NSArray *)ignoredJSONKeyPathPrefixes {
+    static NSArray *ignored = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ignored = @[@"updates_response.friendmoji_dict", @"updates_response.friendmoji_read_only_dict",
+                    @"updates_response.friendmoji_mutable_dict", @"ad_placement_metadata",
+                    @"updates_response.study_settings", @"sponsored", @"updates_response.client_properties",
+                    @"updates_response.targeting", @"messaging_gateway_info"];
+    });
+    
+    return ignored;
 }
 
 + (NSValueTransformer *)bestFriendUsernamesJSONTransformer {
@@ -165,10 +180,6 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     } reverseBlock:^id(NSMutableOrderedSet *bests, BOOL *success, NSError *__autoreleasing *error) {
         return bests.array;
     }];
-}
-
-+ (NSValueTransformer *)discoverSupportedJSONTransformer {
-    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"supported": @YES, @"device_not_supported": @NO} defaultValue:@NO reverseDefaultValue:@"device_not_supported"];
 }
 
 MTLTransformPropertyDate(addedFriendsTimestamp)
@@ -181,7 +192,10 @@ MTLTransformPropertyDate(lastCheckedTrophies)
 + (NSValueTransformer *)conversationsJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKConversation class]]; }
 + (NSValueTransformer *)storiesJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKStoryCollection class]]; }
 + (NSValueTransformer *)userStoriesJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKUserStory class]]; }
++ (NSValueTransformer *)groupStoriesJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKStory class]]; }
 + (NSValueTransformer *)trophyCaseJSONTransformer { return [self sk_modelMutableOrderedSetTransformerForClass:[SKTrophy class]]; }
++ (NSValueTransformer *)ringerSoundOnJSONTransformer { return [self sk_onOffTransformer]; }
++ (NSValueTransformer *)enableNotificationSoundsJSONTransformer { return [self sk_onOffTransformer]; }
 
 + (NSValueTransformer *)storyPrivacyJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSString *p, BOOL *success, NSError *__autoreleasing *error) {
@@ -199,6 +213,13 @@ MTLTransformPropertyDate(lastCheckedTrophies)
     }];
 }
 
++ (NSValueTransformer *)discoverSupportedJSONTransformer {
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"supported": @YES, @"device_not_supported": @NO} defaultValue:@NO reverseDefaultValue:@"device_not_supported"];
+}
+
++ (NSValueTransformer *)canUseCashJSONTransformer {
+    return [NSValueTransformer mtl_valueMappingTransformerWithDictionary:@{@"OK": @YES, @"NO_VERIFIED_PHONE": @NO} defaultValue:@NO reverseDefaultValue:@"NO_VERIFIED_PHONE"];
+}
 
 @end
 
