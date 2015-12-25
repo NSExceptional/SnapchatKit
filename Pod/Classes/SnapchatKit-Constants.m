@@ -95,30 +95,10 @@ NSString * const SKTemporaryLoginFailure = @"Oh no! Your login temporarily faile
 
 #pragma mark - General API constants -
 
-#pragma mark Attestation
-SK_NAMESPACE_IMP(SKAttestation) {
-    .userAgent           = @"SafetyNet/7899000 (WIKO JZO54K); gzip",
-    .certificateDigest   = @"Lxyq/KHtMNC044hj7vq+oOgVcR+kz3m4IlGaglnZWlg=",
-    .GMSVersion          = 7329038,
-    .protobufBytecodeURL = @"https://www.googleapis.com/androidantiabuse/v1/x/create?alt=PROTO&key=AIzaSyBofcZsgLSS7BOnBjZPEkk4rYwzOIz-lTI",
-    .protobufPOSTURL     = @"https://api.casper.io/snapchat/attestation/attest",
-    .attestationURL      = @"https://www.googleapis.com/androidcheck/v1/attestations/attest?alt=JSON&key=AIzaSyDqVnJBjE5ymo--oBJt3On7HQx9xNm1RHA",
-    .digest9_8           = @"vXCcGhQ7RfL1LUiE3F6vcNORNo7IFSOvuDBunK87mEI=",
-    .digest9_9           = @"Yk9Wqmx7TrTatldWI+5PWbQjGA8Gi8ZoO8X9OUAw1hg=",
-    .digest9_10          = @"JJShKOLH4YYjWZlJQ71A2dPTcmxbaMboyfo0nsKYayE=",
-    .digest9_11          = @"nNsTUhHYJ943NG6vAPNl+tRr1vktNb9HpvRxZuu/rrE=",
-    .digest9_12_0_1      = @"W4snbl56it9XbT2lsL4gyHwMsElnmOPBDp+iIYqbGcI=",
-    .digest9_12_1        = @"fGZExseKdFH1bltkKloaAGfGx0vnKDDymKiJAiLo3dU=",
-    .digest9_12_2        = @"LMQNajaQ4SO7vNaQS1FRokxCtQXeIHwKZiJYhMczDGk=",
-    .digest9_13          = @"BWDe2a5b3I26Yw6z4Prvh2aEMRcf2B1FMs8136QIeCM=",
-    .digest9_14          = @"k6IftsTIpJeVhZDoHZv9zxDhE7HuN50PpO3O/zIXxsU=",
-    .digest9_14_2        = @"5O40Rllov9V8PpwD5zPmmp+GQi7UMIWz2A0LWZA7UX0="
-};
-
 #pragma mark Misc
 SK_NAMESPACE_IMP(SKConsts) {
-    .baseURL           = @"https://feelinsonice-hrd.appspot.com",
-    .userAgent         = @"Snapchat/9.16.1.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.16.1.0 (HTC One; Android 4.4.2#302626.7#19; gzip)";
+    .baseURL           = @"https://app.snapchat.com",
+    .userAgent         = @"Snapchat/9.21.0.1 (iPhone8,1; iOS 9.0.2; gzip)",//@"Snapchat/9.16.1.0 (SM-N9005; Android 5.0.2; gzip)", //Snapchat/9.16.1.0 (HTC One; Android 4.4.2#302626.7#19; gzip)",
     .eventsURL         = @"https://sc-analytics.appspot.com/post_events",
     .analyticsURL      = @"https://sc-analytics.appspot.com/analytics/bz",
     .secret            = @"iEk21fuwZApXlz93750dmW22pw389dPwOk",
@@ -128,7 +108,7 @@ SK_NAMESPACE_IMP(SKConsts) {
     .boundary          = @"Boundary+0xAbCdEfGbOuNdArY",
     .deviceToken1i     = @"dtoken1i",
     .deviceToken1v     = @"dtoken1v",
-    .snapchatVersion   = @"9.16.1.0"
+    .snapchatVersion   = @"9.21.0.1"
 };
 
 #pragma mark Header fields / values

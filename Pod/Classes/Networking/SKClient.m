@@ -281,12 +281,12 @@ BOOL SKShouldUseStaticToken(NSString *endpiont) {
             NSError *jsonError = nil;
             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
             // Content-Type header for specific endpoints
-            NSDictionary *headers = json[@"headers"];
+            NSDictionary *headers = json[@"endpoints"][0][@"headers"];
             if (headers && ([endpoint isEqualToString:SKEPStories.upload] || [endpoint isEqualToString:SKEPSnaps.upload]))
                 headers = SKMergeDictionaries(headers, @{SKHeaders.contentType: ([NSString stringWithFormat:@"multipart/form-data; boundary=%@", SKConsts.boundary])});
             
             if ([json[@"code"] integerValue] == 200)
-                callback(json[@"params"], headers, nil);
+                callback(json[@"endpoints"][0][@"params"], headers, nil);
             else
                 callback(nil, nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
         } else {
@@ -426,11 +426,15 @@ BOOL SKShouldUseStaticToken(NSString *endpiont) {
     SKAssertIsSignedIn(self);
     
     NSDictionary *query = @{@"username": self.username,
+                            @"friends_request": @{@"friends_sync_token": self.currentSession.friendsSyncToken ?: @0},
                             @"height": @(self.screenSize.height),
                             @"width": @(self.screenSize.width),
-                            @"max_video_height": @(self.maxVideoSize.height),
-                            @"max_video_width": @(self.maxVideoSize.width),
-                            @"include_client_settings": @"true"};
+                            @"screen_height_px": @(self.screenSize.height),
+                            @"screen_width_px": @(self.screenSize.width),
+                            @"screen_width_in": @0,
+                            @"screen_height_in": @0,
+                            @"checksums_dict": @"{}",
+                            @"features_map": @"{}"};
     [self postTo:SKEPUpdate.all query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             _currentSession = [[SKSession alloc] initWithDictionary:json];

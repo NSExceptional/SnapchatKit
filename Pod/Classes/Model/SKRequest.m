@@ -137,13 +137,15 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
 
 - (id)initWithPOSTEndpoint:(NSString *)endpoint query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders {
     NSParameterAssert(params[@"timestamp"]);
+//    [[self class] overrideHeaderValuesGlobally:@{SKHeaders.userAgent: SKConsts.userAgent}];
+    
     httpHeaders = SKRequestApplyHeaderOverrides(httpHeaders, endpoint);
     
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
         SKRequestApplyOverrides(&endpoint, &params);
         
-        self.URL = [NSURL URLWithString:[SKConsts.baseURL stringByAppendingPathComponent:endpoint]];
+        self.URL = [NSURL URLWithString:[SKConsts.baseURL stringByAppendingString:endpoint]];
         self.HTTPMethod = @"POST";
         
         NSMutableDictionary *json = [params mutableCopy];
@@ -173,6 +175,8 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
         if ([endpoint isEqualToString:SKEPSnaps.loadBlob] || [endpoint isEqualToString:SKEPChat.media])
             [self setValue:timestamp forHTTPHeaderField:SKHeaders.timestamp];
     }
+    
+//    SKLog(@"\nEndpoint: %@\nParams:\n%@\n\nHeaders:\n%@", self.URL, params, httpHeaders);
     
     return self;
 }

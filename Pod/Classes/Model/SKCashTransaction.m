@@ -42,7 +42,7 @@
 #pragma mark - Mantle
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
-    return @{@"patination": @"iter_token",
+    return @{@"pagination": @"iter_token",
              @"status": @"status",
              @"amount": @"amount",
              @"currencyCode": @"currency_code",

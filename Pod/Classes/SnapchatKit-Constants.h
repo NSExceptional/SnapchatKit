@@ -93,31 +93,6 @@ extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
 extern NSString * const SKNoConversationExistsYet;
 extern NSString * const SKTemporaryLoginFailure;
 
-/** Various attestation related strings. */
-SK_NAMESPACE(SKAttestation, {
-    /** The user agent specific to making the attestation request. */
-    NSNSString *userAgent;
-    /** The sha256 digest of the certificate used to sign the Snapchat APK, base 64 encoded. It should never change. */
-    NSNSString *certificateDigest;
-    /** Google Play Services version used to make the attestation request. */
-    NSInteger  GMSVersion;
-    /** The URL used to get the bytecode needed to generate droidguard and attestation. */
-    NSNSString *protobufBytecodeURL;
-    NSNSString *protobufPOSTURL;
-    NSNSString *attestationURL;
-    NSNSString *digest9_8;
-    NSNSString *digest9_9;
-    NSNSString *digest9_10;
-    NSNSString *digest9_11;
-    NSNSString *digest9_12_0_1;
-    NSNSString *digest9_12_1;
-    NSNSString *digest9_12_2;
-    NSNSString *digest9_13;
-    NSNSString *digest9_14;
-    NSNSString *digest9_14_2;
-    
-});
-
 SK_NAMESPACE(SKConsts, {
     /** The API URL. iOS uses the /bq endpoint, Android clients use the /ph endpoint. */
     NSNSString *baseURL;

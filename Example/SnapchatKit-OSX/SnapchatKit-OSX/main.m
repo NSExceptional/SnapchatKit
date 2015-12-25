@@ -223,11 +223,11 @@ int main(int argc, const char * argv[]) {
         [SKClient sharedClient].casperUserAgent = kCasperUserAgent;
 #endif
         
-        [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword completion:^(NSDictionary *dict, NSError *error) {
+        [[SKClient sharedClient] restoreSessionWithUsername:kUsername snapchatAuthToken:kAuthToken doGetUpdates:^(NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
-                [dict writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
-                SKLog(@"Session written to file.");
+//                [dict writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
+//                SKLog(@"Session written to file.");
                 
                 // For debugging purposes, to see the size of the response JSON in memory. Mine was about 300 KB.
                 // Probably quadratically larger though, since each object also holds onto its JSON dictionary,
