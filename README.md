@@ -6,6 +6,15 @@
 [![Issues](https://img.shields.io/github/issues-raw/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/issues)
 [![Stars](https://img.shields.io/github/stars/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/stargazers)
 
+## Quick FAQ
+> Why isn't login working?
+
+SnapchatKit relies on Liam Cottle's private API to sign in. If or when his API becomes public, SnapchatKit will work again. I have access to the API to maintain SnapchatKit.
+
+> What is `Login.h` / why is it missing?
+
+It's just a file I keep my credentials in on my computer. You can safely remove any references to it, and any mysterious constants like `kUsername` or `kAuthToken` which are defined in `Login.h`.
+
 ## Usage
 
 Documentation for SnapchatKit is on [Cocoadocs](http://cocoadocs.org/docsets/SnapchatKit/0.1.0/index.html). To run the example project, clone the repo, and run `pod install` from the Example directory first.
@@ -25,19 +34,21 @@ Or add the source files in /Pods to your project, ~~as well as SSZipArchive~~. S
 SnapchatKit revolves around the `SKClient` class as a singleton. An instance of `SKClient` manages a Snapchat account. Here, we sign in and get a list of unread snaps and chats:
 
 ```objc
+[SKClient sharedClient].casperAPIKey = @"your_api_key";
+[SKClient sharedClient].casperAPISecret = @"your_api_secret";
+[SKClient sharedClient].casperUserAgent = @"not_required_but_please_use_one";
 [[SKClient sharedClient] signInWithUsername:@"donald-trump" password:@"for_president"
-                                      gmail:@"niceHair@gmail.com" gpass:@"123abc"
-                                 completion:^(NSDictionary *json) {
+                                 completion:^(NSDictionary *json, NSError *error) {
     NSArray *unread = [SKClient sharedClient].currentSession.unread;
     NSLog(@"%@", unread);
 }];
 ```
 
-Gmail information is necessary to trick Snapchat into thinking we're using the first-party Android client.
+~~Gmail information is necessary to trick Snapchat into thinking we're using the first-party Android client.~~
+SnapchatKit now poses as the iOS client instead of the Android one; Google credentials not required.
 
 ## To-do
 - TLS chat support
-- Send Google account passwords encrypted instead of plaintext...
 - Tests
 
 ## Third party resources
@@ -45,7 +56,7 @@ Gmail information is necessary to trick Snapchat into thinking we're using the f
 - https://gibsonsec.org/snapchat/fulldisclosure/
 - https://github.com/mgp25/SC-API/wiki/API-v2-Research/
 - https://github.com/mgp25/SC-API/
-- https://github.com/liamcottle/AttestationServlet
+- ~~https://github.com/liamcottle/AttestationServlet~~ unused now but still useful to know
 
 ## Special thanks to
 
