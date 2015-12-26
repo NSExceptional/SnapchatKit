@@ -9,7 +9,7 @@
 ## Quick FAQ
 > Why isn't login working?
 
-SnapchatKit relies on Liam Cottle's private API to sign in. If or when his API becomes public, SnapchatKit will work again. I have access to the API to maintain SnapchatKit.
+SnapchatKit relies on Liam Cottle's private API to sign in *and* make any request, due to how the iOS API works and the limits of our knowledge of its implementation. If or when his API becomes public, SnapchatKit will work again. I have access to the API to maintain SnapchatKit.
 
 > What is `Login.h` / why is it missing?
 
