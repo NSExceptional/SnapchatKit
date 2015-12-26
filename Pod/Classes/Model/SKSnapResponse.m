@@ -14,9 +14,7 @@
 - (id)initWithDictionary:(NSDictionary *)json sender:(NSString *)sender {
     self = [super initWithDictionary:json];
     if (self) {
-        _sender     = sender;
-        _identifier = json[@"id"];
-        _timestamp  = [NSDate dateWithTimeIntervalSince1970:[json[@"timestamp"] doubleValue]/1000];
+        _sender = sender;
     }
     
     return self;
@@ -27,8 +25,8 @@
 - (id)initWithDictionary:(NSDictionary *)json { [NSException raise:NSInternalInconsistencyException format:@"Use -initWithDictionary:sender:"]; return nil; }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ sender=%@, id=%@, ts=%lu>",
-            NSStringFromClass(self.class), self.sender, self.identifier, (unsigned long)self.timestamp.timeIntervalSince1970];
+    return [NSString stringWithFormat:@"<%@ sender=%@, id=%@, ts=%@>",
+            NSStringFromClass(self.class), _sender, _identifier, @(_timestamp.timeIntervalSince1970).stringValue];
 }
 
 #pragma mark - Mantle
@@ -47,7 +45,7 @@ MTLTransformPropertyDate(timestamp)
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ success=%d> Snaps:\n%@",
-            NSStringFromClass(self.class), self.success, self.sentSnaps];
+            NSStringFromClass(self.class), _success, _sentSnaps];
 }
 
 #pragma mark - Mantle
