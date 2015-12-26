@@ -71,6 +71,8 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 
 /** The current signed in user. */
 @property (nonatomic, readonly) NSString     *recipient;
+/** The first participant that is not the recipient, or the first participant. */
+@property (nonatomic, readonly) NSString     *sender;
 /** Array of username strings. */
 @property (nonatomic, readonly) NSArray      *participants;
 /** Array of username strings. */

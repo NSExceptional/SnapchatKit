@@ -208,7 +208,7 @@ MTLTransformPropertyDate(lastChatWrite)
         
         if (cls == [SKMessage class]) {
             SKMessage *mess = (id)message;
-            return mess.text ?: [mess.sender stringByAppendingString:@"sent a picture."];
+            return mess.text ?: [mess.sender stringByAppendingString:@" sent a picture."];
             
         } else if (cls == [SKCashTransaction class]) {
             SKCashTransaction *cash = (id)message;
@@ -225,6 +225,14 @@ MTLTransformPropertyDate(lastChatWrite)
 - (void)setRecipient:(NSString *)recipient {
     NSParameterAssert(recipient);
     _recipient = recipient;
+}
+
+- (NSString *)sender {
+    if (!_recipient) return _participants.firstObject;
+    
+    if ([_participants.firstObject isEqualToString:_recipient])
+        return _participants[1];
+    return _participants.firstObject;
 }
 
 @end
