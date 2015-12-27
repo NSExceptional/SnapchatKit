@@ -253,7 +253,7 @@ int main(int argc, const char * argv[]) {
                 
 //                
 //                SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
-//                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"displayName", @""]].firstObject;
+//                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"username", @"luke"]].firstObject;
 //                for (SKStory *s in friend.stories)
 //                    [s load:^(NSError *error1) {
 //                        if (!error1) {
@@ -305,7 +305,7 @@ int main(int argc, const char * argv[]) {
                 saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-//                markSnapsRead(unread);
+                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
                 //                markChatsRead(session);

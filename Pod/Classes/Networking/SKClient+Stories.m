@@ -67,16 +67,24 @@
 }
 
 - (void)loadStoryBlob:(SKStory *)story completion:(ResponseBlock)completion {
+    [self loadStoryOrThumb:story thumbnail:NO completion:completion];
+}
+
+- (void)loadStoryThumbnailBlob:(SKStory *)story completion:(ResponseBlock)completion {
+    [self loadStoryOrThumb:story thumbnail:YES completion:completion];
+}
+
+- (void)loadStoryOrThumb:(SKStory *)story thumbnail:(BOOL)thumbnail completion:(ResponseBlock)completion {
     NSParameterAssert(story); NSParameterAssert(completion);
-    // I was using this, but... [NSString stringWithFormat:@"%@%@", kepGetStoryBlob, story.mediaIdentifier]
+    
     if (story.needsAuth) {
+        NSString *endpoint = thumbnail ? SKEPStories.authThumb : SKEPStories.authBlob;
         NSDictionary *query = @{@"story_id": story.mediaIdentifier, @"username": self.username};
-        NSString *url = [SKEPStories.authBlob stringByAppendingString:story.mediaIdentifier];
-        [self postTo:url query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
+        [self postTo:endpoint query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (!error) {
                 NSInteger code = [(NSHTTPURLResponse *)response statusCode];
                 if (code == 200) {
-                    [SKBlob blobWithStoryData:data forStory:story completion:^(SKBlob *storyBlob, NSError *blobError) {
+                    [SKBlob blobWithStoryData:data forStory:story isThumb:thumbnail completion:^(SKBlob *storyBlob, NSError *blobError) {
                         if (!blobError) {
                             completion(storyBlob, nil);
                         } else {
@@ -91,11 +99,14 @@
             }
         }];
     } else {
-        [self get:[story.mediaURL.absoluteString stringByReplacingOccurrencesOfString:SKConsts.baseURL withString:@""] callback:^(NSData *data, NSError *error) {
+        NSString *url = [story.mediaURL.absoluteString stringByReplacingOccurrencesOfString:SKConsts.baseURL withString:@""];
+        if (thumbnail)
+            url = [url stringByReplacingOccurrencesOfString:@"story_blob" withString:@"story_thumbnail"];
+        [self get:url callback:^(NSData *data, NSError *error) {
             if (!error) {
-                [SKBlob blobWithStoryData:data forStory:story completion:^(SKBlob *storyBlob, NSError *blobError) {
+                [SKBlob blobWithStoryData:data forStory:story isThumb:thumbnail completion:^(SKBlob *thumbBlob, NSError *blobError) {
                     if (!blobError) {
-                        completion(storyBlob, nil);
+                        completion(thumbBlob, nil);
                     } else {
                         completion(nil, blobError);
                     }
@@ -105,23 +116,6 @@
             }
         }];
     }
-}
-
-- (void)loadStoryThumbnailBlob:(SKStory *)story completion:(ResponseBlock)completion {
-    NSParameterAssert(story); NSParameterAssert(completion);
-    [self get:[NSString stringWithFormat:@"%@%@", SKEPStories.thumb, story.mediaIdentifier] callback:^(NSData *data, NSError *error) {
-        if (!error) {
-            [SKBlob blobWithStoryData:data forStory:story completion:^(SKBlob *thumbBlob, NSError *blobError) {
-                if (!blobError) {
-                    completion(thumbBlob, nil);
-                } else {
-                    completion(nil, blobError);
-                }
-            }];
-        } else {
-            completion(nil, error);
-        }
-    }];
 }
 
 - (void)loadStories:(NSArray *)stories completion:(CollectionResponseBlock)completion {

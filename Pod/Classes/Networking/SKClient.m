@@ -74,8 +74,8 @@ BOOL SKShouldUseStaticToken(NSString *endpiont) {
 
 #pragma mark Initializers
 
+static SKClient *sharedSKClient;
 + (instancetype)sharedClient {
-    static SKClient *sharedSKClient;
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         sharedSKClient = [SKClient new];
@@ -83,6 +83,11 @@ BOOL SKShouldUseStaticToken(NSString *endpiont) {
     });
     
     return sharedSKClient;
+}
+
++ (void)setSharedClient:(SKClient *)client {
+    NSParameterAssert(client);
+    sharedSKClient = client;
 }
 
 + (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken {

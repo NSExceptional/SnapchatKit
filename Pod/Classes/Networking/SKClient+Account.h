@@ -69,5 +69,8 @@
  @param completion Takes an error, if any. */
 - (void)updateTOSAgreementStatus:(BOOL)snapcash snapcashV2:(BOOL)snapcashV2 square:(BOOL)square completion:(ErrorBlock)completion;
 
+/** Retrieves your trophies. Completion takes an array of \c SKTrophy objects. */
+- (void)getTrophies:(ArrayBlock)completion;
+
 
 @end

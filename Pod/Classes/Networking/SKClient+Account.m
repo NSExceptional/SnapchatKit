@@ -195,4 +195,8 @@
     }];
 }
 
+- (void)getTrophies:(ArrayBlock)completion {
+    
+}
+
 @end

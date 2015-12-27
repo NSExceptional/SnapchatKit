@@ -10,10 +10,13 @@
 #import "SKRequest.h"
 #import "SKConversation.h"
 #import "SKNewConversation.h"
+#import "SKMessage.h"
+#import "SKBlob.h"
 
 #import "NSString+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
 #import "NSDictionary+SnapchatKit.h"
+#import "NSData+SnapchatKit.h"
 
 @implementation SKClient (Chat)
 
@@ -158,6 +161,15 @@
     }];
 }
 
+- (void)checkCashEligibility:(NSString *)username completion:(void (^)(BOOL, NSError *))completion {
+    NSParameterAssert(username); NSParameterAssert(completion);
+    NSDictionary *query = @{@"recipient": username, @"username": self.username};
+    [self postTo:SKEPCash.checkRecipientEligibility query:query callback:^(NSDictionary *json, NSError *error) {
+        // Other possible values: SERVICE_NOT_AVAILABLE_TO_RECIPIENT
+        completion([json[@"status"] isEqualToString:@"OK"], error);
+    }];
+}
+
 - (void)sendMessage:(NSString *)message to:(NSString *)username completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
     [self sendMessage:message toEach:@[username] completion:^(NSArray *conversations, NSArray *failed, NSError *error) {
@@ -218,6 +230,29 @@
             }];
         } else {
             completion(@[], failedConvos, error);
+        }
+    }];
+}
+
+- (void)downloadMedia:(SKMessage *)mediaMessage completion:(ResponseBlock)completion {
+    NSParameterAssert(mediaMessage); NSParameterAssert(completion);
+    NSDictionary *query = @{@"conversation_id": mediaMessage.conversationIdentifier,
+                            @"id": mediaMessage.mediaIdentifier,
+                            @"username": self.username};
+    [self postTo:SKEPChat.media query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!error) {
+            NSInteger code = [(NSHTTPURLResponse *)response statusCode];
+            if (code == 200 && data.length) {
+                data = [data decryptStoryWithKey:mediaMessage.mediaKey iv:mediaMessage.mediaIV];
+                completion([SKBlob blobWithData:data], nil);
+            } else if (code != 200) {
+                completion(nil, [SKRequest errorWithMessage:@"Failed to download chat media" code:code]);
+            } else {
+                completion(nil, [SKRequest errorWithMessage:@"Chat media response was 0 bytes with code 200" code:200]);
+                SKLog(@"Chat media response was 0 bytes with code 200");
+            }
+        } else {
+            completion(nil, error);
         }
     }];
 }

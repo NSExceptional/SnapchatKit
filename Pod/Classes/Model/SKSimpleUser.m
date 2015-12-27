@@ -15,6 +15,8 @@
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
     
+    if (!_displayName.length) _displayName = nil;
+    
     // API debugging
     if (![json[@"direction"] isEqualToString:@"OUTGOING"] && ![json[@"direction"] isEqualToString:@"INCOMING"])
         SKLog(@"SKSimpleUser new 'direction': %@", json[@"direction"]);
@@ -24,7 +26,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ username=%@, displayn=%@, incoming=%d>",
-            NSStringFromClass(self.class), self.username, self.displayName, self.addedIncoming];
+            NSStringFromClass(self.class), _username, _displayName, _addedIncoming];
 }
 
 #pragma mark - Mantle
@@ -55,11 +57,11 @@ MTLTransformPropertyDate(expiration)
 }
 
 - (BOOL)isEqualToSimpleUser:(SKSimpleUser *)user {
-    return [self.username isEqualToString:user.username];
+    return [_username isEqualToString:user.username];
 }
 
 - (NSUInteger)hash {
-    return self.username.hash;
+    return _username.hash;
 }
 
 @end

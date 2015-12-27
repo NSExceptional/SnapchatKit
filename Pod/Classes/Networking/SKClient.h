@@ -37,6 +37,9 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 /** The default Snapchat session manager. To use more than one account, simply create and manage your own instances of \c SKClient instead of using the singleton. */
 + (instancetype)sharedClient;
 
+/// Assigns the object returned by \c sharedClient. Useful because some convenience methods in SnapchatKit use \c sharedClient by default.
++ (void)setSharedClient:(SKClient *)client;
+
 /** Initializes an \c SKClient instance with the minimum data required to resume an existing session. \c currentSession needs to be updated afterwards. */
 + (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken;
 

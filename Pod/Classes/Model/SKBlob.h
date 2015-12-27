@@ -25,8 +25,9 @@
  @discussion This method is specifically for story blobs, because they \e used to be CBC encrypted and possibly zipped if it's a video. Yes: stories are no longer encrypted. Get it together, Snapchat...
  @param blobData Pretty self explanatory.
  @param story The story you wish to retrieve.
+ @param Whether the data is for a thumbnail or not.
  @param completion Takes an error, if any, and an \c SKBlob object. */
-+ (void)blobWithStoryData:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion;
++ (void)blobWithStoryData:(NSData *)blobData forStory:(SKStory *)story isThumb:(BOOL)thumb completion:(ResponseBlock)completion;
 
 /** Used to unarchive blobs initialized with anonymous data.
 @param completion Takes an error, if any, and new \c SKBlob object. Returns immediately if the blob was not compressed. */

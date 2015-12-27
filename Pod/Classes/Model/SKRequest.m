@@ -149,7 +149,6 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
         self.HTTPMethod = @"POST";
         
         NSMutableDictionary *json = [params mutableCopy];
-        NSString *timestamp = params[@"timestamp"];
         
         // Set HTTPBody
         // Only for uploading snaps here
@@ -171,9 +170,6 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
         } else {
             self.HTTPBody = [[NSString queryStringWithParams:json] dataUsingEncoding:NSUTF8StringEncoding];
         }
-
-        if ([endpoint isEqualToString:SKEPSnaps.loadBlob] || [endpoint isEqualToString:SKEPChat.media])
-            [self setValue:timestamp forHTTPHeaderField:SKHeaders.timestamp];
     }
     
 //    SKLog(@"\nEndpoint: %@\nParams:\n%@\n\nHeaders:\n%@", self.URL, params, httpHeaders);

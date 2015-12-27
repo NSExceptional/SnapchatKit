@@ -39,6 +39,9 @@
  @param completion Takes an error, if any. */
 - (void)clearFeed:(ErrorBlock)completion;
 
+/** Tells you whether the other participant is eligible for cash. Completion takes a boolean and an error, if any. */
+- (void)checkCashEligibility:(NSString *)username completion:(void (^)(BOOL, NSError *))completion;
+
 /** Sends a message \e message to \e username.
  @param message The message to send.
  @param username The username of the recipient.
@@ -49,6 +52,11 @@
  @param recipients An array of username strings.
  @param completion Takes an error, if any, an array \e conversations of \c SKConversation objects, and an array \e failed of usernames who could not be sent the message. */
 - (void)sendMessage:(NSString *)message toEach:(NSArray *)recipients completion:(void (^)(NSArray *conversations, NSArray *failed, NSError *error))completion;
+
+/** Downloads the blob for a media message.
+ @param mediaMessage Must have \c messageKind \c SKMessageKindMedia.
+ @param completion Takes an error, if any, and an SKBlob for the chat media. */
+- (void)downloadMedia:(SKMessage *)mediaMessage completion:(ResponseBlock)completion;
 
 #pragma mark Loading old data
 

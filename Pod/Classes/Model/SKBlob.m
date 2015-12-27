@@ -25,13 +25,9 @@
     return [[self alloc] initWithData:data];
 }
 
-+ (void)blobWithStoryData:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion {
++ (void)blobWithStoryData:(NSData *)blobData forStory:(SKStory *)story isThumb:(BOOL)thumb completion:(ResponseBlock)completion {
     NSParameterAssert(blobData); NSParameterAssert(story); NSParameterAssert(completion);
-    if (blobData.isCompressed) {
-        [self decompressBlob:blobData forStory:story completion:completion];
-    } else {
-        [self decryptBlob:blobData forStory:story completion:completion];
-    }
+    [self decryptBlob:blobData forStory:story isThumb:thumb completion:completion];
 }
 
 + (void)decompressBlob:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion {
@@ -55,10 +51,13 @@
     }];
 }
 
-+ (void)decryptBlob:(NSData *)blobData forStory:(SKStory *)story completion:(ResponseBlock)completion {
++ (void)decryptBlob:(NSData *)blobData forStory:(SKStory *)story isThumb:(BOOL)thumb completion:(ResponseBlock)completion {
     NSParameterAssert(blobData); NSParameterAssert(story); NSParameterAssert(completion);
     if ((!blobData.isCompressed && !blobData.isMedia)) {
-        blobData = [blobData decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
+        if (thumb)
+            blobData = [blobData decryptStoryWithKey:story.mediaKey iv:story.thumbIV];
+        else
+            blobData = [blobData decryptStoryWithKey:story.mediaKey iv:story.mediaIV];
     }
     
     if (blobData.isCompressed) {
