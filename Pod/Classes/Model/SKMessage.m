@@ -117,7 +117,7 @@ NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
 }
 
 #if (!TARGET_OS_MAC)
-+ (NSValueTransformer *)messageSizeJSONTransformer {
++ (NSValueTransformer *)mediaSizeJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSDictionary *media, BOOL *success, NSError *__autoreleasing *error) {
         if (!media) return nil;
         return [NSValue valueWithCGSize:CGSizeMake([media[@"width"] integerValue], [media[@"height"] integerValue])];

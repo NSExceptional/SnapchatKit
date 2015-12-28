@@ -54,7 +54,9 @@ typedef NS_ENUM(NSUInteger, SKStoryPrivacy) {
 typedef NS_ENUM(NSInteger, SKAddSource) {
     SKAddSourcePhonebook = 1,
     SKAddSourceUsername,
-    SKAddSourceAddedBack
+    SKAddSourceAddedBack,
+    SKAddSourceQRCode,
+    SKAddSourceNearby
 };
 
 typedef NS_ENUM(NSInteger, SKMediaKind) {

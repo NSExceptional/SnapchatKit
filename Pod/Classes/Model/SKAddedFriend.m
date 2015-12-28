@@ -11,8 +11,8 @@
 @implementation SKAddedFriend
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ add source=%@, username=%@, displayn=%@>",
-            NSStringFromClass(self.class), SKStringFromAddSource(self.addSourceType), self.username, self.displayName];
+    return [NSString stringWithFormat:@"<%@ add source=%@, username=%@, displayn=%@ pending count=%@>",
+            NSStringFromClass(self.class), _addSource, self.username, self.displayName, @(_pendingSnaps)];
 }
 
 #pragma mark - Mantle

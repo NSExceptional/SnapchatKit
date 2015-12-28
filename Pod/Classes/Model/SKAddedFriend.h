@@ -11,7 +11,7 @@
 /** Appears in the \c addedFriends property of \c SKSession. */
 @interface SKAddedFriend : SKSimpleUser
 
-/** ie "Added you back" */
+/** ie "Added you back" or "In my contacts - username" */
 @property (nonatomic, readonly) NSString    *addSource;
 /** How they were added. */
 @property (nonatomic, readonly) SKAddSource addSourceType;
