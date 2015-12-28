@@ -12,7 +12,8 @@ typedef NS_ENUM(NSUInteger, SKMessageKind)
 {
     SKMessageKindText = 1,
     SKMessageKindMedia,
-    SKMessageKindDiscoverShared
+    SKMessageKindDiscoverShared,
+    SKMessageKindStoryReply
 };
 
 extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
@@ -49,7 +50,7 @@ extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 @property (nonatomic, readonly) NSString      *mediaIV;
 /** \c nil if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) NSString      *mediaKey;
-/** i.e. "VIDEO" */
+/** i.e. "VIDEO" or "IMAGE" */
 @property (nonatomic, readonly) NSString      *mediaType;
 
 /** Array of usernames. */

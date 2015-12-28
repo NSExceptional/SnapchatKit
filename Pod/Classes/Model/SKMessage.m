@@ -15,21 +15,22 @@ SKMessageKind SKMessageKindFromString(NSString *messageKindString) {
         return SKMessageKindMedia;
     if ([messageKindString isEqualToString:@"discover_share_v2"])
         return SKMessageKindDiscoverShared;
+    if ([messageKindString isEqualToString:@"story_reply_v2"])
+        return SKMessageKindStoryReply;
     
     return 0;
 }
 
 NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
     switch (messageKind) {
-        case SKMessageKindText: {
+        case SKMessageKindText:
             return @"text";
-        }
-        case SKMessageKindMedia: {
+        case SKMessageKindMedia:
             return @"media";
-        }
-        case SKMessageKindDiscoverShared: {
+        case SKMessageKindDiscoverShared:
             return @"discover_share_v2";
-        }
+        case SKMessageKindStoryReply:
+            return @"story_reply_v2";
     }
     
     [NSException raise:NSInternalInconsistencyException format:@"Invalid message kind: %@", @(messageKind).stringValue];
@@ -47,7 +48,7 @@ NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
     
     if (!self.mediaType)
         _mediaType = @"UNSPECIFIED";
-    else if (![self.mediaType isEqualToString:@"VIDEO"])
+    else if (!([self.mediaType isEqualToString:@"VIDEO"] || [self.mediaType isEqualToString:@"IMAGE"]))
         NSLog(@"New media type: %@", self.mediaType);
     
     if (![_type isEqualToString:@"chat_message"])

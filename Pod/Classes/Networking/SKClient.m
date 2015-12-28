@@ -444,9 +444,9 @@ static SKClient *sharedSKClient;
         if (!error) {
             _currentSession = [[SKSession alloc] initWithDictionary:json];
             _authToken = self.currentSession.authToken;
-            completion(nil);
+            if (completion) completion(nil);
         } else {
-            completion(error);
+            if (completion) completion(error);
         }
     }];
 }
