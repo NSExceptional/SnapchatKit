@@ -15,7 +15,7 @@
 @property (nonatomic, readonly) NSString    *addSource;
 /** How they were added. */
 @property (nonatomic, readonly) SKAddSource addSourceType;
-/** When they were added. */
+/** When the request was sent. */
 @property (nonatomic, readonly) NSDate      *timestamp;
 /** The number of pending snaps you have from this user. */
 @property (nonatomic, readonly) NSUInteger  pendingSnaps;

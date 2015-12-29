@@ -88,7 +88,7 @@ void registerAccount(NSString *email, NSString *password, NSString *birthday) {
 
 void markSnapsRead(NSArray *unread) {
     for (SKSnap *snap in unread)
-        [[SKClient sharedClient] markSnapViewed:snap for:2 completion:^(NSError *error) {
+        [[SKClient sharedClient] markSnapViewed:snap for:2 replay:NO completion:^(NSError *error) {
             if (!error)
                 SKLog(@"Success: %@", snap.identifier);
             else
@@ -226,8 +226,8 @@ int main(int argc, const char * argv[]) {
         [[SKClient sharedClient] restoreSessionWithUsername:kUsername snapchatAuthToken:kAuthToken doGetUpdates:^(NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
-//                [dict writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
-//                SKLog(@"Session written to file.");
+                [[session valueForKey:@"_JSON"] writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
+                SKLog(@"Session written to file.");
                 
                 // For debugging purposes, to see the size of the response JSON in memory. Mine was about 300 KB.
                 // Probably quadratically larger though, since each object also holds onto its JSON dictionary,
@@ -244,14 +244,17 @@ int main(int argc, const char * argv[]) {
                 
                 /// Notes ///
                 
-                // bq/loq_data needs to be looked into again, it's returning more stuff now
-                
                 
                 // Get unread snaps
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
                 
-//                
+                
+                [[SKClient sharedClient] updateFeatureSettings:@{SKFeatureSettings.scrambleBestFriends: @YES, SKFeatureSettings.barcodeEnabled: @YES} completion:^(NSError *error) {
+                    if (error)
+                        NSLog(@"%@", error.localizedDescription);
+                }];
+//
 //                SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
 //                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"username", @"luke"]].firstObject;
 //                for (SKStory *s in friend.stories)
@@ -302,7 +305,7 @@ int main(int argc, const char * argv[]) {
                 //                testGetConversations();
                 
                 // Download and save unread snaps
-                saveUnreadSnapsToDirectory(unread, directory);
+//                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
                 markSnapsRead(unread);

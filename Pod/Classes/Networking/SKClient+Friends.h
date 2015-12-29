@@ -58,8 +58,9 @@
 - (void)updateDisplayNameForUser:(NSString *)friend newName:(NSString *)displayName completion:(ErrorBlock)completion;
 /** Blocks \c username.
  @param username The username of the user to block.
+ @param reason The reason the user was blocked.
  @param completion Takes an error, if any. */
-- (void)blockUser:(NSString *)username completion:(ErrorBlock)completion;
+- (void)blockUser:(NSString *)username reason:(SKBlockReason)reason completion:(ErrorBlock)completion;
 
 /** This appears to be for an upcoming feature: suggested friends?
  @param usernames I assume this is for usernames; it's always been empty.

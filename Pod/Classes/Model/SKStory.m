@@ -37,8 +37,11 @@
              @"mediaKind": @"story.media_type",
              @"mediaURL": @"story.media_url",
              @"thumbIV": @"story.thumbnail_iv",
+             @"thumbURL": @"story.thumbnail_url",
              @"timeLeft": @"story.time_left",
-             @"created": @"story.timestamp"};
+             @"created": @"story.timestamp",
+             @"submissionIdentifier": @"story.submission_id",
+             @"unlockables": @"story.unlockables"};
 }
 
 MTLTransformPropertyURL(mediaURL)

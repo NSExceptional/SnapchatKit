@@ -403,6 +403,7 @@
 		B2B78F56330312A4CD38ADCAA8366C73 /* Message.h in Headers */ = {isa = PBXBuildFile; fileRef = EC5957EAD7A1500C7F3D52E6E39D9C94 /* Message.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B3C9B0471AE40FDBA720B63AEB1C9BB5 /* CodedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F497E0F14C17E3A64FFF733EA5CD34F /* CodedInputStream.m */; };
 		B43B154F7E2E5A67B545D60694AC450D /* NSDictionary+SnapchatKit.h in Headers */ = {isa = PBXBuildFile; fileRef = F5D1177F3DFDC037BFD950663C35F319 /* NSDictionary+SnapchatKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B4D2A4E11C32662B00FA75EC /* SKTrophyMetrics.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2A4E01C32662B00FA75EC /* SKTrophyMetrics.m */; };
 		B551C3259A67B771ACCAC824FA66EC82 /* MTLJSONAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 05522E4AF270E636FB674319373A51D0 /* MTLJSONAdapter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B58F192ABCF29F4B7526E9A5F665FAC8 /* MutableField.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F7C1F782D4395CBB43146206D75EF4F /* MutableField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B606F2EB3F1DE80BEB08AD2752633AAD /* SKClient+Stories.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE336045A807693BE5A149D22E1D9B5 /* SKClient+Stories.m */; };
@@ -791,6 +792,8 @@
 		B26CFAEE5F5A0FE66EAB75F877DFDAF3 /* SKSuggestedFriend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SKSuggestedFriend.h; sourceTree = "<group>"; };
 		B2E57A08CD9616B5076F72A51F367F0A /* MTLTransformerErrorHandling.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MTLTransformerErrorHandling.m; path = Mantle/MTLTransformerErrorHandling.m; sourceTree = "<group>"; };
 		B487504FA200F096A24DDC4EDC466CD2 /* SnapchatKit-Constants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapchatKit-Constants.h"; sourceTree = "<group>"; };
+		B4D2A4DF1C32662B00FA75EC /* SKTrophyMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKTrophyMetrics.h; sourceTree = "<group>"; };
+		B4D2A4E01C32662B00FA75EC /* SKTrophyMetrics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKTrophyMetrics.m; sourceTree = "<group>"; };
 		B7F54174B660E8CC31CC22AC00DC1E04 /* SKStoryOptions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SKStoryOptions.m; sourceTree = "<group>"; };
 		B853679AFABF95510258BF367DA67D9E /* SKClient+Friends.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SKClient+Friends.m"; sourceTree = "<group>"; };
 		B8D29D01ABA5C730F47D92B927537787 /* SKFoundFriend.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SKFoundFriend.m; sourceTree = "<group>"; };
@@ -999,6 +1002,8 @@
 				658477C295841A35A2E32FCB92EECDD7 /* SKUser.m */,
 				F7C84B22B52907087468A0ABB0A1E8CD /* SKUserStory.h */,
 				9A2BA097F6EA967C8A64E581CDB3C439 /* SKUserStory.m */,
+				B4D2A4DF1C32662B00FA75EC /* SKTrophyMetrics.h */,
+				B4D2A4E01C32662B00FA75EC /* SKTrophyMetrics.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2017,6 +2022,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B39D8A0B4188A01E8B61AB877A54781 /* Pods-SnapchatKit-OSX-dummy.m in Sources */,
+				B4D2A4E11C32662B00FA75EC /* SKTrophyMetrics.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

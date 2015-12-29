@@ -11,8 +11,8 @@
 @implementation SKUser
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ username=%@, emoji=%@, needs love=%d, sees your stories=%d, is shared=%d, is local=%d>",
-            NSStringFromClass(self.class), self.username, self.friendmojiString, self.needsLove, self.canSeeCustomStories, self.isSharedStory, self.isLocalStory];
+    return [NSString stringWithFormat:@"<%@sees your stories=%d, is shared=%d, is local=%d, status=%lu, username=%@>",
+            NSStringFromClass(self.class), _canSeeCustomStories, _isSharedStory, _isLocalStory, self.friendStatus, self.username];
 }
 
 #pragma mark - Mantle

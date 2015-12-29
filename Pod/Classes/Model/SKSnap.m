@@ -36,7 +36,9 @@
              @"mediaTimer": @"timer",
              @"sentDate": @"sts",
              @"timestamp": @"ts",
-             @"zipped": @"zipped"};
+             @"zipped": @"zipped",
+             @"esIdentifier": @"es_id",
+             @"mo": @"mo"};
 }
 
 MTLTransformPropertyDate(sentDate)

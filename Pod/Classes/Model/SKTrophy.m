@@ -12,7 +12,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ label=%@ unicode=%@> Stages:\n%@",
-            NSStringFromClass(self.class), _label, _unicode, _stages];
+            NSStringFromClass(self.class), _label, _unicode, _stages.description];
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -29,6 +29,10 @@
 @implementation SKTrophyStage
 
 - (NSString *)description {
+    return _unicode;
+}
+
+- (NSString *)debugDescription {
     return [NSString stringWithFormat:@"<%@ label=%@ unicode=%@ status=%@>",
             NSStringFromClass(self.class), _label, _unicode, _status];
 }

@@ -9,6 +9,8 @@
 #import "SKClient+Account.h"
 #import "SKRequest.h"
 #import "SKBlob.h"
+#import "SKTrophy.h"
+#import "SKTrophyMetrics.h"
 
 #import "NSArray+SnapchatKit.h"
 #import "NSDictionary+SnapchatKit.h"
@@ -96,21 +98,22 @@
 
 
 - (void)updateFeatureSettings:(NSDictionary *)settings completion:(ErrorBlock)completion {
-    NSParameterAssert(settings.allKeys.count < 9);
+    NSParameterAssert(settings.allKeys.count < 10);
     if (!settings.allKeys.count) {
         if (completion)
             completion(nil);
         return;
     }
     
-    NSDictionary *features = @{SKFeatureSettings.frontFacingFlash: settings[SKFeatureSettings.frontFacingFlash] ?: @(self.currentSession.enableFrontFacingFlash),
-                               SKFeatureSettings.replaySnaps:      settings[SKFeatureSettings.replaySnaps]      ?: @(self.currentSession.enableReplaySnaps),
-                               SKFeatureSettings.smartFilters:     settings[SKFeatureSettings.smartFilters]     ?: @(self.currentSession.enableSmartFilters),
-                               SKFeatureSettings.visualFilters:    settings[SKFeatureSettings.visualFilters]    ?: @(self.currentSession.enableVisualFilters),
-                               SKFeatureSettings.powerSaveMode:    settings[SKFeatureSettings.powerSaveMode]    ?: @(self.currentSession.enablePowerSaveMode),
-                               SKFeatureSettings.specialText:      settings[SKFeatureSettings.specialText]      ?: @(self.currentSession.enableSpecialText),
-                               SKFeatureSettings.swipeCashMode:    settings[SKFeatureSettings.swipeCashMode]    ?: @(self.currentSession.enableSwipeCashMode),
-                               SKFeatureSettings.travelMode:       settings[SKFeatureSettings.travelMode]       ?: @(self.currentSession.enableTravelMode)};
+    NSDictionary *features = @{SKFeatureSettings.travelMode:          settings[SKFeatureSettings.travelMode]          ?: @(self.currentSession.enableTravelMode),
+                               SKFeatureSettings.barcodeEnabled:      settings[SKFeatureSettings.barcodeEnabled]      ?: @NO,
+                               SKFeatureSettings.smartFilters:        settings[SKFeatureSettings.smartFilters]        ?: @(self.currentSession.enableSmartFilters),
+                               SKFeatureSettings.payReplaySnaps:      settings[SKFeatureSettings.payReplaySnaps]      ?: @(self.currentSession.payReplaySnaps),
+                               SKFeatureSettings.lensStoreEnabled:    settings[SKFeatureSettings.lensStoreEnabled]    ?: @(self.currentSession.lensStoreEnabled),
+                               SKFeatureSettings.visualFilters:       settings[SKFeatureSettings.visualFilters]       ?: @(self.currentSession.enableVisualFilters),
+                               SKFeatureSettings.prefetchLensStore:   settings[SKFeatureSettings.prefetchLensStore]   ?: @(self.currentSession.prefetchStoreLensesEnabled),
+                               SKFeatureSettings.QRCodeEnabled:       settings[SKFeatureSettings.QRCodeEnabled]       ?: @(self.currentSession.QRCodeEnabled),
+                               SKFeatureSettings.scrambleBestFriends: settings[SKFeatureSettings.scrambleBestFriends] ?: @NO};
     
     NSDictionary *query = @{@"settings": features.JSONString,
                             @"username": self.username};
@@ -152,7 +155,7 @@
     NSDictionary *query = @{@"username": self.username,
                             @"size": @"MEDIUM",
                             @"username_image": username};
-    [self postTo:SKEPAccount.avatar.get query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [self postTo:SKEPAccount.avatar.getFriend query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 if ([(NSHTTPURLResponse *)response statusCode] == 200) {
@@ -196,7 +199,31 @@
 }
 
 - (void)getTrophies:(ArrayBlock)completion {
+    NSParameterAssert(completion);
+    [self updateTrophiesWithMetrics:nil completion:^(NSError *error) {
+        if (!error) {
+            completion(self.currentSession.trophyCase, nil);
+        } else {
+            completion(nil, error);
+        }
+    }];
+}
+
+- (void)updateTrophiesWithMetrics:(SKTrophyMetrics *)metrics completion:(ErrorBlock)completion {
+    NSParameterAssert(completion);
     
+    NSDictionary *counters = metrics.metrics ?: @{};
+    NSDictionary *query = @{@"username": self.username, @"metric_counters": counters};
+    [self postTo:SKEPUpdate.trophies query:query callback:^(NSDictionary *json, NSError *error) {
+        if (!error) {
+            NSArray *trophies = json[@"response"];
+            trophies = [MTLJSONAdapter modelsOfClass:[SKTrophy class] fromJSONArray:trophies error:nil];
+            [self.currentSession setValue:trophies forKey:@"trophyCase"];
+            completion(nil);
+        } else {
+            completion(error);
+        }
+    }];
 }
 
 @end

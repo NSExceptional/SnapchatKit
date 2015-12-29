@@ -99,9 +99,12 @@
             }
         }];
     } else {
-        NSString *url = [story.mediaURL.absoluteString stringByReplacingOccurrencesOfString:SKConsts.baseURL withString:@""];
-        if (thumbnail)
-            url = [url stringByReplacingOccurrencesOfString:@"story_blob" withString:@"story_thumbnail"];
+        NSString *url;
+        if (thumbnail) {
+            url = [story.thumbURL.absoluteString stringByReplacingOccurrencesOfString:SKConsts.baseURL withString:@""];
+        } else {
+            url = [story.mediaURL.absoluteString stringByReplacingOccurrencesOfString:SKConsts.baseURL withString:@""];
+        }
         [self get:url callback:^(NSData *data, NSError *error) {
             if (!error) {
                 [SKBlob blobWithStoryData:data forStory:story isThumb:thumbnail completion:^(SKBlob *thumbBlob, NSError *blobError) {

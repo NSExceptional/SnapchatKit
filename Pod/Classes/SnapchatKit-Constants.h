@@ -77,17 +77,31 @@ typedef NS_ENUM(NSInteger, SKSnapStatus) {
     SKSnapStatusScreenshot = 3
 };
 
-typedef NS_ENUM(NSInteger, SKFriendStatus) {
-    SKFriendStatusConfirmed,
-    SKFriendStatusUnconfirmed,
+typedef NS_ENUM(NSUInteger, SKFriendStatus)
+{
+    SKFriendStatusMutual,
+    SKFriendStatusPending,
     SKFriendStatusBlocked,
-    SKFriendStatusDeleted
+    SKFriendStatusDeleted,
+    SKFriendStatusFollower = 6
 };
 
-extern SKAddSource SKAddSourceFromString(NSString *addSourceString);
-extern NSString * SKStringFromAddSource(SKAddSource addSource);
-extern NSString * SKStringFromMediaKind(SKMediaKind mediaKind);
+typedef NS_ENUM(NSUInteger, SKBlockReason)
+{
+    SKBlockReasonOther,
+    SKBlockReasonInappropriateSnaps,
+    SKBlockReasonHarassingMe,
+    SKBlockReasonAnnoying,
+    SKBlockReasonIDKThem
+};
+
+
+
+extern SKAddSource SKAddSourceFromString(NSString *);
+extern NSString * SKStringFromAddSource(SKAddSource);
+extern NSString * SKStringFromMediaKind(SKMediaKind);
 extern NSString * SKStringFromStoryPrivacy(SKStoryPrivacy);
+extern NSString * SKStringFromBlockReason(SKBlockReason);
 
 extern BOOL SKMediaKindIsImage(SKMediaKind mediaKind);
 extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
@@ -141,14 +155,15 @@ SK_NAMESPACE(SKHeaders, {
 
 #pragma mark Feature settings
 SK_NAMESPACE(SKFeatureSettings, {
-    NSNSString *frontFacingFlash;
-    NSNSString *replaySnaps;
-    NSNSString *smartFilters;
-    NSNSString *visualFilters;
-    NSNSString *powerSaveMode;
-    NSNSString *specialText;
-    NSNSString *swipeCashMode;
     NSNSString *travelMode;
+    NSNSString *barcodeEnabled;
+    NSNSString *smartFilters;
+    NSNSString *payReplaySnaps;
+    NSNSString *lensStoreEnabled;
+    NSNSString *visualFilters;
+    NSNSString *prefetchLensStore;
+    NSNSString *QRCodeEnabled;
+    NSNSString *scrambleBestFriends;
 });
 
 
@@ -167,6 +182,7 @@ SK_NAMESPACE(SKEPUpdate, {
     NSNSString *snaps;
     NSNSString *stories;
     NSNSString *user;
+    NSNSString *trophies;
     NSNSString *featureSettings;
 });
 

@@ -90,20 +90,21 @@
     [self sendEvents:events data:snapInfo completion:completion];
 }
 
-- (void)markSnapViewed:(SKSnap *)snap for:(CGFloat)secondsViewed completion:(ErrorBlock)completion {
-    [self markSnapsViewed:@[snap] atTimes:@[[NSDate date]] for:@[@(secondsViewed)] completion:completion];
+- (void)markSnapViewed:(SKSnap *)snap for:(CGFloat)secondsViewed replay:(BOOL)replayed completion:(ErrorBlock)completion {
+    [self markSnapsViewed:@[snap] atTimes:@[[NSDate date]] for:@[@(secondsViewed)] replayed:@[@(replayed)] completion:completion];
 }
 
-- (void)markSnapsViewed:(NSArray *)snaps atTimes:(NSArray *)timestamps for:(NSArray *)secondsViewed completion:(ErrorBlock)completion {
+- (void)markSnapsViewed:(NSArray *)snaps atTimes:(NSArray *)timestamps for:(NSArray *)secondsViewed replayed:(NSArray *)replayed completion:(ErrorBlock)completion {
     NSParameterAssert(snaps.count == timestamps.count && timestamps.count == secondsViewed.count);
     
     NSMutableDictionary *json = [NSMutableDictionary dictionary];
-    SKSnap *snap; NSString *ts; NSNumber *num;
+    SKSnap *snap; NSString *ts; NSNumber *num, *replay;
     for (NSUInteger i = 0; i < snaps.count; i++) {
-        snap = snaps[i];
-        ts   = [NSString timestampFrom:timestamps[i]];
-        num  = secondsViewed[i];
-        json[snap.identifier] = @{@"t": ts, @"sv": num};
+        snap   = snaps[i];
+        ts     = [NSString timestampFrom:timestamps[i]];
+        num    = secondsViewed[i];
+        replay = @([replayed[i] integerValue]); // necessary because replayed by itself will print "true" or "false" and we want 1 or 0
+        json[snap.identifier] = @{@"t": ts, @"sv": num, @"es_id": snap.esIdentifier, @"replayed": replay, @"stack_id": @""};
     }
     
     NSDictionary *query = @{@"added_friends_timestamp": [NSString timestampFrom:self.currentSession.addedFriendsTimestamp],

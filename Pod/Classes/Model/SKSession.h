@@ -37,6 +37,7 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) NSString     *messagingGatewayServer;
 
 @property (nonatomic, readonly) NSDictionary *serverInfo;
+@property (nonatomic, readonly) NSString *checksums;
 @property (nonatomic, readonly) NSArray<NSString *> *IAPEnabledCurrencies;
 @property (nonatomic, readonly) NSArray<NSString *> *enabledLensStoreCurrencies;
 
@@ -164,6 +165,7 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @property (nonatomic, readonly) BOOL enableGuggenheim;
 
 @property (nonatomic, readonly) BOOL lensStoreEnabled;
+@property (nonatomic, readonly) BOOL QRCodeEnabled;
 @property (nonatomic, readonly) BOOL prefetchStoreLensesEnabled;
 @property (nonatomic, readonly) BOOL payReplaySnaps;
 

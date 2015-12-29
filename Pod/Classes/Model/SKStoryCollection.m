@@ -29,7 +29,9 @@
              @"unviewedThumbnail": @"thumbnails.unviewed.url",
              @"viewedThumbNeedsAuth": @"thumbnails.viewed.needs_auth",
              @"unviewedThumbNeedsAuth": @"thumbnails.unviewed.needs_auth",
-             @"stories": @"stories"};
+             @"stories": @"stories",
+             @"hasCustomDescription": @"has_custom_description",
+             @"allowStoryExplorer": @"allow_story_explorer"};
 }
 
 + (NSArray *)ignoredJSONKeyPathPrefixes {

@@ -25,7 +25,7 @@
             NSInteger friendCount = -1;
             
             for (SKUser *friend in self.currentSession.friends)
-                if (friend.privacy == SKSnapPrivacyFriends)
+                if (friend.friendStatus == SKFriendStatusMutual)
                     friendCount++;
             
             NSString *timestamp = [NSString timestamp];

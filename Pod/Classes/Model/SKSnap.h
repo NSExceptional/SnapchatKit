@@ -29,6 +29,8 @@
 @property (nonatomic, readonly) NSDate       *sentDate;
 /** Undocumented. */
 @property (nonatomic, readonly) NSDate       *timestamp;
+@property (nonatomic, readonly) NSString     *esIdentifier;
+@property (nonatomic, readonly) id           mo;
 
 /** Whether the snap is compressed or not. */
 @property (nonatomic, readonly) BOOL         zipped;

@@ -153,10 +153,11 @@
 - (void)userExists:(NSString *)username completion:(BooleanBlock)completion {
     NSParameterAssert(username); NSParameterAssert(completion);
     
-    [self postTo:SKEPFriends.exists query:@{@"request_username": username, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
+    NSDictionary *query = @{@"request_username": username,
+                            @"username": self.username};
+    [self postTo:SKEPFriends.exists query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
-            BOOL exists = [json[@"exists"] boolValue];
-            completion(exists, nil);
+            completion([json[@"exists"] boolValue], nil);
         } else {
             completion(NO, error);
         }
@@ -181,8 +182,8 @@
     }];
 }
 
-- (void)blockUser:(NSString *)username completion:(ErrorBlock)completion {
-    [self setUserBlocked:YES user:username completion:completion];
+- (void)blockUser:(NSString *)username reason:(SKBlockReason)reason completion:(ErrorBlock)completion {
+    [self setUserBlocked:YES user:username reason:reason completion:completion];
 }
 
 - (void)getSuggestedFriends:(ArrayBlock)completion {
@@ -218,15 +219,17 @@
 }
 
 - (void)unblockUser:(NSString *)username completion:(ErrorBlock)completion {
-    [self setUserBlocked:NO user:username completion:completion];
+    [self setUserBlocked:NO user:username reason:-1 completion:completion];
 }
 
-- (void)setUserBlocked:(BOOL)blocked user:(NSString *)username completion:(ErrorBlock)completion {
-    NSParameterAssert(username);
+- (void)setUserBlocked:(BOOL)blocked user:(NSString *)username reason:(SKBlockReason)reason completion:(ErrorBlock)completion {
+    NSParameterAssert(username); NSParameterAssert(reason || !blocked);
     
-    NSDictionary *query = @{@"action": blocked ? @"block" : @"unblock",
-                            @"friend": username,
-                            @"username": self.username};
+    NSMutableDictionary *query = @{@"action": blocked ? @"block" : @"unblock",
+                                   @"friend": username,
+                                   @"friend_id": [self.currentSession userWithUsername:username].userIdentifier,
+                                   @"username": self.username}.mutableCopy;
+    if (blocked) query[@"block_reason_id"] = @(reason);
     [self postTo:SKEPFriends.friend query:query callback:^(NSDictionary *json, NSError *error) {
         completion(error);
     }];

@@ -25,6 +25,10 @@
 @property (nonatomic, readonly) NSString *sharedIdentifier;
 /** Whether the shared story is local or not. @note Only applies to shared stories. */
 @property (nonatomic, readonly) BOOL     isLocal;
+/** Whether the shared story has a custom description. */
+@property (nonatomic, readonly) BOOL     hasCustomDescription;
+/** Whether the story supports the "story explorer" feature. */
+@property (nonatomic, readonly) BOOL     allowStoryExplorer;
 
 /** The thumbnail for the viewed state of the story. @note Only applies to shared stories. */
 @property (nonatomic, readonly) NSURL *viewedThumbnail;

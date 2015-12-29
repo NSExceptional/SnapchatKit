@@ -33,8 +33,12 @@
 @property (nonatomic, readonly) NSString    *identifier;
 /** The text of the story. */
 @property (nonatomic, readonly) NSString    *text;
-/** Not sure. */
+/** Unknown */
+@property (nonatomic, readonly) NSArray     *unlockables;
+/** Unknown */
 @property (nonatomic, readonly) NSString    *clientIdentifier;
+/** Unknown */
+@property (nonatomic, readonly) NSString    *submissionIdentifier;
 
 /** Unknown */
 @property (nonatomic, readonly) NSString    *storyFilterIdentifier;

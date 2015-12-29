@@ -24,6 +24,16 @@
              @"storyPointer": @"storypointer"};
 }
 
++ (NSArray *)ignoredJSONKeyPathPrefixes {
+    static NSArray *ignored = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ignored = @[@"storypointer.mField", @"storypointer.mKey"];
+    });
+    
+    return ignored;
+}
+
 MTLTransformPropertyDate(viewDate)
 
 #pragma mark - Equality

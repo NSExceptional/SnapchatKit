@@ -59,7 +59,7 @@ NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
 
 - (NSString *)description {
     CGFloat width, height;
-#if (TARGET_OS_MAC)
+#ifndef UIKIT_EXTERN
     width = self.mediaWidth;
     height = self.mediaHeight;
 #else
@@ -85,7 +85,7 @@ NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
              @"mediaIV": @"chat_message.body.media.iv",
              @"mediaKey": @"chat_message.body.media.key",
              @"mediaType": @"chat_message.body.media.media_type",
-#if (TARGET_OS_MAC)
+#ifndef UIKIT_EXTERN
              @"mediaWidth": @"chat_message.body.media.width",
              @"mediaHeight": @"chat_message.body.media.height",
 #else
@@ -96,7 +96,9 @@ NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
              @"sender": @"chat_message.header.from",
              @"index": @"chat_message.seq_num",
              @"savedState": @"chat_message.saved_state",
-             @"type": @"chat_message.type"};
+             @"type": @"chat_message.type",
+             @"storyIdentifier": @"chat_message.body.media.media_attributes.story_id",
+             @"zipped": @"chat_message.body.media.media_attributes.is_zipped"};
 }
 
 + (NSArray *)ignoredJSONKeyPathPrefixes {
@@ -117,7 +119,7 @@ NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
     }];
 }
 
-#if (!TARGET_OS_MAC)
+#ifdef UIKIT_EXTERN
 + (NSValueTransformer *)mediaSizeJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSDictionary *media, BOOL *success, NSError *__autoreleasing *error) {
         if (!media) return nil;

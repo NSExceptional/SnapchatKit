@@ -14,12 +14,13 @@
 
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
-    
-    if (!_displayName.length) _displayName = nil;
-    
-    // API debugging
-    if (![json[@"direction"] isEqualToString:@"OUTGOING"] && ![json[@"direction"] isEqualToString:@"INCOMING"])
-        SKLog(@"SKSimpleUser new 'direction': %@", json[@"direction"]);
+    if (self) {
+        if (!_displayName.length) _displayName = nil;
+        
+        // API debugging
+        if (![json[@"direction"] isEqualToString:@"OUTGOING"] && ![json[@"direction"] isEqualToString:@"INCOMING"])
+            SKLog(@"SKSimpleUser new 'direction': %@", json[@"direction"]);
+    }
     
     return self;
 }
@@ -37,8 +38,9 @@
              @"userIdentifier": @"user_id",
              @"addedIncoming": @"direction",
              @"ignoredLink": @"ignored_link",
-             @"privacy": @"type",
-             @"expiration": @"expiration"};
+             @"expiration": @"expiration",
+             @"addedBack": @"reverse_ts",
+             @"friendStatus": @"type"};
 }
 
 + (NSValueTransformer *)addedIncomingJSONTransformer {
@@ -46,6 +48,7 @@
 }
 
 MTLTransformPropertyDate(expiration)
+MTLTransformPropertyDate(addedBack)
 
 #pragma mark - Equality
 

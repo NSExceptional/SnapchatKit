@@ -54,6 +54,11 @@ NSString * SKStringFromChatType(SKChatType chatType) {
             _participants = [_identifier componentsSeparatedByString:@"~"];
         if (!_usersWithPendingChats)
             _usersWithPendingChats = @[];
+        
+//        NSDictionary *json = [self valueForKey:@"JSON"];
+//        if (json[@"conversation_interaction_event"]) {
+//            SKLog(@"%@", json[@"conversation_interaction_event"]);
+//        }
     }
     
     return self;
@@ -92,7 +97,7 @@ NSString * SKStringFromChatType(SKChatType chatType) {
     static NSArray *ignored = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ignored = @[@"conversation_state", @"last_snap", @"conversation_messages.messaging_auth"];
+        ignored = @[@"conversation_state", @"last_snap", @"conversation_messages.messaging_auth", @"last_cash_transaction"];
     });
     
     return ignored;

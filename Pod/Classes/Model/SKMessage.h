@@ -36,7 +36,7 @@ extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 /** \c nil if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) NSString      *mediaIdentifier;
 
-#if (TARGET_OS_MAC)
+#ifndef UIKIT_EXTERN
 /** \c 0 if \c messageKind is \c SKMessageKindText. */
 @property (nonatomic, readonly) NSInteger     mediaWidth;
 /** \c 0 if \c messageKind is \c SKMessageKindText. */
@@ -52,6 +52,10 @@ extern SKMessageKind SKMessageKindFromString(NSString *messageKindString);
 @property (nonatomic, readonly) NSString      *mediaKey;
 /** i.e. "VIDEO" or "IMAGE" */
 @property (nonatomic, readonly) NSString      *mediaType;
+/** The identifier of the replied-to story. \c nil unless \c messageKind is \c SKMessageKindStoryReply. */
+@property (nonatomic, readonly) NSString      *storyIdentifier;
+/** Whether the replied-to story is zipped. */
+@property (nonatomic, readonly) BOOL          zipped;
 
 /** Array of usernames. */
 @property (nonatomic, readonly) NSArray       *recipients;

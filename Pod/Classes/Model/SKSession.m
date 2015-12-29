@@ -99,7 +99,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"userStories": @"stories_response.my_stories",
              @"groupStories": @"stories_response.my_group_stories", // other stories, pending requests
              @"canUseCash": @"updates_response.allowed_to_use_cash",
-             @"isCashActive": @"udpates_response.is_cash_active",
+             @"isCashActive": @"updates_response.is_cash_active",
              @"cashCustomerIdentifier": @"updates_response.cash_customer_id",
              @"clientProperties": @"updates_response.client_properties",
              @"cashProvider": @"updates_response.cash_provider",
@@ -113,7 +113,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"addedFriendsTimestamp": @"updates_response.added_friends_timestamp",
              @"authToken": @"updates_response.auth_token",
              @"canSeeMatureContent": @"updates_response.can_view_mature_content",
-             @"countryCode": @"updates_response.countryCode",
+             @"countryCode": @"updates_response.country_code",
              @"devicetoken": @"updates_response.device_token",
              @"canSaveStoryToGallery": @"updates_response.enable_save_story_to_gallery",
              @"canVideoTranscodingAndroid": @"updates_response.enable_video_transcoding_android",
@@ -150,6 +150,7 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"lastCheckedTrophies": @"identity_check_response.last_checked_trophies_timestamp",
              @"trophyCase": @"identity_check_response.trophy_case.response",
              @"serverInfo": @"server_info",
+             @"checksums": @"server_info.response_checksum",
              @"ringerSoundOn": @"updates_response.ringing_sound_setting",
              @"payReplaySnaps": @"updates_response.feature_settings.pay_replay_snaps",
              @"IAPEnabledCurrencies": @"updates_response.enabled_iap_currencies",
@@ -158,7 +159,12 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
              @"friendmojisReadOnly": @"updates_response.friendmoji_read_only_dict",
              @"friendmojisMutable": @"updates_response.friendmoji_mutable_dict",
              @"industries": @"updates_response.industries",
-             @"enableGuggenheim": @"updates_response.feature_settings.guggenheim_enabled"};
+             @"enableGuggenheim": @"updates_response.feature_settings.guggenheim_enabled",
+             @"lensStoreEnabled": @"updates_response.feature_settings.lens_store_available",
+             @"QRCodeEnabled": @"updates_response.feature_settings.qrcode_enabled",
+             @"prefetchStoreLensesEnabled": @"updates_response.feature_settings.is_prefetch_for_store_lenses_enabled",
+             @"payReplaySnaps": @"updates_response.feature_settings.pay_replay_snaps",
+             @"featuresNotUserConfigurable": @"updates_response.features_not_user_configurable"};
 }
 
 + (NSArray *)ignoredJSONKeyPathPrefixes {
@@ -168,7 +174,9 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
         ignored = @[@"updates_response.friendmoji_dict", @"updates_response.friendmoji_read_only_dict",
                     @"updates_response.friendmoji_mutable_dict", @"ad_placement_metadata",
                     @"updates_response.study_settings", @"sponsored", @"updates_response.client_properties",
-                    @"updates_response.targeting", @"messaging_gateway_info"];
+                    @"updates_response.targeting", @"messaging_gateway_info", @"updates_response.gaussian_blur_level_android",
+                    @"updates_response.enable_lenses_android", @"updates_response.enable_recording_hint_android",
+                    @"server_info", @"updates_response.enable_fast_frame_rate_camera_initialization_android"];
     });
     
     return ignored;

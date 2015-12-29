@@ -19,7 +19,9 @@
 @property (nonatomic, readonly) BOOL     addedIncoming;
 @property (nonatomic, readonly) BOOL     ignoredLink;
 @property (nonatomic, readonly) NSDate   *expiration;
-/** Whether anyone or only friends can send snaps to this user. */
-@property (nonatomic, readonly) SKSnapPrivacy privacy;
+/** When the request was accepted. */
+@property (nonatomic, readonly) NSDate   *addedBack;
+/** Self explainatory. Status of the relationship between you and this user. */
+@property (nonatomic, readonly) SKFriendStatus friendStatus;
 
 @end

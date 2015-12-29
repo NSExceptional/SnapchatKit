@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SKClient.h"
+@class SKTrophyMetrics;
 
 @interface SKClient (Account)
 
@@ -71,6 +72,9 @@
 
 /** Retrieves your trophies. Completion takes an array of \c SKTrophy objects. */
 - (void)getTrophies:(ArrayBlock)completion;
+
+/** Updates trophies after sending new metrics. This method will update the \c trophyCase of \c currentSession automatically.*/
+- (void)updateTrophiesWithMetrics:(SKTrophyMetrics *)metrics completion:(ErrorBlock)completion;
 
 
 @end

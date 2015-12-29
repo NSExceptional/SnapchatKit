@@ -143,16 +143,16 @@ SK_NAMESPACE_IMP(SKHeaders) {
 
 #pragma mark Feature settings
 SK_NAMESPACE_IMP(SKFeatureSettings) {
-    .frontFacingFlash = @"front_facing_flash",
-    .replaySnaps      = @"replay_snaps",
-    .smartFilters     = @"smart_filters",
-    .visualFilters    = @"visual_filters",
-    .powerSaveMode    = @"power_save_mode",
-    .specialText      = @"special_text",
-    .swipeCashMode    = @"swipe_cash_mode",
-    .travelMode       = @"travel_mode"
+    .smartFilters        = @"smart_filters",
+    .visualFilters       = @"visual_filters",
+    .travelMode          = @"travel_mode",
+    .barcodeEnabled      = @"barcode_enabled",
+    .payReplaySnaps      = @"pay_replay_snaps",
+    .lensStoreEnabled    = @"lens_store_available",
+    .prefetchLensStore   = @"is_prefetch_for_store_lenses_enabled",
+    .QRCodeEnabled       = @"qrcode_enabled",
+    .scrambleBestFriends = @"scramble_best_friends"
 };
-
 
 
 #pragma mark - Endpoints -
@@ -171,8 +171,9 @@ SK_NAMESPACE_IMP(SKEPMisc) {
 SK_NAMESPACE_IMP(SKEPUpdate) {
     .all             = @"/loq/all_updates",
     .snaps           = @"/bq/update_snaps",
-    .stories         = @"/bq/update_stories",
-    .user            = @"/loq/update_user", // just /update_stories?
+    .stories         = @"/bq/update_stories", // just /update_stories?
+    .user            = @"/loq/update_user",
+    .trophies        = @"/bq/ios/trophies",
     .featureSettings = @"/bq/update_feature_settings"
 };
 

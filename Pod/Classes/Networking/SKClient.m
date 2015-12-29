@@ -431,15 +431,14 @@ static SKClient *sharedSKClient;
     SKAssertIsSignedIn(self);
     
     NSDictionary *query = @{@"username": self.username,
-                            @"friends_request": @{@"friends_sync_token": self.currentSession.friendsSyncToken ?: @0},
+                            @"friends_request": @{@"friends_sync_token": self.currentSession.friendsSyncToken ?: @0}.JSONString,
                             @"height": @(self.screenSize.height),
                             @"width": @(self.screenSize.width),
                             @"screen_height_px": @(self.screenSize.height),
                             @"screen_width_px": @(self.screenSize.width),
                             @"screen_width_in": @0,
                             @"screen_height_in": @0,
-                            @"checksums_dict": @"{}",
-                            @"features_map": @"{}"};
+                            @"checksums_dict": self.currentSession.checksums ?: @"{}"};
     [self postTo:SKEPUpdate.all query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             _currentSession = [[SKSession alloc] initWithDictionary:json];

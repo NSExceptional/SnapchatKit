@@ -28,19 +28,21 @@
  @param completion Takes an error, if any, and an \c SKSnapResponse object. */
 - (void)sendSnap:(SKBlob *)blob to:(NSArray *)recipients text:(NSString *)text timer:(NSTimeInterval)duration completion:(ResponseBlock)completion;
 
-/** Marks a snap as opened for \c secondsViewed seconds.
+/** Marks a snap as opened for \c secondsViewed seconds at the current time.
  @param secondsViewed The number of seconds the snap was viewed for.
+ @param replayed Whether the snap was also replayed.
  @param completion Takes an error, if any. */
-- (void)markSnapViewed:(SKSnap *)snap for:(CGFloat)secondsViewed completion:(ErrorBlock)completion;
+- (void)markSnapViewed:(SKSnap *)snap for:(CGFloat)secondsViewed replay:(BOOL)replayed completion:(ErrorBlock)completion;
 /** Marks a set of snaps as opened for the specified length at the given times.
  @param snaps An array of \c SKSnap objects.
  @param times An array of \c NSDate objects.
  @param secondsViewed An array of \c NSNumber objects. Try to use floating point nubmers. */
 - (void)markSnapsViewed:(NSArray *)snaps atTimes:(NSArray *)times for:(NSArray *)secondsViewed completion:(ErrorBlock)completion;
 /** Marks a snap as screenshotted and viewed for \c secondsViewed seconds.
- @param secondsViewed The number of seconds the snap was viewed for.
+ @param secondsViewed The number of seconds the corresponding snap was viewed for.
+ @param replayed An array of NSNumber booleans indicating whether the corresponding snap was replayed.
  @param completion Takes an error, if any. */
-- (void)markSnapScreenshot:(SKSnap *)snap for:(NSUInteger)secondsViewed completion:(ErrorBlock)completion;
+- (void)markSnapScreenshot:(SKSnap *)snap for:(NSUInteger)secondsViewed replayed:(NSArray *)replayed completion:(ErrorBlock)completion;
 
 /** Loads a snap.
  @param completion Takes an error, if any, and an \c SKBlob object. */

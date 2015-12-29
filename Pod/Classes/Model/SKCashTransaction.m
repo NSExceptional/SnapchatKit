@@ -65,6 +65,16 @@
              @"senderViewed": @"sender_viewed"};
 }
 
++ (NSArray *)ignoredJSONKeyPathPrefixes {
+    static NSArray *ignored = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ignored = @[@"cash_tag_array", @"cash_tags"];
+    });
+    
+    return ignored;
+}
+
 - (NSDictionary *)dictionaryValue {
     // "last_transaction" is flat and can be used normally
     if (!_isaRegularTransaction) return [super dictionaryValue];

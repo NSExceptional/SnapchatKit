@@ -27,7 +27,12 @@ static NSMutableDictionary *_allJSONKeys;
 
 - (id)initWithDictionary:(NSDictionary *)json {
     NSParameterAssert(json.allKeys.count > 0);
-    self = [MTLJSONAdapter modelOfClass:[self class] fromJSONDictionary:json error:nil];
+    NSError *error = nil;
+    self = [MTLJSONAdapter modelOfClass:[self class] fromJSONDictionary:json error:&error];
+    
+    if (error) {
+        NSLog(@"%@", error.localizedDescription);
+    }
     
 #if kDebugJSON
     static dispatch_once_t onceToken;
