@@ -14,7 +14,13 @@
 
 - (id)initWithDictionary:(NSDictionary *)json {
     if (!json.allKeys.count) return nil;
-    return [super initWithDictionary:json];
+    
+    self = [super initWithDictionary:json];
+    if (self) {
+        _isOutgoing = [_identifier hasSuffix:@"s"];
+    }
+    
+    return self;
 }
 
 - (NSString *)description {

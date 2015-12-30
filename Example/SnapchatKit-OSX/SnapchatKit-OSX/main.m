@@ -248,12 +248,6 @@ int main(int argc, const char * argv[]) {
                 // Get unread snaps
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
-                
-                
-                [[SKClient sharedClient] updateFeatureSettings:@{SKFeatureSettings.scrambleBestFriends: @YES, SKFeatureSettings.barcodeEnabled: @YES} completion:^(NSError *error) {
-                    if (error)
-                        NSLog(@"%@", error.localizedDescription);
-                }];
 //
 //                SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
 //                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"username", @"luke"]].firstObject;

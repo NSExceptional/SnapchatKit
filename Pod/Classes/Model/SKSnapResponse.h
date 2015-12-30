@@ -12,13 +12,13 @@
 /** Passed to the completion of both of the \c -[SKClient sendSnap:...] methods. */
 @interface SKSnapResponse : SKThing
 
-/** An array of \c SKSentSnap objects. */
+/** An array of \c SKSentSnap objects, not to be confused with outgoing \c SKSnap objects. */
 @property (nonatomic, readonly) NSArray *sentSnaps;
 @property (nonatomic, readonly) BOOL    success;
 
 @end
 
-/** Used as part of the \c SKSnapResponse class. */
+/** Used as part of the \c SKSnapResponse class; not a counterpart of \c SKSnap. */
 @interface SKSentSnap : SKThing
 @property (nonatomic, readonly) NSString *sender;
 @property (nonatomic, readonly) NSString *identifier;

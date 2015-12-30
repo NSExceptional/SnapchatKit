@@ -10,6 +10,7 @@
 #import "SKThing.h"
 @class SKBlob;
 
+/** Not a counterpart of the \c SKSentSnap class. */
 @interface SKSnap : SKThing
 
 /** nil if snap is "outgoing". */
@@ -21,6 +22,7 @@
 @property (nonatomic, readonly) NSString     *conversationIdentifier;
 @property (nonatomic, readonly) SKMediaKind  mediaKind;
 @property (nonatomic, readonly) SKSnapStatus status;
+@property (nonatomic, readonly) BOOL         isOutgoing;
 @property (nonatomic, readonly) NSUInteger   screenshots;
 /** Integer time. _mediaTimer rounded down. 0 if snap is "outgoing". */
 @property (nonatomic, readonly) NSUInteger   timer;
