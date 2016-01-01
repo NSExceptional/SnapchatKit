@@ -397,7 +397,9 @@ static SKClient *sharedSKClient;
                 }];
             }] resume];
         } else {
-            completion(nil, error);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, error);
+            });
         }
     }];
 }
