@@ -17,6 +17,7 @@
 #import "SKClient+Stories.h"
 
 #import "SKAddedFriend.h"
+#import "SKAvatar.h"
 #import "SKBlob.h"
 #import "SKCashTransaction.h"
 #import "SKConversation.h"
@@ -32,5 +33,7 @@
 #import "SKStoryOptions.h"
 #import "SKStoryCollection.h"
 #import "SKStoryNote.h"
+#import "SKTrophy.h"
+#import "SKTrophyMetrics.h"
 #import "SKUser.h"
 #import "SKUserStory.h"

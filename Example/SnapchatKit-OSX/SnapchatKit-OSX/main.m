@@ -244,6 +244,21 @@ int main(int argc, const char * argv[]) {
                 
                 /// Notes ///
                 
+//                [[SKClient sharedClient] downloadAvatar:@"tannerbennett" completion:^(SKAvatar *avatar, NSError *error) {
+//                    if (!error) {
+//                        NSMutableArray *images = [NSMutableArray array];
+//                        for (NSData *data in avatar.frames)
+//                            [images addObject:[[NSImage alloc] initWithData:data]];
+//                        
+//                        NSData *reversed    = [SKAvatar avatarDataFromImageDatas:avatar.frames];
+//                        SKAvatar *backAgain = [SKAvatar avatarWithData:reversed error:nil];
+//                        reversed            = [reversed subdataWithRange:NSMakeRange(9, reversed.length-9)]; // ignore timestamp and count
+//                        NSData *original    = [avatar.data subdataWithRange:NSMakeRange(9, avatar.data.length-9)];
+//                        BOOL success        = backAgain && [reversed isEqualToData:original];
+//                        success = success;
+//                    }
+//                }];
+                
                 
                 // Get unread snaps
                 NSArray *unread = session.unread;

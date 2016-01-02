@@ -89,6 +89,20 @@ NSString * SKStringFromStoryPrivacy(SKStoryPrivacy storyPrivacy) {
     return nil;
 }
 
+NSString * SKStringFromAvatarSize(SKAvatarSize avatarSize) {
+    switch (avatarSize) {
+        case SKAvatarSizeThumbnail:
+            return @"THUMBNAIL";
+        case SKAvatarSizeMedium:
+            return @"MEDIUM";
+        case SKAvatarSizeLarge:
+            return @"BIG";
+    }
+    
+    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKAvatarSize string", (unsigned long)avatarSize];
+    return nil;
+}
+
 BOOL SKMediaKindIsImage(SKMediaKind mediaKind) {
     return mediaKind == SKMediaKindImage || mediaKind == SKMediaKindStrangerImage;
 }
@@ -196,7 +210,7 @@ SK_NAMESPACE_IMP(SKEPAccount) {
     },
     .avatar = {
         .set       = @"/bq/upload_profile_data",
-        .get       = @"/bq/delete_profile_data",
+        .get       = @"/bq/download_profile_data",
         .remove    = @"/bq/delete_profile_data",
         .getFriend = @"/bq/download_friends_profile_data",
     }

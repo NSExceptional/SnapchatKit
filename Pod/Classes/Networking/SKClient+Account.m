@@ -9,8 +9,10 @@
 #import "SKClient+Account.h"
 #import "SKRequest.h"
 #import "SKBlob.h"
+#import "SKUser.h"
 #import "SKTrophy.h"
 #import "SKTrophyMetrics.h"
+#import "SKAvatar.h"
 
 #import "NSArray+SnapchatKit.h"
 #import "NSDictionary+SnapchatKit.h"
@@ -122,20 +124,49 @@
     }];
 }
 
-- (void)downloadSnaptag:(ResponseBlock)completion {
+- (void)downloadSnaptagAsSVG:(BOOL)svg completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
     
     NSDictionary *query = @{@"image": self.currentSession.QRPath,
-                            @"type": @"SVG",
+                            @"type": svg ? @"SVG" : @"PNG",
                             @"username": self.username};
-    [self postTo:SKEPAccount.snaptag query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [self downloadSnaptagWithParams:query svg:svg completion:completion];
+}
+
+- (void)downloadSnaptagForUser:(SKUser *)user asSVG:(BOOL)svg completion:(ResponseBlock)completion {
+    NSParameterAssert(completion);
+    
+    NSDictionary *query = @{@"username": self.username,
+                            @"type": svg ? @"SVG" : @"PNG",
+                            @"username_snapcode": user.username,
+                            @"user_id": user.userIdentifier};
+    [self downloadSnaptagWithParams:query svg:svg completion:^(id object, NSError *error) {
+        if (!error) {
+            NSError *jsonError = nil;
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:object options:0 error:&jsonError];
+            if (!jsonError) {
+                NSString *base64data = json[@"imageData"];
+                completion(base64data.base64DecodedData, nil);
+            } else {
+                completion(nil, jsonError);
+            }
+        } else {
+            completion(nil, error);
+        }
+    }];
+}
+
+- (void)downloadSnaptagWithParams:(NSDictionary *)params svg:(BOOL)svg completion:(ResponseBlock)completion {
+    [self postTo:SKEPAccount.snaptag query:params response:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
                 if ([(NSHTTPURLResponse *)response statusCode] == 200) {
-                    if (data.length)
-                        completion([SKBlob blobWithData:data], nil);
-                    else
+                    if (data.length) {
+                        if (!svg)
+                            completion(svg ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : data, nil);
+                    } else {
                         completion(nil, [SKRequest errorWithMessage:@"Error retrieving snaptag" code:1]);
+                    }
                 }
             } else {
                 completion(nil, error);
@@ -149,20 +180,37 @@
     // multipart/form-data; takes a single "data" parameter in addition to the usual "username" param
 }
 
-- (void)downloadAvatar:(NSString *)username completion:(ResponseBlock)completion {
+- (void)downloadAvatar:(NSString *)username size:(SKAvatarSize)size completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
     
     NSDictionary *query = @{@"username": self.username,
-                            @"size": @"MEDIUM",
-                            @"username_image": username};
-    [self postTo:SKEPAccount.avatar.getFriend query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
+                            @"size": SKStringFromAvatarSize(size),
+                            @"added_friends": @[username].JSONString};
+    [self downloadAvatarWithEndpoint:SKEPAccount.avatar.getFriend params:query completion:completion];
+}
+
+- (void)downloadYourAvatar:(SKAvatarSize)size completion:(ResponseBlock)completion {
+    NSParameterAssert(completion);
+    
+    NSDictionary *query = @{@"username": self.username,
+                            @"size": SKStringFromAvatarSize(size),
+                            @"username_image": self.username};
+    [self downloadAvatarWithEndpoint:SKEPAccount.avatar.get params:query completion:completion];
+}
+
+- (void)downloadAvatarWithEndpoint:(NSString *)endpoint params:(NSDictionary *)params completion:(ResponseBlock)completion {
+    [self postTo:endpoint query:params response:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!error) {
-                if ([(NSHTTPURLResponse *)response statusCode] == 200) {
-                    if (data.length)
-                        [[SKBlob blobWithData:data] decompress:completion];
-                    else
-                        completion(nil, [SKRequest errorWithMessage:@"Error retrieving snaptag" code:1]);
+                NSInteger code = [(NSHTTPURLResponse *)response statusCode];
+                
+                if (code == 200) {
+                    if (data.length) {
+                        NSError *avError = nil;
+                        completion([SKAvatar avatarWithData:data error:&avError], avError);
+                    } else {
+                        completion(nil, [SKRequest errorWithMessage:@"Error downloading avatar" code:code]);
+                    }
                 } else if ([(NSHTTPURLResponse *)response statusCode] == 204) {
                     completion(nil, nil);
                 }

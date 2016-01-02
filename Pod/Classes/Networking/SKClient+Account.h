@@ -54,18 +54,29 @@
 - (void)updateFeatureSettings:(NSDictionary *)settings completion:(ErrorBlock)completion;
 
 /** Downloads your account's snaptag, a personal Snapchat QR code.
- @param completion Takes an error, if any, and an SKBlob object with the snaptag data. */
-- (void)downloadSnaptag:(ResponseBlock)completion;
+ @param svg If \c YES, an SVG will be downloaded. If \c NO, a 320x320 PNG will be downloaded.
+ @param completion Takes an error, if any, and an \c NSData object with the snaptag PNG data, or a string with the SVG XML data. */
+- (void)downloadSnaptagAsSVG:(BOOL)svg completion:(ResponseBlock)completion;
+/** Downloads a user's snaptag, a personal Snapchat QR code.
+ @param svg If \c YES, an SVG will be downloaded. If \c NO, a 320x320 PNG will be downloaded.
+ @param completion Takes an error, if any, and an \c NSData object with the snaptag PNG data, or a string with the SVG XML data. */
+- (void)downloadSnaptagForUser:(SKUser *)user asSVG:(BOOL)svg completion:(ResponseBlock)completion;
+
 /** Uploads a new animated avatar. Not working yet.
  @param datas An array of 5 image \c NSData objects.
  @param completion Takes an error, if any. */
-- (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion;
-/** Downloads the animated avatar for \c user. Currently encrypted, or something.
+//- (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion;
+
+/** Downloads the animated avatar for \c user.
  @param username The username tied to the avatar to download.
- @param completion Takes an error, if any, and ideally an array of 5 \c SKBlob objects or \c nil if the user does not have an avatar, but as of now takes one possibly encrypted \c SKBlob object. */
-- (void)downloadAvatar:(NSString *)username completion:(ResponseBlock)completion;
+ @param size The size of the image to download.
+ @param completion Takes an error, if any, and an \c SKAvatar object. */
+- (void)downloadAvatar:(NSString *)username size:(SKAvatarSize)size completion:(ResponseBlock)completion;
+/** Downloads your avatar. Completion takes an error, if any, and an \c SKAvatar object. */
+- (void)downloadYourAvatar:(SKAvatarSize)size completion:(ResponseBlock)completion;
 /** Removes your current avatar. */
 - (void)removeYourAvatar:(ErrorBlock)completion;
+
 /** Updates your TOS agreement status for each of the three Terms of Service's.
  @param completion Takes an error, if any. */
 - (void)updateTOSAgreementStatus:(BOOL)snapcash snapcashV2:(BOOL)snapcashV2 square:(BOOL)square completion:(ErrorBlock)completion;

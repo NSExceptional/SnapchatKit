@@ -95,6 +95,13 @@ typedef NS_ENUM(NSUInteger, SKBlockReason)
     SKBlockReasonIDKThem
 };
 
+typedef NS_ENUM(NSUInteger, SKAvatarSize)
+{
+    SKAvatarSizeThumbnail,
+    SKAvatarSizeMedium,
+    SKAvatarSizeLarge
+};
+
 
 
 extern SKAddSource SKAddSourceFromString(NSString *);
@@ -102,6 +109,7 @@ extern NSString * SKStringFromAddSource(SKAddSource);
 extern NSString * SKStringFromMediaKind(SKMediaKind);
 extern NSString * SKStringFromStoryPrivacy(SKStoryPrivacy);
 extern NSString * SKStringFromBlockReason(SKBlockReason);
+extern NSString * SKStringFromAvatarSize(SKAvatarSize);
 
 extern BOOL SKMediaKindIsImage(SKMediaKind mediaKind);
 extern BOOL SKMediaKindIsVideo(SKMediaKind mediaKind);
