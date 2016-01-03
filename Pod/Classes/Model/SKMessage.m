@@ -41,18 +41,19 @@ NSString * SKStringFromMessageKind(SKMessageKind messageKind) {
 
 - (id)initWithDictionary:(NSDictionary *)json {
     self = [super initWithDictionary:json];
-    
-    // Debugging //
-    if (!self.messageKind)
-        SKLog(@"Unknown message kind: %@", json[@"chat_message"][@"body"][@"type"]);
-    
-    if (!self.mediaType)
-        _mediaType = @"UNSPECIFIED";
-    else if (!([self.mediaType isEqualToString:@"VIDEO"] || [self.mediaType isEqualToString:@"IMAGE"]))
-        NSLog(@"New media type: %@", self.mediaType);
-    
-    if (![_type isEqualToString:@"chat_message"])
-        SKLog(@"Unknown chat message type: %@", _type);
+    if (self) {
+        // Debugging //
+        if (!self.messageKind)
+            SKLog(@"Unknown message kind: %@", json[@"chat_message"][@"body"][@"type"]);
+        
+        if (!self.mediaType)
+            _mediaType = @"UNSPECIFIED";
+        else if (!([self.mediaType isEqualToString:@"VIDEO"] || [self.mediaType isEqualToString:@"IMAGE"]))
+            NSLog(@"New media type: %@", self.mediaType);
+        
+        if (![_type isEqualToString:@"chat_message"])
+            SKLog(@"Unknown chat message type: %@", _type);
+    }
     
     return self;
 }

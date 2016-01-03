@@ -12,10 +12,10 @@
 
 @implementation SKSnap
 
-- (id)initWithDictionary:(NSDictionary *)json {
+- (id)initWithDictionary:(NSDictionary *)json error:(NSError *__autoreleasing *)error {
     if (!json.allKeys.count) return nil;
     
-    self = [super initWithDictionary:json];
+    self = [super initWithDictionary:json error:error];
     if (self) {
         _isOutgoing = [_identifier hasSuffix:@"s"];
     }

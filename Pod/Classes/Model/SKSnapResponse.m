@@ -22,7 +22,7 @@
 
 /// Do not use
 
-- (id)initWithDictionary:(NSDictionary *)json { [NSException raise:NSInternalInconsistencyException format:@"Use -initWithDictionary:sender:"]; return nil; }
+- (id)initWithDictionary:(NSDictionary *)json error:(NSError *__autoreleasing *)error { [NSException raise:NSInternalInconsistencyException format:@"Use -initWithDictionary:sender:"]; return nil; }
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ sender=%@, id=%@, ts=%@>",

@@ -43,22 +43,17 @@ NSString * SKStringFromChatType(SKChatType chatType) {
 
 @implementation SKConversation
 
-- (id)initWithDictionary:(NSDictionary *)json {
+- (id)initWithDictionary:(NSDictionary *)json error:(NSError *__autoreleasing *)error {
     NSParameterAssert(json.allKeys.count > 2);
     // Required keys: conversation_messages, conversation_state, id
     
-    self = [super initWithDictionary:json];
+    self = [super initWithDictionary:json error:error];
     
     if (self) {
         if (!_participants.count)
             _participants = [_identifier componentsSeparatedByString:@"~"];
         if (!_usersWithPendingChats)
             _usersWithPendingChats = @[];
-        
-//        NSDictionary *json = [self valueForKey:@"JSON"];
-//        if (json[@"conversation_interaction_event"]) {
-//            SKLog(@"%@", json[@"conversation_interaction_event"]);
-//        }
     }
     
     return self;

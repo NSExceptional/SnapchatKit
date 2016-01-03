@@ -34,8 +34,8 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     return [[SKSession alloc] initWithDictionary:json];
 }
 
-- (id)initWithDictionary:(NSDictionary *)json {
-    self = [super initWithDictionary:json];
+- (id)initWithDictionary:(NSDictionary *)json error:(NSError *__autoreleasing *)error {
+    self = [super initWithDictionary:json error:error];
     if (self) {
         #pragma clang diagnostic ignored "-Wundeclared-selector"
         [_conversations.array makeObjectsPerformSelector:@selector(setRecipient:) withObject:self.username];

@@ -16,22 +16,22 @@
 @implementation SKCashTransaction
 
 - (id)initWithDictionary:(NSDictionary *)json {
+    if (json[@"iter_token"])
+        return [self initWithDictionary:json[@"cash_transaction"] pagination:json[@"iter_token"]];
+    return [super initWithDictionary:json];
+}
+
+- (id)initWithDictionary:(NSDictionary *)json pagination:(NSString *)pagination {
     if (!json.allKeys.count) return nil;
     
-    // "last_transaction" is flat, but normal transactions
-    // contain "iter_token" and "cash_transaction", so this is the
-    // case for normal transactions; we are flattening the JSON
-    // to make it easier to deal with in Mantle.
-    if (json[@"cash_transaction"])
-        json = ({
-            _isaRegularTransaction = YES;
-            NSMutableDictionary *mjson = @{@"iter_token": json[@"iter_token"]}.mutableCopy;
-            [mjson addEntriesFromDictionary:json[@"cash_transaction"]];
-            mjson[@"cash_transaction"] = nil;
-            mjson;
-        });
+    // "last_cash_transaction" is flat, but normal transactions
+    // contain "iter_token" and "cash_transaction"
+    self = [super initWithDictionary:json];
+    if (self) {
+        _pagination = pagination;
+    }
     
-    return [super initWithDictionary:json];
+    return self;
 }
 
 - (NSString *)description {

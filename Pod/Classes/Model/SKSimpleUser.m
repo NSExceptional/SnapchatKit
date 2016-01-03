@@ -9,20 +9,23 @@
 #import "SKSimpleUser.h"
 
 
-
 @implementation SKSimpleUser
 
-- (id)initWithDictionary:(NSDictionary *)json {
-    self = [super initWithDictionary:json];
+- (id)initWithDictionary:(NSDictionary *)json error:(NSError *__autoreleasing *)error {
+    self = [super initWithDictionary:json error:error];
     if (self) {
         if (!_displayName.length) _displayName = nil;
-        
-        // API debugging
-        if (![json[@"direction"] isEqualToString:@"OUTGOING"] && ![json[@"direction"] isEqualToString:@"INCOMING"])
-            SKLog(@"SKSimpleUser new 'direction': %@", json[@"direction"]);
     }
     
     return self;
+}
+
+- (id)initWithDictionary:(NSDictionary *)json {
+    // API debugging
+    if (![json[@"direction"] isEqualToString:@"OUTGOING"] && ![json[@"direction"] isEqualToString:@"INCOMING"])
+        SKLog(@"SKSimpleUser new 'direction': %@", json[@"direction"]);
+    
+    return [super initWithDictionary:json];
 }
 
 - (NSString *)description {
