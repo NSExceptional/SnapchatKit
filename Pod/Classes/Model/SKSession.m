@@ -240,7 +240,7 @@ MTLTransformPropertyDate(lastCheckedTrophies)
 }
 
 - (SKConversation *)conversationWithUser:(NSString *)username {
-    NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"recipient", username];
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"sender", username];
     return [self.conversations filteredOrderedSetUsingPredicate:filter].firstObject;
 }
 
