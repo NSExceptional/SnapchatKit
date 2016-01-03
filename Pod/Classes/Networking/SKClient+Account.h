@@ -65,7 +65,7 @@
 /** Uploads a new animated avatar. Not working yet.
  @param datas An array of 5 image \c NSData objects.
  @param completion Takes an error, if any. */
-//- (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion;
+- (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion;
 
 /** Downloads the animated avatar for \c user.
  @param username The username tied to the avatar to download.

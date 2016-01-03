@@ -190,18 +190,18 @@
 
 + (NSData *)boundaryWithKey:(NSString *)key forStringValue:(NSString *)string {
     NSMutableData *boundary = [NSMutableData data];
-    [boundary appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", SKConsts.boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [boundary appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n%@", key, string] dataUsingEncoding:NSUTF8StringEncoding]];
+    [boundary appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", SKConsts.boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     
     return boundary;
 }
 
 + (NSData *)boundaryWithKey:(NSString *)key forDataValue:(NSData *)data {
     NSMutableData *boundary = [NSMutableData data];
-    [boundary appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", SKConsts.boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [boundary appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\r\n", key, key] dataUsingEncoding:NSUTF8StringEncoding]];
     [boundary appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [boundary appendData:[NSData dataWithData:data]];
+    [boundary appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", SKConsts.boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     
     return boundary;
 }

@@ -176,8 +176,15 @@
 }
 
 - (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion {
+    NSParameterAssert(datas);
+    
+    NSDictionary *query = @{@"username": self.username,
+                            @"data": [SKAvatar avatarDataFromImageDatas:datas]};
     // SKEPAccount.avatar.set
     // multipart/form-data; takes a single "data" parameter in addition to the usual "username" param
+    [self postTo:SKEPAccount.avatar.set query:query callback:^(id object, NSError *error) {
+        completion(error);
+    }];
 }
 
 - (void)downloadAvatar:(NSString *)username size:(SKAvatarSize)size completion:(ResponseBlock)completion {
@@ -226,7 +233,7 @@
     
     NSDictionary *query = @{@"username": self.username,
                             @"last_updated": [NSString timestamp]};
-    [self postTo:SKEPAccount.avatar.get query:query callback:^(NSDictionary *json, NSError *error) {
+    [self postTo:SKEPAccount.avatar.remove query:query callback:^(NSDictionary *json, NSError *error) {
         completion(error);
     }];
 }

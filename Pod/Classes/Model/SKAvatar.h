@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) NSString *username;
 @property (nonatomic, readonly) NSDate   *lastUpdated;
-@property (nonatomic, readonly) NSData *data;
+@property (nonatomic, readonly) NSData   *data;
 
 #if USE_UIKIT
 /** An animated image representing the avatar. */

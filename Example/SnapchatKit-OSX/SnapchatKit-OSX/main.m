@@ -263,8 +263,6 @@ int main(int argc, const char * argv[]) {
                 // Get unread snaps
                 NSArray *unread = session.unread;
                 SKLog(@"%lu unread snaps: %@", unread.count, unread);
-                
-                
 //
 //                SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
 //                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"username", @"luke"]].firstObject;
