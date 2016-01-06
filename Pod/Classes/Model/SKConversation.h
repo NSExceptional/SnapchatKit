@@ -53,6 +53,7 @@ extern SKChatType SKChatTypeFromString(NSString *chatTypeString);
 /** \c nil if not applicable. */
 @property (nonatomic, readonly) SKCashTransaction   *lastTransaction;
 @property (nonatomic, readonly) SKConversationState *state;
+@property (nonatomic, readonly) NSDictionary        *stateDict;
 
 /** The current signed in user. */
 @property (nonatomic, readonly) NSString     *recipient;

@@ -77,7 +77,7 @@ NSString * SKStringFromChatType(SKChatType chatType) {
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{@"messagingAuth": @"conversation_messages.messaging_auth",
-             @"state": @"conversation_state",
+             @"stateDict": @"conversation_state",
              @"identifier": @"id",
              @"pagination": @"iter_token",
              @"lastSnap": @"last_snap",
@@ -226,6 +226,7 @@ MTLTransformPropertyDate(lastChatWrite)
 - (void)setRecipient:(NSString *)recipient {
     NSParameterAssert(recipient);
     _recipient = recipient;
+    _state = [SKConversationState state:_stateDict recipient:recipient];
 }
 
 - (NSString *)sender {

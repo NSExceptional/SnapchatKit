@@ -21,6 +21,7 @@
 #import "SKBlob.h"
 #import "SKCashTransaction.h"
 #import "SKConversation.h"
+#import "SKConversationState.h"
 #import "SKFoundFriend.h"
 #import "SKMessage.h"
 #import "SKSession.h"
