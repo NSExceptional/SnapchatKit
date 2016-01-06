@@ -114,23 +114,6 @@ static SKClient *sharedSKClient;
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder {
-    self = [self init];
-    if (self) {
-        _authToken     = [aDecoder decodeObjectForKey:@"authToken"];
-        _deviceToken1i = [aDecoder decodeObjectForKey:@"deviceToken1i"];
-        _deviceToken1v = [aDecoder decodeObjectForKey:@"deviceToken1v"];
-    }
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)aCoder {
-    [aCoder encodeObject:_authToken     forKey:@"authToken"];
-    [aCoder encodeObject:_deviceToken1i forKey:@"deviceToken1i"];
-    [aCoder encodeObject:_deviceToken1v forKey:@"deviceToken1v"];
-}
-
 - (void)setCurrentSession:(SKSession *)currentSession {
     _currentSession = currentSession;
     _username = currentSession.username;
@@ -270,7 +253,7 @@ static SKClient *sharedSKClient;
     NSDictionary *query = @{@"username": self.username, @"auth_token": token, @"endpoint": endpoint, @"timestamp": [NSString timestamp]};
     
     // Build request
-    NSURL *url = [NSURL URLWithString:@"http://zelta.casper.io/snapchat/ios/endpointauth"];
+    NSURL *url = [NSURL URLWithString:@"http://heroku.casper.io/snapchat/ios/endpointauth"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
     request.HTTPBody   = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
@@ -443,7 +426,13 @@ static SKClient *sharedSKClient;
                             @"checksums_dict": self.currentSession.checksums ?: @"{}"};
     [self postTo:SKEPUpdate.all query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
-            _currentSession = [[SKSession alloc] initWithDictionary:json];
+            BOOL partialFriends = [json[@"friends_response"][@"friends_sync_type"] isEqualToString:@"partial"];
+            BOOL partialConvos  = [json[@"conversations_response_info"][@"is_delta"] boolValue];
+            if (partialFriends || partialConvos) {
+                _currentSession = [[[SKSession alloc] initWithDictionary:json] mergeWithOldSession:_currentSession];
+            } else {
+                _currentSession = [[SKSession alloc] initWithDictionary:json];
+            }
             _authToken = self.currentSession.authToken;
             if (completion) completion(nil);
         } else {

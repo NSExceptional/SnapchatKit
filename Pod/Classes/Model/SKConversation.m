@@ -7,6 +7,7 @@
 //
 
 #import "SKConversation.h"
+#import "SKConversationState.h"
 #import "SKSnap.h"
 #import "SKMessage.h"
 #import "SKCashTransaction.h"
@@ -41,7 +42,13 @@ NSString * SKStringFromChatType(SKChatType chatType) {
     return nil;
 }
 
+@interface SKConversation ()
+@property (nonatomic) id oldFirstMessage;
+@end
+
 @implementation SKConversation
+@synthesize lastChatMessage = _lastChatMessage;
+@synthesize lastChatWasOutgoing = _lastChatWasOutgoing;
 
 - (id)initWithDictionary:(NSDictionary *)json error:(NSError *__autoreleasing *)error {
     NSParameterAssert(json.allKeys.count > 2);
@@ -114,7 +121,7 @@ MTLTransformPropertyDate(lastChatWrite)
 
 + (NSValueTransformer *)messagesJSONTransformer {
     return [MTLValueTransformer transformerUsingForwardBlock:^id(NSArray *messages, BOOL *success, NSError *__autoreleasing *error) {
-        NSMutableArray *temp = [NSMutableArray new];
+        NSMutableOrderedSet *temp = [NSMutableOrderedSet new];
         for (NSDictionary *message in messages) {
             if (message[@"snap"])
                 [temp addObject:[[SKSnap alloc] initWithDictionary:message[@"snap"]]];
@@ -126,8 +133,8 @@ MTLTransformPropertyDate(lastChatWrite)
                 SKLog(@"Unhandled conversation message type:\n%@", message);
         };
         return temp;
-    } reverseBlock:^id(NSArray *messages, BOOL *success, NSError *__autoreleasing *error) {
-        return messages.dictionaryValues;
+    } reverseBlock:^id(NSOrderedSet *messages, BOOL *success, NSError *__autoreleasing *error) {
+        return messages.array.dictionaryValues;
     }];
 }
 
@@ -156,19 +163,13 @@ MTLTransformPropertyDate(lastChatWrite)
     NSMutableArray *others = self.participants.mutableCopy;
     [others removeObject:participant];
     
+    NSUInteger totalUnread = [self.recipient isEqualToString:participant] ? self.state.recipientUnreadCount : self.state.senderUnreadCount;
+    
     // Iterate over other participants, excluding "participant"
     for (NSString *user in others) {
-        NSUInteger seenByParticipant = [self.state[@"user_chat_releases"][participant][user] integerValue];
-        NSUInteger sentByUser        = [self.state[@"user_sequences"][user] integerValue];
-        NSInteger totalUnread        = sentByUser - seenByParticipant;
-        
-        // Possible unhandled cases
+        // Possible unhandled case
         if (totalUnread == 0) {
             SKLog(@"0 unread count, but [%@] has pending chats from %@.", participant, user);
-            break;
-        }
-        if (totalUnread < 0) {
-            SKLog(@"Negative unread count between users: [%@] and %@.", participant, user);
             break;
         }
         
@@ -235,6 +236,35 @@ MTLTransformPropertyDate(lastChatWrite)
     return _participants.firstObject;
 }
 
+- (SKMessage *)__lastChatMessage {
+    // Filter by SKMessage
+    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary<NSString *,id> * bindings) {
+        return [evaluatedObject class] == [SKMessage class];
+    }];
+    
+    return [self.messages.array filteredArrayUsingPredicate:predicate].firstObject;
+}
+
+- (SKMessage *)lastChatMessage {
+    if (_oldFirstMessage == self.messages.firstObject)
+        return _lastChatMessage;
+    
+    _oldFirstMessage = self.messages.firstObject;
+    _lastChatMessage = [self __lastChatMessage];
+    return _lastChatMessage;
+}
+
+- (BOOL)lastChatWasOutgoing {
+    if (_oldFirstMessage == self.messages.firstObject)
+        return _lastChatWasOutgoing;
+    
+    _oldFirstMessage = self.messages.firstObject;
+    
+    SKMessage *message   = [self __lastChatMessage];
+    _lastChatWasOutgoing = [message.sender isEqualToString:self.recipient];
+    return _lastChatWasOutgoing;
+}
+
 @end
 
 @implementation SKConversation (SKClient)
@@ -245,11 +275,14 @@ MTLTransformPropertyDate(lastChatWrite)
 }
 
 - (BOOL)userHasUnreadChats:(NSString *)user {
-    NSString *sender       = [self recipientGivenUser:user];
-    NSUInteger yourCount   = [self.state[@"user_chat_releases"][user][sender] integerValue];
-    NSUInteger senderCount = [self.state[@"user_chat_releases"][sender][user] integerValue];
-    
-    return yourCount < senderCount;
+//    NSString *sender       = [self recipientGivenUser:user];
+//    NSUInteger yourCount   = [self.state[@"user_chat_releases"][user][sender] integerValue];
+//    NSUInteger senderCount = [self.state[@"user_chat_releases"][sender][user] integerValue];
+//    
+//    return yourCount < senderCount;
+    if ([user isEqualToString:self.recipient])
+        return self.state.recipientUnreadCount > 0;
+    return self.state.senderUnreadCount > 0;
 }
 
 - (NSString *)conversationString {

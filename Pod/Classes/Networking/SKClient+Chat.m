@@ -9,6 +9,7 @@
 #import "SKClient+Chat.h"
 #import "SKRequest.h"
 #import "SKConversation.h"
+#import "SKConversationState.h"
 #import "SKNewConversation.h"
 #import "SKMessage.h"
 #import "SKBlob.h"
@@ -197,7 +198,7 @@
             
             // Existing conversations
             for (SKConversation *convo in convos) {
-                NSUInteger sequenceNum = [convo.state[@"conversation_state"][@"user_sequences"][self.username] integerValue];
+                NSUInteger sequenceNum = convo.state.recipientSentCount;
                 NSString *recipient = convo.recipient;
                 NSDictionary *newMessage = @{@"body": @{@"type": @"text", @"text": message},
                                              @"chat_message_id": SKUniqueIdentifier(),

@@ -69,6 +69,32 @@ SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString) {
     return unread;
 }
 
+- (SKSession *)mergeWithOldSession:(SKSession *)oldSession {
+    NSParameterAssert(oldSession);
+    
+    [oldSession.friends minusOrderedSet:self.friends];
+    [self.friends addObjectsFromArray:oldSession.friends.array];
+    
+    [oldSession.addedFriends minusOrderedSet:self.addedFriends];
+    [self.addedFriends addObjectsFromArray:oldSession.addedFriends.array];
+    
+    // No need to do best friend usernames or pending requests
+    
+    [oldSession.conversations minusOrderedSet:self.conversations];
+    [self.conversations addObjectsFromArray:oldSession.conversations.array];
+    
+    [oldSession.stories minusOrderedSet:self.stories];
+    [self.stories addObjectsFromArray:oldSession.stories.array];
+    
+    [oldSession.userStories minusOrderedSet:self.userStories];
+    [self.userStories addObjectsFromArray:oldSession.userStories.array];
+    
+    [oldSession.groupStories minusOrderedSet:self.groupStories];
+    [self.groupStories addObjectsFromArray:oldSession.groupStories.array];
+    
+    return self;
+}
+
 #pragma mark - Mantle
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
@@ -234,7 +260,16 @@ MTLTransformPropertyDate(lastCheckedTrophies)
 
 @implementation SKSession (Friends)
 
-- (SKUser *)userWithUsername:(NSString *)username {
+- (SKSimpleUser *)userWithUsername:(NSString *)username {
+    return [self friendWithUsername:username] ?: [self addedFriendWithUsername:username];
+}
+
+- (SKAddedFriend *)addedFriendWithUsername:(NSString *)username {
+    NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"username", username];
+    return [self.addedFriends filteredOrderedSetUsingPredicate:filter].firstObject;
+}
+
+- (SKUser *)friendWithUsername:(NSString *)username {
     NSPredicate *filter = [NSPredicate predicateWithFormat:@"%K = %@", @"username", username];
     return [self.friends filteredOrderedSetUsingPredicate:filter].firstObject;
 }

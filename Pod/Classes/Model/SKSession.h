@@ -11,7 +11,7 @@
 
 #import "SKThing.h"
 
-@class SKMessage, SKConversation, SKUser, SKAddedFriend, SKStoryCollection, SKUserStory, SKStory, SKTrophy;
+@class SKMessage, SKConversation, SKSimpleUser, SKUser, SKAddedFriend, SKStoryCollection, SKUserStory, SKStory, SKTrophy;
 
 extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
@@ -19,6 +19,8 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 @interface SKSession : SKThing //<NSCoding>
 
 + (instancetype)sessionWithJSONResponse:(NSDictionary *)json;
+/** Merges the recieving object with the data in the old object. Returns the recieving object. */
+- (SKSession *)mergeWithOldSession:(SKSession *)session;
 
 /** @return An array of unread \c SKSnap and \c SKMessage objects in \c conversations. */
 - (NSArray *)unread;
@@ -176,7 +178,9 @@ extern SKStoryPrivacy SKStoryPrivacyFromString(NSString *storyPrivacyString);
 
 @interface SKSession (Friends)
 /** @return The \c SKUser object associated with \e username, or \c nil if the user could not be found. */
-- (SKUser *)userWithUsername:(NSString *)username;
+- (SKSimpleUser *)userWithUsername:(NSString *)username;
+- (SKAddedFriend *)addedFriendWithUsername:(NSString *)username;
+- (SKUser *)friendWithUsername:(NSString *)username;
 /** @return The \c SKConversation associated \e username, or \c nil if it hasn't been loaded or does not exist. @note It makes no sense to pass in your own username. */
 - (SKConversation *)conversationWithUser:(NSString *)username;
 @end
