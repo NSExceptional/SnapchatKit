@@ -9,6 +9,12 @@
 #import <Foundation/Foundation.h>
 #define USE_UIKIT (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
 
+#if USE_UIKIT
+@import UIKit;
+#else
+@import AppKit;
+#endif
+
 NS_ASSUME_NONNULL_BEGIN
 @interface SKAvatar : NSObject
 
