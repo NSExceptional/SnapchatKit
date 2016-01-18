@@ -21,7 +21,17 @@
     if (self) {
         NSDictionary *releases  = json[@"user_chat_releases"];
         NSDictionary *sequences = json[@"user_sequences"];
-        NSString *sender = sequences.allKeys[![sequences.allKeys indexOfObject:recipient]];
+        
+        // Case for empty conversations
+        if (!sequences.allKeys.count)
+            return self;
+        
+        NSInteger idx = [sequences.allKeys indexOfObject:recipient];
+        NSString *sender;
+        if (idx == 0)
+            sender = releases.allKeys.firstObject;
+        else
+            sender = sequences.allKeys.firstObject;
         
         // Actual sent values, not percieved values
         _recipientSentCount = [sequences[recipient] integerValue];
@@ -32,6 +42,11 @@
     }
     
     return self;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ your unread=%@, sent=%@, sender unread=%@, sent=%@>",
+            NSStringFromClass(self.class), @(_recipientUnreadCount), @(_recipientSentCount), @(_senderUnreadCount), @(_senderSentCount)];
 }
 
 @end

@@ -42,8 +42,9 @@ NSString * SKStringFromChatType(SKChatType chatType) {
     return nil;
 }
 
-@interface SKConversation ()
-@property (nonatomic) id oldFirstMessage;
+@interface SKConversation () {
+    id _oldFirstMessage;
+}
 @end
 
 @implementation SKConversation
@@ -226,7 +227,14 @@ MTLTransformPropertyDate(lastChatWrite)
 - (void)setRecipient:(NSString *)recipient {
     NSParameterAssert(recipient);
     _recipient = recipient;
-    _state = [SKConversationState state:_stateDict recipient:recipient];
+    if(_stateDict)
+        _state = [SKConversationState state:_stateDict recipient:_recipient];
+}
+
+- (void)setStateDict:(NSDictionary *)stateDict {
+    _stateDict = stateDict;
+    if(_stateDict && _recipient)
+        _state = [SKConversationState state:_stateDict recipient:_recipient];
 }
 
 - (NSString *)sender {
@@ -252,17 +260,12 @@ MTLTransformPropertyDate(lastChatWrite)
     
     _oldFirstMessage = self.messages.firstObject;
     _lastChatMessage = [self __lastChatMessage];
+    _lastChatWasOutgoing = [_lastChatMessage.sender isEqualToString:self.recipient];
     return _lastChatMessage;
 }
 
 - (BOOL)lastChatWasOutgoing {
-    if (_oldFirstMessage == self.messages.firstObject)
-        return _lastChatWasOutgoing;
-    
-    _oldFirstMessage = self.messages.firstObject;
-    
-    SKMessage *message   = [self __lastChatMessage];
-    _lastChatWasOutgoing = [message.sender isEqualToString:self.recipient];
+    [self lastChatMessage];
     return _lastChatWasOutgoing;
 }
 
@@ -276,11 +279,11 @@ MTLTransformPropertyDate(lastChatWrite)
 }
 
 - (BOOL)userHasUnreadChats:(NSString *)user {
-//    NSString *sender       = [self recipientGivenUser:user];
-//    NSUInteger yourCount   = [self.state[@"user_chat_releases"][user][sender] integerValue];
-//    NSUInteger senderCount = [self.state[@"user_chat_releases"][sender][user] integerValue];
-//    
-//    return yourCount < senderCount;
+    //    NSString *sender       = [self recipientGivenUser:user];
+    //    NSUInteger yourCount   = [self.state[@"user_chat_releases"][user][sender] integerValue];
+    //    NSUInteger senderCount = [self.state[@"user_chat_releases"][sender][user] integerValue];
+    //
+    //    return yourCount < senderCount;
     if ([user isEqualToString:self.recipient])
         return self.state.recipientUnreadCount > 0;
     return self.state.senderUnreadCount > 0;
