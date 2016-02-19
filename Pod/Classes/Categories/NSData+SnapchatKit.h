@@ -23,21 +23,21 @@
 
 @interface NSData (FileFormat)
 
-- (BOOL)isJPEG;
-- (BOOL)isPNG;
-- (BOOL)isImage;
-- (BOOL)isMPEG4;
-- (BOOL)isMedia;
-- (BOOL)isCompressed;
-- (NSString *)appropriateFileExtension;
+@property (nonatomic, readonly) BOOL isJPEG;
+@property (nonatomic, readonly) BOOL isPNG;
+@property (nonatomic, readonly) BOOL isImage;
+@property (nonatomic, readonly) BOOL isMPEG4;
+@property (nonatomic, readonly) BOOL isMedia;
+@property (nonatomic, readonly) BOOL isCompressed;
+@property (nonatomic, readonly) NSString *appropriateFileExtension;
 
 @end
 
-
 @interface NSData (Encoding)
-- (NSString *)MD5Hash;
-- (NSString *)hexadecimalString;
-- (NSString *)sha256Hash;
+@property (nonatomic, readonly) NSString *base64URLEncodedString;
+@property (nonatomic, readonly) NSString *MD5Hash;
+@property (nonatomic, readonly) NSString *hexadecimalString;
+@property (nonatomic, readonly) NSString *sha256Hash;
 @end
 
 

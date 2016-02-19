@@ -8,13 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
+
+@interface NSString (Util)
+
+/// Joins other strings into a single string with the receiver in between each.
+- (NSString *)join:(NSArray *)otherStrings;
+
+@end
+
 @interface NSString (Encoding)
 
-- (NSData *)base64DecodedData;
-- (NSString *)base64Encode;
-- (NSString *)base64Decode;
-- (NSString *)sha256Hash;
-- (NSData *)sha256HashRaw;
+@property (nonatomic, readonly) NSString *base64Encoded;
+@property (nonatomic, readonly) NSString *base64URLEncoded;
+@property (nonatomic, readonly) NSString *base64Decoded;
+@property (nonatomic, readonly) NSData   *base64DecodedData;
+
+@property (nonatomic, readonly) NSString *MD5Hash;
+@property (nonatomic, readonly) NSString *sha256Hash;
+@property (nonatomic, readonly) NSData   *sha256HashData;
 
 
 /** Implementation of Snapchat's hashing algorithm. */
@@ -24,13 +35,13 @@
 + (NSData *)hashHMac:(NSString *)data key:(NSString *)key;
 + (NSString *)hashHMacToString:(NSString *)data key:(NSString *)key;
 
-- (NSString *)MD5Hash;
-
 @end
 
 
 @interface NSString (REST)
+
 + (NSString *)timestamp;
++ (NSString *)timestampInSeconds;
 + (NSString *)timestampFrom:(NSDate *)date;
 + (NSString *)queryStringWithParams:(NSDictionary *)params;
 + (NSString *)queryStringWithParams:(NSDictionary *)params URLEscapeValues:(BOOL)escapeValues;
@@ -39,9 +50,9 @@
 
 
 @interface NSString (Regex)
+@property (nonatomic, readonly) NSString *textFromHTML;
 - (NSString *)matchGroupAtIndex:(NSUInteger)idx forRegex:(NSString *)regex;
 - (NSArray *)allMatchesForRegex:(NSString *)regex;
-- (NSString *)textFromHTML;
 - (NSString *)stringByReplacingMatchesForRegex:(NSString *)regex withString:(NSString *)replacement;
 @end
 

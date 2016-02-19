@@ -7,12 +7,30 @@
 //
 
 #import "NSDictionary+SnapchatKit.h"
+#import "NSString+SnapchatKit.h"
+#import "NSData+SnapchatKit.h"
+#import <CommonCrypto/CommonCrypto.h>
+#import <CommonCrypto/CommonHMAC.h>
+
 
 @implementation NSDictionary (JSON)
 
 - (NSString *)JSONString {
     NSData *data = [NSJSONSerialization dataWithJSONObject:self options:0 error:nil];
     return data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : @"{}";
+}
+
+- (NSString *)JWTStringWithSecret:(NSString *)key {
+    NSString *header = @"{\"typ\":\"JWT\",\"alg\":\"HS256\"}";
+    NSString *payload = [self.JSONString stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
+    
+    NSString *data = [@"." join:@[header.base64URLEncoded, payload.base64URLEncoded]];
+    
+    unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA256, key.UTF8String, strlen(key.UTF8String), data.UTF8String, strlen(data.UTF8String), cHMAC);
+    NSData *signature = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    NSString *s = signature.base64URLEncodedString;
+    return [@"." join:@[data, signature.base64URLEncodedString]];
 }
 
 @end

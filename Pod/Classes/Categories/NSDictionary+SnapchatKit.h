@@ -10,7 +10,8 @@
 
 @interface NSDictionary (JSON)
 
-- (NSString *)JSONString;
+@property (nonatomic, readonly) NSString *JSONString;
+- (NSString *)JWTStringWithSecret:(NSString *)secret;
 
 @end
 
@@ -22,7 +23,7 @@
 - (NSDictionary *)dictionaryByReplacingValuesForKeys:(NSDictionary *)dictionary;
 - (NSDictionary *)dictionaryByReplacingKeysWithNewKeys:(NSDictionary *)oldKeysToNewKeys;
 
-- (NSArray *)allKeyPaths;
+@property (nonatomic, readonly) NSArray *allKeyPaths;
 
 @end
 

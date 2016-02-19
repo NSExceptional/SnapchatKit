@@ -49,4 +49,14 @@
             NSStringFromClass(self.class), @(_recipientUnreadCount), @(_recipientSentCount), @(_senderUnreadCount), @(_senderSentCount)];
 }
 
++ (NSArray *)ignoredJSONKeyPathPrefixes {
+    static NSArray *ignored = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        ignored = @[@"user_chat_releases", @"user_sequences", @"user_snap_releases"];
+    });
+    
+    return ignored;
+}
+
 @end

@@ -11,13 +11,13 @@
 @interface NSArray (JSON)
 
 /// Will never return nil.
-- (NSString *)JSONString;
-
-/** Will never return nil. */
-- (NSArray *)dictionaryValues;
+@property (nonatomic, readonly) NSString *JSONString;
+/// Will never return nil.
+@property (nonatomic, readonly) NSArray *dictionaryValues;
 
 @end
 
+
 @interface NSArray (REST)
-- (NSString *)recipientsString;
+@property (nonatomic, readonly) NSString *recipientsString;
 @end

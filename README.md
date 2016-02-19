@@ -7,9 +7,9 @@
 [![Stars](https://img.shields.io/github/stars/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/stargazers)
 
 ## Quick FAQ
-> Why isn't login working?
+> How do I get login and stuff working?
 
-SnapchatKit relies on Liam Cottle's private API to sign in *and* make any request, due to how the iOS API works and the limits of our knowledge of its implementation. If or when his API becomes public, SnapchatKit will work again. I have access to the API to maintain SnapchatKit.
+SnapchatKit relies on Liam Cottle's private API to sign in *and* make any request, due to how the iOS API works and the limits of our knowledge of its implementation. His API is now public again. Head over to the [Casper developer page](https://developers.casper.io) to get started. **Disclaimer: it is not cheap. If you don't know what you're doing or if you're not super serious about using this kit, you should just leave now.**
 
 > What is `Login.h` / why is it missing?
 

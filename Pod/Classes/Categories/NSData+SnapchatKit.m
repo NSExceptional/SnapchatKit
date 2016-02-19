@@ -46,7 +46,7 @@
     
     size_t bufferSize = self.length + kCCKeySizeAES128;
     void *buffer = malloc(bufferSize);
-
+    
     size_t decryptedLength = 0;
     CCCryptorStatus cryptStatus = CCCrypt(operation,
                                           kCCAlgorithmAES128,
@@ -143,6 +143,15 @@
 
 #pragma mark Encoding
 @implementation NSData (Encoding)
+
+- (NSString *)base64URLEncodedString {
+    NSString *str = [self base64EncodedStringWithOptions:0];
+    str = [str stringByReplacingOccurrencesOfString:@"=" withString:@""];
+    str = [str stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
+    str = [str stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
+    
+    return str;
+}
 
 - (NSString *)MD5Hash {
     unsigned char result[CC_MD5_DIGEST_LENGTH];

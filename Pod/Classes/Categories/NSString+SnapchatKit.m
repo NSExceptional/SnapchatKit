@@ -11,18 +11,38 @@
 #import "SnapchatKit-Constants.h"
 #import <CommonCrypto/CommonHMAC.h>
 
+
+@implementation NSString (Util)
+
+- (NSString *)join:(NSArray *)otherStrings {
+    NSMutableString *str = [NSMutableString string];
+    for (NSString *join in otherStrings) {
+        [str appendString:join];
+        [str appendString:self];
+    }
+    
+    [str deleteCharactersInRange:NSMakeRange(str.length - self.length, self.length)];
+    return str.copy;
+}
+
+@end
+
 @implementation NSString (Encoding)
 
 - (NSData *)base64DecodedData {
     return [[NSData alloc] initWithBase64EncodedString:self options:0];
 }
 
-- (NSString *)base64Encode {
+- (NSString *)base64Encoded {
     NSData *stringData = [self dataUsingEncoding:NSUTF8StringEncoding];
     return [stringData base64EncodedStringWithOptions:0];
 }
 
-- (NSString *)base64Decode {
+- (NSString *)base64URLEncoded {
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] base64URLEncodedString];
+}
+
+- (NSString *)base64Decoded {
     return [[NSString alloc] initWithData:self.base64DecodedData encoding:NSUTF8StringEncoding];
 }
 
@@ -30,7 +50,7 @@
     return [[self dataUsingEncoding:NSUTF8StringEncoding] sha256Hash];
 }
 
-- (NSData *)sha256HashRaw {
+- (NSData *)sha256HashData {
     NSData *data = [self dataUsingEncoding:NSUTF8StringEncoding];
     
     unsigned char result[CC_SHA256_DIGEST_LENGTH];
@@ -103,6 +123,10 @@
 
 + (NSString *)timestamp {
     return [self timestampFrom:[NSDate date]];
+}
+
++ (NSString *)timestampInSeconds {
+    return [NSString stringWithFormat:@"%llu", (unsigned long long)[NSDate date].timeIntervalSince1970];
 }
 
 + (NSString *)timestampFrom:(NSDate *)date {

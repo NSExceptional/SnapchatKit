@@ -24,6 +24,7 @@
 
 #define SKDispatchToMain(block) dispatch_async(dispatch_get_main_queue(), ^{ block; })
 
+
 BOOL SKHasActiveConnection() {
     SCNetworkReachabilityFlags flags;
     SCNetworkReachabilityRef address;
@@ -250,13 +251,13 @@ static SKClient *sharedSKClient;
     NSString *token = SKShouldUseStaticToken(endpoint) ? SKConsts.staticToken : _authToken;
     
     // Params
-    NSDictionary *query = @{@"username": self.username, @"auth_token": token, @"endpoint": endpoint, @"timestamp": [NSString timestamp]};
+    NSDictionary *query = @{@"username": self.username, @"auth_token": token, @"endpoint": endpoint, @"iat": [NSString timestampInSeconds]};
     
     // Build request
-    NSURL *url = [NSURL URLWithString:@"http://heroku.casper.io/snapchat/ios/endpointauth"];
+    NSURL *url = [NSURL URLWithString:@"https://casper-api.herokuapp.com/snapchat/ios/endpointauth"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
-    request.HTTPBody   = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody   = [[NSString queryStringWithParams:@{@"jwt": [query JWTStringWithSecret:self.casperAPISecret]}] dataUsingEncoding:NSUTF8StringEncoding];
     
     // Set headers
     [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
@@ -276,7 +277,7 @@ static SKClient *sharedSKClient;
             if ([json[@"code"] integerValue] == 200)
                 callback(json[@"endpoints"][0][@"params"], headers, nil);
             else
-                callback(nil, nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+                callback(nil, nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"code"] integerValue]]);
         } else {
             callback(nil, nil, error);
         }
@@ -327,13 +328,13 @@ static SKClient *sharedSKClient;
     //NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
     
     // Params
-    NSDictionary *query = @{@"username": username, @"password": password, @"timestamp": ts};
+    NSDictionary *query = @{@"username": username, @"password": password, @"iat": [NSString timestampInSeconds]};
     
     // Build request
-    NSURL *url = [NSURL URLWithString:@"http://api.casper.io/snapchat/auth"];
+    NSURL *url = [NSURL URLWithString:@"https://casper-api.herokuapp.com/snapchat/ios/login"];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
-    request.HTTPBody   = [[NSString queryStringWithParams:query] dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody   = [[NSString queryStringWithParams:@{@"jwt": [query JWTStringWithSecret:self.casperAPIKey]}] dataUsingEncoding:NSUTF8StringEncoding];
     
     // Set headers
     [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
