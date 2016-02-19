@@ -29,7 +29,7 @@
     unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
     CCHmac(kCCHmacAlgSHA256, key.UTF8String, strlen(key.UTF8String), data.UTF8String, strlen(data.UTF8String), cHMAC);
     NSData *signature = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
-    NSString *s = signature.base64URLEncodedString;
+    
     return [@"." join:@[data, signature.base64URLEncodedString]];
 }
 

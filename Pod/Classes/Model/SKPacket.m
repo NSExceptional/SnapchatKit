@@ -35,7 +35,7 @@ extern NSString * SKStringFromPacketType(SKPacketType packetType) {
             return @"ping_response";
     }
     
-    [NSException raise:NSInternalInconsistencyException format:@"Cannot convert packetType to string: %lu", packetType];
+    [NSException raise:NSInternalInconsistencyException format:@"Cannot convert packetType to string: %@", @(packetType)];
     return nil;
 }
 

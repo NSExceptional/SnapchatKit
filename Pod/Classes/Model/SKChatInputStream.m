@@ -27,7 +27,7 @@
     [self read:result.buffer maxLength:8];
     
     if (result.length > 900000) {
-        [NSException raise:NSInternalInconsistencyException format:@"Bad packet length from server: %lu", result.length];
+        [NSException raise:NSInternalInconsistencyException format:@"Bad packet length from server: %@", @(result.length)];
     }
     
     NSMutableData *data = [NSMutableData dataWithCapacity:result.length];
