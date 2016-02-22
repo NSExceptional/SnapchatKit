@@ -223,6 +223,7 @@ int main(int argc, const char * argv[]) {
         [SKClient sharedClient].casperUserAgent = kCasperUserAgent;
 #endif
         
+//        [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword completion:^(NSDictionary *dict, NSError *error) {
         [[SKClient sharedClient] restoreSessionWithUsername:kUsername snapchatAuthToken:kAuthToken doGetUpdates:^(NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;

@@ -11,6 +11,7 @@
 #import "SnapchatKit-Constants.h"
 
 #import "SKSession.h"
+#import "SKCasperCache.h"
 
 extern NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret);
 
@@ -32,6 +33,7 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 - (void)restructureJSON:(NSDictionary *)json error:(NSError *)error response:(NSURLResponse *)response completion:(ResponseBlock)completion;
 @end
 
+
 @interface SKClient : NSObject
 
 /** The default Snapchat session manager. To use more than one account, simply create and manage your own instances of \c SKClient instead of using the singleton. */
@@ -45,6 +47,12 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 
 /** See the \c SKMiddleMan protocol. */
 @property (nonatomic) id<SKMiddleMan> middleMan;
+
+/** Used internally to cache header request tokens from the Casper API.
+ @discussion See the \c SKCasperCache protocol or class.
+ @warning You may use your own custom cache if you wish. It is cleared automatically
+ when you log out. */
+@property (nonatomic) id<SKCasperCache> cache;
 
 /** The size of your device's screen. On iOS, this defaults to the actual screen size. */
 @property (nonatomic) CGSize screenSize;
@@ -79,18 +87,20 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 
 #pragma mark Signing in
 /** Signs into Snapchat.
+ @warning Clears the Casper cache before calling the completion block.
  @discussion A valid GMail account is necessary to trick Snapchat into thinking we're using the first party client. Your data is only ever sent to Google, Scout's honor.
  @param username The Snapchat username to sign in with.
  @param password The password to the Snapchat account to sign in with.
  @param completion Takes an error, if any, and the JSON response from signing in as a dictionary. */
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password completion:(DictionaryBlock)completion;
 /** Use this to restore a session that ended within the last hour. The google auth token must be re-generated every hour.
+ @warning Clears the Casper cache before calling the completion block.
  @discussion If you have a stale Google auth token, consider using \c -restoreSessionWithUsername:snapchatAuthToken:doGetUpdates:.
  @param username Your Snapchat username.
  @param authToken Your Snapchat auth token. Can be retrieved from the \c authToken property.
  @param completion Takes an error, if any. */
 - (void)restoreSessionWithUsername:(NSString *)username snapchatAuthToken:(NSString *)authToken doGetUpdates:(ErrorBlock)completion;
-/**  Signs out.
+/**  Signs out and clears the Casper cache before calling the completion block.
  @param completion Takes an error, if any. */
 - (void)signOut:(ErrorBlock)completion;
 /** Tells you if you're signed in or not. */
@@ -103,15 +113,15 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 
 #pragma mark Registration
 /**
-The first step in creating a new Snapchat account. Registers an email, password, and birthday in preparation for creating a new account.
+ The first step in creating a new Snapchat account. Registers an email, password, and birthday in preparation for creating a new account.
  
  The dictionary passed to completion has the following keys:
  
-    - \c email:                 the email you registered with.
+ - \c email:                 the email you registered with.
  
-    - \c snapchat_phone_number: a number you can use to verify your phone number later.
+ - \c snapchat_phone_number: a number you can use to verify your phone number later.
  
-    - \c username_suggestions:  an array of available usernames for the next step.
+ - \c username_suggestions:  an array of available usernames for the next step.
  
  @param email The email address to be associated with the account.
  @param password The password of the account to be created.

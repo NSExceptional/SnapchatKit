@@ -211,7 +211,6 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				6FC020030A9FFD4336F9ED58 /* Copy Pods Resources */,
-				C106B3D66706B81CB1C510C4 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -231,7 +230,6 @@
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
 				EEA01C34554587095871E45D /* Copy Pods Resources */,
-				D54B0F88C0CDC1A389FC9322 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -343,36 +341,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		C106B3D66706B81CB1C510C4 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SnapchatKit_Example/Pods-SnapchatKit_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D54B0F88C0CDC1A389FC9322 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SnapchatKit_Tests/Pods-SnapchatKit_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		EEA01C34554587095871E45D /* Copy Pods Resources */ = {

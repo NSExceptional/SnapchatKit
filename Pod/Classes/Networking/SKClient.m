@@ -17,6 +17,7 @@
 #import "NSString+SnapchatKit.h"
 #import "NSDictionary+SnapchatKit.h"
 #import "NSArray+SnapchatKit.h"
+#import "NSMutableURLRequest+Util.h"
 
 #import "SSZipArchive.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
@@ -86,6 +87,14 @@ static SKClient *sharedSKClient;
     return sharedSKClient;
 }
 
+- (id<SKCasperCache>)cache {
+    if (!_cache) {
+        _cache = [SKCasperCache new];
+    }
+    
+    return _cache;
+}
+
 + (void)setSharedClient:(SKClient *)client {
     NSParameterAssert(client);
     sharedSKClient = client;
@@ -147,6 +156,91 @@ static SKClient *sharedSKClient;
             break;
         }
     }
+}
+
+#pragma mark Casper
+
+- (void)getClientLoginData:(NSString *)username password:(NSString *)password timestamp:(NSString *)ts callback:(DictionaryBlock)callback {
+    NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(ts);
+    NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
+    //NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
+    
+    // Build request
+    NSDictionary *query   = @{@"username": username, @"password": password, @"iat": [NSString timestampInSeconds]};
+    NSDictionary *headers = @{SKHeaders.casperAPIKey: self.casperAPIKey,
+                              SKHeaders.casperSignature: SKMakeCapserSignature(query, self.casperAPISecret)};
+    NSMutableURLRequest *request = [NSMutableURLRequest POST:@"https://casper-api.herokuapp.com/snapchat/ios/login"
+                                                        body:@{@"jwt": [query JWTStringWithSecret:self.casperAPISecret]}
+                                                     headers:headers];
+    // Set optional headers
+    if (self.casperUserAgent) {
+        [request setValue:self.casperUserAgent forHTTPHeaderField:SKHeaders.userAgent];
+    }
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        SKLog(@"Recieved casper response...");
+        if (!error) {
+            NSError *jsonError = nil;
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            
+            if ([json[@"code"] integerValue] == 200) {
+                callback(json, nil);
+            }
+            else {
+                callback(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+            }
+        } else {
+            callback(nil, error);
+        }
+    }] resume];
+}
+
+- (void)getInformationForEndpoint:(NSString *)endpoint callback:(void (^)(NSDictionary *params, NSDictionary *headers, NSError *error))callback {
+    NSParameterAssert(endpoint); NSParameterAssert(callback);
+    NSAssert(self.username, @"Cannot make this request without a username.");
+    NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
+    //NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
+    
+    NSDictionary *cached = self.cache[endpoint];
+    if (cached) {
+        callback(cached[@"params"], cached[@"headers"], nil);
+    }
+    
+    // Do we need to use the static token?
+    NSString *token = SKShouldUseStaticToken(endpoint) ? SKConsts.staticToken : _authToken;
+    
+    // Build request
+    NSDictionary *query   = @{@"username": self.username, @"auth_token": token, @"endpoint": endpoint, @"iat": [NSString timestampInSeconds]};
+    NSDictionary *headers = @{SKHeaders.casperAPIKey: self.casperAPIKey,
+                              SKHeaders.casperSignature: SKMakeCapserSignature(query, self.casperAPISecret)};
+    NSMutableURLRequest *request = [NSMutableURLRequest POST:@"https://casper-api.herokuapp.com/snapchat/ios/endpointauth"
+                                                        body:@{@"jwt": [query JWTStringWithSecret:self.casperAPISecret]}
+                                                     headers:headers];
+    // Set optional headers
+    if (self.casperUserAgent) {
+        [request setValue:self.casperUserAgent forHTTPHeaderField:SKHeaders.userAgent];
+    }
+    
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        if (!error) {
+            NSError *jsonError = nil;
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+            
+            if ([json[@"code"] integerValue] == 200) {
+                [self.cache update:json];
+                
+                NSDictionary *data = self.cache[endpoint];
+                callback(data[@"params"], data[@"headers"], nil);
+            }
+            else {
+                callback(nil, nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"code"] integerValue]]);
+            }
+        } else {
+            callback(nil, nil, error);
+        }
+    }] resume];
 }
 
 #pragma mark Convenience
@@ -241,49 +335,6 @@ static SKClient *sharedSKClient;
     }];
 }
 
-- (void)getInformationForEndpoint:(NSString *)endpoint callback:(void (^)(NSDictionary *params, NSDictionary *headers, NSError *error))callback {
-    NSParameterAssert(endpoint); NSParameterAssert(callback);
-    NSAssert(self.username, @"Cannot make this request without a username.");
-    NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
-    //NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
-    
-    // Do we need to use the static token?
-    NSString *token = SKShouldUseStaticToken(endpoint) ? SKConsts.staticToken : _authToken;
-    
-    // Params
-    NSDictionary *query = @{@"username": self.username, @"auth_token": token, @"endpoint": endpoint, @"iat": [NSString timestampInSeconds]};
-    
-    // Build request
-    NSURL *url = [NSURL URLWithString:@"https://casper-api.herokuapp.com/snapchat/ios/endpointauth"];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.HTTPMethod = @"POST";
-    request.HTTPBody   = [[NSString queryStringWithParams:@{@"jwt": [query JWTStringWithSecret:self.casperAPISecret]}] dataUsingEncoding:NSUTF8StringEncoding];
-    
-    // Set headers
-    [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
-    [request setValue:SKMakeCapserSignature(query, self.casperAPISecret) forHTTPHeaderField:SKHeaders.casperSignature];
-    if (self.casperUserAgent) [request setValue:self.casperUserAgent forHTTPHeaderField:SKHeaders.userAgent];
-    
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (!error) {
-            NSError *jsonError = nil;
-            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-            // Content-Type header for specific endpoints
-            NSDictionary *headers = json[@"endpoints"][0][@"headers"];
-            if (headers && ([endpoint isEqualToString:SKEPStories.upload] || [endpoint isEqualToString:SKEPSnaps.upload]))
-                headers = SKMergeDictionaries(headers, @{SKHeaders.contentType: ([NSString stringWithFormat:@"multipart/form-data; boundary=%@", SKConsts.boundary])});
-            
-            if ([json[@"code"] integerValue] == 200)
-                callback(json[@"endpoints"][0][@"params"], headers, nil);
-            else
-                callback(nil, nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"code"] integerValue]]);
-        } else {
-            callback(nil, nil, error);
-        }
-    }] resume];
-}
-
 - (void)get:(NSString *)endpoint callback:(ResponseBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(callback);
     
@@ -320,42 +371,6 @@ static SKClient *sharedSKClient;
 
 - (BOOL)isSignedIn {
     return self.authToken && self.username;
-}
-
-- (void)getClientLoginData:(NSString *)username password:(NSString *)password timestamp:(NSString *)ts callback:(DictionaryBlock)callback {
-    NSParameterAssert(username); NSParameterAssert(password); NSParameterAssert(ts);
-    NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
-    //NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
-    
-    // Params
-    NSDictionary *query = @{@"username": username, @"password": password, @"iat": [NSString timestampInSeconds]};
-    
-    // Build request
-    NSURL *url = [NSURL URLWithString:@"https://casper-api.herokuapp.com/snapchat/ios/login"];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.HTTPMethod = @"POST";
-    request.HTTPBody   = [[NSString queryStringWithParams:@{@"jwt": [query JWTStringWithSecret:self.casperAPIKey]}] dataUsingEncoding:NSUTF8StringEncoding];
-    
-    // Set headers
-    [request setValue:self.casperAPIKey forHTTPHeaderField:SKHeaders.casperAPIKey];
-    [request setValue:SKMakeCapserSignature(query, self.casperAPISecret) forHTTPHeaderField:SKHeaders.casperSignature];
-    if (self.casperUserAgent) [request setValue:self.casperUserAgent forHTTPHeaderField:SKHeaders.userAgent];
-    
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        SKLog(@"Recieved casper response...");
-        if (!error) {
-            NSError *jsonError = nil;
-            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
-            
-            if ([json[@"code"] integerValue] == 200)
-                callback(json, nil);
-            else
-                callback(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
-        } else {
-            callback(nil, error);
-        }
-    }] resume];
 }
 
 - (void)signInWithUsername:(NSString *)username password:(NSString *)password completion:(DictionaryBlock)completion {
@@ -399,6 +414,7 @@ static SKClient *sharedSKClient;
 - (void)signOut:(ErrorBlock)completion {
     [self postTo:SKEPAccount.login query:@{@"username": self.currentSession.username} callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
+            [_cache clear];
             _currentSession    = nil;
             _username          = nil;
             _authToken         = nil;
@@ -449,16 +465,16 @@ static SKClient *sharedSKClient;
     NSDictionary *query = @{@"email": email, @"password": password, @"birthday": birthday};
     
     /* If successful, json1 will be something like:
-    {
-        "auth_token" = ff8788437e471d21f60d83517581cae5;
-        "default_username" = username;
-        "default_username_status" = 1;
-        email = "email@domain.com";
-        logged = 1;
-        "should_send_text_to_verify_number" = 0;
-        "snapchat_phone_number" = "+19372034486";
-        "username_suggestions" = (username5, username03, etc);
-    } */
+     {
+     "auth_token" = ff8788437e471d21f60d83517581cae5;
+     "default_username" = username;
+     "default_username_status" = 1;
+     email = "email@domain.com";
+     logged = 1;
+     "should_send_text_to_verify_number" = 0;
+     "snapchat_phone_number" = "+19372034486";
+     "username_suggestions" = (username5, username03, etc);
+     } */
     [self postTo:SKEPAccount.registration.start query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
             // Continue registration
@@ -523,14 +539,14 @@ static SKClient *sharedSKClient;
                     
                     completion(imageData, nil);
                     
-                // Error unzipping
+                    // Error unzipping
                 } else if (error) {
                     completion(nil, error);
                 } else {
                     completion(nil, [SKRequest errorWithMessage:@"Error unzipping captcha" code:1]);
                 }
             }];
-        // Failed to get captcha ZIP
+            // Failed to get captcha ZIP
         } else {
             completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
         }
