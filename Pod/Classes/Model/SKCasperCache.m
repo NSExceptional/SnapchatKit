@@ -47,6 +47,13 @@
     return ret;
 }
 
+#pragma mark - Misc
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@> cache:\n%@",
+            NSStringFromClass(self.class), self.cache.JSONString];
+}
+
 #pragma mark - Public interface
 
 - (void)update:(NSDictionary *)response {
