@@ -260,8 +260,8 @@ SK_NAMESPACE_IMP(SKEPFriends) {
 
 #pragma mark SKEPSnaps
 SK_NAMESPACE_IMP(SKEPSnaps) {
-    .loadBlob = @"/bq/blob", // /ph/blob ?
-    .upload   = @"/ph/upload",
+    .loadBlob = @"/bq/blob",
+    .upload   = @"/bq/upload",
     .send     = @"/loq/retry",
     .retry    = @"/loq/send"
 };
@@ -269,7 +269,7 @@ SK_NAMESPACE_IMP(SKEPSnaps) {
 #pragma mark SKEPStories
 SK_NAMESPACE_IMP(SKEPStories) {
     .stories   = @"/bq/stories",
-    .upload    = @"/ph/upload",
+    .upload    = @"/bq/upload",
     .blob      = @"/bq/story_blob?story_id=",
     .thumb     = @"/bq/story_thumbnail?story_id=",
     .authBlob  = @"/bq/auth_story_blob",

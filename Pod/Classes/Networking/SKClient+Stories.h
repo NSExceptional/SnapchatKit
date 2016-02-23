@@ -22,7 +22,7 @@
 - (void)postStory:(SKBlob *)blob options:(SKStoryOptions *)options completion:(ErrorBlock)completion;
 /** Posts a story with the given options.
  @param blob The \c SKBlob object containing the image or video data to send. Can be created with any \c NSData object.
- @param duration The length of the story.
+ @param duration The length of the story. This value is ignored for video snaps.
  @param completion Takes an error, if any.
  @note Assumes camera not front facing. */
 - (void)postStory:(SKBlob *)blob for:(NSTimeInterval)duration completion:(ErrorBlock)completion;

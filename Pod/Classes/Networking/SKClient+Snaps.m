@@ -45,7 +45,7 @@
                                     @"recipient_ids":       options.recipients.recipientsString,
                                     @"reply":               @(options.isReply),
                                     @"time":                @((NSUInteger)options.timer),
-                                    @"zipped":              @0,
+                                    @"zipped":              blob.zipData ? @1 : @0,
                                     @"username":            self.username};
             [self postTo:SKEPSnaps.send query:query callback:^(NSDictionary *json, NSError *sendError) {
                 if (!sendError) {
@@ -65,8 +65,8 @@
     
     NSDictionary *query = @{@"media_id": uuid,
                             @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
-                            @"data": blob.data,
-                            @"zipped": @0,
+                            @"data": blob.zipData ? blob.zipData : blob.data,
+                            @"zipped": blob.zipData ? @1 : @0,
                             @"features_map": @"{}",
                             @"username": self.username};
 

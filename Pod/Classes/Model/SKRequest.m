@@ -152,13 +152,15 @@ NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString
         
         // Set HTTPBody
         // Only for uploading snaps here
-        if ([endpoint isEqualToString:SKEPSnaps.upload] || [endpoint isEqualToString:SKEPAccount.avatar.set]) {
+        if ([endpoint isEqualToString:SKEPSnaps.upload] ||
+            [endpoint isEqualToString:SKEPAccount.avatar.set] ||
+            [endpoint isEqualToString:SKEPStories.post]) {
             [self setValue:@"multipart/form-data; boundary=Boundary+0xAbCdEfGbOuNdArY" forHTTPHeaderField:SKHeaders.contentType];
             NSMutableData *body = [NSMutableData data];
             [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", SKConsts.boundary] dataUsingEncoding:NSUTF8StringEncoding]];
             
             for (NSString *key in json.allKeys) {
-                if ([key isEqualToString:@"data"]) {
+                if ([key isEqualToString:@"data"] || [key isEqualToString:@"thumbnail_data"]) {
                     [body appendData:[NSData boundaryWithKey:key forDataValue:json[key]]];
                 } else {
                     [body appendData:[NSData boundaryWithKey:key forStringValue:(NSString *)json[key]]];

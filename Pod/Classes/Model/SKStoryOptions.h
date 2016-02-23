@@ -21,7 +21,7 @@
 @property (nonatomic) NSString       *text;
 /** Defaults to \c NO. */
 @property (nonatomic) BOOL           cameraFrontFacing;
-/** Defaults to 3. */
+/** Defaults to 3. Ignored for videos. */
 @property (nonatomic) NSTimeInterval timer;
 
 @end

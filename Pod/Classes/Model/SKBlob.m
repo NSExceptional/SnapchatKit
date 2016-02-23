@@ -9,13 +9,15 @@
 #import "SKBlob.h"
 #import "SnapchatKit-Constants.h"
 #import "NSData+SnapchatKit.h"
+#import "NSString+SnapchatKit.h"
 #import "SKStory.h"
-
 #import "SKRequest.h"
 
 #import "SSZipArchive.h"
+@import AVFoundation;
 
 @implementation SKBlob
+@synthesize zipData = _zipData;
 
 + (instancetype)blobWithContentsOfPath:(NSString *)path {
     return [[self alloc] initWithContentsOfPath:path];
@@ -129,10 +131,10 @@
             }
             
             // Delete file(s)
-//            NSError *error = nil;
-//            [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
-//            if (error && kVerboseLog)
-//                SKLog(@"Error deleting blob: %@", error);
+            //            NSError *error = nil;
+            //            [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+            //            if (error && kVerboseLog)
+            //                SKLog(@"Error deleting blob: %@", error);
         } else {
             return nil;
         }
@@ -169,8 +171,8 @@
         return @[path];
     } else {
         path = [path stringByAppendingPathComponent:filename];
-        NSString *overlay    = [path stringByAppendingPathComponent:[filename stringByAppendingString:[@"-overlay" stringByAppendingString:self.overlay.appropriateFileExtension]]];
-        NSString *video      = [path stringByAppendingPathComponent:[filename stringByAppendingString:self.data.appropriateFileExtension]];
+        NSString *overlay    = [path stringByAppendingPathComponent:[filename stringByAppendingString:[@"-overlay" stringByAppendingString:_overlay.appropriateFileExtension]]];
+        NSString *video      = [path stringByAppendingPathComponent:[filename stringByAppendingString:_data.appropriateFileExtension]];
         [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
         [self.data writeToFile:video atomically:atomically];
         [self.overlay writeToFile:overlay atomically:atomically];
@@ -202,4 +204,115 @@
     }
 }
 
+- (NSData *)zipData {
+    if (_zipData) return _zipData;
+    
+    if (self.overlay) {
+        NSString *tmpDir      = SKUniqueIdentifier();
+        NSString *videoName   = [@"media~zip-" stringByAppendingString:SKUniqueIdentifier().capitalizedString];
+        NSString *overlayName = [@"overlay~zip-" stringByAppendingString:SKUniqueIdentifier().capitalizedString];
+        NSString *folder      = [SKTempDirectory() stringByAppendingPathComponent:tmpDir];
+        NSString *archive     = [SKTempDirectory() stringByAppendingPathComponent:[tmpDir stringByAppendingString:@".zip"]];
+        NSString *video       = [folder stringByAppendingPathComponent:videoName];
+        NSString *overlay     = [folder stringByAppendingPathComponent:overlayName];
+        
+        [[NSFileManager defaultManager] createDirectoryAtPath:folder withIntermediateDirectories:YES attributes:nil error:nil];
+        [self.data writeToFile:video atomically:YES];
+        [self.overlay writeToFile:overlay atomically:YES];
+        BOOL success = [SSZipArchive createZipFileAtPath:archive withContentsOfDirectory:folder];
+        
+        if (success) {
+            _zipData = [NSData dataWithContentsOfFile:archive];
+            // zip failed
+            if (_zipData.length == 22) _zipData = nil;
+        }
+        
+        // Cleanup
+        [[NSFileManager defaultManager] removeItemAtPath:archive error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:folder error:nil];
+    }
+    
+    return _zipData;
+}
+
+- (NSData *)videoThumbnail {
+    if (_videoThumbnail) return _videoThumbnail;
+    
+    if (self.isVideo) {
+        NSString *path = [SKTempDirectory() stringByAppendingPathComponent:@"tmp-video.mp4"];
+        [self.data writeToFile:path atomically:YES];
+        AVURLAsset *asset = [AVURLAsset assetWithURL:[NSURL fileURLWithPath:path]];
+        
+        AVAssetImageGenerator *gen = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+        
+        CGImageRef image = [gen copyCGImageAtTime:CMTimeMake(0, 600) actualTime:NULL error:NULL];
+        if (image != NULL) {
+            _videoThumbnail = SKThumbnailFromGCImage(image);
+            CGImageRelease(image);
+        }
+        
+        // Cleanup
+        [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    }
+    
+    return _videoThumbnail;
+}
+
 @end
+
+
+
+NSData * SKThumbnailFromGCImage(CGImageRef image) {
+    CGFloat width  = CGImageGetWidth(image);
+    CGFloat height = CGImageGetHeight(image);
+    CGFloat s  = MIN(MIN(width, height), 102);
+    
+    // Images too small to scale
+    if (s < 102) {
+        CGFloat cx = s/2.f - 51;
+        CGFloat cy = s/2.f - 51;
+        CGImageRef cropped = CGImageCreateWithImageInRect(image, CGRectMake(cx, cy, s, s));
+        return CFBridgingRelease(CGDataProviderCopyData(CGImageGetDataProvider(cropped)));
+    }
+    
+    CGFloat scale              = MIN(width, height) / 102.f;
+    NSInteger bitsPerComponent = CGImageGetBitsPerComponent(image);
+    NSInteger bytesPerRow      = CGImageGetBytesPerRow(image);
+    CGColorSpaceRef colorSpace = CGImageGetColorSpace(image);
+    CGBitmapInfo bitmapInfo    = CGImageGetBitmapInfo(image);
+    width /= scale; height /= scale;
+    CGFloat cx = (width - s) / 2.f;
+    CGFloat cy = (height - s) / 2.f;
+    
+    CGContextRef context = CGBitmapContextCreate(nil, width, height, bitsPerComponent, bytesPerRow, colorSpace, bitmapInfo);
+    
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    CGContextDrawImage(context, CGRectMake(0, 0, width, height), image);
+    CGImageRef scaled = CGBitmapContextCreateImage(context);
+    CGImageRef cropped = CGImageCreateWithImageInRect(scaled, CGRectMake(cx, cy, s, s));
+    
+    // Cleanup
+    CGImageRelease(scaled);
+    NSData *ret;
+#if __has_include(<UIKit/UIImage.h>)
+    ret = UIImagePNGRepresentation([UIImage imageWithCGImage:cropped]);
+#elif __has_include(<AppKit/NSImage.h>)
+    ret = [[[NSBitmapImageRep alloc] initWithCGImage:cropped] representationUsingType:NSPNGFileType properties:@{}];
+#else
+#warning Target platform is missing a way to convert a CGImage to NSData.
+#endif
+    CGImageRelease(cropped);
+    
+    return ret;
+}
+
+
+
+
+
+
+
+
+
+
+

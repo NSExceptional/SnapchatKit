@@ -26,6 +26,10 @@
 #define SK_NAMESPACE(name, vals) extern const struct name vals name
 #define SK_NAMESPACE_IMP(name) const struct name name =
 
+#define SKRunBlock(block) if ( block ) block()
+#define SKRunBlockP(block, ...) if ( block ) block( __VA_ARGS__ )
+
+
 typedef void (^RequestBlock)(NSData *data, NSURLResponse *response, NSError *error);
 typedef void (^BooleanBlock)(BOOL success, NSError *error);
 typedef void (^DataBlock)(NSData *data, NSError *error);

@@ -31,22 +31,30 @@
     
     [self uploadStory:blob completion:^(NSString *mediaID, NSError *error) {
         if (!error) {
-            NSDictionary *query = @{@"caption_text_display": options.text,
-                                    @"story_timestamp":      [NSString timestamp],
-                                    @"type":                 blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
-                                    @"media_id":             mediaID,
-                                    @"client_id":            mediaID,
-                                    @"time":                 @((NSUInteger)options.timer),
-                                    @"username":             self.username,
-                                    @"camera_front_facing":  @(options.cameraFrontFacing),
-                                    @"my_story":             @"true",
-                                    @"zipped":               @0,
-                                    @"shared_ids":           @"{}"};
+            NSMutableDictionary *query = @{@"camera_front_facing":  @(options.cameraFrontFacing),
+                                           @"client_id":            mediaID,
+                                           @"filter_id":            @"",
+                                           @"media_id":             mediaID,
+                                           @"orientation":          @"0",
+                                           @"story_timestamp":      [NSString timestamp],
+                                           @"time":                 @((NSUInteger)options.timer),
+                                           @"type":                 blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
+                                           @"username":             self.username,
+//                                           @"my_story":             @"true",
+                                           @"zipped":               blob.zipData ? @1 : @0}.mutableCopy;
+            // Optional parts
+            if (options.text) {
+                query[@"caption_text_display"] = options.text;
+            }
+            if (blob.videoThumbnail) {
+                query[@"thumbnail_data"] = blob.videoThumbnail;
+            }
+            
             [self postTo:SKEPStories.post query:query callback:^(NSDictionary *json, NSError *sendError) {
-                completion(sendError);
+                SKRunBlockP(completion, sendError);
             }];
         } else {
-            completion(error);
+            SKRunBlockP(completion, error);
         }
     }];
 }
@@ -56,13 +64,13 @@
     
     NSDictionary *query = @{@"media_id": uuid,
                             @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
-                            @"data": blob.data,
-                            @"zipped": @0,
+                            @"data": blob.zipData ? blob.zipData : blob.data,
+                            @"zipped": blob.zipData ? @1 : @0,
                             @"features_map": @"{}",
                             @"username": self.username};
     
     [self postTo:SKEPStories.upload query:query callback:^(id object, NSError *error) {
-        completion(error ? nil : uuid, error);
+        SKRunBlockP(completion, error ? nil : uuid, error);
     }];
 }
 

@@ -11,6 +11,8 @@
 
 @class SKStory;
 
+extern NSData * SKThumbnailFromGCImage(CGImageRef image);
+
 /** A wrapper for the various kinds of data used throughout the API. */
 @interface SKBlob : NSObject
 
@@ -46,10 +48,15 @@
 @property (nonatomic, readonly) NSData *data;
 /** The overlay for the video. \c nil if not applicable. */
 @property (nonatomic, readonly) NSData *overlay;
+/** Lazily initialized. The compressed data for the snap should it be uploaded. nil if not need be compressed. */
+@property (nonatomic, readonly) NSData *zipData;
+/** Lazily initialized.
+ @discussion The thumbnail for the video to be uploaded. nil if not applicable.
+ @note You may assign your own if you wish, and it will be used instead of the default one. */
+@property (nonatomic          ) NSData *videoThumbnail;
 /** \c YES if the data is for a JPEG, \c NO if it's something other than a JPEG or PNG. */
 @property (nonatomic, readonly) BOOL isImage;
 /** \c YES if the data is for a MPEG4 video, \c NO if it's something else. */
 @property (nonatomic, readonly) BOOL isVideo;
-
 
 @end

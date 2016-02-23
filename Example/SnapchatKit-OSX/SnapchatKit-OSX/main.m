@@ -223,8 +223,10 @@ int main(int argc, const char * argv[]) {
         [SKClient sharedClient].casperUserAgent = kCasperUserAgent;
 #endif
         
-//        [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword completion:^(NSDictionary *dict, NSError *error) {
-        [[SKClient sharedClient] restoreSessionWithUsername:kUsername snapchatAuthToken:kAuthToken doGetUpdates:^(NSError *error) {
+        SKBlob *blob = [SKBlob blobWithContentsOfPath:@"/Users/tantan/Desktop/upload"];
+        
+        [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword completion:^(NSDictionary *dict, NSError *error) {
+//        [[SKClient sharedClient] restoreSessionWithUsername:kUsername snapchatAuthToken:kAuthToken doGetUpdates:^(NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
                 [[session valueForKey:@"_JSON"] writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
@@ -259,6 +261,10 @@ int main(int argc, const char * argv[]) {
 //                        success = success;
 //                    }
 //                }];
+                
+                [[SKClient sharedClient] postStory:blob for:0 completion:^(NSError *error) {
+                    NSLog(@"%@", error);
+                }];
                 
                 
                 // Get unread snaps
