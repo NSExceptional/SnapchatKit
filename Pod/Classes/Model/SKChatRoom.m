@@ -220,7 +220,7 @@ typedef NSOutputStream SKChatOutputStream;
     }
 }
 
-- (void)sendPresnceStatePacket {[self sendPresenceStatePacketPresent:YES]; }
+- (void)sendPresnceStatePacket { [self sendPresenceStatePacketPresent:YES]; }
 
 - (void)sendPresenceStatePacketPresent:(BOOL)present {
     // Comment this return out and the input stream
