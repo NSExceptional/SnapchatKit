@@ -28,14 +28,13 @@
 typedef NSInputStream SKChatInputStream;
 typedef NSOutputStream SKChatOutputStream;
 
-@interface SKChatRoom ()
+@interface SKChatRoom () <NSStreamDelegate>
 
 @property (nonatomic) SKChatInputStream  *inputStream;
 @property (nonatomic) SKChatOutputStream *outputStream;
-@property (nonatomic) NSTimer *inboundTimer;
 @property (nonatomic) NSTimer *outboundTimer;
 
-@property (nonatomic) TBQueue<SKPacket*> *outgoingMessages;
+@property TBQueue<SKPacket*> *outgoingMessages;
 @property (nonatomic) NSTimer *presenceTimer;
 
 @property (nonatomic) NSString *user;
@@ -90,15 +89,15 @@ typedef NSOutputStream SKChatOutputStream;
         CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)_server, (unsigned int)_port, &readStream, &writeStream);
         _inputStream  = (__bridge SKChatInputStream *)readStream;
         _outputStream = (__bridge SKChatOutputStream *)writeStream;
+        _inputStream.delegate = self;
         [_inputStream  setProperty:NSStreamSocketSecurityLevelSSLv3 forKey:NSStreamSocketSecurityLevelKey];
         [_outputStream setProperty:NSStreamSocketSecurityLevelSSLv3 forKey:NSStreamSocketSecurityLevelKey];
-        [_inputStream  scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-        [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [_inputStream  scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+        [_outputStream scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
         [_inputStream  open];
         [_outputStream open];
         
-        [self startInboundThread];
-        [self startOutboundThread];
+        self.outboundTimer = [NSTimer scheduledTimerWithTimeInterval:.8 target:self selector:@selector(outboundListener) userInfo:nil repeats:YES];
         
         [self sendConnectMessage];
     });
@@ -123,7 +122,6 @@ typedef NSOutputStream SKChatOutputStream;
         if (forGood) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self sendPresenceStatePacketPresent:NO];
-                [self.inboundTimer invalidate];
                 [self.outboundTimer invalidate];
                 [self.inputStream close];
                 [self.outputStream close];
@@ -142,31 +140,32 @@ typedef NSOutputStream SKChatOutputStream;
     return _presenceTimer;
 }
 
-- (void)startInboundThread {
-    self.inboundTimer = [NSTimer timerWithTimeInterval:.01 target:self selector:@selector(inboundListener) userInfo:nil repeats:YES];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[NSRunLoop mainRunLoop] addTimer:self.inboundTimer forMode:NSDefaultRunLoopMode];
-    });
-}
-
-- (void)startOutboundThread {
-    self.outboundTimer = [NSTimer timerWithTimeInterval:.01 target:self selector:@selector(outboundListener) userInfo:nil repeats:YES];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[NSRunLoop mainRunLoop] addTimer:self.outboundTimer forMode:NSDefaultRunLoopMode];
-    });
-}
-
-- (void)inboundListener {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        SKPacket *packet = [self.inputStream recievePacket];
-        if (packet) {
-            [self packetRecieved:packet];
+- (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode {
+    switch (eventCode) {
+        case NSStreamEventNone:
+        case NSStreamEventOpenCompleted:
+        case NSStreamEventHasSpaceAvailable:
+        case NSStreamEventErrorOccurred:
+        case NSStreamEventEndEncountered: {
+            break;
         }
-    });
+        case NSStreamEventHasBytesAvailable: {
+            // Always true
+            if (aStream == self.inputStream) {
+                NSLog(@"===================================bytes available");
+                SKPacket *packet = [self.inputStream recievePacket];
+                if (packet) {
+                    [self packetRecieved:packet];
+                }
+            }
+        }
+    }
 }
 
 - (void)outboundListener {
     if (self.outgoingMessages.count) {
+        NSStreamStatus s = self.inputStream.streamStatus;
+        
         SKPacket *packet = [self.outgoingMessages take];
         [self.outputStream sendPacket:packet];
     }
@@ -224,11 +223,14 @@ typedef NSOutputStream SKChatOutputStream;
 - (void)sendPresnceStatePacket {[self sendPresenceStatePacketPresent:YES]; }
 
 - (void)sendPresenceStatePacketPresent:(BOOL)present {
+    // Comment this return out and the input stream
+    // never notifies its delegate of hasBytesAvailable
+    return;
     SKPresencePacket *presence = [SKPresencePacket presences:@{_recipient: @(present), _user: @(present)}
-                                                       video:NO to:@[_recipient] from:_user auth:@{@"mac": _conversationMac, @"payload": _conversationPayload}];
+                                                       video:NO to:@[_recipient] from:_user
+                                                        auth:@{@"mac": _conversationMac, @"payload": _conversationPayload}];
     [self sendPacket:presence];
 }
-
 
 @end
 

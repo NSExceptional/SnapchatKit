@@ -20,27 +20,21 @@
 #import "SKSnapStatePacket.h"
 #import "SKPingResponsePacket.h"
 
-#define num int
-#define NUM_MAX 90000
-
 
 @implementation NSInputStream (SKChatInputStream)
 
 // For testing
 - (NSData *)readData {
-    if (!self.hasBytesAvailable) return nil;
-    
     int buffer[1];
     if ([self read:buffer maxLength:4] > 0) {
         int length = NSSwapInt(buffer[0]);
         
         if (length >= USHRT_MAX || length < 0) { return nil; }
-        // This feels wrong
-        //    while (!self.hasBytesAvailable) {}
-        char buff[length];
-        [self read:buff maxLength:length];
         
-        return [NSData dataWithBytes:buff length:length];
+        char buff[length];
+        if ([self read:buff maxLength:length] > 0) {
+            return [NSData dataWithBytes:buff length:length];
+        }
     }
     
     return nil;

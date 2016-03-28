@@ -7,12 +7,15 @@
 //
 
 #import "SKPresencePacket.h"
+#import "NSDictionary+SnapchatKit.h"
+#import "NSString+SnapchatKit.h"
 
 
 @implementation SKPresencePacket
 
 + (instancetype)presences:(NSDictionary *)presences video:(BOOL)video to:(NSArray *)to from:(NSString *)from auth:(NSString *)auth {
     return [self packet:@{@"type": SKStringFromPacketType(SKPacketTypePresence),
+                          @"id": SKUniqueIdentifier().uppercaseString,
                           @"supports_here": @1,
                           @"receiving_video": @((int)video),
                           @"presences": presences,
@@ -28,7 +31,7 @@
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ video=%@, supports_here=%@, to=%@, from=%@> presences:\n%@",
-            NSStringFromClass(self.class), @(self.receivingVideo), @(self.supportsHere), self.to.firstObject, self.from, self.presences];
+            NSStringFromClass(self.class), @(self.receivingVideo), @(self.supportsHere), self.to.firstObject, self.from, self.presences.JSONString];
 }
 
 @end
