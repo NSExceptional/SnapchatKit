@@ -9,34 +9,50 @@
 #import "SKChatInputStream.h"
 
 #import "SKConnectPacket.h"
+#import "SKConnectResponsePacket.h"
 #import "SKChatMessagePacket.h"
 #import "SKPresencePacket.h"
 #import "SKMessageStatePacket.h"
-#import "SKMessagePacket.h"
+#import "SKReleaseMessagePacket.h"
 #import "SKErrorPacket.h"
 #import "SKProtocolErrorPacket.h"
 #import "SKConversationMessageResponsePacket.h"
 #import "SKSnapStatePacket.h"
-#import "SKPingPacket.h"
+#import "SKPingResponsePacket.h"
 
-@implementation NSInputStream (SKChatOutputStream)
+#define num int
+#define NUM_MAX 90000
 
-- (SKPacket *)recievePacket {
-    // Read length
-    union { uint8_t buffer[8]; NSUInteger length; } result;
-    [self read:result.buffer maxLength:8];
+
+@implementation NSInputStream (SKChatInputStream)
+
+// For testing
+- (NSData *)readData {
+    if (!self.hasBytesAvailable) return nil;
     
-    if (result.length > 900000) {
-        [NSException raise:NSInternalInconsistencyException format:@"Bad packet length from server: %@", @(result.length)];
+    int buffer[1];
+    if ([self read:buffer maxLength:4] > 0) {
+        int length = NSSwapInt(buffer[0]);
+        
+        if (length >= USHRT_MAX || length < 0) { return nil; }
+        // This feels wrong
+        //    while (!self.hasBytesAvailable) {}
+        char buff[length];
+        [self read:buff maxLength:length];
+        
+        return [NSData dataWithBytes:buff length:length];
     }
     
-    NSMutableData *data = [NSMutableData dataWithCapacity:result.length];
-    [self read:(uint8_t *)data.bytes maxLength:result.length];
-    
-    return [self packetFromData:data];
+    return nil;
+}
+
+- (SKPacket *)recievePacket {
+    return [self packetFromData:[self readData]];
 }
 
 - (SKPacket *)packetFromData:(NSData *)data {
+    if (data.length == 0) return nil;
+    
     NSError *jsonError = nil;
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
     if (jsonError) {
@@ -48,7 +64,7 @@
             return [SKPacket packet:json];
         }
         case SKPacketTypeConnectResponse: {
-            return [SKConnectPacket packet:json];
+            return [SKConnectResponsePacket packet:json];
         }
         case SKPacketTypePresence: {
             return [SKPresencePacket packet:json];
@@ -57,7 +73,7 @@
             return [SKMessageStatePacket packet:json];
         }
         case SKPacketTypeMessageRelease: {
-            return [SKMessagePacket packet:json];
+            return [SKReleaseMessagePacket packet:json];
         }
         case SKPacketTypeChatMessage: {
             return [SKChatMessagePacket packet:json];
@@ -75,7 +91,7 @@
             return [SKSnapStatePacket packet:json];
         }
         case SKPacketTypePingResponse: {
-            return [SKPingPacket packet:json];
+            return [SKPingResponsePacket packet:json];
         }
     }
 }

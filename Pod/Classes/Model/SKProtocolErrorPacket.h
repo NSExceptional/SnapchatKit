@@ -8,6 +8,9 @@
 
 #import "SKPacket.h"
 
+
 @interface SKProtocolErrorPacket : SKPacket
+
+@property (nonatomic, readonly) NSString *message;
 
 @end

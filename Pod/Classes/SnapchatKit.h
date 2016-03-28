@@ -20,6 +20,7 @@
 #import "SKAvatar.h"
 #import "SKBlob.h"
 #import "SKCashTransaction.h"
+#import "SKChatRoom.h"
 #import "SKConversation.h"
 #import "SKConversationState.h"
 #import "SKFoundFriend.h"

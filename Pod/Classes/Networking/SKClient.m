@@ -198,7 +198,7 @@ static SKClient *sharedSKClient;
 
 - (void)getInformationForEndpoint:(NSString *)endpoint callback:(void (^)(NSDictionary *params, NSDictionary *headers, NSError *error))callback {
     NSParameterAssert(endpoint); NSParameterAssert(callback);
-    NSAssert(self.username, @"Cannot make this request without a username.");
+//    NSAssert(self.username, @"Cannot make this request without a username.");
     NSAssert(self.casperAPIKey, @"You must have a valid API key from https://clients.casper.io to sign in.");
     //NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
     
@@ -211,7 +211,11 @@ static SKClient *sharedSKClient;
     NSString *token = SKShouldUseStaticToken(endpoint) ? SKConsts.staticToken : _authToken;
     
     // Build request
-    NSDictionary *query   = @{@"username": self.username, @"auth_token": token, @"endpoint": endpoint, @"iat": [NSString timestampInSeconds]};
+    NSDictionary *query;
+    if (self.username)
+        query   = @{@"username": self.username, @"auth_token": token, @"endpoint": endpoint, @"iat": [NSString timestampInSeconds]};
+    else
+        query = @{@"auth_token": token, @"endpoint": endpoint, @"iat": [NSString timestampInSeconds]};
     NSDictionary *headers = @{SKHeaders.casperAPIKey: self.casperAPIKey,
                               SKHeaders.casperSignature: SKMakeCapserSignature(query, self.casperAPISecret)};
     NSMutableURLRequest *request = [NSMutableURLRequest POST:@"https://casper-api.herokuapp.com/snapchat/ios/endpointauth"
@@ -480,10 +484,10 @@ static SKClient *sharedSKClient;
             // Continue registration
             if ([json[@"logged"] boolValue]) {
                 _authToken = json[@"auth_token"];
-                NSDictionary *result = @{@"email": json[@"email"],
-                                         @"snapchat_phone_number": json[@"snapchat_phone_number"],
-                                         @"username_suggestions": json[@"username_suggestions"]};
-                completion(result, nil);
+//                NSDictionary *result = @{@"email": json[@"email"],
+//                                         @"snapchat_phone_number": json[@"snapchat_phone_number"],
+//                                         @"username_suggestions": json[@"username_suggestions"]};
+                completion(json, nil);
             }
             // Failed for some reason
             else {
@@ -496,8 +500,11 @@ static SKClient *sharedSKClient;
 
 - (void)registerUsername:(NSString *)username withEmail:(NSString *)registeredEmail gmail:(NSString *)gmail gmailPassword:(NSString *)gpass completion:(ErrorBlock)completion {
     NSParameterAssert(username); NSParameterAssert(registeredEmail); NSParameterAssert(gmail); NSParameterAssert(gpass); NSParameterAssert(completion);
-    NSDictionary *query = @{@"username": registeredEmail,
-                            @"selected_username": username};
+    NSDictionary *query = @{@"email": registeredEmail,
+                            @"username": registeredEmail,
+                            @"selected_username": username,
+                            @"height": @(self.screenSize.height),
+                            @"width": @(self.screenSize.width)};
     
     [self postTo:SKEPAccount.registration.username query:query callback:^(NSDictionary *json, NSError *error) {
         if (!error) {
@@ -518,6 +525,7 @@ static SKClient *sharedSKClient;
         }
     }];
 }
+
 
 - (void)getCaptcha:(ArrayBlock)completion {
     [self postTo:SKEPAccount.registration.getCaptcha query:@{@"username": self.username} response:^(NSData *data, NSURLResponse *response, NSError *error) {

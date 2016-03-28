@@ -6,8 +6,13 @@
 //
 //
 
-#import "SKPacket.h"
+#import "SKConversationMessagePacket.h"
 
-@interface SKMessageStatePacket : SKPacket
+
+@interface SKMessageStatePacket : SKConversationMessagePacket
+
+@property (nonatomic, readonly) NSString *chatMessageIdentifier;
+@property (nonatomic, readonly) NSString *state;
+@property (nonatomic, readonly) NSInteger version;
 
 @end

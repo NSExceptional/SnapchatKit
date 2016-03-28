@@ -6,8 +6,19 @@
 //
 //
 
-#import "SKPacket.h"
+#import "SKConversationMessagePacket.h"
 
-@interface SKChatMessagePacket : SKPacket
+
+@interface SKChatMessagePacket : SKConversationMessagePacket
+
+@property (nonatomic, readonly) NSString     *text;
+@property (nonatomic, readonly) NSDictionary *media;
+@property (nonatomic, readonly) NSString     *messageType;
+@property (nonatomic, readonly) NSArray<NSDictionary*> *attributes;
+
+@property (nonatomic, readonly) NSString     *chatMessageIdentifier;
+@property (nonatomic, readonly) NSDictionary *state;
+@property (nonatomic, readonly) NSInteger    sequenceNumber;
+@property (nonatomic, readonly) NSDate       *timestamp;
 
 @end

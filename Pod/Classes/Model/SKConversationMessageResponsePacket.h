@@ -10,4 +10,10 @@
 
 @interface SKConversationMessageResponsePacket : SKPacket
 
+@property (nonatomic, readonly) NSString *ACKIdentifier;
+@property (nonatomic, readonly) NSString *conversationIdentifier;
+@property (nonatomic, readonly) NSString *failureReason;
+@property (nonatomic, readonly) BOOL successful;
+@property (nonatomic, readonly) NSDate *timestamp;
+
 @end

@@ -8,6 +8,9 @@
 
 #import "SKPacket.h"
 
+
 @interface SKConnectPacket : SKPacket
+
++ (instancetype)withUsername:(NSString *)username auth:(NSDictionary *)auth;
 
 @end

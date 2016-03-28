@@ -12,7 +12,8 @@
 
 @interface SKChatRoom : NSObject
 
-+ (instancetype)chatRoomForConversation:(SKConversation *)convo messagingGatewayAuth:(NSDictionary *)gatewayAuth;
+/// @param gatewayAuth See SKSession.messagingGatewayAuth
++ (instancetype)chatRoomForConversation:(SKConversation *)convo gatewayAuth:(NSDictionary *)gatewayAuth server:(NSString *)server;
 
 - (void)enterRoom;
 - (void)leaveRoom;

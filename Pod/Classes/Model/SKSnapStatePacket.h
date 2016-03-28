@@ -6,8 +6,15 @@
 //
 //
 
-#import "SKPacket.h"
+#import "SKConversationMessagePacket.h"
 
-@interface SKSnapStatePacket : SKPacket
+
+@interface SKSnapStatePacket : SKConversationMessagePacket
+
+@property (nonatomic, readonly) NSString *snapIdentifier;
+@property (nonatomic, readonly) NSInteger screenshotCount;
+@property (nonatomic, readonly) BOOL replayed;
+@property (nonatomic, readonly) BOOL opened;
+@property (nonatomic, readonly) NSDate *timestamp;
 
 @end

@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SKPacket.h"
+
 
 @interface NSOutputStream (SKChatOutputStream)
+
+- (void)sendPacket:(SKPacket *)packet;
 
 @end

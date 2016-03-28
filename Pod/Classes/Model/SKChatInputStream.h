@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "SKPacket.h"
 
-@interface NSInputStream (SKChatOutputStream)
+@interface NSInputStream (SKChatInputStream)
 
 - (SKPacket *)recievePacket;
+- (NSData *)readData;
 
 @end

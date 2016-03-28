@@ -25,6 +25,8 @@
 // Comment this out on your machine
 #import "Login.h"
 
+static id chatroom = nil;
+
 void registerAccount(NSString *email, NSString *password, NSString *birthday) {
     [[SKClient sharedClient] registerEmail:email password:password birthday:birthday completion:^(NSDictionary *jsonemail, NSError *error) {
         if (!error) {
@@ -213,20 +215,18 @@ int main(int argc, const char * argv[]) {
         NSString *directory = [[NSHomeDirectory() stringByAppendingPathComponent:@"Desktop"] stringByAppendingPathComponent:@"SnapchatKit-Data"];
         [[NSFileManager defaultManager] createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
         
-        // Testing account registration.
-        // Cannot seem to "solve" a captcha.
-        //        registerAccount(@"Tatem1984@jourrapide.com", @"12345678h", @"1995-08-01");
-        
 #ifdef TB_LOGIN
         [SKClient sharedClient].casperAPIKey    = kCasperAPIKey;
         [SKClient sharedClient].casperAPISecret = kCasperAPISecret;
         [SKClient sharedClient].casperUserAgent = kCasperUserAgent;
 #endif
         
-        SKBlob *blob = [SKBlob blobWithContentsOfPath:@"/Users/tantan/Desktop/upload"];
-        
-        [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword completion:^(NSDictionary *dict, NSError *error) {
-//        [[SKClient sharedClient] restoreSessionWithUsername:kUsername snapchatAuthToken:kAuthToken doGetUpdates:^(NSError *error) {
+        // Testing account registration.
+        // Cannot seem to "solve" a captcha.
+//        registerAccount(@"Tatem194@jourrapide.com", @"12345678h", @"1995-08-01");
+        if (1)
+//        [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword completion:^(NSDictionary *dict, NSError *error) {
+            [[SKClient sharedClient] restoreSessionWithUsername:kUsername snapchatAuthToken:kAuthTokenette doGetUpdates:^(NSError *error) {
             if (!error) {
                 SKSession *session = [SKClient sharedClient].currentSession;
                 [[session valueForKey:@"_JSON"] writeToFile:[directory stringByAppendingPathComponent:@"current-session.plist"] atomically:YES];
@@ -241,47 +241,48 @@ int main(int argc, const char * argv[]) {
                 
                 NSLog(@"Unknown JSONKeys:%@", [SKThing allSubclassesUnknownJSONKeys]);
                 
+                // Get unread snaps
+                NSArray *unread = session.unread;
+                SKLog(@"%lu unread snaps: %@", unread.count, unread);
+                
                 ////////////////////////////
                 // I'm testing stuff here //
                 ////////////////////////////
                 
                 /// Notes ///
                 
-//                [[SKClient sharedClient] downloadAvatar:@"tannerbennett" completion:^(SKAvatar *avatar, NSError *error) {
-//                    if (!error) {
-//                        NSMutableArray *images = [NSMutableArray array];
-//                        for (NSData *data in avatar.frames)
-//                            [images addObject:[[NSImage alloc] initWithData:data]];
-//                        
-//                        NSData *reversed    = [SKAvatar avatarDataFromImageDatas:avatar.frames];
-//                        SKAvatar *backAgain = [SKAvatar avatarWithData:reversed error:nil];
-//                        reversed            = [reversed subdataWithRange:NSMakeRange(9, reversed.length-9)]; // ignore timestamp and count
-//                        NSData *original    = [avatar.data subdataWithRange:NSMakeRange(9, avatar.data.length-9)];
-//                        BOOL success        = backAgain && [reversed isEqualToData:original];
-//                        success = success;
-//                    }
-//                }];
+                //                [[SKClient sharedClient] downloadAvatar:@"tannerbennett" completion:^(SKAvatar *avatar, NSError *error) {
+                //                    if (!error) {
+                //                        NSMutableArray *images = [NSMutableArray array];
+                //                        for (NSData *data in avatar.frames)
+                //                            [images addObject:[[NSImage alloc] initWithData:data]];
+                //                        
+                //                        NSData *reversed    = [SKAvatar avatarDataFromImageDatas:avatar.frames];
+                //                        SKAvatar *backAgain = [SKAvatar avatarWithData:reversed error:nil];
+                //                        reversed            = [reversed subdataWithRange:NSMakeRange(9, reversed.length-9)]; // ignore timestamp and count
+                //                        NSData *original    = [avatar.data subdataWithRange:NSMakeRange(9, avatar.data.length-9)];
+                //                        BOOL success        = backAgain && [reversed isEqualToData:original];
+                //                        success = success;
+                //                    }
+                //                }];
                 
-                [[SKClient sharedClient] postStory:blob for:0 completion:^(NSError *error) {
-                    NSLog(@"%@", error);
-                }];
+                SKConversation *withme = [session conversationWithUser:@"tannerbennett"];
+                SKChatRoom *chat = [SKChatRoom chatRoomForConversation:withme gatewayAuth:session.messagingGatewayAuth server:session.messagingGatewayServer];
+                [chat enterRoom];
+                chatroom = chat;
                 
-                
-                // Get unread snaps
-                NSArray *unread = session.unread;
-                SKLog(@"%lu unread snaps: %@", unread.count, unread);
-//
-//                SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
-//                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"username", @"luke"]].firstObject;
-//                for (SKStory *s in friend.stories)
-//                    [s load:^(NSError *error1) {
-//                        if (!error1) {
-//                            NSLog(@"Saving %@: %@", SKStringFromMediaKind(s.mediaKind), s.suggestedFilename);
-//                            [s.blob writeToPath:[directory stringByAppendingString:@"/Test-download"] filename:s.suggestedFilename atomically:YES];
-//                        } else {
-//                            NSLog(@"Error loading %@: %@", SKStringFromMediaKind(s.mediaKind), error1.localizedDescription);
-//                        }
-//                    }];
+                //
+                //                SKStoryCollection *friend = [[SKClient sharedClient].currentSession.stories
+                //                                          filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", @"username", @"luke"]].firstObject;
+                //                for (SKStory *s in friend.stories)
+                //                    [s load:^(NSError *error1) {
+                //                        if (!error1) {
+                //                            NSLog(@"Saving %@: %@", SKStringFromMediaKind(s.mediaKind), s.suggestedFilename);
+                //                            [s.blob writeToPath:[directory stringByAppendingString:@"/Test-download"] filename:s.suggestedFilename atomically:YES];
+                //                        } else {
+                //                            NSLog(@"Error loading %@: %@", SKStringFromMediaKind(s.mediaKind), error1.localizedDescription);
+                //                        }
+                //                    }];
                 
                 
                 //                [[SKClient sharedClient] get:[NSString stringWithFormat:@"%@US", kepDiscoverChannels] callback:^(id object, NSError *error) {
@@ -321,10 +322,10 @@ int main(int argc, const char * argv[]) {
                 //                testGetConversations();
                 
                 // Download and save unread snaps
-//                saveUnreadSnapsToDirectory(unread, directory);
+                //                saveUnreadSnapsToDirectory(unread, directory);
                 
                 // Mark snaps read
-//                markSnapsRead(unread);
+                //                markSnapsRead(unread);
                 
                 // Mark chats read (not working)
                 //                markChatsRead(session);

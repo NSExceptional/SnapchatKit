@@ -146,6 +146,7 @@
 
 - (NSString *)base64URLEncodedString {
     NSString *str = [self base64EncodedStringWithOptions:0];
+    
     str = [str stringByReplacingOccurrencesOfString:@"=" withString:@""];
     str = [str stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
     str = [str stringByReplacingOccurrencesOfString:@"/" withString:@"_"];

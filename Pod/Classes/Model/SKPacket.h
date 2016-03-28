@@ -10,10 +10,15 @@
 #import "Mantle.h"
 
 
+// ts to NSDate transform
+#define MTLTransformPropertyDate(property) + (NSValueTransformer *) property##JSONTransformer { \
+return [self sk_dateTransformer]; }
+
 typedef NS_ENUM(NSUInteger, SKPacketType)
 {
     SKPacketTypeDefault,
     SKPacketTypeConnectResponse,
+    SKPacketTypeDisconnect,
     SKPacketTypePresence,
     SKPacketTypeMessageState,
     SKPacketTypeMessageRelease,
@@ -22,6 +27,7 @@ typedef NS_ENUM(NSUInteger, SKPacketType)
     SKPacketTypeProtocolError,
     SKPacketTypeConversationMessageResponse,
     SKPacketTypeSnapState,
+    SKPacketTypePing,
     SKPacketTypePingResponse
 };
 
@@ -35,6 +41,10 @@ extern SKPacketType SKPacketTypeFromString(NSString *);
 
 + (instancetype)packet:(NSDictionary *)json;
 
++ (NSValueTransformer *)sk_dateTransformer;
+
+@property (nonatomic, readonly) NSDictionary *json;
+@property (nonatomic, readonly) SKPacketType packetType;
 @property (nonatomic, readonly) NSString *type;
 @property (nonatomic, readonly) NSString *identifier;
 

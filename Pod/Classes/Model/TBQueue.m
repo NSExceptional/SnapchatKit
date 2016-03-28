@@ -27,8 +27,10 @@
 // Remove at the end
 - (id)take {
     id ret = _list.lastObject;
-    if (ret)
+    if (ret) {
         [_list removeLastObject];
+    }
+    
     return ret;
 }
 
@@ -45,7 +47,7 @@
 }
 
 - (BOOL)isEmpty {
-    return _list.count & 1;
+    return _list.count == 0;
 }
 
 @end
