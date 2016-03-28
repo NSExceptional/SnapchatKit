@@ -24,6 +24,9 @@
     "Pod/Dependencies/**/*"
   ],
   "dependencies": {
+    "CocoaAsyncSocket": [
+
+    ],
     "Mantle": [
       "~> 2.0"
     ]

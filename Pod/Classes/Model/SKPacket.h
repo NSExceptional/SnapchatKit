@@ -17,6 +17,7 @@ return [self sk_dateTransformer]; }
 typedef NS_ENUM(NSUInteger, SKPacketType)
 {
     SKPacketTypeDefault,
+    SKPacketTypeConnect,
     SKPacketTypeConnectResponse,
     SKPacketTypeDisconnect,
     SKPacketTypePresence,
@@ -40,6 +41,7 @@ extern SKPacketType SKPacketTypeFromString(NSString *);
 @interface SKPacket : MTLModel <MTLJSONSerializing>
 
 + (instancetype)packet:(NSDictionary *)json;
++ (instancetype)packetFromData:(NSData *)data;
 
 + (NSValueTransformer *)sk_dateTransformer;
 

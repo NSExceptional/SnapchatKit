@@ -15,6 +15,7 @@ s.osx.deployment_target = '10.8'
 s.source_files = 'Pod/Classes/*', 'Pod/Classes/**/*', 'Pod/Dependencies/*', 'Pod/Dependencies/**/*'
 # s.dependency 'AFNetworking', '~> 2.5'
 # s.dependency 'SSZipArchive'
+s.dependency 'CocoaAsyncSocket'
 s.dependency 'Mantle', '~> 2.0'
 s.library = 'z'
 end

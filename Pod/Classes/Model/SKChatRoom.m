@@ -7,9 +7,11 @@
 //
 
 #import "SKChatRoom.h"
+#import "NSDictionary+SnapchatKit.h"
 #import "SKChatInputStream.h"
 #import "SKChatOutputStream.h"
 #import "TBQueue.h"
+#import "GCDAsyncSocket.h"
 
 #import "SKConnectPacket.h"
 #import "SKConnectResponsePacket.h"
@@ -23,15 +25,19 @@
 #import "SKSnapStatePacket.h"
 #import "SKPingResponsePacket.h"
 
+NSInteger const kConnectMessageTag = &kConnectMessageTag;
+NSInteger const kLengthTag = &kLengthTag;
+
 //@class SKPacket, SKConnectPacket, SKPresencePacket, SKMessageStatePacket, SKMessagePacket, SKErrorPacket, SKProtocolErrorPacket, SKConversationMessageResponsePacket, SKSnapStatePacket, SKPingResponsePacket;
 
 typedef NSInputStream SKChatInputStream;
 typedef NSOutputStream SKChatOutputStream;
 
-@interface SKChatRoom () <NSStreamDelegate>
+@interface SKChatRoom () <NSStreamDelegate, GCDAsyncSocketDelegate>
 
 @property (nonatomic) SKChatInputStream  *inputStream;
 @property (nonatomic) SKChatOutputStream *outputStream;
+@property (nonatomic) GCDAsyncSocket *socket;
 @property (nonatomic) NSTimer *outboundTimer;
 
 @property TBQueue<SKPacket*> *outgoingMessages;
@@ -82,25 +88,17 @@ typedef NSOutputStream SKChatOutputStream;
 - (void)enterRoom {
     [self.outgoingMessages clear];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        // Init I/O streams
-        CFReadStreamRef readStream;
-        CFWriteStreamRef writeStream;
-        CFStreamCreatePairWithSocketToHost(NULL, (__bridge CFStringRef)_server, (unsigned int)_port, &readStream, &writeStream);
-        _inputStream  = (__bridge SKChatInputStream *)readStream;
-        _outputStream = (__bridge SKChatOutputStream *)writeStream;
-        _inputStream.delegate = self;
-        [_inputStream  setProperty:NSStreamSocketSecurityLevelSSLv3 forKey:NSStreamSocketSecurityLevelKey];
-        [_outputStream setProperty:NSStreamSocketSecurityLevelSSLv3 forKey:NSStreamSocketSecurityLevelKey];
-        [_inputStream  scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-        [_outputStream scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
-        [_inputStream  open];
-        [_outputStream open];
-        
-        self.outboundTimer = [NSTimer scheduledTimerWithTimeInterval:.8 target:self selector:@selector(outboundListener) userInfo:nil repeats:YES];
-        
-        [self sendConnectMessage];
-    });
+    NSLog(@"Connecting to host...");
+    
+    // Init I/O streams
+    NSError *connectError = nil;
+    self.socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+    [self.socket connectToHost:_server onPort:_port withTimeout:5 error:&connectError];
+    
+    if (connectError) {
+        // notify delegate
+        NSLog(@"%@", connectError.localizedDescription);
+    }
 }
 
 - (void)leaveRoom {
@@ -123,11 +121,65 @@ typedef NSOutputStream SKChatOutputStream;
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self sendPresenceStatePacketPresent:NO];
                 [self.outboundTimer invalidate];
-                [self.inputStream close];
-                [self.outputStream close];
+                self.socket = nil;
             });
         }
     });
+}
+
+#pragma mark Socket delegate
+
+- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(uint16_t)port {
+    NSLog(@"Connected to host. Starting TLS...");
+    // Backgrouding on iOS
+#if __has_include(<UIKit/UIApplication.h>)
+    [self.socket performBlock:^{
+        [self.socket enableBackgroundingOnSocket];
+    }];
+#endif
+    
+    [self.socket startTLS:@{GCDAsyncSocketSSLProtocolVersionMin: @2}];
+}
+
+// Not ever called so far
+- (void)socket:(GCDAsyncSocket *)sock didAcceptNewSocket:(GCDAsyncSocket *)newSocket {
+    self.socket = sock;
+}
+
+- (void)socketDidSecure:(GCDAsyncSocket *)sock {
+    NSLog(@"Connection complete.");
+    self.outboundTimer = [NSTimer scheduledTimerWithTimeInterval:.8 target:self selector:@selector(outboundListener) userInfo:nil repeats:YES];
+    [self sendConnectMessage];
+}
+
+- (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
+    if (error) {
+        // notify delegate
+        NSLog(@"Disconnected: %@", error.localizedDescription);
+    }
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
+    if (tag == kLengthTag) {
+        // Get length, read packet
+        int length = NSSwapInt(*(int*)(data.bytes));
+        [self.socket readDataToLength:length withTimeout:-1 tag:kLengthTag];
+        
+        NSLog(@"Read length: %@", @(length));
+    } else if (tag == 0) {
+        // Packet read, read next length
+        [self packetRecieved:[SKPacket packetFromData:data]];
+        [self.socket readDataToLength:4 withTimeout:-1 tag:kLengthTag];
+    }
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag {
+    if (tag == kConnectMessageTag) {
+        NSLog(@"Sent connect message. Reading data...");
+        // Begin reading length
+        [self.socket readDataToLength:4 withTimeout:-1 tag:kLengthTag];
+    }
+    // notify delegate
 }
 
 #pragma mark Packets and listeners
@@ -140,34 +192,18 @@ typedef NSOutputStream SKChatOutputStream;
     return _presenceTimer;
 }
 
-- (void)stream:(NSStream *)aStream handleEvent:(NSStreamEvent)eventCode {
-    switch (eventCode) {
-        case NSStreamEventNone:
-        case NSStreamEventOpenCompleted:
-        case NSStreamEventHasSpaceAvailable:
-        case NSStreamEventErrorOccurred:
-        case NSStreamEventEndEncountered: {
-            break;
-        }
-        case NSStreamEventHasBytesAvailable: {
-            // Always true
-            if (aStream == self.inputStream) {
-                NSLog(@"===================================bytes available");
-                SKPacket *packet = [self.inputStream recievePacket];
-                if (packet) {
-                    [self packetRecieved:packet];
-                }
-            }
-        }
-    }
-}
-
 - (void)outboundListener {
     if (self.outgoingMessages.count) {
-        NSStreamStatus s = self.inputStream.streamStatus;
-        
         SKPacket *packet = [self.outgoingMessages take];
-        [self.outputStream sendPacket:packet];
+        
+        // Write packet with type tag
+        if (packet.packetType == SKPacketTypeConnect) {
+            NSLog(@"Sending connect message...");
+            [self.socket writeData:[packet.json.JSONString dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:kConnectMessageTag];
+        } else {
+            NSLog(@"Sending some packet...");
+            [self.socket writeData:[packet.json.JSONString dataUsingEncoding:NSUTF8StringEncoding] withTimeout:-1 tag:0];
+        }
     }
 }
 

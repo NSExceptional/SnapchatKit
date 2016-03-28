@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "SKConversation.h"
 
+#define VALIDATE_CERTIFICATES 1
+
 
 @interface SKChatRoom : NSObject
 
