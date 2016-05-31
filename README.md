@@ -37,7 +37,7 @@ SnapchatKit revolves around the `SKClient` class as a singleton. An instance of 
 [SKClient sharedClient].casperAPIKey = @"your_api_key";
 [SKClient sharedClient].casperAPISecret = @"your_api_secret";
 [SKClient sharedClient].casperUserAgent = @"not_required_but_please_use_one";
-[[SKClient sharedClient] signInWithUsername:@"donald-trump" password:@"for_president"
+[[SKClient sharedClient] signInWithUsername:@"makedonald" password:@"drumpfagain"
                                  completion:^(NSDictionary *json, NSError *error) {
     NSArray *unread = [SKClient sharedClient].currentSession.unread;
     NSLog(@"%@", unread);
