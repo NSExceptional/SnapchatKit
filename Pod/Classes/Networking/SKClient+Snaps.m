@@ -69,7 +69,7 @@
                             @"zipped": blob.zipData ? @1 : @0,
                             @"features_map": @"{}",
                             @"username": self.username};
-
+    
     [self postTo:SKEPSnaps.upload query:query callback:^(id object, NSError *error) {
         completion(error ? nil : uuid, error);
     }];
@@ -142,12 +142,14 @@
             // Unzipped
             if ([data isJPEG] || [data isMPEG4]) {
                 SKBlob *blob = [SKBlob blobWithData:data];
-                if (blob)
-                    completion(blob, nil);
-                else
-                    completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (blob)
+                        completion(blob, nil);
+                    else
+                        completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+                });
                 
-            // Needs to be unzipped
+                // Needs to be unzipped
             } else if ([data isCompressed]) {
                 NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", identifier]];
                 NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", identifier]];
@@ -156,27 +158,38 @@
                 [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
                     if (succeeded) {
                         SKBlob *blob = [SKBlob blobWithContentsOfPath:unzip];
-                        if (blob)
-                            completion(blob, nil);
-                        else
-                            completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (blob)
+                                completion(blob, nil);
+                            else
+                                completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
+                        });
                     } else {
                         SKLog(@"%@", error);
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            completion(nil, [SKRequest errorWithMessage:@"Error unarchiving blob" code:3]);
+                        });
                     }
                 }];
                 
             } else if (data) {
                 SKBlob *blob = [SKBlob blobWithData:data];
-                if (blob)
-                    completion(blob, [SKRequest errorWithMessage:@"Unknown blob format" code:[(NSHTTPURLResponse *)response statusCode]]);
-                else
-                    completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (blob)
+                        completion(blob, [SKRequest errorWithMessage:@"Unknown blob format" code:[(NSHTTPURLResponse *)response statusCode]]);
+                    else
+                        completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+                });
             } else {
-                completion(nil, [SKRequest errorWithMessage:[NSString stringWithFormat:@"Error retrieving snap: %@", identifier] code:[(NSHTTPURLResponse *)response statusCode]]);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, [SKRequest errorWithMessage:[NSString stringWithFormat:@"Error retrieving snap: %@", identifier] code:[(NSHTTPURLResponse *)response statusCode]]);
+                });
             }
-        // Failed to get snap
+            // Failed to get snap
         } else {
-            completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+            });
         }
     }];
 }
