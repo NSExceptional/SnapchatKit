@@ -7,7 +7,7 @@
 //
 
 #import "SKChatRoom.h"
-#import "NSDictionary+SnapchatKit.h"
+#import "NSDictionary+Networking.h"
 #import "SKChatInputStream.h"
 #import "SKChatOutputStream.h"
 #import "TBQueue.h"

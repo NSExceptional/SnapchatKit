@@ -8,7 +8,7 @@
 
 #import "SKCasperCache.h"
 #import "SnapchatKit-Constants.h"
-#import "NSDictionary+SnapchatKit.h"
+#import "NSDictionary+Networking.h"
 
 @interface SKCasperCache ()
 @property (nonatomic) NSMutableDictionary *cache;

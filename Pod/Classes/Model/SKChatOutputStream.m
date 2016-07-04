@@ -7,7 +7,7 @@
 //
 
 #import "SKChatOutputStream.h"
-#import "NSDictionary+SnapchatKit.h"
+#import "NSDictionary+Networking.h"
 
 
 @implementation NSOutputStream (SKChatOutputStream)
