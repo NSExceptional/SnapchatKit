@@ -70,7 +70,7 @@
             // Content-Type header for specific endpoints
             if ([endpoint[@"endpoint"] isEqualToString:SKEPStories.upload] || [endpoint[@"endpoint"] isEqualToString:SKEPSnaps.upload]) {
                 NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", SKConsts.boundary];
-                m[@"headers"] = SKMergeDictionaries(endpoint[@"headers"], @{SKHeaders.contentType: contentType});
+                m[@"headers"] = MergeDictionaries(endpoint[@"headers"], @{TBHeader.contentType: contentType});
             }
             
             m[@"expires"] = [NSDate dateWithTimeIntervalSinceNow:cacheTime];

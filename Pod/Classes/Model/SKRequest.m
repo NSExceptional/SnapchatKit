@@ -62,10 +62,10 @@
     self = [super init];
     if (self) {
         // HTTP header fields
-        [self setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:SKHeaders.contentType];
-        [self setValue:SKConsts.userAgent forHTTPHeaderField:SKHeaders.userAgent];
-        [self setValue:SKHeaders.values.language forHTTPHeaderField:SKHeaders.acceptLanguage];
-        [self setValue:SKHeaders.values.locale forHTTPHeaderField:SKHeaders.acceptLocale];
+        [self setValue:TBContentType.formURLEncoded forHTTPHeaderField:TBHeader.contentType];
+        [self setValue:SKConsts.userAgent forHTTPHeaderField:TBHeader.userAgent];
+        [self setValue:SKHeaders.values.language forHTTPHeaderField:TBHeader.acceptLanguage];
+        [self setValue:SKHeaders.values.locale forHTTPHeaderField:TBHeader.acceptLocale];
         
         if (httpHeaders)
             [httpHeaders enumerateKeysAndObjectsUsingBlock:^(NSString *key, id value, BOOL *stop) {
@@ -78,9 +78,9 @@
 
 - (id)initWithPOSTEndpoint:(NSString *)endpoint query:(NSDictionary *)params headers:(NSDictionary *)httpHeaders {
     NSParameterAssert(params[@"timestamp"]);
-//    [[self class] overrideHeaderValuesGlobally:@{SKHeaders.userAgent: SKConsts.userAgent}];
     
     httpHeaders = SKRequestApplyHeaderOverrides(httpHeaders, endpoint);
+//    [[self class] overrideHeaderValuesGlobally:@{TBHeader.userAgent: SKConsts.userAgent}];
     
     self = [self initWithHeaderFields:httpHeaders];
     if (self) {
@@ -96,7 +96,7 @@
         if ([endpoint isEqualToString:SKEPSnaps.upload] ||
             [endpoint isEqualToString:SKEPAccount.avatar.set] ||
             [endpoint isEqualToString:SKEPStories.post]) {
-            [self setValue:@"multipart/form-data; boundary=Boundary+0xAbCdEfGbOuNdArY" forHTTPHeaderField:SKHeaders.contentType];
+            [self setValue:@"multipart/form-data; boundary=Boundary+0xAbCdEfGbOuNdArY" forHTTPHeaderField:TBHeader.contentType];
             NSMutableData *body = [NSMutableData data];
             [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n", SKConsts.boundary] dataUsingEncoding:NSUTF8StringEncoding]];
             

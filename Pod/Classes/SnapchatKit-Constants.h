@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+#import "NSDictionary+Networking.h"
+#import "NSArray+SnapchatKit.h"
+#import "NSString+SnapchatKit.h"
+#import "NSData+SnapchatKit.h"
+
+
 #ifdef UIKIT_EXTERN
 #define kScreenWidth ((NSInteger)[UIScreen mainScreen].bounds.size.width)
 #define kScreenHeight ((NSInteger)[UIScreen mainScreen].bounds.size.height)
@@ -21,13 +27,8 @@
 
 #define SKTempDirectory() [NSTemporaryDirectory() stringByAppendingPathComponent:@"SnapchatKit-tmp"]
 
-#define NSNSString __unsafe_unretained NSString
-#define NSNSURL __unsafe_unretained NSURL
 #define SK_NAMESPACE(name, vals) extern const struct name vals name
 #define SK_NAMESPACE_IMP(name) const struct name name =
-
-#define SKRunBlock(block) if ( block ) block()
-#define SKRunBlockP(block, ...) if ( block ) block( __VA_ARGS__ )
 
 
 typedef void (^RequestBlock)(NSData *data, NSURLResponse *response, NSError *error);
@@ -148,10 +149,6 @@ SK_NAMESPACE(SKConsts, {
 #pragma mark Header fields / values
 SK_NAMESPACE(SKHeaders, {
     NSNSString *timestamp;
-    NSNSString *userAgent;
-    NSNSString *contentType;
-    NSNSString *acceptLanguage;
-    NSNSString *acceptLocale;
     NSNSString *clientAuth;
     NSNSString *clientToken;
     NSNSString *clientAuthToken;

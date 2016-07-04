@@ -138,10 +138,6 @@ SK_NAMESPACE_IMP(SKConsts) {
 #pragma mark Header fields / values
 SK_NAMESPACE_IMP(SKHeaders) {
     .timestamp       = @"X-Timestamp",
-    .userAgent       = @"User-Agent",
-    .contentType     = @"Content-Type",
-    .acceptLanguage  = @"Accept-Language",
-    .acceptLocale    = @"Accept-Locale",
     .clientAuth      = @"X-Snapchat-Client-Auth",
     .clientToken     = @"X-Snapchat-Client-Token",
     .clientAuthToken = @"X-Snapchat-Client-Auth-Token",

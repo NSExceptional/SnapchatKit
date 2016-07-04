@@ -174,7 +174,7 @@ static SKClient *sharedSKClient;
                                                      headers:headers];
     // Set optional headers
     if (self.casperUserAgent) {
-        [request setValue:self.casperUserAgent forHTTPHeaderField:SKHeaders.userAgent];
+        [request setValue:self.casperUserAgent forHTTPHeaderField:TBHeader.userAgent];
     }
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -223,7 +223,7 @@ static SKClient *sharedSKClient;
                                                      headers:headers];
     // Set optional headers
     if (self.casperUserAgent) {
-        [request setValue:self.casperUserAgent forHTTPHeaderField:SKHeaders.userAgent];
+        [request setValue:self.casperUserAgent forHTTPHeaderField:TBHeader.userAgent];
     }
     
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
@@ -318,7 +318,7 @@ static SKClient *sharedSKClient;
     
     [self getInformationForEndpoint:endpoint callback:^(NSDictionary *params, NSDictionary *headers, NSError *error) {
         if (!error) {
-            [SKRequest postTo:endpoint query:SKMergeDictionaries(query, params) headers:headers callback:^(NSData *data, NSURLResponse *response, NSError *error2) {
+            [SKRequest postTo:endpoint query:MergeDictionaries(query, params) headers:headers callback:^(NSData *data, NSURLResponse *response, NSError *error2) {
                 SKDispatchToMain([self handleError:error2 data:data response:response completion:callback]);
             }];
         } else {
@@ -332,7 +332,7 @@ static SKClient *sharedSKClient;
     
     [self getInformationForEndpoint:endpoint callback:^(NSDictionary *params, NSDictionary *headers, NSError *error) {
         if (!error) {
-            [SKRequest postTo:endpoint query:SKMergeDictionaries(query, params) headers:headers callback:callback];
+            [SKRequest postTo:endpoint query:MergeDictionaries(query, params) headers:headers callback:callback];
         } else {
             SKDispatchToMain(callback(nil, nil, error));
         }

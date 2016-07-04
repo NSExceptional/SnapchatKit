@@ -51,10 +51,10 @@
             }
             
             [self postTo:SKEPStories.post query:query callback:^(NSDictionary *json, NSError *sendError) {
-                SKRunBlockP(completion, sendError);
+                TBRunBlockP(completion, sendError);
             }];
         } else {
-            SKRunBlockP(completion, error);
+            TBRunBlockP(completion, error);
         }
     }];
 }
@@ -70,7 +70,7 @@
                             @"username": self.username};
     
     [self postTo:SKEPStories.upload query:query callback:^(id object, NSError *error) {
-        SKRunBlockP(completion, error ? nil : uuid, error);
+        TBRunBlockP(completion, error ? nil : uuid, error);
     }];
 }
 
