@@ -6,18 +6,12 @@
 //  Copyright (c) 2015 Tanner Bennett. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "NSArray+Networking.h"
 
-@interface NSArray (JSON)
 
-/// Will never return nil.
-@property (nonatomic, readonly) NSString *JSONString;
+@interface NSArray (SnapchatKit)
 /// Will never return nil.
 @property (nonatomic, readonly) NSArray *dictionaryValues;
+@property (nonatomic, readonly) NSArray *recipientsString;
 
-@end
-
-
-@interface NSArray (REST)
-@property (nonatomic, readonly) NSString *recipientsString;
 @end

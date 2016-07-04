@@ -9,12 +9,8 @@
 #import "NSArray+SnapchatKit.h"
 #import "Mantle.h"
 
-@implementation NSArray (JSON)
 
-- (NSString *)JSONString {
-    NSData *data = [NSJSONSerialization dataWithJSONObject:self options:0 error:nil];
-    return data ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : @"[]";
-}
+@implementation NSArray (SnapchatKit)
 
 - (NSArray *)dictionaryValues {
     NSMutableArray *jsons = [NSMutableArray array];
@@ -23,10 +19,6 @@
     
     return jsons.copy;
 }
-
-@end
-
-@implementation NSArray (REST)
 
 - (NSString *)recipientsString {
     if (!self.count) return @"[]";
