@@ -14,7 +14,7 @@ end
 
 target 'SnapchatKit-OSX', :exclusive => true do
   xcodeproj 'SnapchatKit-OSX/SnapchatKit-OSX.xcodeproj'
-  platform :osx, '10.8'
+  platform :osx, '10.9'
   link_with 'SnapchatKit-OSX'
 
   pod 'SnapchatKit', :path => '../'

@@ -14,66 +14,7 @@
 
 @implementation SKRequest
 
-#pragma mark Request overrides
-
-static NSDictionary        *headerOverrides;
-static NSDictionary        *globalParamOverrides;
-static NSMutableDictionary *scopeParamOverrides;
-static NSMutableDictionary *scopeHeaderOverrides;
-static NSDictionary        *endpointOverrides;
-
-+ (void)overrideHeaderValuesGlobally:(NSDictionary *)headers {
-    NSParameterAssert([headers isKindOfClass:[NSDictionary class]] || !headers);
-    headerOverrides = headers;
-}
-
-+ (void)overrideHeaderValues:(NSDictionary *)headers forEndpoint:(NSString *)endpoint {
-    NSParameterAssert([headers isKindOfClass:[NSDictionary class]] || !headers); NSParameterAssert(endpoint);
-    if (!scopeHeaderOverrides)
-        scopeHeaderOverrides = [NSMutableDictionary dictionary];
-    
-    scopeHeaderOverrides[endpoint] = headers;
-}
-
-+ (void)overrideValuesForKeys:(NSDictionary *)queries forEndpoint:(NSString *)endpoint {
-    NSParameterAssert([queries isKindOfClass:[NSDictionary class]] || !queries); NSParameterAssert(endpoint);
-    if (!scopeParamOverrides)
-        scopeParamOverrides = [NSMutableDictionary dictionary];
-    
-    scopeParamOverrides[endpoint] = queries;
-}
-
-+ (void)overrideValuesForKeysGlobally:(NSDictionary *)queries {
-    NSParameterAssert([queries isKindOfClass:[NSDictionary class]] || !queries);
-    globalParamOverrides = queries;
-}
-
-+ (void)overrideEndpoints:(NSDictionary *)endpoints {
-    endpointOverrides = endpoints;
-}
-
-void SKRequestApplyOverrides(NSString **endpoint, NSDictionary **params) {
-    if (params != NULL) {
-        *params = [*params dictionaryByReplacingValuesForKeys:globalParamOverrides];
-        *params = [*params dictionaryByReplacingValuesForKeys:scopeParamOverrides[*endpoint]];
-    }
-    if (*endpoint) {
-        *endpoint = endpointOverrides[*endpoint] ?: *endpoint;
-    }
-}
-
-NSDictionary * SKRequestApplyHeaderOverrides(NSDictionary *httpHeaders, NSString *endpoint) {
-    if (!httpHeaders) return @{};
-    httpHeaders = [httpHeaders dictionaryByReplacingValuesForKeys:headerOverrides];
-    httpHeaders = [httpHeaders dictionaryByReplacingValuesForKeys:scopeHeaderOverrides[endpoint]];
-    return httpHeaders;
-}
-
 #pragma mark Convenience
-
-+ (NSDictionary *)parseJSON:(NSData *)jsonData {
-    return [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
-}
 
 + (NSError *)errorWithMessage:(NSString *)message code:(NSInteger)code {
     return [NSError errorWithDomain:@"SnapchatKit" code:code userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(message, @""),
