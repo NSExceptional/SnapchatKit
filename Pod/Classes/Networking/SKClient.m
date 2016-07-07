@@ -71,7 +71,6 @@ BOOL SKShouldUseStaticToken(NSString *endpiont) {
 
 
 @implementation SKClient
-
 @synthesize authToken = _authToken;
 
 #pragma mark Initializers
@@ -101,9 +100,9 @@ static SKClient *sharedSKClient;
 }
 
 + (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken {
-    SKClient *client         = [self new];
-    client.username          = username;
-    client->_authToken       = authToken;
+    SKClient *client   = [self new];
+    client.username    = username;
+    client->_authToken = authToken;
     
     return client;
 }
@@ -206,10 +205,8 @@ static SKClient *sharedSKClient;
         callback(cached[@"params"], cached[@"headers"], nil);
     }
     
-    // Do we need to use the static token?
-    NSString *token = SKShouldUseStaticToken(endpoint) ? SKConsts.staticToken : _authToken;
     NSString *url = @"https://casper-api.herokuapp.com/snapchat/ios/endpointauth";
-    NSMutableDictionary *query = @{@"auth_token": token, @"endpoint": endpoint, @"iat": [NSString timestampInSeconds]}.mutableCopy;
+    NSMutableDictionary *query = @{@"auth_token": self.authToken, @"endpoint": endpoint, @"iat": [NSString timestampInSeconds]}.mutableCopy;
     query[@"username"] = self.username;
     
     return [self casperRequest:url JWTParams:query callback:^(TBResponseParser *parser) {
@@ -378,9 +375,9 @@ static SKClient *sharedSKClient;
             // Continue registration
             if ([json[@"logged"] boolValue]) {
                 _authToken = json[@"auth_token"];
-//                NSDictionary *result = @{@"email": json[@"email"],
-//                                         @"snapchat_phone_number": json[@"snapchat_phone_number"],
-//                                         @"username_suggestions": json[@"username_suggestions"]};
+                //                NSDictionary *result = @{@"email": json[@"email"],
+                //                                         @"snapchat_phone_number": json[@"snapchat_phone_number"],
+                //                                         @"username_suggestions": json[@"username_suggestions"]};
                 completion(json, nil);
             }
             // Failed for some reason
