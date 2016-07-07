@@ -17,7 +17,7 @@
 extern NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret);
 
 typedef void(^SKCasperResponseBlock)(NSDictionary *body, NSDictionary *headers, NSError *error);
-typedef void(^SKConfigurationBlock)(TBURLRequestBuilder *make, NSDictionary *headers, NSDictionary *bodyForm);
+typedef void(^SKConfigurationBlock)(TBURLRequestBuilder *make, NSDictionary *bodyForm);
 typedef NSProgress *(^SKProxyBlock)(TBURLRequestProxy *proxy);
 
 typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
@@ -172,6 +172,7 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 - (void)solveCaptchaWithSolution:(NSString *)solution completion:(DictionaryBlock)completion;
 
 #pragma mark Internal
+- (NSProgress *)postWith:(NSDictionary *)parameters to:(NSString *)endpoint callback:(TBResponseBlock)callback;
 - (NSProgress *)post:(SKConfigurationBlock)configurationHandler to:(NSString *)endpoint callback:(TBResponseBlock)callback;
 - (NSProgress *)get:(SKConfigurationBlock)configurationHandler from:(NSString *)endpoint callback:(TBResponseBlock)callback;
 

@@ -213,7 +213,8 @@ static SKClient *sharedSKClient;
             NSProgress *child2 = success([TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
                 make.baseURL(SKConsts.baseURL).endpoint(endpoint);
                 make.configuration(self.URLSessionConfig).session(self.URLSession);
-                configure(make, headers, bodyForm);
+                make.headers(headers);
+                configure(make, bodyForm);
             }]);
             [progress addChild:child2 withPendingUnitCount:50];
         } else {
@@ -223,6 +224,12 @@ static SKClient *sharedSKClient;
     
     [progress addChild:child1 withPendingUnitCount:50];
     return progress;
+}
+
+- (NSProgress *)postWith:(NSDictionary *)parameters to:(NSString *)endpoint callback:(TBResponseBlock)callback {
+    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
+        make.bodyJSONFormString(MergeDictionaries(parameters, bodyForm));
+    } to:endpoint callback:callback];
 }
 
 - (NSProgress *)post:(SKConfigurationBlock)configurationHandler to:(NSString *)endpoint callback:(TBResponseBlock)callback {
@@ -260,27 +267,21 @@ static SKClient *sharedSKClient;
     
     [self getClientLoginData:username password:password timestamp:[NSString timestamp] callback:^(NSDictionary *stuff, NSError *error) {
         if (!error) {
-            SKRequest *request    = [[SKRequest alloc] initWithPOSTEndpoint:SKEPAccount.login query:stuff[@"params"] headers:stuff[@"headers"]];
-            NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-            
-            [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error2) {
-                [self handleError:error2 data:data response:response completion:^(NSDictionary *json, NSError *jsonerror) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        SKLog(@"Recieved Snapchat login response...");
-                        if (!jsonerror) {
-                            self.currentSession = [SKSession sessionWithJSONResponse:json];
-                            _authToken = self.currentSession.authToken;
-                            completion(json, nil);
-                        } else {
-                            completion(nil, jsonerror);
-                        }
-                    });
-                }];
-            }] resume];
+            [[TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
+                make.baseURL(SKConsts.baseURL).endpoint(SKEPAccount.login);
+                make.bodyJSONFormString(stuff[@"params"]).headers(stuff[@"headers"]);
+            }] POST:^(TBResponseParser *parser) {
+                SKLog(@"Recieved Snapchat login response...");
+                if (!parser.error) {
+                    self.currentSession = [SKSession sessionWithJSONResponse:parser.JSON];
+                    _authToken = self.currentSession.authToken;
+                    completion(parser.JSON, nil);
+                } else {
+                    completion(nil, parser.error);
+                }
+            }];
         } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completion(nil, error);
-            });
+            completion(nil, error);
         }
     }];
 }
@@ -295,8 +296,10 @@ static SKClient *sharedSKClient;
 }
 
 - (void)signOut:(ErrorBlock)completion {
-    [self postTo:SKEPAccount.login query:@{@"username": self.currentSession.username} callback:^(NSDictionary *json, NSError *error) {
-        if (!error) {
+    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
+        make.bodyJSONFormString(MergeDictionaries(bodyForm, @{@"username": self.currentSession.username}));
+    } to:SKEPAccount.logout callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
             [_cache clear];
             _currentSession    = nil;
             _username          = nil;
@@ -305,7 +308,7 @@ static SKClient *sharedSKClient;
             _deviceToken1v     = nil;
             completion(nil);
         } else {
-            completion(error);
+            completion(parser.error);
         }
     }];
 }
@@ -315,28 +318,29 @@ static SKClient *sharedSKClient;
 - (void)updateSession:(ErrorBlock)completion {
     SKAssertIsSignedIn(self);
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"friends_request": @{@"friends_sync_token": self.currentSession.friendsSyncToken ?: @0}.JSONString,
-                            @"height": @(self.screenSize.height),
-                            @"width": @(self.screenSize.width),
-                            @"screen_height_px": @(self.screenSize.height),
-                            @"screen_width_px": @(self.screenSize.width),
-                            @"screen_width_in": @0,
-                            @"screen_height_in": @0,
-                            @"checksums_dict": self.currentSession.checksums ?: @"{}"};
-    [self postTo:SKEPUpdate.all query:query callback:^(NSDictionary *json, NSError *error) {
-        if (!error) {
-            BOOL partialFriends = [json[@"friends_response"][@"friends_sync_type"] isEqualToString:@"partial"];
-            BOOL partialConvos  = [json[@"conversations_response_info"][@"is_delta"] boolValue];
+    NSDictionary *params = @{@"username": self.username,
+                             @"friends_request": @{@"friends_sync_token": self.currentSession.friendsSyncToken ?: @0}.JSONString,
+                             @"height": @(self.screenSize.height),
+                             @"width": @(self.screenSize.width),
+                             @"screen_height_px": @(self.screenSize.height),
+                             @"screen_width_px": @(self.screenSize.width),
+                             @"screen_width_in": @0,
+                             @"screen_height_in": @0,
+                             @"checksums_dict": self.currentSession.checksums ?: @"{}"};
+    
+    [self postWith:params to:SKEPUpdate.all callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
+            BOOL partialFriends = [parser.JSON[@"friends_response"][@"friends_sync_type"] isEqualToString:@"partial"];
+            BOOL partialConvos  = [parser.JSON[@"conversations_response_info"][@"is_delta"] boolValue];
             if (partialFriends || partialConvos) {
-                _currentSession = [[[SKSession alloc] initWithDictionary:json] mergeWithOldSession:_currentSession];
+                _currentSession = [[[SKSession alloc] initWithDictionary:parser.JSON] mergeWithOldSession:_currentSession];
             } else {
-                _currentSession = [[SKSession alloc] initWithDictionary:json];
+                _currentSession = [[SKSession alloc] initWithDictionary:parser.JSON];
             }
             _authToken = self.currentSession.authToken;
-            if (completion) completion(nil);
+            TBRunBlockP(completion, nil);
         } else {
-            if (completion) completion(error);
+            TBRunBlockP(completion, parser.error);
         }
     }];
 }
@@ -345,7 +349,6 @@ static SKClient *sharedSKClient;
 
 - (void)registerEmail:(NSString *)email password:(NSString *)password birthday:(NSString *)birthday completion:(DictionaryBlock)completion {
     NSParameterAssert(email); NSParameterAssert(password); NSParameterAssert(birthday); NSParameterAssert(completion);
-    NSDictionary *query = @{@"email": email, @"password": password, @"birthday": birthday};
     
     /* If successful, json1 will be something like:
      {
@@ -358,41 +361,41 @@ static SKClient *sharedSKClient;
      "snapchat_phone_number" = "+19372034486";
      "username_suggestions" = (username5, username03, etc);
      } */
-    [self postTo:SKEPAccount.registration.start query:query callback:^(NSDictionary *json, NSError *error) {
-        if (!error) {
+    
+    NSDictionary *params = @{@"email": email, @"password": password, @"birthday": birthday};
+    [self postWith:params to:SKEPAccount.registration.start callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
             // Continue registration
-            if ([json[@"logged"] boolValue]) {
-                _authToken = json[@"auth_token"];
+            if ([parser.JSON[@"logged"] boolValue]) {
+                _authToken = parser.JSON[@"auth_token"];
                 //                NSDictionary *result = @{@"email": json[@"email"],
                 //                                         @"snapchat_phone_number": json[@"snapchat_phone_number"],
                 //                                         @"username_suggestions": json[@"username_suggestions"]};
-                completion(json, nil);
+                completion(parser.JSON, nil);
             }
             // Failed for some reason
             else {
-                completion(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+                completion(nil, [TBResponseParser error:parser.JSON[@"message"] domain:@"SnapchatKit" code:[parser.JSON[@"status"] integerValue]]);
             }
-            
         }
     }];
 }
 
 - (void)registerUsername:(NSString *)username withEmail:(NSString *)registeredEmail gmail:(NSString *)gmail gmailPassword:(NSString *)gpass completion:(ErrorBlock)completion {
     NSParameterAssert(username); NSParameterAssert(registeredEmail); NSParameterAssert(gmail); NSParameterAssert(gpass); NSParameterAssert(completion);
-    NSDictionary *query = @{@"email": registeredEmail,
-                            @"username": registeredEmail,
-                            @"selected_username": username,
-                            @"height": @(self.screenSize.height),
-                            @"width": @(self.screenSize.width)};
+    NSDictionary *params = @{@"email": registeredEmail,
+                             @"username": registeredEmail,
+                             @"selected_username": username,
+                             @"height": @(self.screenSize.height),
+                             @"width": @(self.screenSize.width)};
     
-    [self postTo:SKEPAccount.registration.username query:query callback:^(NSDictionary *json, NSError *error) {
-        if (!error) {
-            
+    [self postWith:params to:SKEPAccount.registration.username callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
             // Continue registration
-            self.currentSession = [[SKSession alloc] initWithDictionary:json];
+            self.currentSession = [[SKSession alloc] initWithDictionary:parser.JSON];
             if (kDebugJSON && !self.currentSession) {
                 completion([SKRequest unknownError]);
-                SKLog(@"Unknown error: %@", json);
+                SKLog(@"Unknown error: %@", parser.JSON);
             } else {
                 _username = self.currentSession.username;
                 completion(nil);
@@ -400,19 +403,19 @@ static SKClient *sharedSKClient;
         }
         // Failed for some reason
         else {
-            completion([SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]]);
+            completion([TBResponseParser error:parser.JSON[@"message"] domain:@"SnapchatKit" code:[parser.JSON[@"status"] integerValue]]);
         }
     }];
 }
 
 
 - (void)getCaptcha:(ArrayBlock)completion {
-    [self postTo:SKEPAccount.registration.getCaptcha query:@{@"username": self.username} response:^(NSData *data, NSURLResponse *response, NSError *error) {
+    [self postWith:@{@"username": self.username} to:SKEPAccount.registration.getCaptcha callback:^(TBResponseParser *parser) {
         // Did get captcha ZIP
-        if ([(NSHTTPURLResponse *)response statusCode] == 200) {
+        if (!parser.error) {
             NSString *dataPath   = [NSString stringWithFormat:@"%@sck-captcha.tmp", NSTemporaryDirectory()];
             NSString *imagesPath = [NSString stringWithFormat:@"%@sck-captcha-images/", NSTemporaryDirectory()];
-            [data writeToFile:dataPath atomically:YES];
+            [parser.data writeToFile:dataPath atomically:YES];
             // Unzip it
             [SSZipArchive unzipFileAtPath:dataPath toDestination:imagesPath completion:^(NSString *path, BOOL succeeded, NSError *error) {
                 if (succeeded) {
@@ -435,18 +438,18 @@ static SKClient *sharedSKClient;
             }];
             // Failed to get captcha ZIP
         } else {
-            completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+            completion(nil, parser.error);
         }
     }];
 }
 
 - (void)solveCaptchaWithSolution:(NSString *)solution completion:(DictionaryBlock)completion {
     NSParameterAssert(solution);
-    NSDictionary *query = @{@"username": self.username,
-                            @"captcha_id": [NSString SCIdentifierWith:self.username and:[[NSString timestamp] substringToIndex:13]],
-                            @"captcha_solution": solution};
-    [self postTo:SKEPAccount.registration.solveCaptcha query:query callback:^(NSDictionary *json, NSError *error) {
-        SKLog(@"%@", json);
+    NSDictionary *params = @{@"username": self.username,
+                             @"captcha_id": [NSString SCIdentifierWith:self.username and:[[NSString timestamp] substringToIndex:13]],
+                             @"captcha_solution": solution};
+    [self postWith:params to:SKEPAccount.registration.solveCaptcha callback:^(TBResponseParser *parser) {
+        SKLog(@"%@", parser.JSON ?: parser.error);
     }];
 }
 
@@ -459,9 +462,7 @@ static SKClient *sharedSKClient;
     }
     
     NSString *countryCode;
-    NSMutableString *number = [NSMutableString string];
-    for (NSString *digit in digits)
-        [number appendString:digit];
+    NSMutableString *number = [digits join:@""].mutableCopy;
     
     if (digits.count == 11) {
         countryCode = digits[0];
@@ -471,24 +472,24 @@ static SKClient *sharedSKClient;
         countryCode = @"1";
     }
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"phoneNumber": number,
-                            @"countryCode": countryCode,
-                            @"action": @"updatePhoneNumber",
-                            @"skipConfirmation": @YES};
-    [self postTo:SKEPAccount.registration.verifyPhone query:query callback:^(NSDictionary *json, NSError *error) {
-        SKLog(@"%@", json);
+    NSDictionary *params = @{@"username": self.username,
+                             @"phoneNumber": number,
+                             @"countryCode": countryCode,
+                             @"action": @"updatePhoneNumber",
+                             @"skipConfirmation": @YES};
+    [self postWith:params to:SKEPAccount.registration.verifyPhone callback:^(TBResponseParser *parser) {
+        SKLog(@"%@", parser.JSON ?: parser.error);
     }];
 }
 
 - (void)verifyPhoneNumberWithCode:(NSString *)code completion:(ErrorBlock)completion {
     NSParameterAssert(code); NSParameterAssert(completion);
-    NSDictionary *query = @{@"action": @"verifyPhoneNumber",
-                            @"username": self.username,
-                            @"code": code};
+    NSDictionary *params = @{@"action": @"verifyPhoneNumber",
+                             @"username": self.username,
+                             @"code": code};
     // Hash timestamp with static token before passing as token?
-    [self postTo:SKEPAccount.registration.verifyPhone query:query callback:^(NSDictionary *json, NSError *error) {
-        SKLog(@"%@", json);
+    [self postWith:params to:SKEPAccount.registration.verifyPhone callback:^(TBResponseParser *parser) {
+        SKLog(@"%@", parser.JSON ?: parser.error);
     }];
 }
 
@@ -498,12 +499,12 @@ static SKClient *sharedSKClient;
     if (!completion) completion = ^(id e){};
     if (!events)   events = @[];
     if (!snapInfo) snapInfo = @{};
-    NSDictionary *query = @{@"events": events.JSONString,
-                            @"json": snapInfo.JSONString,
-                            @"username": self.currentSession.username};
+    NSDictionary *params = @{@"events": events.JSONString,
+                             @"json": snapInfo.JSONString,
+                             @"username": self.currentSession.username};
     
-    [self postTo:SKEPUpdate.snaps query:query callback:^(NSDictionary *json, NSError *error) {
-        if (completion) completion(error);
+    [self postWith:params to:SKEPUpdate.snaps callback:^(TBResponseParser *parser) {
+        TBRunBlockP(completion, parser.error);
     }];
 }
 
