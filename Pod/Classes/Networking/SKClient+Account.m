@@ -19,11 +19,14 @@
 
 @implementation SKClient (Account)
 
-- (void)handleCallback:(NSDictionary *)json error:(NSError *)error callback:(ErrorBlock)completion {
-    if (!error && [json[@"logged"] boolValue]) {
+- (void)handleCallback:(TBResponseParser *)parser callback:(ErrorBlock)completion {
+    if (!parser.error) {
+        if (![parser.JSON[@"logged"] boolValue]) {
+            NSLog(@"%@", parser.JSON);
+        }
         completion(nil);
     } else {
-        completion(error ?: [SKRequest errorWithMessage:json.description code:1]);
+        completion(parser.error);
     }
 }
 
@@ -31,64 +34,63 @@
     if (number < 3) number = 3;
     if (number > 7) number = 7;
     
-    [self postTo:SKEPAccount.setBestsCount query:@{@"num_best_friends": @(number), @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
-        if (!error) {
+    NSDictionary *params = @{@"num_best_friends": @(number), @"username": self.username};
+    [self postWith:params to:SKEPAccount.setBestsCount callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
             [self.currentSession.bestFriendUsernames removeAllObjects];
-            [self.currentSession.bestFriendUsernames addObjectsFromArray:json[@"best_friends"]];
-            if (completion)
-                completion(nil);
+            [self.currentSession.bestFriendUsernames addObjectsFromArray:parser.JSON[@"best_friends"]];
+            TBRunBlockP(completion, nil);
         } else {
-            if (completion)
-                completion(error);
+            TBRunBlockP(completion, parser.error);
         }
     }];
 }
 
 - (void)updateSnapPrivacy:(SKSnapPrivacy)privacy completion:(ErrorBlock)completion {
     privacy = MIN(privacy, 1);
-    NSDictionary *query = @{@"action": @"updatePrivacy",
-                            @"privacySetting": @(privacy),
-                            @"username": self.username};
-    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
-        [self handleCallback:json error:error callback:completion];
+    NSDictionary *params = @{@"action": @"updatePrivacy",
+                             @"privacySetting": @(privacy),
+                             @"username": self.username};
+    [self postWith:params to:SKEPAccount.settings callback:^(TBResponseParser *parser) {
+        [self handleCallback:parser callback:completion];
     }];
 }
 
 - (void)updateStoryPrivacy:(SKStoryPrivacy)privacy hideFrom:(NSArray *)friends completion:(ErrorBlock)completion {
-    NSDictionary *query = @{@"action": @"updateStoryPrivacy",
-                            @"privacySetting": SKStringFromStoryPrivacy(privacy),
-                            @"storyFriendsToBlock": friends.JSONString,
-                            @"username": self.username};
-    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
-        [self handleCallback:json error:error callback:completion];
+    NSDictionary *params = @{@"action": @"updateStoryPrivacy",
+                             @"privacySetting": SKStringFromStoryPrivacy(privacy),
+                             @"storyFriendsToBlock": friends.JSONString,
+                             @"username": self.username};
+    [self postWith:params to:SKEPAccount.settings callback:^(TBResponseParser *parser) {
+        [self handleCallback:parser callback:completion];
     }];
 }
 
 - (void)updateEmail:(NSString *)address completion:(ErrorBlock)completion {
     NSParameterAssert(address);
-    NSDictionary *query = @{@"action": @"updateEmail",
-                            @"email": address,
-                            @"username": self.username};
-    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
-        [self handleCallback:json error:error callback:completion];
+    NSDictionary *params = @{@"action": @"updateEmail",
+                             @"email": address,
+                             @"username": self.username};
+    [self postWith:params to:SKEPAccount.settings callback:^(TBResponseParser *parser) {
+        [self handleCallback:parser callback:completion];
     }];
 }
 
 - (void)updateSearchableByNumber:(BOOL)searchable completion:(ErrorBlock)completion {
-    NSDictionary *query = @{@"action": @"updateSearchableByPhoneNumber",
-                            @"searchable": @(searchable),
-                            @"username": self.username};
-    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
-        [self handleCallback:json error:error callback:completion];
+    NSDictionary *params = @{@"action": @"updateSearchableByPhoneNumber",
+                             @"searchable": @(searchable),
+                             @"username": self.username};
+    [self postWith:params to:SKEPAccount.settings callback:^(TBResponseParser *parser) {
+        [self handleCallback:parser callback:completion];
     }];
 }
 
 - (void)updateNotificationSoundSetting:(BOOL)enableSound completion:(ErrorBlock)completion {
-    NSDictionary *query = @{@"action": @"updateNotificationSoundSetting",
-                            @"notificationSoundSetting": enableSound ? @"ON" : @"OFF",
-                            @"username": self.username};
-    [self postTo:SKEPAccount.settings query:query callback:^(NSDictionary *json, NSError *error) {
-        [self handleCallback:json error:error callback:completion];
+    NSDictionary *params = @{@"action": @"updateNotificationSoundSetting",
+                             @"notificationSoundSetting": enableSound ? @"ON" : @"OFF",
+                             @"username": self.username};
+    [self postWith:params to:SKEPAccount.settings callback:^(TBResponseParser *parser) {
+        [self handleCallback:parser callback:completion];
     }];
 }
 
@@ -100,54 +102,49 @@
 - (void)updateFeatureSettings:(NSDictionary *)settings completion:(ErrorBlock)completion {
     NSParameterAssert(settings.allKeys.count < 10);
     if (!settings.allKeys.count) {
-        if (completion)
-            completion(nil);
+        TBRunBlockP(completion, nil);
         return;
     }
     
-    NSDictionary *features = @{SKFeatureSettings.travelMode:          settings[SKFeatureSettings.travelMode]          ?: @(self.currentSession.enableTravelMode),
-                               SKFeatureSettings.barcodeEnabled:      settings[SKFeatureSettings.barcodeEnabled]      ?: @NO,
-                               SKFeatureSettings.smartFilters:        settings[SKFeatureSettings.smartFilters]        ?: @(self.currentSession.enableSmartFilters),
-                               SKFeatureSettings.payReplaySnaps:      settings[SKFeatureSettings.payReplaySnaps]      ?: @(self.currentSession.payReplaySnaps),
-                               SKFeatureSettings.lensStoreEnabled:    settings[SKFeatureSettings.lensStoreEnabled]    ?: @(self.currentSession.lensStoreEnabled),
-                               SKFeatureSettings.visualFilters:       settings[SKFeatureSettings.visualFilters]       ?: @(self.currentSession.enableVisualFilters),
-                               SKFeatureSettings.prefetchLensStore:   settings[SKFeatureSettings.prefetchLensStore]   ?: @(self.currentSession.prefetchStoreLensesEnabled),
-                               SKFeatureSettings.QRCodeEnabled:       settings[SKFeatureSettings.QRCodeEnabled]       ?: @(self.currentSession.QRCodeEnabled),
-                               SKFeatureSettings.scrambleBestFriends: settings[SKFeatureSettings.scrambleBestFriends] ?: @NO};
+    NSDictionary *features = @{SKFeatureSettings.travelMode: @(self.currentSession.enableTravelMode),
+                               SKFeatureSettings.barcodeEnabled: @NO,
+                               SKFeatureSettings.smartFilters: @(self.currentSession.enableSmartFilters),
+                               SKFeatureSettings.payReplaySnaps: @(self.currentSession.payReplaySnaps),
+                               SKFeatureSettings.lensStoreEnabled: @(self.currentSession.lensStoreEnabled),
+                               SKFeatureSettings.visualFilters: @(self.currentSession.enableVisualFilters),
+                               SKFeatureSettings.prefetchLensStore: @(self.currentSession.prefetchStoreLensesEnabled),
+                               SKFeatureSettings.QRCodeEnabled: @(self.currentSession.QRCodeEnabled),
+                               SKFeatureSettings.scrambleBestFriends: @NO};
+    features = [features dictionaryByReplacingValuesForKeys:settings];
     
-    NSDictionary *query = @{@"settings": features.JSONString,
-                            @"username": self.username};
-    [self postTo:SKEPUpdate.featureSettings query:query callback:^(id object, NSError *error) {
-        completion(error);
+    NSDictionary *params = @{@"settings": features.JSONString,
+                             @"username": self.username};
+    [self postWith:params to:SKEPUpdate.featureSettings callback:^(TBResponseParser *parser) {
+        completion(parser.error);
     }];
 }
 
 - (void)downloadSnaptagAsSVG:(BOOL)svg completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
     
-    NSDictionary *query = @{@"image": self.currentSession.QRPath,
-                            @"type": svg ? @"SVG" : @"PNG",
-                            @"username": self.username};
-    [self downloadSnaptagWithParams:query svg:svg completion:completion];
+    NSDictionary *params = @{@"image": self.currentSession.QRPath,
+                             @"type": svg ? @"SVG" : @"PNG",
+                             @"username": self.username};
+    [self downloadSnaptagWithParams:params svg:svg completion:completion];
 }
 
+// TODO: look into this, why was I passing svg (possibly YES) if I'm just going to decode JSON?
 - (void)downloadSnaptagForUser:(SKUser *)user asSVG:(BOOL)svg completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"type": svg ? @"SVG" : @"PNG",
-                            @"username_snapcode": user.username,
-                            @"user_id": user.userIdentifier};
-    [self downloadSnaptagWithParams:query svg:svg completion:^(id object, NSError *error) {
+    NSDictionary *params = @{@"username": self.username,
+                             @"type": svg ? @"SVG" : @"PNG",
+                             @"username_snapcode": user.username,
+                             @"user_id": user.userIdentifier};
+    [self downloadSnaptagWithParams:params svg:NO completion:^(NSDictionary *json, NSError *error) {
         if (!error) {
-            NSError *jsonError = nil;
-            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:object options:0 error:&jsonError];
-            if (!jsonError) {
-                NSString *base64data = json[@"imageData"];
-                completion(base64data.base64DecodedData, nil);
-            } else {
-                completion(nil, jsonError);
-            }
+            NSString *base64data = json[@"imageData"];
+            completion(base64data.base64DecodedData, nil);
         } else {
             completion(nil, error);
         }
@@ -155,84 +152,78 @@
 }
 
 - (void)downloadSnaptagWithParams:(NSDictionary *)params svg:(BOOL)svg completion:(ResponseBlock)completion {
-    [self postTo:SKEPAccount.snaptag query:params response:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!error) {
-                if ([(NSHTTPURLResponse *)response statusCode] == 200) {
-                    if (data.length) {
-                        if (!svg)
-                            completion(svg ? [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] : data, nil);
-                    } else {
-                        completion(nil, [SKRequest errorWithMessage:@"Error retrieving snaptag" code:1]);
-                    }
-                }
-            } else {
-                completion(nil, error);
+    [self postWith:params to:SKEPAccount.snaptag callback:^(TBResponseParser *parser) {
+        if (!parser.error && parser.response.statusCode == 200 && parser.data.length) {
+            if (!svg) {
+                completion(svg ? (parser.text ?: [NSString stringWithCString:parser.data.bytes encoding:4]) : parser.JSON, nil);
             }
-        });
+        } else {
+            NSUInteger code = parser.response.statusCode;
+            completion(nil, parser.error ?: [TBResponseParser error:@"Error retrieving snaptag" domain:@"SnapchatKit" code:code]);
+        }
     }];
 }
 
 - (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion {
     NSParameterAssert(datas);
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"data": [SKAvatar avatarDataFromImageDatas:datas]};
+    NSDictionary *params = @{@"username": self.username,
+                             @"data": [SKAvatar avatarDataFromImageDatas:datas]};
     // SKEPAccount.avatar.set
     // multipart/form-data; takes a single "data" parameter in addition to the usual "username" param
-    [self postTo:SKEPAccount.avatar.set query:query callback:^(id object, NSError *error) {
-        completion(error);
+    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
+        make.multipartStrings(MergeDictionaries(@{@"username": self.username}, bodyForm));
+        make.multipartData(@{@"data": [SKAvatar avatarDataFromImageDatas:datas]});
+    } to:SKEPAccount.avatar.set callback:^(TBResponseParser *parser) {
+        completion(parser.error);
     }];
 }
 
 - (void)downloadAvatar:(NSString *)username size:(SKAvatarSize)size completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"size": SKStringFromAvatarSize(size),
-                            @"added_friends": @[username].JSONString};
-    [self downloadAvatarWithEndpoint:SKEPAccount.avatar.getFriend params:query completion:completion];
+    NSDictionary *params = @{@"username": self.username,
+                             @"size": SKStringFromAvatarSize(size),
+                             @"added_friends": @[username].JSONString};
+    [self downloadAvatarWithEndpoint:SKEPAccount.avatar.getFriend params:params completion:completion];
 }
 
 - (void)downloadYourAvatar:(SKAvatarSize)size completion:(ResponseBlock)completion {
     NSParameterAssert(completion);
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"size": SKStringFromAvatarSize(size),
-                            @"username_image": self.username};
-    [self downloadAvatarWithEndpoint:SKEPAccount.avatar.get params:query completion:completion];
+    NSDictionary *params = @{@"username": self.username,
+                             @"size": SKStringFromAvatarSize(size),
+                             @"username_image": self.username};
+    [self downloadAvatarWithEndpoint:SKEPAccount.avatar.get params:params completion:completion];
 }
 
 - (void)downloadAvatarWithEndpoint:(NSString *)endpoint params:(NSDictionary *)params completion:(ResponseBlock)completion {
-    [self postTo:endpoint query:params response:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (!error) {
-                NSInteger code = [(NSHTTPURLResponse *)response statusCode];
-                
-                if (code == 200) {
-                    if (data.length) {
-                        NSError *avError = nil;
-                        completion([SKAvatar avatarWithData:data error:&avError], avError);
-                    } else {
-                        completion(nil, [SKRequest errorWithMessage:@"Error downloading avatar" code:code]);
-                    }
-                } else if ([(NSHTTPURLResponse *)response statusCode] == 204) {
-                    completion(nil, nil);
+    [self postWith:params to:endpoint callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
+            if (parser.response.statusCode == 200) {
+                if (parser.data.length) {
+                    NSError *avError = nil;
+                    completion([SKAvatar avatarWithData:parser.data error:&avError], avError);
+                } else {
+                    NSUInteger code = parser.response.statusCode;
+                    completion(nil, [TBResponseParser error:@"Error downloading avatar" domain:@"SnapchatKit'" code:code]);
                 }
-            } else {
-                completion(nil, error);
+            } else if (parser.response.statusCode == TBHTTPStatusCodeNoContent) {
+                completion(nil, nil);
             }
-        });
+        } else {
+            completion(nil, parser.error);
+        }
     }];
 }
 
 - (void)removeYourAvatar:(ErrorBlock)completion {
     NSParameterAssert(completion);
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"last_updated": [NSString timestamp]};
-    [self postTo:SKEPAccount.avatar.remove query:query callback:^(NSDictionary *json, NSError *error) {
-        completion(error);
+    NSDictionary *params = @{@"username": self.username,
+                             @"last_updated": [NSString timestamp]};
+    [self postWith:params to:SKEPAccount.avatar.remove callback:^(TBResponseParser *parser) {
+        completion(parser.error);
     }];
 }
 
@@ -244,21 +235,17 @@
     NSDictionary *agreements = @{@"snapcash_new_tos_accepted": acceptSnapCashTos,
                                  @"snapcash_tos_v2_accepted": acceptSnapCashV2Tos,
                                  @"square_tos_accepted": acceptSquareTos};
-    NSDictionary *query = @{@"username": self.username,
-                            @"client_properties": agreements.JSONString};
-    [self postTo:SKEPUpdate.user query:query callback:^(NSDictionary *json, NSError *error) {
-        completion(error);
+    NSDictionary *params = @{@"username": self.username,
+                             @"client_properties": agreements.JSONString};
+    [self postWith:params to:SKEPUpdate.user callback:^(TBResponseParser *parser) {
+        completion(parser.error);
     }];
 }
 
 - (void)getTrophies:(ArrayBlock)completion {
     NSParameterAssert(completion);
     [self updateTrophiesWithMetrics:nil completion:^(NSError *error) {
-        if (!error) {
-            completion(self.currentSession.trophyCase, nil);
-        } else {
-            completion(nil, error);
-        }
+        completion(error ? self.currentSession.trophyCase : nil, error);
     }];
 }
 
@@ -266,15 +253,15 @@
     NSParameterAssert(completion);
     
     NSDictionary *counters = metrics.metrics ?: @{};
-    NSDictionary *query = @{@"username": self.username, @"metric_counters": counters};
-    [self postTo:SKEPUpdate.trophies query:query callback:^(NSDictionary *json, NSError *error) {
-        if (!error) {
-            NSArray *trophies = json[@"response"];
+    NSDictionary *params = @{@"username": self.username, @"metric_counters": counters};
+    [self postWith:params to:SKEPUpdate.trophies callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
+            NSArray *trophies = parser.JSON[@"response"];
             trophies = [MTLJSONAdapter modelsOfClass:[SKTrophy class] fromJSONArray:trophies error:nil];
             [self.currentSession setValue:trophies forKey:@"trophyCase"];
             completion(nil);
         } else {
-            completion(error);
+            completion(parser.error);
         }
     }];
 }
