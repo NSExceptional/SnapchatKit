@@ -18,7 +18,6 @@
 		008DBF8E73883594B482A97EE6C520DA /* GeneratedMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA519C3DD3BDA4817EF6E672BE422A9 /* GeneratedMessage.h */; };
 		00F9F9433EF07460AEB520B73492BA4F /* NSString+Networking.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B7099E6A3C14B73BDA15098E391F644 /* NSString+Networking.h */; };
 		012544DC78096524331B694824CF924B /* WireFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 98539430280DE96A89371A88D2559864 /* WireFormat.h */; };
-		01577B812C73D4AD2C8C5A146D3FB413 /* SKRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EFFBE054F409EF5A823B773946049FB /* SKRequest.m */; };
 		02565CC20849ADB54C6E8C7CA49C8DA3 /* AsyncUdpSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = FE0B0121BD0BB89A97ACAA09A3DE530E /* AsyncUdpSocket.h */; };
 		02584D6CB9CF92A8EBD6D088A1AD58C5 /* SKConnectPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = D59DB9DAF5BA9B18AE425A06B5F87DD1 /* SKConnectPacket.h */; };
 		027E94139293B035466E3337A3A3F606 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DDDF455AA5CD0F46A3DC3EDCAFDC00A /* CoreServices.framework */; };
@@ -132,7 +131,6 @@
 		2785DB2B18487CE0C1C3C299C3F32D35 /* SKUser.h in Headers */ = {isa = PBXBuildFile; fileRef = BE245B5F5B1331055C3BF623EA634658 /* SKUser.h */; };
 		278D5304AF18CAE80A76DEBE5522F1C7 /* SKSuggestedFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = ED0C0CC196B6EEA20146FCEB1E0B5054 /* SKSuggestedFriend.m */; };
 		27D4326E74CF13A41720A12D39B0E9CB /* RingBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 70A8C20F0E443D0CCEEFA437CFA67F28 /* RingBuffer.h */; };
-		284B716253D7BEB857B2BD1D254489F2 /* SKRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A09C806AC6E5ABEBB5209E5518568E71 /* SKRequest.h */; };
 		289F17CCC9B62B5523AB67CB8D255AFB /* SKMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 09F1DE50DA6F61156E4EEE2E55407324 /* SKMessage.m */; };
 		28A2645B24B611125A3AD9EAD328ED29 /* NSMutableURLRequest+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8F68C87336A576FA67BF03AA212B5 /* NSMutableURLRequest+Util.m */; };
 		290C8F81026F0289F50507007ED33075 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C96649458E2A8A9578428BA2433FCEA6 /* GCDAsyncSocket.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -403,7 +401,6 @@
 		7D46448D999CF646A3FAF48519B2FB0F /* ioapi.h in Headers */ = {isa = PBXBuildFile; fileRef = 161EBD80B9F7354C19FDF7E7E9615AB6 /* ioapi.h */; };
 		7D8BEA6B8D98B5F97EA133D417227C2A /* TBResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = A73F9E92DC0F1B881A547FA4DC531079 /* TBResponseParser.m */; };
 		7D9C8E146396540BCD4A82E76C23321D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ED508787829F4442CA2A9F556541C8A /* Security.framework */; };
-		7DD31566E51229A6F2BCE6568BDB28F3 /* SKRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EFFBE054F409EF5A823B773946049FB /* SKRequest.m */; };
 		7E3A724EA57E78F18F6FB69FC8D6513D /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 797930B7748D000698F6244F087939FE /* unzip.c */; };
 		7E85230D2EAE0DFEDE10E8E35413EB6E /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = BCAFADD1E375614BC631B9215CEDAAAC /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		7F7EF7202E49CBE1CC7F995C2EB273F5 /* SKStoryUpdater.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D3F61564D928C75D3F22EFA921ABAB3 /* SKStoryUpdater.m */; };
@@ -484,7 +481,6 @@
 		9B80696F4754B68A87BAC8ADC4464A04 /* GeneratedMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = DAA519C3DD3BDA4817EF6E672BE422A9 /* GeneratedMessage.h */; };
 		9B8141AE036DF3E1A9E60E47B0A06CA5 /* NSError+MTLModelException.h in Headers */ = {isa = PBXBuildFile; fileRef = F63EB514A0034FBD7D8FB5B0EBF0D6AB /* NSError+MTLModelException.h */; };
 		9CCCE74FE703387C01BA2E471A71D975 /* SKClient+Discover.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E5EAF65644829CC3B0BE77613DA8F0D /* SKClient+Discover.h */; };
-		9D0BC15C4499416403F8CAC86911A452 /* SKRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EFFBE054F409EF5A823B773946049FB /* SKRequest.m */; };
 		9D240E373BE460966624A5C629E1DFCA /* TBResponseParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 98ABA7AFCB1D9C00D5BF510CBA851FA9 /* TBResponseParser.h */; };
 		9D386566B6C1675ECB710784AD535969 /* MTLTransformerErrorHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F1B0576CECA1FA38004EED32405B658 /* MTLTransformerErrorHandling.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		9D67913F21203C102B388671FB250DCB /* RingBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = CFB4A06D25E384B7BC17D7F6F420AB75 /* RingBuffer.m */; };
@@ -659,12 +655,10 @@
 		D5F684A7B59D77CAF8E38EFD0AD0A805 /* Pods-SnapchatKit_Example-TBURLRequestOptions-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B97618303B8B5F3C25D029D8A4BFD78 /* Pods-SnapchatKit_Example-TBURLRequestOptions-dummy.m */; };
 		D6213959812B3CF281EE8A8DD913E5E6 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D7402655A7DF7A083DF61F6765D8E75 /* Utilities.m */; };
 		D634E85B533484E6BD5D09AF104CC254 /* SKSnapOptions.h in Headers */ = {isa = PBXBuildFile; fileRef = 7C5484742B052F52622BB8A786509DE3 /* SKSnapOptions.h */; };
-		D64768C0A2B0B5D2C585A7B3EA26BE30 /* SKRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A09C806AC6E5ABEBB5209E5518568E71 /* SKRequest.h */; };
 		D662361B6B9059986B9BBF2D9AE5CBC8 /* SKSnapStatePacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B243FB7E23D3C74DCB816D3D66B2DE2 /* SKSnapStatePacket.m */; };
 		D7B888998345C504818AE79FA3E0B0A4 /* zip.h in Headers */ = {isa = PBXBuildFile; fileRef = 83328A09782531E8D6EE3450DA3352CC /* zip.h */; };
 		D851A3F9CDC50EAA17AB42FDE737BC62 /* SKPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B7FF7FA99594EDFA2D99AA470864E5F /* SKPacket.h */; };
 		D873720EF393AC8D1A942E0B61A5E7AB /* SKNearbyUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B27315198D5D55146E2063CB6D815CDC /* SKNearbyUser.m */; };
-		D90A7F68E86254A34994B818780C21E9 /* SKRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = A09C806AC6E5ABEBB5209E5518568E71 /* SKRequest.h */; };
 		D929E87BB694C54D5571DBFA926A5729 /* MutableExtensionRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFDDEE070EDEF6310302B8E12B3D26E /* MutableExtensionRegistry.m */; };
 		D94422630FDC855A0C9602EAD11549C9 /* SKSnapOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 89B9EB9FA5747FC43F755839CB315DB0 /* SKSnapOptions.m */; };
 		D98020DE2B890D7701743C3F3E6980F3 /* SKStory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A1C431E305AAC8893135D046B0EFB7B /* SKStory.m */; };
@@ -975,7 +969,6 @@
 		2D7401E8406ADF292C09ECCF5178CAEE /* ForwardDeclarations.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ForwardDeclarations.h; sourceTree = "<group>"; };
 		2D9185168C57D2FDF85732E48B7D148C /* SKSnapResponse.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SKSnapResponse.h; sourceTree = "<group>"; };
 		2E2D8B61300503D4DD1F0E81D7547866 /* CodedInputStream.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = CodedInputStream.h; sourceTree = "<group>"; };
-		2EFFBE054F409EF5A823B773946049FB /* SKRequest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SKRequest.m; sourceTree = "<group>"; };
 		2FC333B8263379FB0EC4E9B5DBBF8072 /* Pods-SnapchatKit_Example-TBURLRequestOptions-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-SnapchatKit_Example-TBURLRequestOptions-prefix.pch"; path = "../Pods-SnapchatKit_Example-TBURLRequestOptions/Pods-SnapchatKit_Example-TBURLRequestOptions-prefix.pch"; sourceTree = "<group>"; };
 		2FE43A0ACC4A851A3266799ACADA89BF /* NSError+MTLModelException.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSError+MTLModelException.m"; path = "Mantle/NSError+MTLModelException.m"; sourceTree = "<group>"; };
 		30284AA5E3EE024058734062D81B2CE7 /* Pods-SnapchatKit_Tests-SnapchatKit.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SnapchatKit_Tests-SnapchatKit.xcconfig"; path = "../Pods-SnapchatKit_Tests-SnapchatKit/Pods-SnapchatKit_Tests-SnapchatKit.xcconfig"; sourceTree = "<group>"; };
@@ -1125,7 +1118,6 @@
 		9C1CECEB20B5BB0D36FCE94677E012C3 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = GCDAsyncSocket.h; path = Source/GCD/GCDAsyncSocket.h; sourceTree = "<group>"; };
 		9DADF592478AECC2B538E31DD9AB2E1E /* MTLValueTransformer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MTLValueTransformer.h; path = Mantle/MTLValueTransformer.h; sourceTree = "<group>"; };
 		9F1B0576CECA1FA38004EED32405B658 /* MTLTransformerErrorHandling.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MTLTransformerErrorHandling.m; path = Mantle/MTLTransformerErrorHandling.m; sourceTree = "<group>"; };
-		A09C806AC6E5ABEBB5209E5518568E71 /* SKRequest.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = SKRequest.h; sourceTree = "<group>"; };
 		A3D08AD8B2FE9BB266E6CB3BCBE6E9A4 /* Pods-SnapchatKit_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SnapchatKit_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		A55791EFB20471A9ABD4F71C837B03C1 /* SKFoundFriend.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SKFoundFriend.m; sourceTree = "<group>"; };
 		A5CCA63134D90EC6C43D6430E00CD401 /* SKUser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = SKUser.m; sourceTree = "<group>"; };
@@ -1806,8 +1798,6 @@
 				BD587B15C3E0B318EAB01C8CFFA106D1 /* SKProtocolErrorPacket.m */,
 				DB1C1744CBA837872BD0ACD8E8E4CA97 /* SKReleaseMessagePacket.h */,
 				24A40A43257FD601B6196628E44D88D9 /* SKReleaseMessagePacket.m */,
-				A09C806AC6E5ABEBB5209E5518568E71 /* SKRequest.h */,
-				2EFFBE054F409EF5A823B773946049FB /* SKRequest.m */,
 				CD903E9CFAB25BE0B4449F3836393CC8 /* SKSession.h */,
 				840CE157C5D70E8792459FF9D409BB04 /* SKSession.m */,
 				7F79DADC3DB4AB48395DE755C18462A2 /* SKSharedStoryDescription.h */,
@@ -2143,7 +2133,6 @@
 				A3BF294E9A37CB70F9CEE418627865B3 /* SKPresencePacket.h in Headers */,
 				E21D1D872C583FB9837CCF12387B8AC7 /* SKProtocolErrorPacket.h in Headers */,
 				8C4597B8C06CA1130B291BA2D302F696 /* SKReleaseMessagePacket.h in Headers */,
-				D64768C0A2B0B5D2C585A7B3EA26BE30 /* SKRequest.h in Headers */,
 				30C9F0C46201C93E342AD68DB7299A91 /* SKSession.h in Headers */,
 				7C5909568F3B3C4F979ECB7847A2F6BC /* SKSharedStoryDescription.h in Headers */,
 				DD217AD12F8A47706EC576A8D3516A29 /* SKSimpleUser.h in Headers */,
@@ -2284,7 +2273,6 @@
 				A7C1A27651F204B12362580968A17112 /* SKPresencePacket.h in Headers */,
 				3731EB9ECE8BD1C075F769AE8DC3CC65 /* SKProtocolErrorPacket.h in Headers */,
 				3EF37B2E343B7CF175ADFB6CF2837CCF /* SKReleaseMessagePacket.h in Headers */,
-				D90A7F68E86254A34994B818780C21E9 /* SKRequest.h in Headers */,
 				44CA8C6E703E4B76B1E8EB2FD4C9E2FF /* SKSession.h in Headers */,
 				F209242CD93CABB504BCFA6838BEB59D /* SKSharedStoryDescription.h in Headers */,
 				0294D561FE62775810B1FE2AD6FD9684 /* SKSimpleUser.h in Headers */,
@@ -2388,7 +2376,6 @@
 				FC3D8DF90158C766857A3AD364B6B7BF /* SKPresencePacket.h in Headers */,
 				E66081B4B0B1B68D16D6E6772573FA5C /* SKProtocolErrorPacket.h in Headers */,
 				2E11386622B7EAB4039CBB0154D1FA48 /* SKReleaseMessagePacket.h in Headers */,
-				284B716253D7BEB857B2BD1D254489F2 /* SKRequest.h in Headers */,
 				1191734D4747C7E8B8D1FB558F124B0E /* SKSession.h in Headers */,
 				EFFB8F3B18FD87797F7543C8188EF98E /* SKSharedStoryDescription.h in Headers */,
 				1BB66B7D45082A50BE3DA615C55E1B52 /* SKSimpleUser.h in Headers */,
@@ -2844,7 +2831,6 @@
 				06ADC41A2290A24B5B08449B517EA3E6 /* SKPresencePacket.m in Sources */,
 				6F0DCB3E1A0C28D7A1CBAA829456FFF9 /* SKProtocolErrorPacket.m in Sources */,
 				31DAACBEBE83607B579926782B36EB63 /* SKReleaseMessagePacket.m in Sources */,
-				01577B812C73D4AD2C8C5A146D3FB413 /* SKRequest.m in Sources */,
 				5F4BD00A5B54829B69DA9C2F93AA5F2C /* SKSession.m in Sources */,
 				0E7263E747A41D1CD614FB73EEDB036E /* SKSharedStoryDescription.m in Sources */,
 				4637A92DFF28EE81B19532EF2E518B63 /* SKSimpleUser.m in Sources */,
@@ -3015,7 +3001,6 @@
 				47DC0E0364A5EF6BC92A540DBFE87D3E /* SKPresencePacket.m in Sources */,
 				F83844DF4933DD2CC382C130B5B2BE71 /* SKProtocolErrorPacket.m in Sources */,
 				4FC343032612B59AB655E4297076FBCC /* SKReleaseMessagePacket.m in Sources */,
-				7DD31566E51229A6F2BCE6568BDB28F3 /* SKRequest.m in Sources */,
 				0078C5983AF0BDC5CBFC6F17E305890C /* SKSession.m in Sources */,
 				FFA26EBDB820E41EF210ABD7E5B97B8E /* SKSharedStoryDescription.m in Sources */,
 				C7FBC777C976921C577BAAC334EB1F44 /* SKSimpleUser.m in Sources */,
@@ -3132,7 +3117,6 @@
 				C623C315B87B77B61D7A4F5BCADB0C58 /* SKPresencePacket.m in Sources */,
 				709A87BFCA453881E2E9E832738138D5 /* SKProtocolErrorPacket.m in Sources */,
 				2212C98ACAEB6006558FE28FC0F20F34 /* SKReleaseMessagePacket.m in Sources */,
-				9D0BC15C4499416403F8CAC86911A452 /* SKRequest.m in Sources */,
 				65DFB6A2C266CE60E91EBEDAF5E50BEB /* SKSession.m in Sources */,
 				C338D19B347BBBE17420AAACD47AC07C /* SKSharedStoryDescription.m in Sources */,
 				873C896CA4930DBF1459B196F23B7689 /* SKSimpleUser.m in Sources */,
