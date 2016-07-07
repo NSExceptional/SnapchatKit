@@ -40,10 +40,6 @@ BOOL SKHasActiveConnection() {
     return canReach;
 }
 
-NSDictionary *SKMakeSignInParams(NSString *gauth, NSString *attest, NSString *ptoken, NSString *clientAuthToken, NSDictionary *deviceTokens, NSString *timestamp) {
-    return @{@"googleAuthToken": gauth, @"attestation": attest, @"pushToken": ptoken?:@"e", @"clientAuthToken": clientAuthToken, @"dt": deviceTokens, @"ts": timestamp};
-}
-
 NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
     assert(params.allKeys.count); assert(secret);
     NSArray *sortedKeys = [params.allKeys sortedArrayUsingSelector:@selector(compare:options:)];
