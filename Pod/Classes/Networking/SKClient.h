@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 /** Initializes an \c SKClient instance with the minimum data required to resume an existing session. \c currentSession needs to be updated afterwards. */
 + (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken;
 
-/** See the \c SKMiddleMan protocol. */
+/// See the \c SKMiddleMan protocol.
 @property (nonatomic) id<SKMiddleMan> middleMan;
 
 /** Used internally to cache header request tokens from the Casper API.
@@ -54,12 +54,12 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
  when you log out. */
 @property (nonatomic) id<SKCasperCache> cache;
 
-/** The size of your device's screen. On iOS, this defaults to the actual screen size. */
+/// The size of your device's screen. On iOS, this defaults to the actual screen size.
 @property (nonatomic) CGSize screenSize;
-/** The maxium sized to load videos in. On iOS, this defaults to the actual screen size. */
+/// The maxium sized to load videos in. On iOS, this defaults to the actual screen size.
 @property (nonatomic) CGSize maxVideoSize;
 
-/** Use this to automatically adjust the \c screenSize and \c maxVideoSize properties. */
+/// Use this to automatically adjust the \c screenSize and \c maxVideoSize properties.
 - (void)setScreenIdiom:(SKScreenIdiom)idiom;
 
 /** The username of the currently signed in (or not yet singed in) user. @note Always lowercase. */
@@ -77,11 +77,11 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 /** Used to sign in to an authenticated device using 2 factor authentication. This should be stored somewhere and reused as needed per device. */
 @property (nonatomic          ) NSString *deviceToken1v;
 
-/** Required to sign in properly. See https://clients.casper.io to get your own. */
+/// Required to sign in properly. See https://clients.casper.io to get your own.
 @property (nonatomic) NSString *casperAPIKey;
-/** Required to sign in properly. See https://clients.casper.io to get your own. */
+/// Required to sign in properly. See https://clients.casper.io to get your own.
 @property (nonatomic) NSString *casperAPISecret;
-/** The user agent of your app. Please use this when you sign in. */
+/// The user agent of your app. Please use this when you sign in.
 @property (nonatomic) NSString *casperUserAgent;
 
 
