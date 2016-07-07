@@ -212,7 +212,7 @@ static SKClient *sharedSKClient;
             NSProgress *child2 = success([TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
                 make.baseURL(SKConsts.baseURL).endpoint(endpoint);
                 make.configuration(self.URLSessionConfig).session(self.URLSession);
-                make.headers(headers);
+                make.headers(headers).boundary(SKConsts.boundary);
                 configure(make, bodyForm);
             }]);
             [progress addChild:child2 withPendingUnitCount:50];

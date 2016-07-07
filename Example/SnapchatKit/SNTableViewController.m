@@ -27,7 +27,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    <#XXTableViewCell#> *cell = <#self.dataSource[indexPath.row]#>;
+    //    <#XXTableViewCell#> *cell = <#self.dataSource[indexPath.row]#>;
 }
 
 #pragma mark UITableViewDataSource
@@ -35,7 +35,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kReuse];
     SKConversation *convo = self.dataSource[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ — %du pending", convo.participants.firstObject, convo.pendingRecievedSnaps.count];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ — %luu pending", convo.participants.firstObject, convo.pendingRecievedSnaps.count];
     return cell;
 }
 
