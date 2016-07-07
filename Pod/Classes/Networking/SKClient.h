@@ -16,7 +16,7 @@
 
 extern NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret);
 
-typedef void(SKCasperResponseBlock)(NSDictionary *body, NSDictionary *headers, NSError *error);
+typedef void(^SKCasperResponseBlock)(NSDictionary *body, NSDictionary *headers, NSError *error);
 typedef void(^SKConfigurationBlock)(TBURLRequestBuilder *make, NSDictionary *headers, NSDictionary *bodyForm);
 typedef NSProgress *(^SKProxyBlock)(TBURLRequestProxy *proxy);
 

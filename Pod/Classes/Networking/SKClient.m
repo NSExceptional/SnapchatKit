@@ -152,20 +152,20 @@ static SKClient *sharedSKClient;
     NSAssert(self.casperAPISecret, @"You must have a valid API secret from https://clients.casper.io to sign in.");
     
     // Headers
-    NSString *signature = SKMakeCapserSignature(query, self.casperAPISecret);
+    NSString *signature = SKMakeCapserSignature(JWTParams, self.casperAPISecret);
     NSMutableDictionary *headers = @{SKHeaders.casperAPIKey: self.casperAPIKey, SKHeaders.casperSignature: signature}.mutableCopy;
     headers[TBHeader.userAgent] = self.casperUserAgent;
     
     // Request, callback with error checking
     return [[TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
-        mamke.URL(url).headers(headers);
+        make.URL(url).headers(headers);
         make.bodyJSONFormString(@{@"jwt": [JWTParams JWTStringWithSecret:self.casperAPISecret]});
     }] POST:^(TBResponseParser *parser) {
         if (!parser.error) {
             if (parser.response.statusCode == 200) {
                 callback(parser);
             } else {
-                callback([TBResponseParser error:json[@"message"] domain:@"SnapchatKit" code:parser.response.statusCode]);
+                callback([TBResponseParser error:parser.JSON[@"message"] domain:@"SnapchatKit" code:parser.response.statusCode]);
             }
         } else {
             callback(parser);
@@ -289,8 +289,9 @@ static SKClient *sharedSKClient;
     NSParameterAssert(username); NSParameterAssert(authToken);
     _username        = username;
     _authToken       = authToken;
-    if (completion)
+    if (completion) {
         [self updateSession:completion];
+    }
 }
 
 - (void)signOut:(ErrorBlock)completion {
@@ -502,7 +503,7 @@ static SKClient *sharedSKClient;
                             @"username": self.currentSession.username};
     
     [self postTo:SKEPUpdate.snaps query:query callback:^(NSDictionary *json, NSError *error) {
-        if (completion) SKDispatchToMain(completion(error));
+        if (completion) completion(error);
     }];
 }
 
