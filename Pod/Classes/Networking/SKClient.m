@@ -249,125 +249,46 @@ static SKClient *sharedSKClient;
 
 #pragma mark Convenience
 
-- (void)handleError:(NSError *)error data:(NSData *)data response:(NSURLResponse *)response completion:(ResponseBlock)completion {
-    NSParameterAssert(completion);
-    
-    // Pass data to the man-in-the-middle
-    MiddleManBlock callback;
-    if (self.middleMan) {
-        callback = ^(id json, NSError *error, NSURLResponse *response) {
-            [self.middleMan restructureJSON:json error:error response:response completion:completion];
-        };
-    } else {
-        callback = ^(id json, NSError *error, NSURLResponse *response) {
-            completion(json, error);
-        };
-    }
-    
-    NSInteger code = [(NSHTTPURLResponse *)response statusCode];
-    
-    if (error) {
-        completion(nil, error);
-    } else if (data.length) {
-        NSError *jsonError;
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
-        
-        // Could not parse JSON (it's probably HTML)
-        if (jsonError) {
-            NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            if ([html containsString:@"<html><head>"]) {
-                // Invalid request
-                SKDispatchToMain(callback(nil, [SKRequest errorWithMessage:html.textFromHTML code:code], response));
-            } else {
-                // ???
-                SKDispatchToMain(callback(nil, jsonError, response));
-            }
+- (NSProgress *)request:(SKConfigurationBlock)configure to:(NSString *)endpoint callback:(TBResponseBlock)callback success:(SKProxyBlock)success {
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
+    NSProgress *child1 = [self getInformationForEndpoint:endpoint callback:^(NSDictionary *bodyForm, NSDictionary *headers, NSError *error) {
+        if (!error) {
+            NSProgress *child2 = success([TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
+                make.baseURL(SKConsts.baseURL).endpoint(endpoint);
+                make.configuration(self.URLSessionConfig).session(self.URLSession);
+                configure(make, headers, bodyForm);
+            }]);
+            [progress addChild:child2 withPendingUnitCount:50];
+        } else {
+            TBRunBlockP(callback, [TBResponseParser error:error]);
         }
-        
-        else if (json) {
-            if (code > 199 && code < 300) {
-                // Suceeded with a response
-                NSNumber *logged = json[@"logged"] ?: json[@"updates_response"][@"logged"];
-                if (logged) {
-                    if (logged.integerValue == 1)
-                        SKDispatchToMain(callback(json, nil, response));
-                    else
-                        SKDispatchToMain(callback(nil, [SKRequest errorWithMessage:json[@"message"] code:[json[@"status"] integerValue]], response));
-                } else {
-                    SKDispatchToMain(callback(json, nil, response));
-                }
-            } else {
-                // Failed with a message
-                error = [SKRequest errorWithMessage:json[@"message"] code:code];
-                SKDispatchToMain(callback(nil, error, response));
-            }
-        }
-        else {
-            SKDispatchToMain(callback(nil, [SKRequest unknownError], response));
-        }
-    } else if (code > 199 && code < 300) {
-        // Succeeded with no response
-        SKDispatchToMain(callback(nil, nil, response));
-    } else {
-        SKDispatchToMain(callback(nil, [SKRequest unknownError], response));
-    }
+    }];
+    
+    [progress addChild:child1 withPendingUnitCount:50];
+    return progress;
 }
 
-- (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback {
-    NSParameterAssert(endpoint); NSParameterAssert(query);
-    
-    [self getInformationForEndpoint:endpoint callback:^(NSDictionary *params, NSDictionary *headers, NSError *error) {
-        if (!error) {
-            [SKRequest postTo:endpoint query:MergeDictionaries(query, params) headers:headers callback:^(NSData *data, NSURLResponse *response, NSError *error2) {
-                SKDispatchToMain([self handleError:error2 data:data response:response completion:callback]);
-            }];
-        } else {
-            SKDispatchToMain(callback(nil, error));
-        }
+- (NSProgress *)post:(SKConfigurationBlock)configurationHandler to:(NSString *)endpoint callback:(TBResponseBlock)callback {
+    return [self request:configurationHandler to:endpoint callback:callback success:^NSProgress *(TBURLRequestProxy *proxy) {
+        return [proxy POST:^(TBResponseParser *parser) {
+            if (self.middleMan) {
+                [self.middleMan handleResponse:parser completion:callback];
+            } else {
+                callback(parser);
+            }
+        }];
     }];
 }
 
-- (void)postTo:(NSString *)endpoint query:(NSDictionary *)query response:(void(^)(NSData *data, NSURLResponse *response, NSError *error))callback {
-    NSParameterAssert(endpoint); NSParameterAssert(query);
-    
-    [self getInformationForEndpoint:endpoint callback:^(NSDictionary *params, NSDictionary *headers, NSError *error) {
-        if (!error) {
-            [SKRequest postTo:endpoint query:MergeDictionaries(query, params) headers:headers callback:callback];
-        } else {
-            SKDispatchToMain(callback(nil, nil, error));
-        }
-    }];
-}
-
-- (void)get:(NSString *)endpoint callback:(ResponseBlock)callback {
-    NSParameterAssert(endpoint); NSParameterAssert(callback);
-    
-    [self getInformationForEndpoint:endpoint callback:^(NSDictionary *params, NSDictionary *headers, NSError *error) {
-        if (!error) {
-            
-            [SKRequest get:endpoint headers:headers callback:^(NSData *data, NSURLResponse *response, NSError *error2) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!error2) {
-                        NSInteger code = [(NSHTTPURLResponse *)response statusCode];
-                        if (code == 200)
-                            callback(data, nil);
-                        else {
-                            NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                            if ([html containsString:@"<html><head>"]) {
-                                // Invalid request
-                                callback(nil, [SKRequest errorWithMessage:html.textFromHTML code:code]);
-                            } else {
-                                callback(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
-                            }
-                        }
-                    } else {
-                        callback(nil, error2);
-                    }
-                });
-            }];
-        } else {
-            callback(nil, error);
-        }
+- (NSProgress *)get:(SKConfigurationBlock)configurationHandler from:(NSString *)endpoint callback:(TBResponseBlock)callback {
+    return [self request:configurationHandler to:endpoint callback:callback success:^NSProgress *(TBURLRequestProxy *proxy) {
+        return [proxy GET:^(TBResponseParser *parser) {
+            if (self.middleMan) {
+                [self.middleMan handleResponse:parser completion:callback];
+            } else {
+                callback(parser);
+            }
+        }];
     }];
 }
 
