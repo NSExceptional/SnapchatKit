@@ -30,25 +30,21 @@
 }
 
 - (void)sendSnap:(SKBlob *)blob options:(SKSnapOptions *)options completion:(ResponseBlock)completion {
-    NSParameterAssert(blob); NSParameterAssert(options);
+    NSParameterAssert(blob); NSParameterAssert(options); NSParameterAssert(completion);
     
     [self uploadSnap:blob completion:^(NSString *mediaID, NSError *error) {
         if (!error) {
-            NSDictionary *query = @{@"camera_front_facing": @(options.cameraFrontFacing),
-                                    @"country_code":        self.currentSession.countryCode,
-                                    @"media_id":            mediaID,
-                                    @"recipients":          options.recipients.recipientsString,
-                                    @"recipient_ids":       options.recipients.recipientsString,
-                                    @"reply":               @(options.isReply),
-                                    @"time":                @((NSUInteger)options.timer),
-                                    @"zipped":              blob.zipData ? @1 : @0,
-                                    @"username":            self.username};
-            [self postTo:SKEPSnaps.send query:query callback:^(NSDictionary *json, NSError *sendError) {
-                if (!sendError) {
-                    completion([[SKSnapResponse alloc] initWithDictionary:json], nil);
-                } else {
-                    completion(nil, sendError);
-                }
+            NSDictionary *params = @{@"camera_front_facing": @(options.cameraFrontFacing),
+                                     @"country_code":        self.currentSession.countryCode,
+                                     @"media_id":            mediaID,
+                                     @"recipients":          options.recipients.recipientsString,
+                                     @"recipient_ids":       options.recipients.recipientsString,
+                                     @"reply":               @(options.isReply),
+                                     @"time":                @((NSUInteger)options.timer),
+                                     @"zipped":              blob.zipData ? @1 : @0,
+                                     @"username":            self.username};
+            [self postWith:params to:SKEPSnaps.send callback:^(TBResponseParser *parser) {
+                completion(parser.error ? nil : [[SKSnapResponse alloc] initWithDictionary:parser.JSON], parser.error);
             }];
         } else {
             completion(nil, error);
@@ -59,15 +55,18 @@
 - (void)uploadSnap:(SKBlob *)blob completion:(ResponseBlock)completion {
     NSString *uuid = SKMediaIdentifier(self.username);
     
-    NSDictionary *query = @{@"media_id": uuid,
-                            @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
-                            @"data": blob.zipData ? blob.zipData : blob.data,
-                            @"zipped": blob.zipData ? @1 : @0,
-                            @"features_map": @"{}",
-                            @"username": self.username};
-
-    [self postTo:SKEPSnaps.upload query:query callback:^(id object, NSError *error) {
-        completion(error ? nil : uuid, error);
+    NSDictionary *params = @{@"media_id": uuid,
+                             @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
+                             
+                             @"zipped": blob.zipData ? @1 : @0,
+                             @"features_map": @"{}",
+                             @"username": self.username};
+    
+    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
+        make.multipartData(@{@"data": blob.zipData ? blob.zipData : blob.data});
+        make.multipartStrings(MergeDictionaries(params, bodyForm));
+    } to:SKEPSnaps.upload callback:^(TBResponseParser *parser) {
+        completion(parser.error ? nil : uuid, parser.error);
     }];
 }
 
@@ -82,8 +81,8 @@
     NSDictionary *expire   = @{@"eventName": @"SNAP_EXPIRED",
                                @"params":    @{@"id":snap.identifier},
                                @"ts":        @([[NSString timestamp] integerValue]/1000)};
-    NSArray *events = @[viewed, expire];
-    [self sendEvents:events data:snapInfo completion:completion];
+    
+    [self sendEvents:@[viewed, expire] data:snapInfo completion:completion];
 }
 
 - (void)markSnapViewed:(SKSnap *)snap for:(CGFloat)secondsViewed replay:(BOOL)replayed completion:(ErrorBlock)completion {
@@ -103,10 +102,10 @@
         json[snap.identifier] = @{@"t": ts, @"sv": num, @"es_id": snap.esIdentifier, @"replayed": replay, @"stack_id": @""};
     }
     
-    NSDictionary *query = @{@"added_friends_timestamp": [NSString timestampFrom:self.currentSession.addedFriendsTimestamp],
-                            @"json": json.JSONString, @"username": self.username};
-    [self postTo:SKEPUpdate.snaps query:query callback:^(id object, NSError *error) {
-        if (completion) completion(error);
+    NSDictionary *params = @{@"added_friends_timestamp": [NSString timestampFrom:self.currentSession.addedFriendsTimestamp],
+                             @"json": json.JSONString, @"username": self.username};
+    [self postWith:params to:SKEPUpdate.snaps callback:^(TBResponseParser *parser) {
+        TBRunBlockP(completion, params.objectEnumerator);
     }];
 }
 
@@ -119,8 +118,8 @@
     NSDictionary *screenshot = @{@"eventName": @"SNAP_SCREENSHOT",
                                  @"params":    @{@"id":snap.identifier},
                                  @"ts":        @([[NSString timestamp] integerValue]/1000)};
-    NSArray *events = @[screenshot];
-    [self sendEvents:events data:snapInfo completion:completion];
+    
+    [self sendEvents:@[screenshot] data:snapInfo completion:completion];
 }
 
 - (void)loadSnap:(SKSnap *)snap completion:(ResponseBlock)completion {
@@ -131,48 +130,55 @@
 - (void)loadSnapWithIdentifier:(NSString *)identifier completion:(ResponseBlock)completion {
     NSParameterAssert(identifier); NSParameterAssert(completion);
     
-    NSDictionary *query = @{@"id": identifier, @"username": self.username};
-    [self postTo:SKEPSnaps.loadBlob query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
+    NSDictionary *params = @{@"id": identifier, @"username": self.username};
+    [self postWith:params to:SKEPSnaps.loadBlob callback:^(TBResponseParser *parser) {
         // Did get snap
-        if ([(NSHTTPURLResponse *)response statusCode] == 200) {
+        if (parser.response.statusCode == 200) {
             // Unzipped
-            if ([data isJPEG] || [data isMPEG4]) {
-                SKBlob *blob = [SKBlob blobWithData:data];
-                if (blob)
+            if (parser.data.isJPEG || parser.data.isMPEG4) {
+                SKBlob *blob = [SKBlob blobWithData:parser.data];
+                if (blob) {
                     completion(blob, nil);
-                else
-                    completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
-                
+                } else {
+                    NSString *message = @"Error initializing blob with data";
+                    completion(nil, [TBResponseParser error:message domain:@"SnapchatKit" code:parser.response.statusCode]);
+                }
+            }
             // Needs to be unzipped
-            } else if ([data isCompressed]) {
+            else if (parser.data.isCompressed) {
                 NSString *path  = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk-zip~%@.tmp", identifier]];
                 NSString *unzip = [SKTempDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"sk~%@.tmp", identifier]];
-                [data writeToFile:path atomically:YES];
+                [parser.data writeToFile:path atomically:YES];
                 
                 [SSZipArchive unzipFileAtPath:path toDestination:unzip completion:^(NSString *path, BOOL succeeded, NSError *error) {
                     if (succeeded) {
                         SKBlob *blob = [SKBlob blobWithContentsOfPath:unzip];
-                        if (blob)
+                        if (blob) {
                             completion(blob, nil);
-                        else
-                            completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
+                        } else {
+                            completion(nil, error ?: [TBResponseParser error:@"Unknown error unarchiving blob" domain:@"SnapchatKit" code:1]);
+                        }
                     } else {
                         SKLog(@"%@", error);
+                        completion(nil, error);
                     }
                 }];
                 
-            } else if (data) {
-                SKBlob *blob = [SKBlob blobWithData:data];
-                if (blob)
-                    completion(blob, [SKRequest errorWithMessage:@"Unknown blob format" code:[(NSHTTPURLResponse *)response statusCode]]);
-                else
-                    completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+            } else if (parser.data) {
+                SKBlob *blob = [SKBlob blobWithData:parser.data];
+                if (blob) {
+                    NSString *message = [NSString stringWithFormat:@"Unknown blob format: %@", parser.contentType];
+                    completion(blob, [TBResponseParser error:message domain:@"SnapchatKit" code:parser.response.statusCode]);
+                } else {
+                    completion(nil, [TBResponseParser error:@"Error initializing blob with data" domain:@"SnapchatKit" code:1]);
+                }
             } else {
-                completion(nil, [SKRequest errorWithMessage:[NSString stringWithFormat:@"Error retrieving snap: %@", identifier] code:[(NSHTTPURLResponse *)response statusCode]]);
+                NSString *message = [NSString stringWithFormat:@"Error retrieving snap: %@", identifier];
+                completion(nil, [TBResponseParser error:message domain:@"SnapchatKit" code:parser.response.statusCode]);
             }
-        // Failed to get snap
+            // Failed to get snap
         } else {
-            completion(nil, [SKRequest errorWithMessage:@"Unknown error" code:[(NSHTTPURLResponse *)response statusCode]]);
+            completion(nil, parser.error);
         }
     }];
 }
@@ -180,14 +186,16 @@
 - (void)loadFiltersForLocation:(CLLocation *)location completion:(ResponseBlock)completion {
     NSParameterAssert(location); NSParameterAssert(completion);
     
-    NSDictionary *query = @{@"lat": @(location.coordinate.latitude),
-                            @"long": @(location.coordinate.longitude),
-                            @"screen_height": @(self.screenSize.height),
-                            @"screen_width": @(self.screenSize.width),
-                            @"username": self.username};
-    [self postTo:SKEPMisc.locationData query:query callback:^(NSDictionary *json, NSError *error) {
-        if (json[@"location"]) {
-            completion([[SKLocation alloc] initWithDictionary:json[@"location"]], nil);
+    NSDictionary *params = @{@"lat": @(location.coordinate.latitude),
+                             @"long": @(location.coordinate.longitude),
+                             @"screen_height": @(self.screenSize.height),
+                             @"screen_width": @(self.screenSize.width),
+                             @"username": self.username};
+    [self postWith:params to:SKEPMisc.locationData callback:^(TBResponseParser *parser) {
+        if (parser.JSON[@"location"]) {
+            completion([[SKLocation alloc] initWithDictionary:parser.JSON[@"location"]], nil);
+        } else {
+            completion(nil, parser.error);
         }
     }];
 }
