@@ -8,7 +8,7 @@
 
 #import "SKThing.h"
 #import "NSArray+SnapchatKit.h"
-#import "NSDictionary+SnapchatKit.h"
+#import "NSDictionary+Networking.h"
 #import <objc/runtime.h>
 
 #define CLASS_KEY NSStringFromClass(self.class)

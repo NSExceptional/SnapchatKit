@@ -14,9 +14,7 @@
 #import "SKTrophyMetrics.h"
 #import "SKAvatar.h"
 
-#import "NSArray+SnapchatKit.h"
-#import "NSDictionary+SnapchatKit.h"
-#import "NSString+SnapchatKit.h"
+#import "SnapchatKit-Constants.h"
 #import "SKClient+Friends.h"
 
 @implementation SKClient (Account)

@@ -10,9 +10,7 @@
 #import "SKUser.h"
 #import "SKRequest.h"
 
-#import "NSString+SnapchatKit.h"
-#import "NSArray+SnapchatKit.h"
-#import "NSDictionary+SnapchatKit.h"
+#import "SnapchatKit-Constants.h"
 
 #define kUnimplemented @"Unimplemented"
 

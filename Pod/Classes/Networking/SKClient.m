@@ -13,17 +13,8 @@
 #import "SKBlob.h"
 
 #import "SnapchatKit-Constants.h"
-#import "NSData+SnapchatKit.h"
-#import "NSString+SnapchatKit.h"
-#import "NSDictionary+SnapchatKit.h"
-#import "NSArray+SnapchatKit.h"
-#import "NSMutableURLRequest+Util.h"
-
 #import "SSZipArchive.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
-#import "Attestation.pb.h"
-
-#define SKDispatchToMain(block) dispatch_async(dispatch_get_main_queue(), ^{ block; })
 
 
 BOOL SKHasActiveConnection() {

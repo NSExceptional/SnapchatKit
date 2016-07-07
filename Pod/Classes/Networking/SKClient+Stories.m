@@ -16,8 +16,8 @@
 #import "SKSharedStoryDescription.h"
 
 #import "SKRequest.h"
-#import "NSString+SnapchatKit.h"
-#import "NSArray+SnapchatKit.h"
+#import "SnapchatKit-Constants.h"
+
 
 @implementation SKClient (Stories)
 

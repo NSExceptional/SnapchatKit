@@ -8,9 +8,6 @@
 
 #import "SKRequest.h"
 #import "SnapchatKit-Constants.h"
-#import "NSString+SnapchatKit.h"
-#import "NSDictionary+SnapchatKit.h"
-#import "NSData+SnapchatKit.h"
 
 @implementation SKRequest
 

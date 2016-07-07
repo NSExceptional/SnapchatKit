@@ -13,8 +13,8 @@
 #import "SKCashTransaction.h"
 
 #import "SKClient.h"
-
 #import "NSArray+SnapchatKit.h"
+
 
 SKChatType SKChatTypeFromString(NSString *chatTypeString) {
     if ([chatTypeString isEqualToString:@"text"])

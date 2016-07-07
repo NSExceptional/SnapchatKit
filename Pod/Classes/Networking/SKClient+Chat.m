@@ -14,10 +14,8 @@
 #import "SKMessage.h"
 #import "SKBlob.h"
 
-#import "NSString+SnapchatKit.h"
-#import "NSArray+SnapchatKit.h"
-#import "NSDictionary+SnapchatKit.h"
-#import "NSData+SnapchatKit.h"
+#import "SnapchatKit-Constants.h"
+
 
 @implementation SKClient (Chat)
 

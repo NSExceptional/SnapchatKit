@@ -7,7 +7,7 @@
 //
 
 #import "SKConnectPacket.h"
-#import "NSDictionary+SnapchatKit.h"
+#import "NSDictionary+Networking.h"
 #import "NSString+SnapchatKit.h"
 
 

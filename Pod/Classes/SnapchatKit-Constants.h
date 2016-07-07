@@ -12,6 +12,8 @@
 #import "NSArray+SnapchatKit.h"
 #import "NSString+SnapchatKit.h"
 #import "NSData+SnapchatKit.h"
+#import "TBURLRequestBuilder.h"
+#import "TBResponseParser.h"
 
 
 #ifdef UIKIT_EXTERN

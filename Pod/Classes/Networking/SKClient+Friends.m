@@ -12,10 +12,9 @@
 #import "SKFoundFriend.h"
 #import "SKNearbyUser.h"
 
-#import "NSDictionary+SnapchatKit.h"
-#import "NSArray+SnapchatKit.h"
-
+#import "SnapchatKit-Constants.h"
 #import <CoreLocation/CLLocation.h>
+
 
 @implementation SKClient (Friends)
 

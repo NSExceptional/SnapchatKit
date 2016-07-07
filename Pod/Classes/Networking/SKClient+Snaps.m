@@ -13,12 +13,8 @@
 #import "SKSnapOptions.h"
 #import "SKSnapResponse.h"
 
-#import "NSDictionary+SnapchatKit.h"
-#import "NSString+SnapchatKit.h"
-#import "NSArray+SnapchatKit.h"
-#import "NSData+SnapchatKit.h"
+#import "SnapchatKit-Constants.h"
 #import "SSZipArchive.h"
-
 #import <CoreLocation/CLLocation.h>
 
 @implementation SKClient (Snaps)

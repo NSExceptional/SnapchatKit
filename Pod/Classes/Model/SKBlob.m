@@ -7,12 +7,10 @@
 //
 
 #import "SKBlob.h"
-#import "SnapchatKit-Constants.h"
-#import "NSData+SnapchatKit.h"
-#import "NSString+SnapchatKit.h"
 #import "SKStory.h"
 #import "SKRequest.h"
 
+#import "SnapchatKit-Constants.h"
 #import "SSZipArchive.h"
 @import AVFoundation;
 
