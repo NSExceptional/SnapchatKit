@@ -226,7 +226,7 @@ static SKClient *sharedSKClient;
 }
 
 - (NSProgress *)postWith:(NSDictionary *)parameters to:(NSString *)endpoint callback:(TBResponseBlock)callback {
-    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
+    return [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
         make.bodyJSONFormString(MergeDictionaries(parameters, bodyForm));
     } to:endpoint callback:callback];
 }
