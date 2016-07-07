@@ -21,12 +21,12 @@
 
 - (void)sendTyping:(NSString *)recipientString {
     NSParameterAssert(recipientString);
-    NSDictionary *query = @{@"recipient_usernames": recipientString,
-                            @"username": self.currentSession.username};
+    NSDictionary *params = @{@"recipient_usernames": recipientString,
+                             @"username": self.currentSession.username};
     
-    [self postTo:SKEPChat.typing query:query callback:^(id object, NSError *error) {
-        if (kVerboseLog && error)
-            SKLog(@"Failed to send typing notification(s): %@", recipientString);
+    [self postWith:params to:SKEPChat.typing callback:^(TBResponseParser *parser) {
+        if (kVerboseLog && parser.error)
+            SKLog(@"Failed to send typing notification(s): %@, %@", recipientString, parser.error);
     }];
 }
 
@@ -47,28 +47,35 @@
     NSDictionary *viewed = @{@"eventName": @"CHAT_TEXT_VIEWED",
                              @"params": @{@"id":conversation.identifier},
                              @"ts": @([[NSString timestamp] integerValue]/1000)};
-    NSArray *events = @[viewed];
-    [self sendEvents:events data:nil completion:completion];
+    [self sendEvents:@[viewed] data:nil completion:completion];
 }
 
 - (void)conversationAuth:(NSString *)user completion:(DictionaryBlock)completion {
     NSParameterAssert(user); NSParameterAssert(completion);
     NSString *cid = [NSString SCIdentifierWith:self.username and:user];
-    [self postTo:SKEPChat.authToken query:@{@"username": self.username, @"conversation_id": cid} callback:^(NSDictionary *json, NSError *error) {
-        json = json[@"messaging_auth"];
-        if ((json[@"mac"] && json[@"payload"]) || error)
-            completion(json, error);
-        else if (!error)
-            completion(nil, [SKRequest errorWithMessage:@"Could not get conversation auth. Are you friends?" code:1]);
+    NSDictionary *params = @{@"username": self.username, @"conversation_id": cid};
+    
+    [self postWith:params to:SKEPChat.authToken callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
+            NSDictionary *json = parser.JSON[@"messaging_auth"];
+            if (json[@"mac"] && json[@"payload"])
+                completion(json, nil);
+            else {
+                NSString *message = @"Could not get conversation auth. Are you friends?";
+                completion(nil, [TBResponseParser error:message domain:@"SnapchatKit" code:parser.response.statusCode]);
+            }
+        } else {
+            completion(nil, parser.error);
+        }
     }];
 }
 
 - (void)conversationWithUser:(NSString *)user completion:(ResponseBlock)completion {
     NSParameterAssert(user); NSParameterAssert(completion);
     [self conversationsWithUsers:@[user] completion:^(NSArray *conversations, NSArray *failed, NSError *error) {
-        if (!error && failed.count == 0)
+        if (!error && failed.count == 0) {
             completion(conversations[0], nil);
-        else if (error) {
+        } else if (error) {
             completion(nil, error);
         }
     }];
@@ -115,12 +122,12 @@
             
             // Finally make call when all converstaion info has been retrieved
             if (messages.count/2 + failed.count == users.count) {
-                NSDictionary *query = @{@"auth_token": self.authToken,
-                                        @"messages": messages.JSONString,
-                                        @"username": self.username};
-                [self postTo:SKEPChat.sendMessage query:query callback:^(NSDictionary *json, NSError *error2) {
-                    if (!error2) {
-                        NSArray *jsonConvos = json[@"conversations"];
+                NSDictionary *params = @{@"auth_token": self.authToken,
+                                         @"messages": messages.JSONString,
+                                         @"username": self.username};
+                [self postWith:params to:SKEPChat.sendMessage callback:^(TBResponseParser *parser) {
+                    if (!parser.error) {
+                        NSArray *jsonConvos = parser.JSON[@"conversations"];
                         NSMutableArray *conversations = [NSMutableArray array];
                         
                         if (jsonConvos.count) {
@@ -137,7 +144,7 @@
                         
                         completion(conversations, failed, nil);
                     } else {
-                        completion(nil, users, error2);
+                        completion(nil, users, parser.error);
                     }
                 }];
             }
@@ -147,25 +154,24 @@
 
 - (void)clearConversationWithIdentifier:(NSString *)identifier completion:(ErrorBlock)completion {
     NSParameterAssert(identifier);
-    [self postTo:SKEPChat.clearConvo query:@{@"conversation_id": identifier, @"username": self.username} callback:^(NSDictionary *json, NSError *error) {
-        if (completion)
-            completion(error);
+    NSDictionary *params = @{@"conversation_id": identifier, @"username": self.username};
+    [self postWith:params to:SKEPChat.clear callback:^(TBResponseParser *parser) {
+        TBRunBlockP(completion, parser.error);
     }];
 }
 
 - (void)clearFeed:(ErrorBlock)completion {
-    [self postTo:SKEPChat.clearFeed query:@{@"username": self.username} callback:^(NSDictionary *json, NSError *error) {
-        if (completion)
-            completion(error);
+    [self postWith:@{@"username": self.username} to:SKEPChat.clearFeed callback:^(TBResponseParser *parser) {
+        TBRunBlockP(completion, parser.error);
     }];
 }
 
 - (void)checkCashEligibility:(NSString *)username completion:(void (^)(BOOL, NSError *))completion {
     NSParameterAssert(username); NSParameterAssert(completion);
-    NSDictionary *query = @{@"recipient": username, @"username": self.username};
-    [self postTo:SKEPCash.checkRecipientEligibility query:query callback:^(NSDictionary *json, NSError *error) {
+    NSDictionary *params = @{@"recipient": username, @"username": self.username};
+    [self postWith:params to:SKEPCash.checkRecipientEligibility callback:^(TBResponseParser *parser) {
         // Other possible values: SERVICE_NOT_AVAILABLE_TO_RECIPIENT
-        completion([json[@"status"] isEqualToString:@"OK"], error);
+        completion([parser.JSON[@"status"] isEqualToString:@"OK"], parser.error);
     }];
 }
 
@@ -175,10 +181,9 @@
         if (!error && failed.count == 0) {
             NSParameterAssert(conversations.count > 0);
             completion(conversations[0], nil);
-        } else if (error) {
-            completion(nil, error);
         } else {
-            completion(nil, [SKRequest errorWithMessage:@"Failed to get conversation for user" code:1]);
+            NSString *message = @"Failed to get conversation for user";
+            completion(nil, error ?: [TBResponseParser error:message domain:@"SnapchatKit" code:0]);
         }
     }];
 }
@@ -213,18 +218,18 @@
                 [messages addObject:newMessage];
             }
             
-            NSDictionary *query = @{@"auth_token": self.authToken,
-                                    @"messages": [messages JSONString],
-                                    @"username": self.username};
-            [self postTo:SKEPChat.sendMessage query:query callback:^(NSDictionary *json, NSError *error2) {
-                if (!error2) {
-                    NSArray *convoJsons = json[@"conversations"];
+            NSDictionary *params = @{@"auth_token": self.authToken,
+                                     @"messages": [messages JSONString],
+                                     @"username": self.username};
+            [self postWith:params to:SKEPChat.sendMessage callback:^(TBResponseParser *parser) {
+                if (!parser.error) {
+                    NSArray *convoJsons = parser.JSON[@"conversations"];
                     NSMutableArray *conversations = [NSMutableArray array];
                     for (NSDictionary *dict in convoJsons)
                         [conversations addObject:[[SKConversation alloc] initWithDictionary:dict]];
                     completion(conversations, failed, nil);
                 } else {
-                    completion(nil, recipients, error2);
+                    completion(nil, recipients, parser.error);
                 }
             }];
         } else {
@@ -235,23 +240,20 @@
 
 - (void)downloadMedia:(SKMessage *)mediaMessage completion:(ResponseBlock)completion {
     NSParameterAssert(mediaMessage); NSParameterAssert(completion);
-    NSDictionary *query = @{@"conversation_id": mediaMessage.conversationIdentifier,
-                            @"id": mediaMessage.mediaIdentifier,
-                            @"username": self.username};
-    [self postTo:SKEPChat.media query:query response:^(NSData *data, NSURLResponse *response, NSError *error) {
-        if (!error) {
-            NSInteger code = [(NSHTTPURLResponse *)response statusCode];
-            if (code == 200 && data.length) {
-                data = [data decryptStoryWithKey:mediaMessage.mediaKey iv:mediaMessage.mediaIV];
+    NSDictionary *params = @{@"conversation_id": mediaMessage.conversationIdentifier,
+                             @"id": mediaMessage.mediaIdentifier,
+                             @"username": self.username};
+    [self postWith:params to:SKEPChat.media callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
+            if (parser.data.length) {
+                NSData *data = [parser.data decryptStoryWithKey:mediaMessage.mediaKey iv:mediaMessage.mediaIV];
                 completion([SKBlob blobWithData:data], nil);
-            } else if (code != 200) {
-                completion(nil, [SKRequest errorWithMessage:@"Failed to download chat media" code:code]);
             } else {
                 completion(nil, [SKRequest errorWithMessage:@"Chat media response was 0 bytes with code 200" code:200]);
                 SKLog(@"Chat media response was 0 bytes with code 200");
             }
         } else {
-            completion(nil, error);
+            completion(nil, parser.error);
         }
     }];
 }
@@ -265,13 +267,13 @@
         return;
     }
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"checksum": [self.username MD5Hash],
-                            @"offset": conversation.pagination};
-    [self postTo:SKEPChat.conversations query:query callback:^(NSDictionary *json, NSError *error) {
-        if (!error) {
+    NSDictionary *params = @{@"username": self.username,
+                             @"checksum": self.username.MD5Hash,
+                             @"offset": conversation.pagination};
+    [self postWith:params to:SKEPChat.conversations callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
             // Parse all returned conversations
-            NSArray *convoJson = json[@"conversations_response"];
+            NSArray *convoJson = parser.JSON[@"conversations_response"];
             NSMutableArray *conversations = [NSMutableArray array];
             for (NSDictionary *dict in convoJson)
                 [conversations addObject:[[SKConversation alloc] initWithDictionary:dict]];
@@ -279,7 +281,7 @@
             [self.currentSession.conversations addObjectsFromArray:conversations];
             completion(conversations, nil);
         } else {
-            completion(nil, error);
+            completion(nil, parser.error);
         }
     }];
 }
@@ -321,23 +323,25 @@
 - (void)loadMessagesAfterPagination:(SKThing<SKPagination> *)messageOrTransaction completion:(ResponseBlock)completion {
     NSParameterAssert(messageOrTransaction && ![messageOrTransaction isKindOfClass:[SKConversation class]]); NSParameterAssert(completion);
     // Must have conversation id
-    if (!messageOrTransaction.conversationIdentifier)
-        [NSException raise:NSInternalInconsistencyException format:@"SKPagination of type %@ with nil conversationIdentifier:\n%@", NSStringFromClass(messageOrTransaction.class), messageOrTransaction];
+    if (!messageOrTransaction.conversationIdentifier) {
+        NSString *format = @"SKPagination of type %@ with nil conversationIdentifier:\n%@";
+        [NSException raise:NSInternalInconsistencyException format:format, NSStringFromClass(messageOrTransaction.class), messageOrTransaction];
+    }
     if (!messageOrTransaction.pagination.length) {
         completion(nil, nil);
         return;
     }
     
-    NSDictionary *query = @{@"username": self.username,
-                            @"conversation_id": messageOrTransaction.conversationIdentifier,
-                            @"offset": messageOrTransaction.pagination};
-    [self postTo:SKEPChat.conversation query:query callback:^(NSDictionary *json, NSError *error) {
-        if (!error) {
+    NSDictionary *params = @{@"username": self.username,
+                             @"conversation_id": messageOrTransaction.conversationIdentifier,
+                             @"offset": messageOrTransaction.pagination};
+    [self postWith:params to:SKEPChat.conversation callback:^(TBResponseParser *parser) {
+        if (!parser.error) {
             // Parse returned conversation
-            SKConversation *conversation = [[SKConversation alloc] initWithDictionary:json[@"conversation"]];
+            SKConversation *conversation = [[SKConversation alloc] initWithDictionary:parser.JSON[@"conversation"]];
             completion(conversation, nil);
         } else {
-            completion(nil, error);
+            completion(nil, parser.error);
         }
     }];
 }
