@@ -15,7 +15,6 @@
 #import "SKStoryOptions.h"
 #import "SKSharedStoryDescription.h"
 
-#import "SKRequest.h"
 #import "SnapchatKit-Constants.h"
 
 

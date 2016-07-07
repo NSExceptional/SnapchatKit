@@ -7,7 +7,6 @@
 //
 
 #import "SKClient+Account.h"
-#import "SKRequest.h"
 #import "SKBlob.h"
 #import "SKUser.h"
 #import "SKTrophy.h"

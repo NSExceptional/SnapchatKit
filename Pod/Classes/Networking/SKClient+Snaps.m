@@ -7,7 +7,6 @@
 //
 
 #import "SKClient+Snaps.h"
-#import "SKRequest.h"
 #import "SKBlob.h"
 #import "SKLocation.h"
 #import "SKSnapOptions.h"

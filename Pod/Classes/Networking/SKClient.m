@@ -8,7 +8,6 @@
 
 #import "SKClient.h"
 #import "SKSession.h"
-#import "SKRequest.h"
 #import "SKConversation.h"
 #import "SKBlob.h"
 
@@ -394,9 +393,9 @@ static SKClient *sharedSKClient;
             // Continue registration
             self.currentSession = [[SKSession alloc] initWithDictionary:parser.JSON];
             if (kDebugJSON && !self.currentSession) {
-                completion([SKRequest unknownError]);
                 SKLog(@"Unknown error: %@", parser.JSON);
             } else {
+                assert(self.currentSession);
                 _username = self.currentSession.username;
                 completion(nil);
             }
@@ -428,16 +427,13 @@ static SKClient *sharedSKClient;
                     }
                     
                     completion(imageData, nil);
-                    
-                    // Error unzipping
-                } else if (error) {
-                    completion(nil, error);
                 } else {
-                    completion(nil, [SKRequest errorWithMessage:@"Error unzipping captcha" code:1]);
+                    // Error unzipping
+                    completion(nil, error ?: [TBResponseParser error:@"Error unzipping captcha" domain:@"SnapchatKit" code:1]);
                 }
             }];
-            // Failed to get captcha ZIP
         } else {
+            // Failed to get captcha ZIP
             completion(nil, parser.error);
         }
     }];
@@ -458,7 +454,8 @@ static SKClient *sharedSKClient;
     
     NSArray *digits = [mobile allMatchesForRegex:@"\\d"];
     if (digits.count != 10 && digits.count != 11) {
-        completion(nil, [SKRequest errorWithMessage:@"Invalid phone number" code:400]);
+        completion(nil, [TBResponseParser error:@"Invalid phone number" domain:@"SnapchatKit" code:1]);
+        return;
     }
     
     NSString *countryCode;

@@ -8,7 +8,6 @@
 
 #import "SKBlob.h"
 #import "SKStory.h"
-#import "SKRequest.h"
 
 #import "SnapchatKit-Constants.h"
 #import "SSZipArchive.h"
@@ -64,10 +63,11 @@
         [self decompressBlob:blobData forStory:story completion:completion];
     } else {
         SKBlob *blob = [SKBlob blobWithData:blobData];
-        if (blob)
-            completion(blob, blobData.isMedia ? nil : [SKRequest errorWithMessage:@"Unknown blob format" code:1]);
-        else
-            completion(nil, [SKRequest errorWithMessage:@"Error initializing blob with data" code:1]);
+        if (blob) {
+            completion(blob, blobData.isMedia ? nil : [TBResponseParser error:@"Unknown blob format" domain:@"SnapchatKit" code:1]);
+        } else {
+            completion(nil, [TBResponseParser error:@"Error initializing blob with data" domain:@"SnapchatKit" code:1]);
+        }
     }
 }
 
@@ -191,7 +191,7 @@
                 if (blob) {
                     completion(blob, nil);
                 } else {
-                    completion(nil, [SKRequest errorWithMessage:@"Error initializing blob" code:2]);
+                    completion(nil, [TBResponseParser error:@"Error initializing blob" domain:@"SnapchatKit" code:2]);
                 }
             } else {
                 SKLog(@"%@", error);

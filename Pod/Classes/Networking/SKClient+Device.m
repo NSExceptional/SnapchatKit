@@ -8,7 +8,6 @@
 
 #import "SKClient+Device.h"
 #import "SKUser.h"
-#import "SKRequest.h"
 
 #import "SnapchatKit-Constants.h"
 

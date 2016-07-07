@@ -7,7 +7,6 @@
 //
 
 #import "SKClient+Friends.h"
-#import "SKRequest.h"
 #import "SKUser.h"
 #import "SKFoundFriend.h"
 #import "SKNearbyUser.h"
@@ -96,7 +95,7 @@
 - (void)findFriends:(NSDictionary *)friends completion:(ArrayBlock)completion {
     NSParameterAssert(friends.allKeys.count); NSParameterAssert(completion);
     if (self.currentSession.shouldTextToVerifyNumber || self.currentSession.shouldCallToVerifyNumber)
-        completion(nil, [SKRequest errorWithMessage:@"You need to verify your phone number first." code:1]);
+        completion(nil, [TBResponseParser error:@"You need to verify your phone number first." domain:@"SnapchatKit" code:1]);
     
     //    NSArray *findRequests = [friends split:30];
     

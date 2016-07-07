@@ -7,7 +7,6 @@
 //
 
 #import "SKClient+Chat.h"
-#import "SKRequest.h"
 #import "SKConversation.h"
 #import "SKConversationState.h"
 #import "SKNewConversation.h"
@@ -249,7 +248,7 @@
                 NSData *data = [parser.data decryptStoryWithKey:mediaMessage.mediaKey iv:mediaMessage.mediaIV];
                 completion([SKBlob blobWithData:data], nil);
             } else {
-                completion(nil, [SKRequest errorWithMessage:@"Chat media response was 0 bytes with code 200" code:200]);
+                completion(nil, [TBResponseParser error:@"Chat media response was 0 bytes with code 200" domain:@"SnapchatKit" code:200]);
                 SKLog(@"Chat media response was 0 bytes with code 200");
             }
         } else {
