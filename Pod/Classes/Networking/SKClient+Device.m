@@ -41,20 +41,13 @@
                                                        @"event_params": @{@"open_state": @"NORMAL", @"intent_action": @"NULL"}.JSONString}.JSONString].JSONString,
                                         @"batch_id": batchID};
             
-            [SKRequest sendEvents:eventDict callback:^(NSData *data, NSURLResponse *response, NSError *error) {
-                if (completion) {
-                    if ([(NSHTTPURLResponse *)response statusCode] == 200) {
-                        completion(nil);
-                    } else {
-                        [self handleError:error data:data response:response completion:^(id object, NSError *error) {
-                            completion(error);
-                        }];
-                    }
-                }
+            [[TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
+                make.URL(SKConsts.eventsURL).bodyJSONFormString(eventDict);
+            }] POST:^(TBResponseParser *parser) {
+                TBRunBlockP(completion, parser.error ?: [TBResponseParser error:parser.text domain:@"SnapchatKit" code:200]);
             }];
-            
         } else {
-            completion(error);
+            TBRunBlockP(completion, error);
         }
     }];
 }
