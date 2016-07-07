@@ -273,6 +273,7 @@ SK_NAMESPACE_IMP(SKEPStories) {
     .remove    = @"/bq/delete_story",
     .post      = @"/bq/post_story",
     .retryPost = @"/bq/retry_post_story",
+    .sharedDescription = @"/shared/description"
 };
 
 #pragma mark SKEPCash
@@ -306,7 +307,3 @@ SK_NAMESPACE_IMP(SKEPAndroid) {
     .getPassStrength   = @"/loq/and/get_password_strength",
     .registerExp       = @"/loq/and/register_exp",
 };
-
-
-
-NSString * const kepSharedDescription     = @"/shared/description";

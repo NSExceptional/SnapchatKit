@@ -245,7 +245,7 @@
 - (void)getTrophies:(ArrayBlock)completion {
     NSParameterAssert(completion);
     [self updateTrophiesWithMetrics:nil completion:^(NSError *error) {
-        completion(error ? self.currentSession.trophyCase : nil, error);
+        completion(error ? nil : self.currentSession.trophyCase, error);
     }];
 }
 

@@ -276,6 +276,7 @@ SK_NAMESPACE(SKEPStories, {
     NSNSString *remove;
     NSNSString *post;
     NSNSString *retryPost;
+    NSNSString *sharedDescription;
 });
 
 SK_NAMESPACE(SKEPCash, {
@@ -297,5 +298,3 @@ SK_NAMESPACE(SKEPAndroid, {
     NSNSString *registerExp;
 });
 
-
-extern NSString * const kepSharedDescription;
