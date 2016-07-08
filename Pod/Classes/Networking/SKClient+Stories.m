@@ -45,8 +45,10 @@
             params[@"caption_text_display"] = options.text;
             
             [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-                make.multipartData(@{@"thumbnail_data": blob.videoThumbnail});
                 make.multipartStrings(MergeDictionaries(params, bodyForm));
+                if (blob.videoThumbnail) {
+                    make.multipartData(@{@"thumbnail_data": blob.videoThumbnail});
+                }
             } to:SKEPStories.post callback:^(TBResponseParser *parser) {
                 TBRunBlockP(completion, parser.error);
             }];
@@ -61,12 +63,14 @@
     
     NSDictionary *params = @{@"media_id": uuid,
                              @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
-                             @"data": blob.zipData ? blob.zipData : blob.data,
                              @"zipped": blob.zipData ? @1 : @0,
                              @"features_map": @"{}",
                              @"username": self.username};
     
-    [self postWith:params to:SKEPStories.upload callback:^(TBResponseParser *parser) {
+    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
+        make.multipartData(@{@"data": blob.zipData ? blob.zipData : blob.data});
+        make.multipartStrings(MergeDictionaries(params, bodyForm));
+    } to:SKEPStories.upload callback:^(TBResponseParser *parser) {
         TBRunBlockP(completion, parser.error ? nil : uuid, parser.error);
     }];
 }
