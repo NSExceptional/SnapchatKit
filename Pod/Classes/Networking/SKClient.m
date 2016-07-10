@@ -40,7 +40,7 @@ NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret) {
         [signature appendString:params[key]];
     }
     
-    return [@"v1:" stringByAppendingString:[NSString hashHMac:signature key:secret].hexadecimalString];
+    return [@"v1:" stringByAppendingString:[NSString hashHMacSHA256:signature key:secret].hexadecimalString];
 }
 
 BOOL SKShouldUseStaticToken(NSString *endpiont) {
@@ -164,7 +164,8 @@ static SKClient *sharedSKClient;
             if (parser.response.statusCode == 200) {
                 callback(parser);
             } else {
-                callback([TBResponseParser error:parser.JSON[@"message"] domain:@"SnapchatKit" code:parser.response.statusCode]);
+                NSError *error = [TBResponseParser error:parser.JSON[@"message"] domain:@"SnapchatKit" code:parser.response.statusCode];
+                callback([TBResponseParser error:error]);
             }
         } else {
             callback(parser);

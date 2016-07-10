@@ -104,7 +104,7 @@
     NSDictionary *params = @{@"added_friends_timestamp": [NSString timestampFrom:self.currentSession.addedFriendsTimestamp],
                              @"json": json.JSONString, @"username": self.username};
     [self postWith:params to:SKEPUpdate.snaps callback:^(TBResponseParser *parser) {
-        TBRunBlockP(completion, params.objectEnumerator);
+        TBRunBlockP(completion, parser.error);
     }];
 }
 

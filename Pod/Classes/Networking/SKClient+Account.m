@@ -166,8 +166,6 @@
 - (void)uploadAvatar:(NSArray *)datas completion:(ErrorBlock)completion {
     NSParameterAssert(datas);
     
-    NSDictionary *params = @{@"username": self.username,
-                             @"data": [SKAvatar avatarDataFromImageDatas:datas]};
     // SKEPAccount.avatar.set
     // multipart/form-data; takes a single "data" parameter in addition to the usual "username" param
     [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {

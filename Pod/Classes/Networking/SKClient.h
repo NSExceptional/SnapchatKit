@@ -176,12 +176,7 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 - (NSProgress *)post:(SKConfigurationBlock)configurationHandler to:(NSString *)endpoint callback:(TBResponseBlock)callback;
 - (NSProgress *)get:(SKConfigurationBlock)configurationHandler from:(NSString *)endpoint callback:(TBResponseBlock)callback;
 
-- (void)postTo:(NSString *)endpoint query:(NSDictionary *)query callback:(ResponseBlock)callback;
-- (void)postTo:(NSString *)endpoint query:(NSDictionary *)query response:(void(^)(NSData *data, NSURLResponse *response, NSError *error))callback;
-- (void)get:(NSString *)endpoint callback:(ResponseBlock)callback;
 - (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(ErrorBlock)completion;
-/** Completion is GUARANTEED to have one and only one non-nil parameter. */
-- (void)handleError:(NSError *)error data:(NSData *)data response:(NSURLResponse *)response completion:(ResponseBlock)completion;
 
 @end
 

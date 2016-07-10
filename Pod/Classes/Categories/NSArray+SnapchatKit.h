@@ -12,6 +12,6 @@
 @interface NSArray (SnapchatKit)
 /// Will never return nil.
 @property (nonatomic, readonly) NSArray *dictionaryValues;
-@property (nonatomic, readonly) NSArray *recipientsString;
+@property (nonatomic, readonly) NSString *recipientsString;
 
 @end
