@@ -19,6 +19,9 @@ void SKLog(NSString *format, ...) {
 }
 
 SKAddSource SKAddSourceFromString(NSString *addSourceString) {
+    if (![addSourceString isEqualToString:@"UNRECOGNIZED_VALUE"]) {
+        NSLog(@"Value '%@' cannot be converted to an SKAddSource", addSourceString);
+    }
     if ([addSourceString isEqualToString:@"ADDED_BY_PHONE"])
         return SKAddSourcePhonebook;
     if ([addSourceString isEqualToString:@"ADDED_BY_USERNAME"])
@@ -30,12 +33,13 @@ SKAddSource SKAddSourceFromString(NSString *addSourceString) {
     if ([addSourceString isEqualToString:@"ADDED_BY_NEARBY"])
         return SKAddSourceNearby;
     
-    [NSException raise:NSInternalInconsistencyException format:@"Value '%@' cannot be converted to an SKAddSource", addSourceString];
-    return 0;
+    return SKAddSourceUnrecognizedValue;
 }
 
 NSString * SKStringFromAddSource(SKAddSource addSource) {
     switch (addSource) {
+        case SKAddSourceUnrecognizedValue:
+            return @"UNRECOGNIZED_VALUE";
         case SKAddSourcePhonebook:
             return @"ADDED_BY_PHONE";
         case SKAddSourceUsername:
@@ -69,7 +73,7 @@ NSString * SKStringFromMediaKind(SKMediaKind mediaKind) {
             return @"SKMediaKindStrangerSilentVideo";
     }
     
-//    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKMediaKind string", (long)mediaKind];
+    //    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKMediaKind string", (long)mediaKind];
     SKLog(@"Value %lu cannot be converted to an SKMediaKind string", (long)mediaKind);
     return nil;
 }
@@ -84,7 +88,7 @@ NSString * SKStringFromStoryPrivacy(SKStoryPrivacy storyPrivacy) {
             return @"CUSTOM";
     }
     
-//    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKStoryPrivacy string", (unsigned long)storyPrivacy];
+    //    [NSException raise:NSInternalInconsistencyException format:@"Value %lu cannot be converted to an SKStoryPrivacy string", (unsigned long)storyPrivacy];
     SKLog(@"Value %lu cannot be converted to an SKStoryPrivacy string", (unsigned long)storyPrivacy);
     return nil;
 }

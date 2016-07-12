@@ -59,7 +59,8 @@ typedef NS_ENUM(NSUInteger, SKStoryPrivacy) {
 };
 
 typedef NS_ENUM(NSInteger, SKAddSource) {
-    SKAddSourcePhonebook = 1,
+    SKAddSourceUnrecognizedValue,
+    SKAddSourcePhonebook,
     SKAddSourceUsername,
     SKAddSourceAddedBack,
     SKAddSourceQRCode,
