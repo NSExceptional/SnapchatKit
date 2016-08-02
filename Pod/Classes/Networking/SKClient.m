@@ -190,6 +190,7 @@ static SKClient *sharedSKClient;
     NSDictionary *cached = self.cache[endpoint];
     if (cached) {
         callback(cached[@"params"], cached[@"headers"], nil);
+        return [NSProgress progressWithTotalUnitCount:0];
     }
     
     NSString *url = @"https://casper-api.herokuapp.com/snapchat/ios/endpointauth";
