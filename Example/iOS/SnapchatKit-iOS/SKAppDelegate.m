@@ -15,19 +15,20 @@
 @implementation SKAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    SNTableViewController *tableviewcontroller = [SNTableViewController new];
-    tableviewcontroller.title = @"SnapchatKit";
-    
-    UINavigationController *nav = (UINavigationController *)self.window.rootViewController;
-    [nav pushViewController:tableviewcontroller animated:YES];
-    
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    SNTableViewController *root = [SNTableViewController new];
+    root.title = @"SnapchatKit";
+
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:root];
+    [self.window makeKeyAndVisible];
+
     [self trySignIn];
     
     return YES;
 }
 
 - (SNTableViewController *)tableViewController {
-    return (SNTableViewController *)([(UINavigationController *)self.window.rootViewController viewControllers].firstObject);
+    return (id)([(id)self.window.rootViewController viewControllers].firstObject);
 }
 
 - (void)trySignIn {
@@ -38,7 +39,7 @@
         return;
     }
     
-    [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword gmail:kGmail gpass:kGmailPassword completion:^(NSDictionary *dict, NSError *error) {
+    [[SKClient sharedClient] signInWithUsername:kUsername password:kPassword completion:^(NSDictionary *dict, NSError *error) {
         if (!error) {
             [self tableViewController].dataSource = [SKClient sharedClient].currentSession.conversations.array;
             [[self tableViewController].tableView reloadData];

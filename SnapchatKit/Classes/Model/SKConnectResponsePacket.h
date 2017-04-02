@@ -11,7 +11,6 @@
 @interface SKConnectResponsePacket : SKPacket
 
 @property (nonatomic, readonly) BOOL successful;
-@property (nonatomic, readonly) NSString *identifier;
 @property (nonatomic, readonly) NSString *failureReason;
 @property (nonatomic, readonly) NSString *alternateServer;
 

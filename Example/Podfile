@@ -1,25 +1,24 @@
-source 'https://github.com/CocoaPods/Specs.git'
-
+#use_frameworks!
+#generate_bridge_support!
+install! 'cocoapods', :deterministic_uuids => false
 
 workspace 'SnapchatKit'
-xcodeproj 'SnapchatKit-OSX/SnapchatKit-OSX.xcodeproj'
-xcodeproj 'SnapchatKit.xcodeproj'
+project 'iOS/SnapchatKit-iOS.xcodeproj'
+project 'macOS/SnapchatKit-macOS.xcodeproj'
 
-target 'SnapchatKit_Example', :exclusive => true do
-  platform :ios, '9.0'
-  link_with 'SnapchatKit_Example'
+target :SnapchatKit_iOS do
+    platform :ios, '8.0'
+    pod 'SnapchatKit', :path => '../'
+    project 'iOS/SnapchatKit-iOS.xcodeproj'
 
-  pod "SnapchatKit", :path => "../"
+    target 'SnapchatKit_iOS_Tests' do
+        inherit! :search_paths
+    end
 end
 
-target 'SnapchatKit-OSX', :exclusive => true do
-  xcodeproj 'SnapchatKit-OSX/SnapchatKit-OSX.xcodeproj'
-  platform :osx, '10.9'
-  link_with 'SnapchatKit-OSX'
-
-  pod 'SnapchatKit', :path => '../'
+target :SnapchatKit_macOS do
+    platform :osx, '10.9'
+    pod 'SnapchatKit', :path => '../'
+    project 'macOS/SnapchatKit-macOS.xcodeproj'
 end
 
-target 'SnapchatKit_Tests', :exclusive => true do
-  pod 'SnapchatKit', :path => '../'
-end

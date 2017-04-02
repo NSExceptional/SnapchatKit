@@ -59,6 +59,17 @@ BOOL SKShouldUseStaticToken(NSString *endpiont) {
 }
 
 
+@interface SKClient ()
+
+@property (nonatomic, readonly) BOOL shouldUseIPC;
+@property (nonatomic) BOOL didTestIPC;
+@property (nonatomic) BOOL canUseIPC;
+@property (nonatomic) BOOL testingIPC;
+
+@property (nonatomic, readonly) OBJCIPC *IPC;
+
+@end
+
 @implementation SKClient
 @synthesize authToken = _authToken;
 

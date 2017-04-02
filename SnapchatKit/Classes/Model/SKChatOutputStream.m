@@ -15,7 +15,7 @@
 - (void)sendPacket:(SKPacket *)packet {
     NSLog(@"Sent:\n%@\n", packet);
     NSData *json = [packet.json.JSONString dataUsingEncoding:NSUTF8StringEncoding];
-    int len = json.length;
+    uint8_t len = json.length;
     len = NSSwapInt(len);
     
     [self write:&len maxLength:sizeof(int)];

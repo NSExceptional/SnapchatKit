@@ -1,27 +1,27 @@
 {
   "name": "SnapchatKit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "summary": "An Objective-C implementation of the unofficial Snapchat API.",
-  "homepage": "https://github.com/ThePantsThief/SnapchatKit",
+  "homepage": "https://github.com/NSExceptional/SnapchatKit",
   "license": "MIT",
   "authors": {
-    "ThePantsThief": "tannerbennett@me.com"
+    "NSExceptional": "tannerbennett@me.com"
   },
   "source": {
-    "git": "https://github.com/ThePantsThief/SnapchatKit.git",
-    "tag": "1.0.0"
+    "git": "https://github.com/NSExceptional/SnapchatKit.git",
+    "tag": "1.1.0"
   },
-  "social_media_url": "https://twitter.com/ThePantsThief",
+  "social_media_url": "https://twitter.com/NSExceptional",
   "requires_arc": true,
   "platforms": {
     "ios": "7.0",
     "osx": "10.9"
   },
   "source_files": [
-    "Pod/Classes/*",
-    "Pod/Classes/**/*",
-    "Pod/Dependencies/*",
-    "Pod/Dependencies/**/*"
+    "SnapchatKit/Classes/*",
+    "SnapchatKit/Classes/**/*",
+    "SnapchatKit/Dependencies/*",
+    "SnapchatKit/Dependencies/**/*"
   ],
   "dependencies": {
     "CocoaAsyncSocket": [

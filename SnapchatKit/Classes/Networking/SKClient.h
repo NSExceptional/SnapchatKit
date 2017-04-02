@@ -50,6 +50,8 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 /** Initializes an \c SKClient instance with the minimum data required to resume an existing session. \c currentSession needs to be updated afterwards. */
 + (instancetype)clientWithUsername:(NSString *)username authToken:(NSString *)authToken;
 
+@property (nonatomic) BOOL preferIPC;
+
 /// See the \c SKMiddleMan protocol.
 @property (nonatomic) id<SKMiddleMan> middleMan;
 

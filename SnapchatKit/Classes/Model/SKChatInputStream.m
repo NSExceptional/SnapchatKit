@@ -25,13 +25,13 @@
 
 // For testing
 - (NSData *)readData {
-    int buffer[1];
+    uint8_t buffer[1];
     if ([self read:buffer maxLength:4] > 0) {
         int length = NSSwapInt(buffer[0]);
         
         if (length >= USHRT_MAX || length < 0) { return nil; }
         
-        char buff[length];
+        uint8_t buff[length];
         if ([self read:buff maxLength:length] > 0) {
             return [NSData dataWithBytes:buff length:length];
         }

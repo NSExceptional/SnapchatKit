@@ -35,7 +35,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kReuse];
     SKConversation *convo = self.dataSource[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ — %luu pending", convo.participants.firstObject, convo.pendingRecievedSnaps.count];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ — %d pending",
+                           convo.participants.firstObject, (int)convo.pendingRecievedSnaps.count];
     return cell;
 }
 

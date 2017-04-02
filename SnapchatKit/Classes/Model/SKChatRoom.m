@@ -25,8 +25,8 @@
 #import "SKSnapStatePacket.h"
 #import "SKPingResponsePacket.h"
 
-NSInteger const kConnectMessageTag = &kConnectMessageTag;
-NSInteger const kLengthTag = &kLengthTag;
+NSInteger const kConnectMessageTag = (NSInteger)&kConnectMessageTag;
+NSInteger const kLengthTag = (NSInteger)&kLengthTag;
 
 //@class SKPacket, SKConnectPacket, SKPresencePacket, SKMessageStatePacket, SKMessagePacket, SKErrorPacket, SKProtocolErrorPacket, SKConversationMessageResponsePacket, SKSnapStatePacket, SKPingResponsePacket;
 
@@ -262,9 +262,10 @@ typedef NSOutputStream SKChatOutputStream;
     // Comment this return out and the input stream
     // never notifies its delegate of hasBytesAvailable
     return;
+    NSString *auth = @{@"mac": _conversationMac, @"payload": _conversationPayload}.JSONString;
     SKPresencePacket *presence = [SKPresencePacket presences:@{_recipient: @(present), _user: @(present)}
                                                        video:NO to:@[_recipient] from:_user
-                                                        auth:@{@"mac": _conversationMac, @"payload": _conversationPayload}];
+                                                        auth:auth];
     [self sendPacket:presence];
 }
 
