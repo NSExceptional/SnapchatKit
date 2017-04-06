@@ -20,9 +20,9 @@
 
 BuilderOption(NSString *, endpoint, getEndpoint);
 BuilderOption(NSDictionary *, params, getParams);
-BuilderOption(NSDictionary *, uploadData, getUploadData);
 BuilderOption(NSDictionary *, additionalHeaders, getAdditionalHeaders);
-BuilderOption(BOOL, needsAuth, getNeedsAuth);
+BuilderOption(BOOL, authenticate, needsAuth);
+BuilderOption(BOOL, multipart, isMultipart);
 
 /// Defaults to POST
 @property (nonatomic, readonly) SKIPCRequest *IPCRequest;

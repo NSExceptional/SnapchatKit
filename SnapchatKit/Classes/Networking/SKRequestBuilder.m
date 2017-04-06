@@ -29,16 +29,15 @@ _##propname = name;\
 
 BuilderOptionAutoIMP(NSString *, endpoint, getEndpoint);
 BuilderOptionAutoIMP(NSDictionary *, params, getParams);
-BuilderOptionAutoIMP(NSDictionary *, uploadData, getUploadData);
 BuilderOptionAutoIMP(NSDictionary *, additionalHeaders, getAdditionalHeaders);
-BuilderOptionAutoIMP(BOOL, needsAuth, getNeedsAuth);
+BuilderOptionAutoIMP(BOOL, authenticate, needsAuth);
+BuilderOptionAutoIMP(BOOL, multipart, isMultipart);
 
 - (SKIPCRequest *)IPCRequest {
     SKIPCRequest *request = [SKIPCRequest endpoint:self.getEndpoint params:self.getParams];
-    request.needsAuth = self.getNeedsAuth;
-    request.uploadData = self.getUploadData;
+    request.needsAuth         = self.needsAuth;
+    request.multipart         = self.isMultipart;
     request.additionalHeaders = self.getAdditionalHeaders;
-    request.method = SCAPIRequestMethodPOST;
 
     return request;
 }

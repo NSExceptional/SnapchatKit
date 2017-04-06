@@ -46,11 +46,9 @@ extern NSString * const kSnapchatBundleID;
 #pragma mark Properties
 @property (nonatomic, copy) NSString           *endpoint;
 @property (nonatomic, copy) NSDictionary       *params;
-@property (nonatomic, copy) NSData             *uploadData;
 @property (nonatomic, copy) NSDictionary       *additionalHeaders;
 @property (nonatomic      ) SCAPIRequestMethod method;
 @property (nonatomic      ) BOOL               needsAuth;
-/// Set automatically if you set uploadData
 @property (nonatomic      ) BOOL               multipart;
 
 /// Return info even if username / app version doesn't match

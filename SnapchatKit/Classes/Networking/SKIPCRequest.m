@@ -43,21 +43,19 @@ static Class _IPC;
 }
 
 + (instancetype)authForEndpoint:(NSString *)endpoint params:(NSDictionary *)params method:(SCAPIRequestMethod)method {
-    SKIPCRequest *req = [self new];
+    SKIPCRequest *req = [self endpoint:endpoint params:params];
     req.needsAuth     = YES;
-    req.endpoint      = endpoint;
-    req.params        = params;
     req.method        = method;
-    req.additionalHeaders = @{};
-    
+
     return req;
 }
 
 + (instancetype)endpoint:(NSString *)endpoint params:(NSDictionary *)params {
     SKIPCRequest *req = [self new];
+    req.method        = SCAPIRequestMethodPOST;
     req.endpoint      = endpoint;
     req.params        = params;
-    req.method        = SCAPIRequestMethodPOST;
+    req.params        = params ?: @{};
     req.additionalHeaders = @{};
 
     return req;
@@ -116,13 +114,6 @@ static Class _IPC;
         NSString *message = @"Class OBJCIPC not found, cannot communicate with Snapchat";
         return [SKIPCResponse errorMessage:message];
     }
-}
-
-#pragma mark Private
-
-- (void)setUploadData:(NSData *)uploadData {
-    _uploadData = uploadData;
-    self.multipart = YES;
 }
 
 #pragma mark NSCoding
