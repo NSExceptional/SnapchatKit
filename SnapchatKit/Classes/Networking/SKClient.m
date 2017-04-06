@@ -66,8 +66,6 @@ BOOL SKShouldUseStaticToken(NSString *endpiont) {
 @property (nonatomic) BOOL canUseIPC;
 @property (nonatomic) BOOL testingIPC;
 
-@property (nonatomic, readonly) OBJCIPC *IPC;
-
 @end
 
 @implementation SKClient
@@ -111,10 +109,12 @@ static SKClient *sharedSKClient;
     self = [super init];
     if (self) {
         self.preferIPC = YES;
-        _IPC = (id)NSClassFromString(@"OBJCIPC");
-        
+
+        _testingIPC = YES;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self testIPC];
+            _canUseIPC  = [SKIPCRequest testIPC];
+            _testingIPC = NO;
+            _didTestIPC = YES;
         });
         
         if (NSClassFromString(@"UIScreen")) {
@@ -167,22 +167,27 @@ static SKClient *sharedSKClient;
 #pragma mark IPC
 
 - (BOOL)shouldUseIPC {
-    if (!_IPC) {
-        return NO;
-    }
-    
     if (_didTestIPC) {
         return _canUseIPC;
     }
-    
-    [self testIPC];
-    return NO;
-}
 
-- (void)testIPC {
-    NSLog(@"Talking to Snapchat...");
-    NSDictionary *response = [[_IPC class] sendMessageToSpringBoardWithMessageName:@"foo" dictionary:@{@"echo": @"foo"}];
-    _canUseIPC = [response[@"echo"] isEqualToString:@"foo"];
+    if (_testingIPC) {
+        while (_testingIPC) {
+            [NSThread sleepForTimeInterval:.001];
+        }
+
+        return _canUseIPC;
+    }
+    else {
+        _testingIPC = YES;
+        [SKIPCRequest testIPC:^(BOOL success) {
+            _testingIPC = NO;
+            _didTestIPC = YES;
+            _canUseIPC  = success;
+        }];
+
+        return NO;
+    }
 }
 
 - (void)getInformationViaIPCForEndpoint:(NSString *)endpoint callback:(SKCasperResponseBlock)callback {
