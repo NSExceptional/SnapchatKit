@@ -1,0 +1,32 @@
+//
+//  SKRequestBuilder.h
+//  Pods
+//
+//  Created by Tanner on 4/6/17.
+//
+//
+
+#import <Foundation/Foundation.h>
+@class SKIPCRequest;
+
+#define BuilderOption(type, name, propname) \
+@property (nonatomic, readonly) SKRequestBuilder *(^name)(type); \
+@property (nonatomic) type propname
+
+
+@interface SKRequestBuilder : NSObject
+
++ (instancetype)make:(void(^)(SKRequestBuilder *make))configurationBlock;
+
+BuilderOption(NSString *, endpoint, getEndpoint);
+BuilderOption(NSDictionary *, params, getParams);
+BuilderOption(NSDictionary *, uploadData, getUploadData);
+BuilderOption(NSDictionary *, additionalHeaders, getAdditionalHeaders);
+BuilderOption(BOOL, needsAuth, getNeedsAuth);
+
+/// Defaults to POST
+@property (nonatomic, readonly) SKIPCRequest *IPCRequest;
+
+@end
+
+#undef BuilderOption
