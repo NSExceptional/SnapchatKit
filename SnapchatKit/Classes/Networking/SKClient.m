@@ -190,8 +190,10 @@ static SKClient *sharedSKClient;
     }
 }
 
-- (void)getInformationViaIPCForEndpoint:(NSString *)endpoint callback:(SKCasperResponseBlock)callback {
-    
+- (void)makeIPCRequest:(SKIPCRequest *)request callback:(void(^)(NSMutableURLRequest *request, NSError *error))callback {
+    [request sendAsync:^(SKIPCResponse *response) {
+        callback(response.request, response.error);
+    }];
 }
 
 #pragma mark Casper
@@ -234,16 +236,8 @@ static SKClient *sharedSKClient;
     }];
 }
 
-- (NSProgress *)getInformationForEndpoint:(NSString *)endpoint callback:(SKCasperResponseBlock)callback {
+- (NSProgress *)getInformationFromCasperForEndpoint:(NSString *)endpoint callback:(SKCasperResponseBlock)callback {
     NSParameterAssert(endpoint); NSParameterAssert(callback);
-    
-    // Try to use IPC first
-    if (self.shouldUseIPC) {
-        [self getInformationViaIPCForEndpoint:endpoint callback:callback];
-        return [NSProgress progressWithTotalUnitCount:0];
-    } else if (self.testingIPC) {
-        
-    }
     
     // Check token cache first
     NSDictionary *cached = self.cache[endpoint];
@@ -266,30 +260,59 @@ static SKClient *sharedSKClient;
 
 #pragma mark Convenience
 
-- (NSProgress *)request:(SKConfigurationBlock)configure to:(NSString *)endpoint callback:(TBResponseBlock)callback success:(SKProxyBlock)success {
-    NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
-    NSProgress *child1 = [self getInformationForEndpoint:endpoint callback:^(NSDictionary *bodyForm, NSDictionary *headers, NSError *error) {
-        if (!error) {
-            NSProgress *child2 = success([TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
-                make.baseURL(SKConsts.baseURL).endpoint(endpoint);
-                make.configuration(self.URLSessionConfig).session(self.URLSession);
-                make.headers(headers).boundary(SKConsts.boundary);
-                configure(make, bodyForm);
-            }]);
-            [progress addChild:child2 withPendingUnitCount:50];
-        } else {
-            TBRunBlockP(callback, [TBResponseParser error:error]);
-        }
-    }];
-    
-    [progress addChild:child1 withPendingUnitCount:50];
-    return progress;
-}
+- (NSProgress *)request:(SKConfigurationBlock)configure
+                     to:(NSString *)endpoint
+               callback:(TBResponseBlock)callback
+                success:(SKProxyBlock)success {
 
-- (NSProgress *)postWith:(NSDictionary *)parameters to:(NSString *)endpoint callback:(TBResponseBlock)callback {
-    return [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-        make.bodyJSONFormString(MergeDictionaries(parameters, bodyForm));
-    } to:endpoint callback:callback];
+    NSProgress *progress = [NSProgress progressWithTotalUnitCount:100];
+    SKRequestBuilder *query = [SKRequestBuilder make:^(SKRequestBuilder *make) {
+        make.endpoint(endpoint);
+        configure(make);
+    }];
+
+    // IPC request
+    if (self.preferIPC && self.shouldUseIPC) {
+        [self makeIPCRequest:query.IPCRequest callback:^(NSMutableURLRequest *request, NSError *error) {
+            if (!error) {
+                TBURLRequestProxy *proxy = [TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
+                    make.configuration(self.URLSessionConfig).session(self.URLSession);
+                }];
+                proxy.request = request;
+                [progress addChild:success(proxy) withPendingUnitCount:100];
+            } else {
+                callback([TBResponseParser error:error]);
+            }
+        }];
+    }
+    // Casper API request
+    else {
+        NSProgress *child1 = [self getInformationFromCasperForEndpoint:endpoint callback:^(NSDictionary *bodyForm, NSDictionary *headers, NSError *error) {
+            if (!error) {
+                NSProgress *child2 = success([TBURLRequestBuilder make:^(TBURLRequestBuilder *make) {
+                    make.baseURL(SKConsts.baseURL).endpoint(endpoint);
+                    make.configuration(self.URLSessionConfig).session(self.URLSession);
+                    make.headers(MergeDictionaries(headers, query.getAdditionalHeaders));
+                    make.boundary(SKConsts.boundary);
+
+                    NSDictionary *params = MergeDictionaries(query.getParams, bodyForm);
+                    if (query.isMultipart) {
+                        make.multipartBody(params);
+                    } else {
+                        make.bodyJSONFormString(params);
+                    }
+                }]);
+                [progress addChild:child2 withPendingUnitCount:50];
+            } else {
+                // Callback only used here for error
+                TBRunBlockP(callback, [TBResponseParser error:error]);
+            }
+        }];
+
+        [progress addChild:child1 withPendingUnitCount:50];
+    }
+
+    return progress;
 }
 
 - (NSProgress *)post:(SKConfigurationBlock)configurationHandler to:(NSString *)endpoint callback:(TBResponseBlock)callback {
@@ -314,6 +337,12 @@ static SKClient *sharedSKClient;
             }
         }];
     }];
+}
+
+- (NSProgress *)postWith:(NSDictionary *)parameters to:(NSString *)endpoint callback:(TBResponseBlock)callback {
+    return [self post:^(SKRequestBuilder *make) {
+        make.params(parameters);
+    } to:endpoint callback:callback];
 }
 
 #pragma mark Signing in
@@ -358,8 +387,8 @@ static SKClient *sharedSKClient;
 }
 
 - (void)signOut:(ErrorBlock)completion {
-    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-        make.bodyJSONFormString(MergeDictionaries(bodyForm, @{@"username": self.currentSession.username}));
+    [self post:^(SKRequestBuilder *make) {
+        make.params(@{@"username": self.currentSession.username});
     } to:SKEPAccount.logout callback:^(TBResponseParser *parser) {
         if (!parser.error) {
             [_cache clear];
