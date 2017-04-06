@@ -174,9 +174,9 @@ typedef NS_ENUM(NSUInteger, SKScreenIdiom) {
 - (void)solveCaptchaWithSolution:(NSString *)solution completion:(DictionaryBlock)completion;
 
 #pragma mark Internal
-- (NSProgress *)postWith:(NSDictionary *)parameters to:(NSString *)endpoint callback:(TBResponseBlock)callback;
 - (NSProgress *)post:(SKConfigurationBlock)configurationHandler to:(NSString *)endpoint callback:(TBResponseBlock)callback;
 - (NSProgress *)get:(SKConfigurationBlock)configurationHandler from:(NSString *)endpoint callback:(TBResponseBlock)callback;
+- (NSProgress *)postWith:(NSDictionary *)parameters to:(NSString *)endpoint callback:(TBResponseBlock)callback;
 
 - (void)sendEvents:(NSArray *)events data:(NSDictionary *)snapInfo completion:(ErrorBlock)completion;
 

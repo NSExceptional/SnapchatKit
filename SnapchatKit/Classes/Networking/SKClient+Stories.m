@@ -39,7 +39,7 @@
                                             @"time":                 @((NSUInteger)options.timer),
                                             @"type":                 blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
                                             @"username":             self.username,
-                                            //                                            @"my_story":             @"true",
+                                            // @"my_story":             @"true",
                                             @"zipped":               blob.zipData ? @1 : @0}.mutableCopy;
             // Optional parts
             params[@"caption_text_display"] = options.text;
