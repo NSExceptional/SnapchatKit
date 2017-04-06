@@ -10,7 +10,7 @@
 #import "SKIPCRequest.h"
 
 
-#define BuilderOptionIMP(type, name, code)- (TBURLRequestBuilder *(^)(type))name {\
+#define BuilderOptionIMP(type, name, code)- (SKRequestBuilder *(^)(type))name {\
 return ^(type name) { code return self; };\
 }
 
@@ -27,7 +27,16 @@ _##propname = name;\
     return builder;
 }
 
-BuilderOptionAutoIMP(NSString *, endpoint, getEndpoint);
+BuilderOptionIMP(NSString *, fullURL, {
+    _getFullURL  = fullURL;
+    _getEndpoint = nil;
+})
+
+BuilderOptionIMP(NSString *, endpoint, {
+    _getEndpoint = endpoint;
+    _getFullURL  = nil;
+})
+
 BuilderOptionAutoIMP(NSDictionary *, params, getParams);
 BuilderOptionAutoIMP(NSDictionary *, additionalHeaders, getAdditionalHeaders);
 BuilderOptionAutoIMP(BOOL, authenticate, needsAuth);

@@ -12,12 +12,13 @@
 
 #import "SKSession.h"
 #import "SKCasperCache.h"
+#import "SKRequestBuilder.h"
 
 
 extern NSString *SKMakeCapserSignature(NSDictionary *params, NSString *secret);
 
 typedef void(^SKCasperResponseBlock)(NSDictionary *body, NSDictionary *headers, NSError *error);
-typedef void(^SKConfigurationBlock)(TBURLRequestBuilder *make, NSDictionary *bodyForm);
+typedef void(^SKConfigurationBlock)(SKRequestBuilder *make);
 typedef NSProgress *(^SKProxyBlock)(TBURLRequestProxy *proxy);
 
 typedef NS_ENUM(NSUInteger, SKScreenIdiom) {

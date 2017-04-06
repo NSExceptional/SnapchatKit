@@ -43,12 +43,10 @@
                                             @"zipped":               blob.zipData ? @1 : @0}.mutableCopy;
             // Optional parts
             params[@"caption_text_display"] = options.text;
+            params[@"thumbnail_data"] = blob.videoThumbnail;
             
-            [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-                make.multipartStrings(MergeDictionaries(params, bodyForm));
-                if (blob.videoThumbnail) {
-                    make.multipartData(@{@"thumbnail_data": blob.videoThumbnail});
-                }
+            [self post:^(SKRequestBuilder *make) {
+                make.multipart(YES).params(params);
             } to:SKEPStories.post callback:^(TBResponseParser *parser) {
                 TBRunBlockP(completion, parser.error);
             }];
@@ -65,11 +63,11 @@
                              @"type": blob.isImage ? @(SKMediaKindImage) : @(SKMediaKindVideo),
                              @"zipped": blob.zipData ? @1 : @0,
                              @"features_map": @"{}",
-                             @"username": self.username};
+                             @"username": self.username,
+                             @"data": blob.zipData ? blob.zipData : blob.data};
     
-    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-        make.multipartData(@{@"data": blob.zipData ? blob.zipData : blob.data});
-        make.multipartStrings(MergeDictionaries(params, bodyForm));
+    [self post:^(SKRequestBuilder *make) {
+        make.multipart(YES).params(params);
     } to:SKEPStories.upload callback:^(TBResponseParser *parser) {
         TBRunBlockP(completion, parser.error ? nil : uuid, parser.error);
     }];
@@ -103,8 +101,8 @@
         NSString *url = (thumbnail ? story.thumbURL : story.mediaURL).absoluteString;
         NSString *endpoint = [url stringByReplacingOccurrencesOfString:SKConsts.baseURL withString:@""];
         
-        [self get:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-            make.baseURL(nil).URL(url).bodyJSONFormString(bodyForm);
+        [self get:^(SKRequestBuilder *make) {
+            make.fullURL(url);
         } from:endpoint callback:^(TBResponseParser *parser) {
             if (!parser.error) {
                 [SKBlob blobWithStoryData:parser.data forStory:story isThumb:thumbnail completion:^(SKBlob *thumbBlob, NSError *blobError) {
@@ -195,9 +193,7 @@
     NSParameterAssert(sharedStory.sharedStoryIdentifier); NSParameterAssert(completion);
     
     NSString *endpoint = [NSString stringWithFormat:@"shared/description?ln=en&shared_id=%@", sharedStory.sharedStoryIdentifier];
-    [self get:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-        make.bodyJSONFormString(bodyForm);
-    } from:endpoint callback:^(TBResponseParser *parser) {
+    [self get:^(SKRequestBuilder *make) { } from:endpoint callback:^(TBResponseParser *parser) {
         if (!parser.error) {
             completion([[SKSharedStoryDescription alloc] initWithDictionary:parser.JSON], nil);
         } else {

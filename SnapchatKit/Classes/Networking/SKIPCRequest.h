@@ -44,6 +44,7 @@ extern NSString * const kSnapchatBundleID;
 - (SKIPCResponse *)sendSync;
 
 #pragma mark Properties
+@property (nonatomic, copy) NSString           *fullURL;
 @property (nonatomic, copy) NSString           *endpoint;
 @property (nonatomic, copy) NSDictionary       *params;
 @property (nonatomic, copy) NSDictionary       *additionalHeaders;

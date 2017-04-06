@@ -168,9 +168,9 @@
     
     // SKEPAccount.avatar.set
     // multipart/form-data; takes a single "data" parameter in addition to the usual "username" param
-    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-        make.multipartStrings(MergeDictionaries(@{@"username": self.username}, bodyForm));
-        make.multipartData(@{@"data": [SKAvatar avatarDataFromImageDatas:datas]});
+    [self post:^(SKRequestBuilder *make) {
+        NSData *avatar = [SKAvatar avatarDataFromImageDatas:datas];
+        make.multipart(YES).params(@{@"username": self.username, @"data": avatar});
     } to:SKEPAccount.avatar.set callback:^(TBResponseParser *parser) {
         completion(parser.error);
     }];

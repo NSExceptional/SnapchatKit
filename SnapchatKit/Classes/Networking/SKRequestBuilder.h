@@ -18,6 +18,9 @@
 
 + (instancetype)make:(void(^)(SKRequestBuilder *make))configurationBlock;
 
+/// Replaces endpoint
+BuilderOption(NSString *, fullURL, getFullURL);
+/// Replaces fullURL
 BuilderOption(NSString *, endpoint, getEndpoint);
 BuilderOption(NSDictionary *, params, getParams);
 BuilderOption(NSDictionary *, additionalHeaders, getAdditionalHeaders);

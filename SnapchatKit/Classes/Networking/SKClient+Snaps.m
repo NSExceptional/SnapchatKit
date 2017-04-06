@@ -59,11 +59,11 @@
                              
                              @"zipped": blob.zipData ? @1 : @0,
                              @"features_map": @"{}",
+                             @"data": blob.zipData ? blob.zipData : blob.data,
                              @"username": self.username};
     
-    [self post:^(TBURLRequestBuilder *make, NSDictionary *bodyForm) {
-        make.multipartData(@{@"data": blob.zipData ? blob.zipData : blob.data});
-        make.multipartStrings(MergeDictionaries(params, bodyForm));
+    [self post:^(SKRequestBuilder *make) {
+        make.multipart(YES).params(params);
     } to:SKEPSnaps.upload callback:^(TBResponseParser *parser) {
         completion(parser.error ? nil : uuid, parser.error);
     }];

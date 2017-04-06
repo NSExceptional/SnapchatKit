@@ -73,7 +73,7 @@ static Class _IPC;
 
 + (void)testIPC:(void(^)(BOOL success))callback {
     if (self.IPC) {
-        [OBJCIPC sendMessageToSpringBoardWithMessageName:kMarco dictionary:@{} replyHandler:^(NSDictionary *response) {
+        [self.IPC sendMessageToSpringBoardWithMessageName:kMarco dictionary:@{} replyHandler:^(NSDictionary *response) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 callback([response[kPolo] boolValue]);
             });
@@ -116,14 +116,26 @@ static Class _IPC;
     }
 }
 
+- (void)setFullURL:(NSString *)fullURL {
+    NSParameterAssert(fullURL);
+    _fullURL  = fullURL;
+    _endpoint = nil;
+}
+
+- (void)setEndpoint:(NSString *)endpoint {
+    NSParameterAssert(endpoint);
+    _endpoint = endpoint;
+    _fullURL  = nil;
+}
+
 #pragma mark NSCoding
 
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [self init];
     if (self) {
+        self.fullURL    = [decoder decodeObjectForKey:@"url"];
         self.endpoint   = [decoder decodeObjectForKey:@"endpoint"];
         self.params     = [decoder decodeObjectForKey:@"params"];
-        self.uploadData = [decoder decodeObjectForKey:@"data"];
         self.method     = [decoder decodeIntegerForKey:@"method"];
         self.needsAuth  = [decoder decodeBoolForKey:@"auth"];
         self.force      = [decoder decodeBoolForKey:@"force"];
@@ -136,9 +148,9 @@ static Class _IPC;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:self.fullURL    forKey:@"url"];
     [aCoder encodeObject:self.endpoint   forKey:@"endpoint"];
     [aCoder encodeObject:self.params     forKey:@"params"];
-    [aCoder encodeObject:self.uploadData forKey:@"data"];
     [aCoder encodeInteger:self.method    forKey:@"method"];
     [aCoder encodeBool:self.needsAuth    forKey:@"auth"];
     [aCoder encodeBool:self.force        forKey:@"force"];
@@ -152,7 +164,6 @@ static Class _IPC;
     SKIPCRequest *copy = [[self class] new];
     copy->_endpoint    = self.endpoint;
     copy->_params      = self.params;
-    copy->_uploadData  = self.uploadData;
     copy->_method      = self.method;
     copy->_needsAuth   = self.needsAuth;
     copy->_force       = self.force;
