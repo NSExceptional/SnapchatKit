@@ -19,8 +19,27 @@ NSString * const kURLRequestKey         = @"URLRequest";
 NSString * const kMarco                 = @"com.pantsthief.SKICPTestQuery";
 NSString * const kPolo                  = @"com.pantsthief.SKICPTestResponse";
 
+NSString * SKStringFromMethod(SCAPIRequestMethod method) {
+    switch (method) {
+        case SCAPIRequestMethodGET:
+            return @"GET";
+        case SCAPIRequestMethodPOST:
+            return @"POST";
+        case SCAPIRequestMethodDELETE:
+            return @"DELETE";
+        case SCAPIRequestMethodPUT:
+            return @"PUT";
+    }
+    
+    return nil;
+}
+
 @interface SKIPCRequest ()
 @property (nonatomic, readonly) Class IPC;
+@end
+@interface SKClient : NSObject
++ (instancetype)sharedClient;
+@property (nonatomic, readonly) NSString *username;
 @end
 
 @implementation SKIPCRequest
@@ -57,6 +76,17 @@ static Class _IPC;
     req.params        = params;
     req.params        = params ?: @{};
     req.additionalHeaders = @{};
+
+    // Get timestamp
+    NSTimeInterval now = [NSDate date].timeIntervalSince1970;
+    req.timestamp = [NSString stringWithFormat:@"%llu", (unsigned long long)round(now)];
+
+    // Get username from shared client
+    Class SKClient = NSClassFromString(@"SKClient");
+    if (SKClient) {
+        id shared = [SKClient sharedClient];
+        req.username = [shared username];
+    }
 
     return req;
 }

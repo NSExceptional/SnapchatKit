@@ -17,6 +17,8 @@ typedef NS_ENUM(NSUInteger, SCAPIRequestMethod) {
     SCAPIRequestMethodPUT
 };
 
+extern NSString * SKStringFromMethod(SCAPIRequestMethod method);
+
 #pragma mark Internal keys
 extern NSString * const kQueryName;
 extern NSString * const kQueryKey;
@@ -43,7 +45,12 @@ extern NSString * const kSnapchatBundleID;
 - (void)sendAsync:(void(^)(SKIPCResponse *response))callback;
 - (SKIPCResponse *)sendSync;
 
-#pragma mark Properties
+#pragma mark Automatic properties
+/// Comes from SKClient.sharedClient.username
+@property (nonatomic, copy) NSString           *username;
+@property (nonatomic, copy) NSString           *timestamp;
+
+#pragma mark Manual properties
 @property (nonatomic, copy) NSString           *fullURL;
 @property (nonatomic, copy) NSString           *endpoint;
 @property (nonatomic, copy) NSDictionary       *params;
