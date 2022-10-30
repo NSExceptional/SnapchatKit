@@ -2,10 +2,10 @@ Pod::Spec.new do |s|
 s.name             = "SnapchatKit"
 s.version          = "0.6.1"
 s.summary          = "An Objective-C implementation of the unofficial Snapchat API."
-s.homepage         = "https://github.com/ThePantsThief/SnapchatKit"
+s.homepage         = "https://github.com/NSExceptional/SnapchatKit"
 s.license          = 'MIT'
 s.author           = { "ThePantsThief" => "tannerbennett@me.com" }
-s.source           = { :git => "https://github.com/ThePantsThief/SnapchatKit.git", :tag => s.version.to_s }
+s.source           = { :git => "https://github.com/NSExceptional/SnapchatKit.git", :tag => s.version.to_s }
 
 s.requires_arc = true
 s.ios.deployment_target = '7.0'
