@@ -3,8 +3,8 @@
 [![Version](https://img.shields.io/cocoapods/v/SnapchatKit.svg?style=flat)](http://cocoapods.org/pods/SnapchatKit)
 [![License](https://img.shields.io/cocoapods/l/SnapchatKit.svg?style=flat)](http://cocoapods.org/pods/SnapchatKit)
 [![Platform](https://img.shields.io/cocoapods/p/SnapchatKit.svg?style=flat)](http://cocoapods.org/pods/SnapchatKit)
-[![Issues](https://img.shields.io/github/issues-raw/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/issues)
-[![Stars](https://img.shields.io/github/stars/ThePantsThief/SnapchatKit.svg?style=flat)](https://github.com//ThePantsThief/SnapchatKit/stargazers)
+[![Issues](https://img.shields.io/github/issues-raw/NSExceptional/SnapchatKit.svg?style=flat)](https://github.com//NSExceptional/SnapchatKit/issues)
+[![Stars](https://img.shields.io/github/stars/NSExceptional/SnapchatKit.svg?style=flat)](https://github.com//NSExceptional/SnapchatKit/stargazers)
 
 ## Quick FAQ
 > How do I get login and stuff working?
@@ -66,10 +66,6 @@ SnapchatKit now poses as the iOS client instead of the Android one; Google crede
 - Harry "The Man" Gulliford.
 - Sam Symons, author of [RedditKit](https://github.com/samsymons/RedditKit).
 - Those unmentioned, you know who you are. Thank you.
-
-## Author
-
-ThePantsThief, tannerbennett@me.com, [/u/ThePantsThief](http://www.reddit.com/user/thepantsthief/submitted)
 
 ## License
 

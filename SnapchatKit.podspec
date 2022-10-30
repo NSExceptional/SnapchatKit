@@ -6,7 +6,6 @@ s.homepage         = "https://github.com/ThePantsThief/SnapchatKit"
 s.license          = 'MIT'
 s.author           = { "ThePantsThief" => "tannerbennett@me.com" }
 s.source           = { :git => "https://github.com/ThePantsThief/SnapchatKit.git", :tag => s.version.to_s }
-s.social_media_url = 'https://twitter.com/ThePantsThief'
 
 s.requires_arc = true
 s.ios.deployment_target = '7.0'
